@@ -69,7 +69,7 @@ public abstract class BasicGameBuilder {
 		    hint = new ToggleButton("Hint");
 		    hint.setOnAction(e -> showHint(pane));
 		    check = new Button("Check");
-		    autosolve = new Button("Autosolve");
+		    autosolve = new Button("AutoSolve");
 		    create = new Button("Create Game");
 		    owngame = new Button("Custom Game");
 		
