@@ -1,23 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>MavenSudokuProjekt1</groupId>
-  <artifactId>MavenSudokuProjekt1</artifactId>
+  <groupId>SudokuFx</groupId>
+  <artifactId>SudokuFx</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   
- <properties>
+<properties>
   <sonar.projectKey>SoftPrakt2_SudokuFx</sonar.projectKey>
   <sonar.organization>softprakt2</sonar.organization>
   <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 </properties>
   
-  
     <dependencies>
       
-      <dependency>
-    <groupId>org.codehaus.sonar</groupId>
-    <artifactId>sonar-maven-plugin</artifactId>
-    <version>3.2-RC2</version>
-	</dependency>	
+    
       
         <dependency>
             <groupId>org.openjfx</groupId>
