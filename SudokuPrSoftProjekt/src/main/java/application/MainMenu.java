@@ -50,7 +50,7 @@ public class MainMenu {
 		 
 		buttonMenu.getChildren().addAll(sudoku,samurai,freeform);
 		
-		Label welcomeLabel = new Label("Welcome to our Sudoku Game, please choose a gamemode");
+		Label welcomeLabel = new Label("Welcome to our Sudoku Game, Please choose a gamemode");
 		welcomeLabel.setFont(new Font("Arial",20));
 		
 		pane.setBottom(buttonMenu);
