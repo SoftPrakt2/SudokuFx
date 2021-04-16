@@ -69,17 +69,7 @@
         </excludes>
       </resource>
     </resources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.0</version>
-        <configuration>
-          <release>13</release>
-          <encoding>UTF-8</encoding>
-          <classesDirectory>src/main/java</classesDirectory>
-        </configuration>
-      </plugin>
-    </plugins>
+    
   
   
   
