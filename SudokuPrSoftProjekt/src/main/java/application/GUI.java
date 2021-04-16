@@ -47,7 +47,7 @@ public class GUI extends Application  {
 	
 	 
 	    window.setOnCloseRequest(e-> {
-			//consume heißt w führen den schließvorgang fort und es wird nicht immer geschlossen nur wenn yes gedrückt wird
+			//consume heißt w führe den schließvorgang fort und es wird nicht immer geschlossen nur wenn yes gedrückt wird
 			e.consume();
 			closeProgram();
 		});
