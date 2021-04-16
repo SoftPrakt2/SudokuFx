@@ -65,11 +65,7 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.0</version>
-        <configuration>
-          <release>13</release>
-          <encoding>UTF-8</encoding>
-          <classesDirectory>src</classesDirectory>
-        </configuration>
+     
       </plugin>
     </plugins>
   
