@@ -49,10 +49,10 @@
   
   
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
+    <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
-        <directory>src/main/java</directory>
+        <directory>src</directory>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>
@@ -65,6 +65,7 @@
         <configuration>
           <release>13</release>
           <encoding>UTF-8</encoding>
+          <classesDirectory>src/main/java</classesDirectory>
         </configuration>
       </plugin>
     </plugins>
