@@ -65,7 +65,7 @@
         <configuration>
           <release>13</release>
           <encoding>UTF-8</encoding>
-          <classesDirectory>src/main/java</classesDirectory>
+          <classesDirectory>src</classesDirectory>
         </configuration>
       </plugin>
     </plugins>
