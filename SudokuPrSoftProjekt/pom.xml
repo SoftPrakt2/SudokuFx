@@ -58,7 +58,7 @@
   
   
  	 <build>
-        <sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>src/main/java</sourceDirectory>
         <testSourceDirectory>test</testSourceDirectory>
     </build>
     
