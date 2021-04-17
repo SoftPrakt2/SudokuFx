@@ -54,7 +54,7 @@ public abstract class BasicGameBuilder {
 	  public abstract void initializeScene();
 	 
 	 
-	
+	 //vielleicht besser in den gamebuilderklassen direkt die boards zu zeichnen?
 	 public abstract GridPane createBoard();
 	 
 	
@@ -260,7 +260,7 @@ public SudokuField[][] getTextField() {
 }
 	
 
-	
+	public  abstract Scene getScene();
 	
 	
 }

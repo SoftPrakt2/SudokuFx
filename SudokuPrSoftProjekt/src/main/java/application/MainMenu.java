@@ -29,7 +29,7 @@ public class MainMenu {
 		
 		sudoku = new Button("Sudoku");
 		
-		samurai = new Button("Samura");
+		samurai = new Button("Samurai");
 		
 		freeform = new Button("Freeform");
 		

@@ -119,6 +119,13 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		
 				playBoard.setAlignment(Pos.CENTER);
 			return playBoard;
+		}
+
+
+		@Override
+		public Scene getScene() {
+			// TODO Auto-generated method stub
+			return sudoku;
 		}	
 			
 		
