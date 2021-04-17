@@ -22,9 +22,7 @@
                     <version>3.0.2</version>
                     <configuration>
                         <classesDirectory>src</classesDirectory>
-                        <excludes>
-                            <exclude>**</exclude>
-                        </excludes>
+                      
                     </configuration>
                 </plugin>
   
