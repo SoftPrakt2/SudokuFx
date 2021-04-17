@@ -123,15 +123,10 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 			
 		
 		
-	public SudokuField[][] getTextField() {
-		return textFields;
-	}
 
 
-	@Override
-	public Scene getScene() {
-		return sudoku;
-	}
+
+
 			
 			
 			

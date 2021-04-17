@@ -46,8 +46,6 @@ public void createGameHandler(ActionEvent e) {
 		model.difficulty(difficulty);
 		
 		
-		
-		
 		for (int i = 0; i < fields.length; i++) {
 			for (int j = 0; j < fields[i].length; j++) {
 				
