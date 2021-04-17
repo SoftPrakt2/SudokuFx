@@ -73,7 +73,8 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	  
 	  
 	  
-	  sudoku.getStylesheets().add("main/resources/CSS/sudoku.css");
+	
+	  sudoku.getStylesheets().add("/CSS/sudoku.css");
 	//  return sudoku;
 	 
 	}

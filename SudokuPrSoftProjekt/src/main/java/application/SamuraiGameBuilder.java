@@ -40,7 +40,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	    
 	    
 	    samuraiMode.setDisable(true);
-	    samurai.getStylesheets().add("main/resources/CSS/sudoku.css");
+	    samurai.getStylesheets().add("/CSS/sudoku.css");
 	    
 	   // return samurai;
 	}

@@ -56,8 +56,8 @@ public class MainMenu {
 		pane.setBottom(buttonMenu);
 		pane.setCenter(welcomeLabel);
 		
-		mainScene.getStylesheets().add("main/resources/CSS/sudoku.css");
-		
+		//mainScene.getStylesheets().add("main/resources/CSS/sudoku.css");
+		mainScene.getStylesheets().add("/CSS/sudoku.css");
 		
 		
 		return mainScene;
