@@ -13,15 +13,13 @@ public class RulesStage {
 	public void showPopUp(String title) {
 		Stage window = new Stage();
 
-		String rules = "The objective is: to complete a sudoku grid by filling in missing digits from 1 to 9, \r\n"
+		String rules = "\r\nThe objective is: to complete a sudoku grid by filling in missing digits from 1 to 9, \r\n"
 				+ "without using the numbers more than once in each row, column and grid.\r\n"
 				+ "\r\n"
 				+ "Rules:\r\n"
 				+ "1. Only use the numbers 1 - 9 \r\n"
-				+ "2. Only use each number once in each row, columna and grid";		
+				+ "2. Only use each number once in each row, columna and grid \r\n";		
 		
-		// kann hinteres windows nicht klicken
-		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle(title);
 		window.setMinWidth(500);
 		Label label = new Label();
