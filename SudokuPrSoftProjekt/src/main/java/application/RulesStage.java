@@ -20,7 +20,6 @@ public class RulesStage {
 				+ "1. Only use the numbers 1 - 9 \r\n"
 				+ "2. Only use each number once in each row, columna and grid \r\n";		
 		
-		// kann hinteres windows nicht klicken
 		window.setTitle(title);
 		window.setMinWidth(500);
 		Label label = new Label();
