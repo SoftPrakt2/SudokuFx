@@ -30,16 +30,15 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	
 	    createPlayButtons(pane);
 	    createMenuBar(pane);
-	    createBackButton(pane);
+	   
 	    
 	    controller = new SamuraiController(this);
 	    
 	    play.setOnAction(controller::createGameHandler);
 	    
-	    sudokuMode.setOnAction(controller::switchToSudoku);
+	    mainMenuItem.setOnAction(controller::switchToMainMenu);
 	    
-	    
-	    samuraiMode.setDisable(true);
+	
 	    samurai.getStylesheets().add("/CSS/sudoku.css");
 	    
 	   // return samurai;

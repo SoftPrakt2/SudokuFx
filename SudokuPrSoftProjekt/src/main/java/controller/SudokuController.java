@@ -8,6 +8,7 @@ import java.io.IOException;
 import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
 import application.GUI;
+import application.MainMenu;
 import application.SamuraiGameBuilder;
 import application.SudokuField;
 import application.SudokuGameBuilder;
@@ -26,7 +27,7 @@ public class SudokuController extends BasicController {
 	BasicGameBuilder scene;
 
 
-	int difficulty = 0;
+	int difficulty = 6;
 	BasicGameLogic model;
 	SudokuField[][] fields;
 	
@@ -40,7 +41,7 @@ public class SudokuController extends BasicController {
 	
 public void createGameHandler(ActionEvent e) {
 		
-		System.out.println("hello");
+		
 		model.setUpLogicArray();
 		model.createSudoku();
 		model.difficulty(difficulty);
@@ -51,12 +52,11 @@ public void createGameHandler(ActionEvent e) {
 				
 				
 				String number = Integer.toString(model.getCells()[j][i].getValue());
-				if(fields[i][j].getText().equals("0")) {
+				if(fields[i][j].getText().equals("") && !number.equals("0")) {
 				fields[i][j].setText(number);
 				
 				
 				}
-				//scene.startTime = System.currentTimeMillis();
 			
 			}
 		
@@ -73,7 +73,7 @@ public void createGameHandler(ActionEvent e) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				
-					if(fields[i][j].getText().equals("0"))
+					if(fields[i][j].getText().equals(""))
 						fields[i][j].setDisable(false);
 				}
 			}
@@ -81,7 +81,7 @@ public void createGameHandler(ActionEvent e) {
 		
 	
 		public void easyHandler(ActionEvent e) {
-			difficulty = 100;
+			difficulty = 6;
 		}
 		
 	public void mediumHandler(ActionEvent e) {
@@ -98,24 +98,9 @@ public void createGameHandler(ActionEvent e) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				fields[i][j].clear();
-				fields[i][j].setText("0");
+				fields[i][j].setText("");
 			}
 		}
-				
-		model.setUpLogicArray();
-		model.createSudoku();
-		model.difficulty(difficulty);
-		
-				for (int x = 0; x < 9; x++) {
-					for (int y = 0; y < 9; y++) {
-				String number = Integer.toString(model.getCells()[y][x].getValue());
-					if(fields[x][y].getText().equals("0")) {
-						fields[x][y].setText(number);
-					
-				}
-					}
-				}
-	
 	
 	}
 	
@@ -136,16 +121,8 @@ public void createGameHandler(ActionEvent e) {
 	
 
 	
+	//
 	
-	
-	//setter für difficulty
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
-	}
-		
-	
-	
-
 	
 	
 	

@@ -34,15 +34,18 @@ import javafx.stage.Window;
 public abstract class BasicGameBuilder {
 	
 	protected VBox leftMenu;
-	 protected Button play;
-	 protected Button check;
-	 protected Button owngame;
+	protected Button play;
+	protected Button check;
+	protected Button owngame;
 	protected  Button autosolve;
 	protected Button create;
 	
+	protected HBox hintBox;
+	protected Label hintLabel;
+	
 	  private long startTime;
 	
-	  ToggleButton hint;
+	 ToggleButton hint;
 	
 	 
 	  
@@ -89,8 +92,7 @@ public abstract class BasicGameBuilder {
 	
 	
 	
-	protected HBox hintBox;
-	protected Label hintLabel;
+	
 	
 public void showHint(BorderPane pane) {
 		
@@ -121,9 +123,7 @@ public void showHint(BorderPane pane) {
 	
 	
 	protected Menu changeGameMode;
-	protected MenuItem sudokuMode;
-	protected MenuItem samuraiMode;
-	protected MenuItem freeFormMode;
+	protected MenuItem mainMenuItem;
 	
 	protected ToggleGroup difficultyToggle;
 	
@@ -196,42 +196,18 @@ public void createMenuBar(BorderPane pane) {
 		menuBar.getMenus().add(newGame);
 		
 		
-		changeGameMode = new Menu("Change Mode");
-		sudokuMode = new MenuItem("Sudoku Mode");
-		samuraiMode = new MenuItem("Samurai Mode");
-		freeFormMode = new MenuItem("FreeForm Mode");
-		changeGameMode.getItems().addAll(sudokuMode,samuraiMode,freeFormMode);
+		changeGameMode = new Menu("Main Menu");
+		
+		mainMenuItem = new MenuItem("Go to Main Menu");
+		changeGameMode.getItems().addAll(mainMenuItem);
 		menuBar.getMenus().add(changeGameMode);
 		
 		
           
 }
 
-		VBox backMenu;
-		Button back;
 		
-		MainMenu mainmenu = new MainMenu();
-
-public void createBackButton(BorderPane pane) {
-	 	backMenu = new VBox();
-	    back = new Button("Main menu");
-	 
-	//    back.setOnAction(e -> GUI.getStage().setScene(mainmenu.inizializeMainMenu()));
-	    back.setOnAction(e -> GUI.getStage().setScene(MainMenu.getMainMenu()));
-	    backMenu.getChildren().add(back);
-	    backMenu.setAlignment(Pos.CENTER);
-	    pane.setBottom(backMenu);
-	    back.getStyleClass().add("buttonmainmenu");
-	    
-	  
-}
-
-	
-
-	public Button getBackButton() {
-		return back;
-	}
-
+		
 
 
 

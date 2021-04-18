@@ -40,7 +40,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		
 	   createPlayButtons(pane);
 	   createMenuBar(pane);
-	   createBackButton(pane);
+	  
 	   
 	  controller = new SudokuController(this);
 	   
@@ -49,7 +49,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	  play.setOnAction(controller::enableEditHandler);
 	  autosolve.setOnAction(controller::checkHandler);
 	  
-	/// if(easy.isSelected()) controller.setDifficulty(6);
+	
 	  easy.setOnAction(controller::easyHandler);
 	  medium.setOnAction(controller::mediumHandler);
 	  hard.setOnAction(controller::hardHandler);
@@ -58,18 +58,14 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	  
 	  save.setOnAction(controller::saveHandler);
 	  
-	
-	  
-	  
 	  check.setOnAction(controller::checkHandler);
 	  
 	  autosolve.setOnAction(controller::autoSolveHandler);
 	  
-	  samuraiMode.setOnAction(controller::switchToSamurai);
 	  
-	  freeFormMode.setOnAction(controller::switchToFreeForm);
+	  mainMenuItem.setOnAction(controller::switchToMainMenu);
 	  
-	  sudokuMode.setDisable(true);
+
 	  
 	  
 	  
@@ -100,7 +96,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 					cell.getStyleClass().add("cell");
 
 						
-					SudokuField sudokuField = new SudokuField("0");
+					SudokuField sudokuField = new SudokuField("");
 					
 					textFields[i][j] = sudokuField;
 					cell.pseudoClassStateChanged(right, i == 2 || i == 5);

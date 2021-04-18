@@ -24,8 +24,8 @@ import javafx.stage.Stage;
 public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	 static BorderPane pane;
-	 static Scene freeform;
-	 static ToggleButton hint;
+	  Scene freeform;
+	  ToggleButton hint;
 	
 	
 		public void initializeScene() {
@@ -41,10 +41,10 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	    createPlayButtons(pane);
 	    createMenuBar(pane);
-	    createBackButton(pane);
+	  
 	    
-	    freeFormMode.setDisable(true);
-	   
+	
+	  
 	    
 	    freeform.getStylesheets().add("/CSS/sudoku.css");
 	

@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 public class GUI extends Application  {
 
   static Stage window;
+ 
   
 	
 	public static void main(String[] args) {
@@ -68,6 +69,7 @@ public class GUI extends Application  {
 	    	return window;
 	    }
 	    
+	 
 	   
 	
 	    

@@ -46,7 +46,7 @@ public class OverviewStage {
 		ListView listView = new ListView<>();
 		listView.setMaxSize(300,300);
 		
-		ObservableList games = FXCollections.observableArrayList("Sudoku Difficulty: Easy","Samurai Difficulty: Medium","Freeform Difficulty: Hard");
+		ObservableList games = FXCollections.observableArrayList("Sudoku Difficulty: Easy, Game Time: 3:15","Samurai Difficulty: Medium, Game Time: 5:30","Freeform Difficulty: Hard Game Time: 10:00 ");
 		
 		listView.setItems(games);
 		listView.setOrientation(Orientation.VERTICAL);
