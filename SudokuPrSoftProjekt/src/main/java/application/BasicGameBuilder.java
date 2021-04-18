@@ -1,6 +1,6 @@
 package application;
 
-import java.awt.Desktop;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -39,13 +39,14 @@ public abstract class BasicGameBuilder {
 	protected Button owngame;
 	protected  Button autosolve;
 	protected Button create;
+	protected ToggleButton hint;
 	
 	protected HBox hintBox;
 	protected Label hintLabel;
 	
-	  private long startTime;
+	 private long startTime;
 	
-	 ToggleButton hint;
+	 
 	
 	 
 	  
