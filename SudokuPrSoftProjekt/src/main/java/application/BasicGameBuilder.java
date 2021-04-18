@@ -111,6 +111,7 @@ public void showHint(BorderPane pane) {
 
 	
 	protected Menu helpMenu;
+	protected MenuItem rules;
 	protected MenuBar menuBar;	
 	protected MenuItem save;
 	protected MenuItem load;
@@ -132,6 +133,8 @@ public void showHint(BorderPane pane) {
 	protected RadioMenuItem hard;
 	protected OverviewStage o;
 	
+	RulesStage rule;
+	
 	Label label = new Label("easy");
 
 
@@ -143,7 +146,9 @@ public void createMenuBar(BorderPane pane) {
 		
 		//Help eintrag mit rules menu
 		helpMenu = new Menu("Help");
-		helpMenu.getItems().add(new MenuItem("Rules"));
+		rules = new MenuItem("Rules");
+		rules.setOnAction(e -> {rule = new RulesStage();rule.showPopUp("Sudoku Rules");});
+		helpMenu.getItems().add(rules);
 		
 		menuBar.getMenus().addAll(helpMenu);
 		
