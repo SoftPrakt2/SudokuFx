@@ -47,7 +47,12 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	  
 	    
 	    freeform.getStylesheets().add("/CSS/sudoku.css");
-	
+	    mainMenuItem.setOnAction( e-> {
+	    	MainMenu mainmenu = new MainMenu();
+			
+			//so bleibt das spiel in der scene wenn man einmal auf hauptmenü geht und dann wieder zurück
+			GUI.getStage().setScene(mainmenu.getScene());
+	    });
 	//  return freeform;
 	}
 	

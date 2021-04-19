@@ -84,7 +84,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 			} else {
 				
-				SudokuField sudokuField = new SudokuField("0");
+				SudokuField sudokuField = new SudokuField("");
 				textFields[spalte][zeile] = sudokuField;
 				
 				sudokuField.setDisable(true);
