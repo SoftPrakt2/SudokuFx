@@ -56,7 +56,7 @@ public class MainMenuController {
 	}
 	
 	
-	
+//	public void handleRuleWindow(ActionE)
 	
 
 }

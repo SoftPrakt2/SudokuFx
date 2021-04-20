@@ -24,8 +24,8 @@ import javafx.stage.Stage;
 public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	 static BorderPane pane;
-	 static Scene freeform;
-	 static ToggleButton hint;
+	  Scene freeform;
+	  ToggleButton hint;
 	
 	
 		public void initializeScene() {
@@ -41,13 +41,18 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	    createPlayButtons(pane);
 	    createMenuBar(pane);
-	    createBackButton(pane);
+	  
 	    
-	    freeFormMode.setDisable(true);
-	   
-	    
-	    freeform.getStylesheets().add("main/resources/CSS/sudoku.css");
 	
+	  
+	    
+	    freeform.getStylesheets().add("/CSS/sudoku.css");
+	    mainMenuItem.setOnAction( e-> {
+	    	MainMenu mainmenu = new MainMenu();
+			
+			//so bleibt das spiel in der scene wenn man einmal auf hauptmenü geht und dann wieder zurück
+			GUI.getStage().setScene(mainmenu.getScene());
+	    });
 	//  return freeform;
 	}
 	

@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 public class GUI extends Application  {
 
   static Stage window;
+ 
   
 	
 	public static void main(String[] args) {
@@ -53,12 +54,8 @@ public class GUI extends Application  {
 		});
 	    
 	}
-	    //this is test circle
+	    
 	
-		//this is the final test for sure 
-	
-	
-		//this is the right repo
 	   
 	    private void closeProgram() {
 	    	CloseWindowStage c = new CloseWindowStage();
@@ -72,6 +69,7 @@ public class GUI extends Application  {
 	    	return window;
 	    }
 	    
+	 
 	   
 	
 	    
