@@ -211,7 +211,7 @@ public class SudokuLogic extends BasicGameLogic {
 		
 		for(int row = 0; row < this.cells.length;row++) {
 			for(int j = 0; j < this.cells[row].length;j++) {
-			long random =(int) (Math.random()*10)+1;
+			int random =(int) (Math.random()*10)+1;
 			if(random <= diff) {
 				this.cells[row][j].setIsReal(true);
 			} else {
