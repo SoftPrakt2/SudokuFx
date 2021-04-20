@@ -29,7 +29,7 @@ public abstract class BasicGameBuilder {
 	protected Button owngame;
 	protected  Button autosolve;
 	protected Button create;
-	protected ToggleButton hint;
+	protected ToggleButton hintButton;
 	
 	protected HBox hintBox;
 	protected Label hintLabel;
@@ -60,23 +60,23 @@ public abstract class BasicGameBuilder {
 		    leftMenu.setPrefWidth(100);
 		    
 		    play = new Button("Play");
-		    hint = new ToggleButton("Hint");
-		    hint.setOnAction(e -> showHint(pane));
+		    hintButton = new ToggleButton("Hint");
+		    hintButton.setOnAction(e -> showHint(pane));
 		    check = new Button("Check");
 		    autosolve = new Button("AutoSolve");
 		    create = new Button("Create Game");
 		    owngame = new Button("Custom Game");
 		
 		    
-		    Stream.of(play, hint, check, autosolve,create,owngame).forEach(button -> 
+		    Stream.of(play, hintButton, check, autosolve,create,owngame).forEach(button -> 
 		    button.getStyleClass().add("button1"));
 		   
 		    
-		    Stream.of(play, hint, check, autosolve,create,owngame).forEach(button -> 
+		    Stream.of(play, hintButton, check, autosolve,create,owngame).forEach(button -> 
 		    button.setMinWidth(leftMenu.getPrefWidth()));
 		    
 		    
-		    leftMenu.getChildren().addAll(play, hint,autosolve,create, check,owngame);
+		    leftMenu.getChildren().addAll(play, hintButton,autosolve,create, check,owngame);
 		    leftMenu.setAlignment(Pos.CENTER_LEFT);
 		    pane.setLeft(leftMenu);
 	}
@@ -94,7 +94,7 @@ public void showHint(BorderPane pane) {
 	    hintBox.setAlignment(Pos.CENTER_RIGHT);
 	    pane.setRight(hintBox);
 	  
-	   if(hint.isSelected()) {
+	   if(hintButton.isSelected()) {
 		   hintBox.setVisible(true);
 	   }
 	  

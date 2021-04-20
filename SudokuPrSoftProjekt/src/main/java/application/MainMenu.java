@@ -34,11 +34,11 @@ public class MainMenu {
 		freeform = new Button("Freeform");
 		
 		
-		MainMenuController controller = new MainMenuController(this);
+		MainMenuController controllerMainMenu = new MainMenuController(this);
 		
-		sudoku.setOnAction(controller::handleToSudoku);
-		samurai.setOnAction(controller::handleToSamurai);
-		freeform.setOnAction(controller::handleToFreeForm);
+		sudoku.setOnAction(controllerMainMenu::handleToSudoku);
+		samurai.setOnAction(controllerMainMenu::handleToSamurai);
+		freeform.setOnAction(controllerMainMenu::handleToFreeForm);
 		
 		//design for buttons
 		 Stream.of(sudoku, samurai, freeform).forEach(button -> 

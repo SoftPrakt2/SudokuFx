@@ -115,30 +115,6 @@ public void createGameHandler(ActionEvent e) {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	//test für speicher und lade sachen, sicher besser in anderer klasse
 	
 	FileChooser fileChooser = new FileChooser();
