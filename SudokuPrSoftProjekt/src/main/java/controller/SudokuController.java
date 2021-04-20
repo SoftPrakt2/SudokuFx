@@ -1,22 +1,11 @@
 package controller;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 
 import application.BasicGameBuilder;
-import application.FreeFormGameBuilder;
-import application.GUI;
-import application.MainMenu;
-import application.SamuraiGameBuilder;
 import application.SudokuField;
-import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import logic.BasicGameLogic;
 import logic.Gamestate;
 import logic.SudokuLogic;

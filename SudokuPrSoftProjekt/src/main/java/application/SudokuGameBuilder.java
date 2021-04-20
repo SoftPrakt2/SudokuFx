@@ -2,29 +2,13 @@ package application;
 
 import controller.BasicController;
 import controller.SudokuController;
-import javafx.application.Application;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import logic.Gamestate;
-import logic.SudokuLogic;
 
 public class SudokuGameBuilder extends BasicGameBuilder {
 	
@@ -71,7 +55,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	  
 	
 	  sudoku.getStylesheets().add("/CSS/sudoku.css");
-	//  return sudoku;
+
 	 
 	}
 	

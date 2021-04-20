@@ -2,16 +2,9 @@ package application;
 
 
 import java.io.File;
-import java.io.IOException;
 import java.util.stream.Stream;
 
-import com.sun.javafx.logging.Logger;
-import com.sun.javafx.logging.PlatformLogger.Level;
-
-import controller.BasicController;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,12 +17,9 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 public abstract class BasicGameBuilder {
 	

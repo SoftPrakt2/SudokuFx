@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import logic.BasicGameLogic;
 import logic.Gamestate;
 import logic.SamuraiLogic;
-import logic.SudokuLogic;
 
 public class SamuraiController extends BasicController {
 	

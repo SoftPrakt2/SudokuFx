@@ -41,7 +41,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	
 	    samurai.getStylesheets().add("/CSS/sudoku.css");
 	    
-	   // return samurai;
+	  
 	}
 	
 
@@ -110,7 +110,6 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 	@Override
 	public SudokuField[][] getTextField() {
-		// TODO Auto-generated method stub
 		return textFields;
 	}
 
@@ -118,7 +117,6 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 	@Override
 	public Scene getScene() {
-		// TODO Auto-generated method stub
 		return samurai;
 	}
 
