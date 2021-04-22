@@ -6,10 +6,14 @@ import application.GUI;
 import application.MainMenu;
 import application.OverviewStage;
 import application.SamuraiGameBuilder;
+import application.SudokuField;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import logic.BasicGameLogic;
+import logic.Gamestate;
+import logic.SudokuLogic;
 
 
 public class MainMenuController {
@@ -22,27 +26,42 @@ public class MainMenuController {
 	OverviewStage overview = new OverviewStage();
 	Stage overviewStage = overview.showOverview("Played","Played");
 	
-	int difficulty;
+	
+	
+	
+	
+	
+	public static int difficulty;
 	
 //	int counter = 0;
 	
 	public MainMenuController(MainMenu menu) {
 		this.menu = menu;
-	
+		
 
 	}
 	
 	
 	public void handleToSudoku(ActionEvent e) {
-			
+	
+		
 		sudokuGame.initializeScene();
 		GUI.getStage().setScene(sudokuGame.getScene());
-		sudokuGame.getController().setDifficulty(difficulty);
-		sudokuGame.getController().createGameHandler(e); 
 		
-		//System.out.println(sudokuGame.getController().getDifficulty());
 		
+
 	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
 	
 	public void handleToSamurai(ActionEvent e) {
 		

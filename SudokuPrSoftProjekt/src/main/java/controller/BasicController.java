@@ -27,9 +27,9 @@ public abstract class BasicController {
 	
 	public abstract void autoSolveHandler(ActionEvent e);
 	
-	public abstract void setDifficulty(int difficulty);
 	
 	
+	public abstract void createGame();
 	
 	
 	public void switchToMainMenu(ActionEvent e) {

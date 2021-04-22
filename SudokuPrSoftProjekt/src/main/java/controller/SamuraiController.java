@@ -150,8 +150,12 @@ public class SamuraiController extends BasicController {
 
 
 
+
+
+
+
 	@Override
-	public void setDifficulty(int difficulty) {
+	public void createGame() {
 		// TODO Auto-generated method stub
 		
 	}

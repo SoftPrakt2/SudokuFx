@@ -17,7 +17,7 @@ public class SudokuController extends BasicController {
 	BasicGameBuilder scene;
 
 
-	int difficulty;
+
 	BasicGameLogic model;
 	SudokuField[][] fields;
 	
@@ -31,30 +31,7 @@ public class SudokuController extends BasicController {
 	
 	
 public void createGameHandler(ActionEvent e) {
-		
-		
-		model.setUpLogicArray();
-		model.createSudoku();
-		model.difficulty(difficulty);
-		
-		
-		for (int i = 0; i < fields.length; i++) {
-			for (int j = 0; j < fields[i].length; j++) {
-				
-				
-				String number = Integer.toString(model.getCells()[j][i].getValue());
-				if(fields[i][j].getText().equals("") && !number.equals("0")) {
-				fields[i][j].setText(number);
-				
-				
-				}
-			
-			}
-		
-		}
-		
-		model.solveSudoku();
-		model.printCells();
+		createGame();
 	}
 	
 	
@@ -71,16 +48,16 @@ public void createGameHandler(ActionEvent e) {
 	}
 		
 	
-		public void easyHandler(ActionEvent e) {
-			difficulty = 100;
-		}
+	public void easyHandler(ActionEvent e) {
+		MainMenuController.difficulty = 100;
+	}
 		
 	public void mediumHandler(ActionEvent e) {
-		difficulty = 5;
+		MainMenuController.difficulty = 5;
 	}
 		
 	public void hardHandler(ActionEvent e) {
-		difficulty = 1;
+		MainMenuController.difficulty = 1;
 	}
 		
 		
@@ -106,15 +83,12 @@ public void createGameHandler(ActionEvent e) {
 	}
 		
 	public void checkHandler(ActionEvent e) {
-//		model.solveSudoku();
-//		model.compareResult(fields);
-//	
-	//	System.out.println(Main.getOverviewStage().getObservableList());
+		model.solveSudoku();
+		model.compareResult(fields);
 	}	
 	
 
 	
-	//
 	
 	
 	
@@ -152,21 +126,33 @@ public void createGameHandler(ActionEvent e) {
 }
 
 
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
+
+	
+public void createGame() {
+		
+		model.setUpLogicArray();
+		model.createSudoku();
+		model.difficulty(MainMenuController.difficulty);
+		
+		
+		for (int i = 0; i < fields.length; i++) {
+			for (int j = 0; j < fields[i].length; j++) {
+				
+				
+				String number = Integer.toString(model.getCells()[j][i].getValue());
+				if(fields[i][j].getText().equals("") && !number.equals("0")) {
+				fields[i][j].setText(number);
+				
+				
+				}
+			
+			}
+		
+		}
+		
+		model.solveSudoku();
+		model.printCells();
 	}
-
-
-
-
-	public int getDifficulty() {
-		// TODO Auto-generated method stub
-		return difficulty;
-	}
-	
-	
-	
-	
 	
 	
 }

@@ -22,6 +22,9 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	  BorderPane pane = new BorderPane();
 	  Scene sudoku = new Scene(pane,500,500);
 	  BasicController controller;
+	  
+	  
+	 
 	
 	public void initializeScene() {
 		pane.setCenter(createBoard());
@@ -31,8 +34,8 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	   createPlayButtons(pane);
 	   createMenuBar(pane);
 	  
-	   
-	 
+	  controller.createGame();
+	  
 	   
 	  create.setOnAction(controller::createGameHandler);
 	  
@@ -51,6 +54,9 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	  check.setOnAction(controller::checkHandler);
 	  
 	  autosolve.setOnAction(controller::autoSolveHandler);
+	  
+
+
 	  
 	  
 	  mainMenuItem.setOnAction(controller::switchToMainMenu);
