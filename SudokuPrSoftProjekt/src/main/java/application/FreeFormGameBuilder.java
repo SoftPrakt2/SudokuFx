@@ -56,13 +56,12 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		
 		playBoard.setPadding(new Insets(5, 5, 5, 5));
 		
-		playBoard.setVgap(1);
-		playBoard.setHgap(1);
+		
 		
 		textFields = new SudokuField[9][9];
 		
-		playBoard.setVgap(15);
-		playBoard.setHgap(15);
+		playBoard.setVgap(1);
+		playBoard.setHgap(1);
 		
 		int countFields = 0;
 		String colores = "000000";

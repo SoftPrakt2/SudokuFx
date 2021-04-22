@@ -1,14 +1,16 @@
 package application;
 	
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 
 public class GUI extends Application  {
 
   static Stage window;
- 
-  
+  static MainMenu mainMenu = new MainMenu();
+  static Scene mainMenuScene = mainMenu.setUpMainMenu();
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -20,7 +22,10 @@ public class GUI extends Application  {
 		
 		 
 		window = scene;
-		 
+		 scene.setMaxWidth(1500);
+		 scene.setMaxHeight(1500);
+		
+		
 		 window.setScene(new MainMenu().setUpMainMenu());	
 		 
 		 window.show();
@@ -34,7 +39,7 @@ public class GUI extends Application  {
 	    
 	}
 	    
-	
+		
 	   
 	    private void closeProgram() {
 	    	CloseWindowStage c = new CloseWindowStage();
@@ -48,11 +53,13 @@ public class GUI extends Application  {
 	    	return window;
 	    }
 	    
-	 
-	   
+	    
+	    public static MainMenu getMainMenu() {
+	    	return mainMenu;
+	    }
 	
 	    
-	    
+	    	
 	   
 	}
 	

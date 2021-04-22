@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 
 import application.BasicGameBuilder;
+import application.OverviewStage;
 import application.SudokuField;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
@@ -16,7 +17,7 @@ public class SudokuController extends BasicController {
 	BasicGameBuilder scene;
 
 
-	int difficulty = 6;
+	int difficulty;
 	BasicGameLogic model;
 	SudokuField[][] fields;
 	
@@ -24,6 +25,7 @@ public class SudokuController extends BasicController {
 		this.scene = scene;
 		this.model = new SudokuLogic(Gamestate.OPEN,0.0,false);
 		fields = scene.getTextField();
+		
 	}
 	
 	
@@ -70,7 +72,7 @@ public void createGameHandler(ActionEvent e) {
 		
 	
 		public void easyHandler(ActionEvent e) {
-			difficulty = 6;
+			difficulty = 100;
 		}
 		
 	public void mediumHandler(ActionEvent e) {
@@ -104,8 +106,10 @@ public void createGameHandler(ActionEvent e) {
 	}
 		
 	public void checkHandler(ActionEvent e) {
-		model.solveSudoku();
-		model.compareResult(fields);
+//		model.solveSudoku();
+//		model.compareResult(fields);
+//	
+	//	System.out.println(Main.getOverviewStage().getObservableList());
 	}	
 	
 
@@ -148,7 +152,17 @@ public void createGameHandler(ActionEvent e) {
 }
 
 
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
 
+
+
+	@Override
+	public int getDifficulty() {
+		// TODO Auto-generated method stub
+		return difficulty;
+	}
 	
 	
 	

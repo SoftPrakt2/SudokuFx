@@ -95,4 +95,5 @@ public abstract class BasicGameLogic{
 	public abstract boolean compareResult(SudokuField[][] sudokuField);
 	
 	
+	
 }

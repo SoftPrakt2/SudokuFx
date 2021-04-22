@@ -2,6 +2,8 @@ package application;
 
 
 
+import java.io.File;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,8 +13,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
@@ -24,10 +30,17 @@ public class OverviewStage {
 	Scene overview;
 	BorderPane pane;
 	
+	TableView<File> tableview = new TableView<>();
+	TableColumn<File, String> col = new TableColumn<>("name");
+	
+	ObservableList<File> fileList = FXCollections.observableArrayList();
 	
 	
 	
-	public void showOverview(String title, String message) {
+	
+	
+	
+	public Stage showOverview(String title, String message) {
 		window = new Stage();
 		
 		VBox layout = new VBox(10);
@@ -43,72 +56,69 @@ public class OverviewStage {
 		
 		
 		Label label = new Label("Please select a savegame");
-		ListView listView = new ListView<>();
-		listView.setMaxSize(300,300);
 		
-		ObservableList games = FXCollections.observableArrayList("Sudoku Difficulty: Easy, Game Time: 3:15","Samurai Difficulty: Medium, Game Time: 5:30","Freeform Difficulty: Hard Game Time: 10:00 ");
-		
-		listView.setItems(games);
-		listView.setOrientation(Orientation.VERTICAL);
-		
-		listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 		
 		
 		Label chosenLabel = new Label("Bitte wähle einen Spielstand");
 		
 		Button load = new Button("Load");
+		load.setOnAction(e -> openFileChooser());
 		
-		pane.setCenter(listView);
+		pane.setCenter(tableview);
 			
-		
+		String s = "sfsdf";
 		
 	
-		layout.getChildren().add(label);
-		layout.getChildren().addAll(listView,load);
+		
+		layout.getChildren().addAll(label, tableview,load);
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		window.show();
-		
+		col.setCellValueFactory(new PropertyValueFactory<>("name")); 
+		tableview.setItems(fileList);
+	
+			
+		return window;
 	}
 	
 	
 	
 	
 	
+
+	
+	
+
 	
 	
 	
 	
+	public void openFileChooser() {
+		FileChooser fc = new FileChooser();
+		File defaultDirectory = new File("C:/users/grube/Desktop/sudoku");
+		fc.setInitialDirectory(defaultDirectory);
 	
+		
+		fc.getExtensionFilters().addAll(
+	  
+		new FileChooser.ExtensionFilter("TXT", "*.txt")
+		
+		
 	
+		);
+        
+	//	tableview.getItems().add(defaultDirectory);
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		Stage window = GUI.getStage();
+		File selectedFile = fc.showOpenDialog(window);
+		System.out.println(selectedFile.getName());
+		
+		fileList.add(selectedFile);
+		
+        }
 	
 	
 }
+	
+	
+

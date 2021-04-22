@@ -1,6 +1,6 @@
 .root {
     -fx-padding: 5px ;
-  -fx-background-color: #008b8b;
+  -fx-background-color:  #8B008B;
 }
 
 
@@ -16,7 +16,7 @@
   
     -fx-background-insets: 0, 0 ;
 
-    -fx-padding: 2px ;
+    -fx-padding: 4px ;
 }
 
 .button1 {
@@ -116,6 +116,23 @@
 .text-field:disabled, .text-field:disabled > * {
 	-fx-opacity: 1.0;
 }
+
+
+
+
+
+.round-red {
+    -fx-background-color: linear-gradient(#ff5400, #be1d00);
+    -fx-background-radius: 30;
+    -fx-background-insets: 0;
+    -fx-text-fill: white;
+}
+
+
+
+
+
+
 
 
 

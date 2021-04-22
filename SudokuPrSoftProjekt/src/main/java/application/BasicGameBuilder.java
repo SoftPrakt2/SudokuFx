@@ -4,9 +4,12 @@ package application;
 import java.io.File;
 import java.util.stream.Stream;
 
+import controller.BasicController;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -17,13 +20,16 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 public abstract class BasicGameBuilder {
 	
-	protected VBox leftMenu;
+	protected VBox playButtonMenu;
 	protected Button play;
 	protected Button check;
 	protected Button owngame;
@@ -36,12 +42,16 @@ public abstract class BasicGameBuilder {
 	
 	 private long startTime;
 	
-	 
+	  ButtonBar buttonBar;
 	
-	 
+	 BasicController controller;
 	  
 	  SudokuField[][] textFields;
 	  GridPane playBoard;
+	  
+	  
+	  public abstract BasicController getController();
+		
 	  
 	  
 	  //change back to void
@@ -55,9 +65,13 @@ public abstract class BasicGameBuilder {
 	 //creates Vbox and adds several buttons to scene
 	public void createPlayButtons(BorderPane pane) {
 		
+			
+		playButtonMenu = new VBox(10);
+		//playButtonMenu.setPrefWidth(100);
+		playButtonMenu.setSpacing(0);
 		
-		  	leftMenu = new VBox(10);
-		    leftMenu.setPrefWidth(100);
+		HBox test = new HBox();
+		HBox test2 = new HBox();
 		    
 		    play = new Button("Play");
 		    hintButton = new ToggleButton("Hint");
@@ -72,13 +86,35 @@ public abstract class BasicGameBuilder {
 		    button.getStyleClass().add("button1"));
 		   
 		    
-		    Stream.of(play, hintButton, check, autosolve,create,owngame).forEach(button -> 
-		    button.setMinWidth(leftMenu.getPrefWidth()));
+		    //play.prefWidthProperty().bind(pane.widthProperty());
+		    
+	
+//		    buttonBar = new ButtonBar();
+//		    buttonBar.getButtons().addAll(play,hintButton, check, autosolve,create,owngame);
+		  
+		    
+		 
+		    test.getChildren().addAll(play, hintButton,autosolve);
+		    test2.getChildren().addAll(create, check,owngame);
+		    
+		   Stream.of(play, hintButton, check, autosolve,create,owngame).forEach(button -> button.setPrefWidth(95));
+		//   Stream.of(play, hintButton, check, autosolve,create,owngame).forEach(button -> button.setMaxWidth(150));
+		   HBox.setHgrow(play, Priority.ALWAYS);
 		    
 		    
-		    leftMenu.getChildren().addAll(play, hintButton,autosolve,create, check,owngame);
-		    leftMenu.setAlignment(Pos.CENTER_LEFT);
-		    pane.setLeft(leftMenu);
+		    
+		
+		 
+		    
+		 //  Stream.of(play, hintButton, check, autosolve,create,owngame).forEach(button -> button.prefWidthProperty().bind(pane.widthProperty()));
+		    
+		    test.setAlignment(Pos.CENTER);
+		    test2.setAlignment(Pos.CENTER);
+		    playButtonMenu.getChildren().addAll(test, test2);
+		 
+		    playButtonMenu.setAlignment(Pos.CENTER);
+		   // buttonBar.prefWidthProperty().bind(pane.widthProperty());
+		    pane.setBottom(playButtonMenu);
 	}
 	
 	
@@ -122,7 +158,9 @@ public void showHint(BorderPane pane) {
 	protected RadioMenuItem easy;
 	protected RadioMenuItem medium;
 	protected RadioMenuItem hard;
-	protected OverviewStage o;
+	protected OverviewStage o = new OverviewStage();
+	protected OverviewStage overViewScene = new OverviewStage();
+	Stage overViews = overViewScene.showOverview("Played Games","Played Games");
 	
 	RulesStage rule;
 	
@@ -168,8 +206,9 @@ public void createMenuBar(BorderPane pane) {
 		overView.getItems().add(recently);
 		menuBar.getMenus().add(overView);
 		recently.setOnAction(e -> {
-			 o = new OverviewStage();
-			o.showOverview("Played Games","Played Games");
+			
+			overViews.show();
+			
 		});
 		
 		
@@ -230,6 +269,12 @@ public void setStartTime(long startTime) {
 public SudokuField[][] getTextField() {
 	return textFields;
 }
+
+
+public OverviewStage getOverviewStage() {
+	return o;
+}
+
 	
 
 	public  abstract Scene getScene();
