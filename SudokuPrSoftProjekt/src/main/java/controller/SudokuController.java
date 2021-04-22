@@ -28,8 +28,7 @@ public class SudokuController extends BasicController {
 		
 	}
 	
-	
-	
+
 public void createGameHandler(ActionEvent e) {
 		createGame();
 	}
@@ -87,14 +86,7 @@ public void createGameHandler(ActionEvent e) {
 		model.compareResult(fields);
 	}	
 	
-
-	
-	
-	
-	
-	
 	//test für speicher und lade sachen, sicher besser in anderer klasse
-	
 	FileChooser fileChooser = new FileChooser();
 	
 	

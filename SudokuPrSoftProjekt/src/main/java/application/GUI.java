@@ -25,7 +25,6 @@ public class GUI extends Application  {
 		 scene.setMaxWidth(1500);
 		 scene.setMaxHeight(1500);
 		
-		
 		 window.setScene(new MainMenu().setUpMainMenu());	
 		 
 		 window.show();
@@ -45,7 +44,6 @@ public class GUI extends Application  {
 	    	CloseWindowStage c = new CloseWindowStage();
 			Boolean answer = c.showPopUp("Closing","Are you sure that you want to close the program?");
 			if(answer) window.close();
-			
 		}    
 	    
 	    

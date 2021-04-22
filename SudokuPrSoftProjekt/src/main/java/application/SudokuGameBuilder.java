@@ -20,7 +20,7 @@ import javafx.scene.text.FontWeight;
 public class SudokuGameBuilder extends BasicGameBuilder {
 	
 	  BorderPane pane = new BorderPane();
-	  Scene sudoku = new Scene(pane,500,500);
+	  Scene sudoku = new Scene(pane,800,800);
 	  BasicController controller;
 	  
 	  
