@@ -116,7 +116,6 @@ public class SudokuLogic extends BasicGameLogic {
 	
 	static int counter = 0;
 	
-	//löst restliches sudoku automatisch
 	public boolean solveSudoku() {	
 		for(int row = 0; row < this.cells.length; row++) {
 			for(int col = 0; col < this.cells[row].length; col++) {
