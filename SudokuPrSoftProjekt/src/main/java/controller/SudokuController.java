@@ -158,7 +158,7 @@ public void createGameHandler(ActionEvent e) {
 
 
 
-	@Override
+
 	public int getDifficulty() {
 		// TODO Auto-generated method stub
 		return difficulty;
