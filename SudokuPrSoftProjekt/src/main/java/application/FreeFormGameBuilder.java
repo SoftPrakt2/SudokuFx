@@ -1,5 +1,6 @@
 package application;
 
+import controller.BasicController;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -190,6 +191,13 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 	@Override
 	public SudokuField[][] getTextField() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public BasicController getController() {
 		// TODO Auto-generated method stub
 		return null;
 	}

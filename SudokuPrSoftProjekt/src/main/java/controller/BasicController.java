@@ -29,7 +29,7 @@ public abstract class BasicController {
 	
 	public abstract void setDifficulty(int difficulty);
 	
-	public abstract int getDifficulty();
+	
 	
 	
 	public void switchToMainMenu(ActionEvent e) {

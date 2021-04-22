@@ -122,6 +122,14 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 
 
+	@Override
+	public BasicController getController() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+
 	
 	
 	
