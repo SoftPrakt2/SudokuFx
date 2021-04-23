@@ -1,11 +1,11 @@
 .root {
     -fx-padding: 5px ;
-  -fx-background-color:  #8B008B;
+  -fx-background-color:  	#DAA520;
 }
 
 
 .grid-pane {
-	 -fx-background-color: #ffff00
+	 -fx-background-color: #C0C0C0
 }
 
 .cell {

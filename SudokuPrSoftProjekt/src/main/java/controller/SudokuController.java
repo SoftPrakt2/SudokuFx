@@ -31,19 +31,20 @@ public class SudokuController extends BasicController {
 
 public void createGameHandler(ActionEvent e) {
 		createGame();
+		enableEdit();
 	}
 	
 	
 	public void enableEditHandler(ActionEvent e) {
+		enableEdit();
 		
-		
-		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 9; j++) {
-				
-					if(fields[i][j].getText().equals(""))
-						fields[i][j].setDisable(false);
-				}
-			}
+//		for (int i = 0; i < 9; i++) {
+//			for (int j = 0; j < 9; j++) {
+//				
+//					if(fields[i][j].getText().equals(""))
+//						fields[i][j].setDisable(false);
+//				}
+//			}
 	}
 		
 	
@@ -66,6 +67,7 @@ public void createGameHandler(ActionEvent e) {
 			for (int j = 0; j < 9; j++) {
 				fields[i][j].clear();
 				fields[i][j].setText("");
+				fields[i][j].setDisable(true);
 			}
 		}
 	
@@ -82,8 +84,9 @@ public void createGameHandler(ActionEvent e) {
 	}
 		
 	public void checkHandler(ActionEvent e) {
-		model.solveSudoku();
-		model.compareResult(fields);
+//		model.solveSudoku();
+//		model.compareResult(fields);
+		scene.getGameLabel().setText("Congratulations you won! Points: 10, Time: 2 min");
 	}	
 	
 	//test für speicher und lade sachen, sicher besser in anderer klasse
@@ -142,9 +145,39 @@ public void createGame() {
 		
 		}
 		
+		enableEdit();
+		
 		model.solveSudoku();
 		model.printCells();
 	}
+
+
+
+
+public void enableEdit() {
+	
+	
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			
+				if(fields[i][j].getText().equals(""))
+					fields[i][j].setDisable(false);
+			}
+		}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 	
 	
 }

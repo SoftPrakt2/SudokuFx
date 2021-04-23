@@ -20,7 +20,7 @@ import javafx.scene.text.FontWeight;
 public class SudokuGameBuilder extends BasicGameBuilder {
 	
 	  BorderPane pane = new BorderPane();
-	  Scene sudoku = new Scene(pane,800,800);
+	  Scene sudoku = new Scene(pane,700,700);
 	  BasicController controller;
 	  
 	  
@@ -37,7 +37,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	  controller.createGame();
 	  
 	   
-	  create.setOnAction(controller::createGameHandler);
+	  createGameItem.setOnAction(controller::createGameHandler);
 	  
 	  play.setOnAction(controller::enableEditHandler);
 	  autosolve.setOnAction(controller::checkHandler);
@@ -74,11 +74,11 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		public GridPane createBoard() {
 			playBoard = new GridPane();
 			
-		
-		
-			playBoard.prefHeightProperty().bind(pane.heightProperty());
 			
-			playBoard.prefWidthProperty().bind(pane.widthProperty());
+					
+//			playBoard.prefHeightProperty().bind(pane.heightProperty());
+//			
+//			playBoard.prefWidthProperty().bind(pane.widthProperty());
 		
 			playBoard.setPadding(new Insets(5, 5, 5, 5));
 			
@@ -99,12 +99,9 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 					cell.getStyleClass().add("cell");
 				
 					
-				
 					
-					
-					
-					cell.prefHeightProperty().bind(playBoard.heightProperty().divide(11));
-					cell.prefWidthProperty().bind(playBoard.widthProperty().divide(11));
+					cell.prefHeightProperty().bind(playBoard.heightProperty().divide(13));
+					cell.prefWidthProperty().bind(playBoard.widthProperty().divide(13));
 
 						
 					SudokuField sudokuField = new SudokuField("");
@@ -113,6 +110,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 					textFields[i][j] = sudokuField;
 					textFields[i][j].setMaxSize(50, 50);
 					textFields[i][j].setFont(Font.font("Arial", FontWeight.BOLD,15));
+				//	textFields[i][j].getStyleClass().add("grid-pane");
 					textFields[i][j].setAlignment(Pos.CENTER);
 					
 					
@@ -123,7 +121,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 					textFields[i][j].setDisable(true);
 				
 					cell.getChildren().add(sudokuField);
-					
 					
 					
 					playBoard.add(cell, i, j);
