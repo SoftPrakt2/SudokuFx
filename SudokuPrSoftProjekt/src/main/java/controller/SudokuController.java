@@ -84,9 +84,13 @@ public void createGameHandler(ActionEvent e) {
 	}
 		
 	public void checkHandler(ActionEvent e) {
-//		model.solveSudoku();
-//		model.compareResult(fields);
+		model.solveSudoku();
+		boolean gameState = model.compareResult(fields);
+		if(gameState) {
 		scene.getGameLabel().setText("Congratulations you won! Points: 10, Time: 2 min");
+		} else {
+			scene.getGameLabel().setText("Sorry your Sudoku is not correct yet");
+		}
 	}	
 	
 	//test für speicher und lade sachen, sicher besser in anderer klasse
