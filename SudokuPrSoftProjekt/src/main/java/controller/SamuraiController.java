@@ -46,54 +46,6 @@ public class SamuraiController extends BasicController {
 
 
 
-	@Override
-	public void enableEditHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-
-
-
-	@Override
-	public void easyHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-
-
-
-	@Override
-	public void mediumHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
-
-
-
-
-	@Override
-	public void hardHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-
-
 
 
 
@@ -156,6 +108,32 @@ public class SamuraiController extends BasicController {
 
 	@Override
 	public void createGame() {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void manuelDoneHandler(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void resetHandler(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

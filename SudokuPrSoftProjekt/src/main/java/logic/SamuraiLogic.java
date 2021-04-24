@@ -999,16 +999,28 @@ public Cell[][] getCells() {
 }
 
 @Override
-public void connectArrays(SudokuField[][] sudokuField) {
+public void setCell(int col, int row, int guess) {
 	// TODO Auto-generated method stub
 	
 }
 
 @Override
-public boolean compareResult(SudokuField[][] sudokuField) {
+public void validManualInput(Cell[][] cells) {
 	// TODO Auto-generated method stub
-	return false;
+	
 }
+
+
+//public void connectArrays(SudokuField[][] sudokuField) {
+//	// TODO Auto-generated method stub
+//	
+//}
+//
+//@Override
+//public boolean compareResult(SudokuField[][] sudokuField) {
+//	// TODO Auto-generated method stub
+//	return false;
+//}
 
 //@Override
 //public void connectArrays(SudokuField[][] sudokuField) {
