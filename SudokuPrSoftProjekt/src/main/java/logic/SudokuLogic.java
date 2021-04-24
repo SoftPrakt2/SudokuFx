@@ -27,7 +27,19 @@ public class SudokuLogic extends BasicGameLogic {
 		}
 		return false;
 	}
-
+	
+	@Override
+	public  void validManualInput(Cell[][] cells) {
+		for(int i = 0; i < 9; i++) {
+			for(int j = 0; j < 9; j++) {
+				
+				
+				
+			}
+		}
+	}
+	
+	
 	@Override
 	public boolean checkRow(int row, int guess) {
 		for(int col = 0; col < this.cells.length; col++) {
@@ -243,33 +255,7 @@ public class SudokuLogic extends BasicGameLogic {
 		//muss noch besprochen werden in welche klasse die methoden gehören
 	
 		//updatet den stand des sudoku arrays auf den stand des logik arrays, nach autosolve immer?
-	public void connectArrays(SudokuField[][] sudokuField) {
-		for(int row = 0; row < sudokuField.length; row++) {
-			for(int col = 0; col < sudokuField[row].length;col++) {
-			sudokuField[row][col].setText(Integer.toString(cells[col][row].getValue()));
-		}
-	}	
-	}
-	
-	public boolean compareResult(SudokuField[][] sudokuField) {
-			boolean result = true;
-			this.solveSudoku();
-		
-			for(int i = 0; i < sudokuField.length; i++) {
-				for(int j = 0; j < sudokuField[i].length;j++) {
-						if(!sudokuField[i][j].getText().equals(Integer.toString(cells[j][i].getValue())) && !sudokuField[i][j].getText().equals("0")) {
-						sudokuField[i][j].setStyle("-fx-text-fill: red");
-						result = false;
-						}else if (sudokuField[i][j].getText().equals("0"))
-							{sudokuField[i][j].setStyle("-fx-text-fill: black");
-							}
-						else {
-							sudokuField[i][j].setStyle("-fx-text-fill: green");
-						}
-			}
-		}
-		return result;
-	}
+
 
 	
 

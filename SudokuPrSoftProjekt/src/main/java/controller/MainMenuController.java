@@ -20,58 +20,44 @@ public class MainMenuController {
 	
 	
 	MainMenu menu;
-	BasicGameBuilder sudokuGame = new SudokuGameBuilder();
+	SudokuGameBuilder sudokuGame = new SudokuGameBuilder();
+	Scene playScene;
+	
 	BasicGameBuilder samuraiGame = new SamuraiGameBuilder();
 	BasicGameBuilder freeFormGame = new FreeFormGameBuilder();
 	OverviewStage overview = new OverviewStage();
 	Stage overviewStage = overview.showOverview("Played","Played");
 	
-	
-	
-	
-	
+	String selected;
 	
 	public static int difficulty;
 	
-//	int counter = 0;
 	
 	public MainMenuController(MainMenu menu) {
 		this.menu = menu;
 		
-
 	}
 	
 	
 	public void handleToSudoku(ActionEvent e) {
-	
-		
-		sudokuGame.initializeScene();
-		GUI.getStage().setScene(sudokuGame.getScene());
-		
-		
-
+		selected = "Sudoku";
+		playScene = sudokuGame.initializeScene();
+	//	sudokuGame.initializeScene();
+		//GUI.getStage().setScene(sudokuGame.getScene());
+		sudokuGame.setStartTime(System.currentTimeMillis());
 	}
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-	
 	
 	public void handleToSamurai(ActionEvent e) {
-		
-		samuraiGame.initializeScene();
-		GUI.getStage().setScene(samuraiGame.getScene());
+		selected = "Samurai";
+		playScene = samuraiGame.initializeScene();
+		//GUI.getStage().setScene(samuraiGame.getScene());
 	
 	}
 	
 	public void handleToFreeForm(ActionEvent e) {
-		
+		freeFormGame.initializeScene();
 		GUI.getStage().setScene(freeFormGame.getScene());
 	}
 	
@@ -87,21 +73,41 @@ public class MainMenuController {
 	
 	public void handleHard(ActionEvent e) {
 		difficulty = 1;
+		
 		System.out.println(difficulty);
+	}
+	
+	public void handleManual(ActionEvent e) {
+		difficulty = 0;
+		System.out.println(difficulty);
+	
+//		for(int i = 0; i <9; i++) {
+//			for(int j = 0; j <9; j++) {
+//				System.out.println(sudokuGame.getTextField()[i][j].getText());
+//			}
+//		}
 	
 	}
 	
+	public void handleTest(ActionEvent e) {
+		if(selected.equals("Sudoku")) sudokuGame.createNumbers();
+		
+		GUI.getStage().setScene(playScene);
+	}
+	
+	
+	
+	
 	public void handleEasy(ActionEvent e) {
-		difficulty = 100;
+		difficulty = 6;
 		System.out.println(difficulty);
 	}
 	
 	public void handleMedium(ActionEvent e) {
-		difficulty = 30;
+		difficulty = 100;
 	}
 	
 	
-//	public void handleRuleWindow(ActionE)
-	
+
 
 }

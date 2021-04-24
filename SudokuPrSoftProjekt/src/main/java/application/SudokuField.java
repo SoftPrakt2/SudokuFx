@@ -12,6 +12,7 @@ public class SudokuField extends TextField{
 		addListener();
 		onlyOneNumber();
 		enterPressed();
+		updateColor();
 	}
 
 	 private void addListener() {
@@ -22,12 +23,15 @@ public class SudokuField extends TextField{
 	        });
 	    }
 	 
+	
+	
 	 
 	 
 	 public void onlyOneNumber() {
 		 this.textProperty().addListener(
 			        (observable,oldV,newV)-> {
 			            if(newV.length() > 1) this.setText(oldV);
+			            
 			        }
 			);
 	 }
@@ -46,17 +50,20 @@ public class SudokuField extends TextField{
 		this.textProperty().addListener((observable,oldV,newV) -> 
 		this.setText(newV));
 	};
+	
 		
-		
-		
-	
-
-
-	
-	
-	
-	
+	public void updateColor() {
+		this.textProperty().addListener((observable,oldV,newV) -> 
+		this.setStyle("-fx-text-fill: black"));
+	};
 }
+
+
+	
+	
+	
+	
+
 	
 	
 	

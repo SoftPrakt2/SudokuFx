@@ -21,7 +21,7 @@ public class GUI extends Application  {
 	public void start(Stage scene) {
 		
 		 
-		window = scene;
+		 window = scene;
 		 scene.setMaxWidth(1500);
 		 scene.setMaxHeight(1500);
 		

@@ -17,7 +17,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	  ToggleButton hint;
 	
 	
-		public void initializeScene() {
+		public Scene initializeScene() {
 		
 		pane = new BorderPane();
 		freeform = new Scene(pane,500,500);
@@ -42,7 +42,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 			//so bleibt das spiel in der scene wenn man einmal auf hauptmenü geht und dann wieder zurück
 			GUI.getStage().setScene(mainmenu.getScene());
 	    });
-	//  return freeform;
+	  return freeform;
 	}
 	
 
@@ -55,14 +55,14 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	public GridPane createBoard() {
 		playBoard = new GridPane();
 		
-		playBoard.setPadding(new Insets(5, 5, 5, 5));
+		playBoard.setPadding(new Insets(15, 15, 15, 15));
 		
 		
 		
 		textFields = new SudokuField[9][9];
 		
-		playBoard.setVgap(1);
-		playBoard.setHgap(1);
+		playBoard.setVgap(15);
+		playBoard.setHgap(15);
 		
 		int countFields = 0;
 		String colores = "000000";
@@ -158,8 +158,8 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		            SudokuField sudokuField = new SudokuField("");
 		            textFields[blockC][blockRow] = sudokuField;
 
-	                cell.setStyle("-fx-pref-width: 2em;");
-	                sudokuField.setStyle("-fx-pref-margin: 0em;");
+	                cell.setStyle("-fx-pref-width: 5em;");
+	                sudokuField.setStyle("-fx-pref-margin: 15em;");
 	                sudokuField.setAlignment(Pos.CENTER);
 	                sudokuField.setStyle("-fx-background-color: #"+colores+";");
 	                

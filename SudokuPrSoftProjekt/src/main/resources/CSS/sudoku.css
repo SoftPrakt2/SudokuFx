@@ -1,23 +1,42 @@
 .root {
     -fx-padding: 5px ;
-  -fx-background-color:  	#DAA520;
-}
-
-
+  	-fx-background-color: linear-gradient(#00d2ff 0%, #3a47d5   100%);
+		}
+	
+	
 .grid-pane {
 	 -fx-background-color: #C0C0C0
 }
 
 .cell {
 
-  
-    -fx-background-color:  black, -fx-base ;
+ 
+    -fx-background-color:  black, #00d2ff;
 
   
     -fx-background-insets: 0, 0 ;
 
-    -fx-padding: 4px ;
+    -fx-padding: 5px;
 }
+
+
+.dark-blue {
+    -fx-background-color: 
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-radius: 5,4,3,5;
+    -fx-background-insets: 0,1,2,0;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+    -fx-font-family: "Arial";
+    -fx-text-fill: linear-gradient(white, #d0d0d0);
+    -fx-font-size: 12px;
+    
+}
+
+
 
 .button1 {
 	-fx-background-color: 
@@ -81,9 +100,6 @@
 	-fx-opacity: 0;
 }
 
-.gamescenes {
-	-fx-background-color: blue;
-}
 
 
 
@@ -108,8 +124,8 @@
 }
 
 .cell .text-field {
-    -fx-pref-width: 2em ;
-    -fx-pref-height: 2em ;
+    -fx-pref-width: 3em ;
+    -fx-pref-height: 3em ;
 }
 
 
@@ -130,6 +146,46 @@
 
 
 
+.myButton {
+	
+	-fx-background:linear-gradient(to bottom, #ededed 5%, #bab1ba 100%);
+		-fx-background-color: #fff;
+	-fx-border-radius:8px;
+	
+
+	-fx-cursor:pointer;
+	-fx-color:#ffffff;
+	-fx-font-family:Arial;
+	-fx-font-size: 9px;
+	-fx-padding:7px 25px;
+	-fx-font-style:italic;
+	-fx-font-weight:bold;
+	-fx-font-size:17px;
+	
+	
+}
+.myButton:hover {
+	-fx-background:linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
+	-fx-background-color:#bab1ba;
+}
+
+
+	
+	
+	
+
+	
+
+
+	
+
+	
+
+
+	
+	
+	
+	
 
 
 

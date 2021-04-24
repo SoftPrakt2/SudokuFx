@@ -21,10 +21,11 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	 Scene samurai;
 	 BasicController controller;
 	
-	public void initializeScene() {
+	 //anders gemacht 2404
+	public Scene initializeScene() {
 		
 		pane = new BorderPane();
-		samurai = new Scene(pane,800,800);
+		samurai = new Scene(pane,1000,1000);
 	
 		pane.setCenter(createBoard());
 	
@@ -41,7 +42,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	
 	    samurai.getStylesheets().add("/CSS/sudoku.css");
 	    
-	  
+	  return samurai;
 	}
 	
 
@@ -50,7 +51,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	public GridPane createBoard() {
 		playBoard = new GridPane();
 		
-		playBoard.setPadding(new Insets(5, 5, 5, 5));
+	//	pane.setPadding(new Insets(5, 5, 5, 5));
 		
 		playBoard.setVgap(1);
 		playBoard.setHgap(1);
@@ -65,6 +66,9 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 			for(int zeile = 0; zeile < 21; zeile++) {
 				StackPane cell = new StackPane();
 				cell.getStyleClass().add("cell");
+				
+				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(25));
+				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(25));
 				
 				StackPane cellEmpty = new StackPane();
 				cellEmpty.getStyleClass().add("hidden");
@@ -86,6 +90,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				
 				SudokuField sudokuField = new SudokuField("");
 				textFields[spalte][zeile] = sudokuField;
+				textFields[spalte][zeile].setMaxSize(50, 50);
 				
 				sudokuField.setDisable(true);
 				cell.pseudoClassStateChanged(right, spalte == 2 || spalte == 5 || spalte == 8 || spalte == 11 || spalte ==14 || spalte == 17);

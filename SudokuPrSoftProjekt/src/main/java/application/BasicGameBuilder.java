@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.stream.Stream;
 
 import controller.BasicController;
+import controller.MainMenuController;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -37,20 +38,24 @@ public abstract class BasicGameBuilder {
 	protected Button create;
 	protected ToggleButton hintButton;
 	protected Label gameTextLabel;
+	
+	protected Button done;
 
-	private long startTime;
+	protected long startTime;
+	protected long endTime;
+	protected long gameTime;
+	
+	protected int gamePoints = 10;
 
 	ButtonBar buttonBar;
 
 	BasicController controller;
 
-	SudokuField[][] textFields;
+	SudokuField[][] textFields = new SudokuField[9][9];
 	GridPane playBoard;
 
-	public abstract BasicController getController();
-
 	// change back to void
-	public abstract void initializeScene();
+	public abstract Scene initializeScene();
 
 	// vielleicht besser in den gamebuilderklassen direkt die boards zu zeichnen?
 	public abstract GridPane createBoard();
@@ -60,13 +65,19 @@ public abstract class BasicGameBuilder {
 
 		playButtonMenu = new VBox(10);
 		// playButtonMenu.setPrefWidth(100);
-		playButtonMenu.setSpacing(5);
+		playButtonMenu.setSpacing(10);
 
 		HBox test = new HBox();
 		HBox test2 = new HBox();
+		HBox test3 = new HBox();
+		
+		Button empty = new Button("");
+		empty.setVisible(false);
+		test3.getChildren().add(empty);
+		
 		gameTextLabel = new Label("Game ongoing!");
-		gameTextLabel.setFont(new Font("Dekko", 30));
-		// gameTextLabel.setAlignment(Pos.CENTER);
+		gameTextLabel.setFont(new Font("Dekko", 25));
+		
 
 		play = new Button("Play");
 		hintButton = new ToggleButton("Hint");
@@ -75,32 +86,43 @@ public abstract class BasicGameBuilder {
 		autosolve = new Button("AutoSolve");
 		create = new Button("Create Game");
 		owngame = new Button("Custom Game");
+	
+		done = new Button("done");
+		done.setVisible(false);
+		if(MainMenuController.difficulty == 0) done.setVisible(true);
+		
 		owngame.setVisible(false);
 
-		Stream.of(play, hintButton, check, autosolve, create, owngame)
-				.forEach(button -> button.getStyleClass().add("button1"));
+		Stream.of(play, hintButton, check, autosolve, done)
+				.forEach(button -> button.getStyleClass().add("myButton"));
 
-		// test.getChildren().addAll(play, hintButton,autosolve);
-		test.getChildren().addAll(hintButton, autosolve, check);
+		
+		test.getChildren().addAll(hintButton, autosolve, check, done);
 		test.setSpacing(5);
-		// test2.getChildren().addAll(create, check,owngame);
+	
 		test2.getChildren().addAll(gameTextLabel);
 
-		Stream.of(play, hintButton, check, autosolve, owngame).forEach(button -> button.setPrefWidth(110));
-		// Stream.of(play, hintButton, check, autosolve,create,owngame).forEach(button
-		// -> button.setMaxWidth(150));
+		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefHeightProperty().bind(pane.heightProperty().divide(22)));
+		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(7)));
+		
+		
+	
 		HBox.setHgrow(play, Priority.ALWAYS);
 
-		// Stream.of(play, hintButton, check, autosolve,create,owngame).forEach(button
-		// -> button.prefWidthProperty().bind(pane.widthProperty()));
+	
 
 		test.setAlignment(Pos.TOP_CENTER);
 		test2.setAlignment(Pos.CENTER);
-		playButtonMenu.getChildren().addAll(test, test2);
+		playButtonMenu.getChildren().addAll(test, test2,empty);
 
-		// buttonBar.prefWidthProperty().bind(pane.widthProperty());
+		
 		pane.setBottom(playButtonMenu);
 		BorderPane.setAlignment(playButtonMenu, Pos.CENTER);
+		
+		
+		
+	
+		
 	}
 
 	protected Menu helpMenu;
@@ -109,13 +131,13 @@ public abstract class BasicGameBuilder {
 	protected MenuItem save;
 	protected MenuItem load;
 	protected Menu overView;
-	protected Menu saveMenu;
-	protected MenuItem newGameItem;
-	protected Menu newGame;
-	protected MenuItem recently;
+	protected Menu file;
+	protected MenuItem clearFieldItem;
+	protected MenuItem reset;
+	protected Menu editMenu;
 	protected Menu difficultyMenu;
 
-	protected Menu changeGameMode;
+	protected Menu mainMenu;
 	protected MenuItem mainMenuItem;
 	protected MenuItem createGameItem;
 
@@ -124,9 +146,7 @@ public abstract class BasicGameBuilder {
 	protected RadioMenuItem easy;
 	protected RadioMenuItem medium;
 	protected RadioMenuItem hard;
-	protected OverviewStage o = new OverviewStage();
-	protected OverviewStage overViewScene = new OverviewStage();
-	Stage overViews = overViewScene.showOverview("Played Games", "Played Games");
+	
 
 	RulesStage rule;
 
@@ -147,57 +167,34 @@ public abstract class BasicGameBuilder {
 		});
 		helpMenu.getItems().add(rules);
 
-		menuBar.getMenus().addAll(helpMenu);
+		
 
 		// savemenu mit save und load optionen
-		saveMenu = new Menu("Savegame");
+		file = new Menu("File");
 		save = new MenuItem("Save");
 		load = new MenuItem("Load");
 
 		load.setOnAction(e -> openFile());
 
-		saveMenu.getItems().addAll(save, load);
-		menuBar.getMenus().add(saveMenu);
+		file.getItems().addAll(save, load);
+		
 
 		// newgame menu eintrag
-		newGame = new Menu("New Game");
-		newGameItem = new MenuItem("Clear Field");
+		editMenu = new Menu("Edit");
+		clearFieldItem = new MenuItem("Clear Field");
 		createGameItem = new MenuItem("Create Game");
-		newGame.getItems().addAll(newGameItem, createGameItem);
+		reset = new MenuItem("Reset");
+		editMenu.getItems().addAll(createGameItem, clearFieldItem, reset);
 
 		// overview Menu opens overview window on click
 		overView = new Menu("Overview");
-		recently = new MenuItem("Recently Played");
-		overView.getItems().add(recently);
-		menuBar.getMenus().add(overView);
-		recently.setOnAction(e -> {
+		
 
-			overViews.show();
-
-		});
-
-		// menü für schwierigkeitsgrad einstellung, standardmäßig ist easy eingestellt
-		difficultyMenu = new Menu("Difficulty");
-		difficultyToggle = new ToggleGroup();
-		easy = new RadioMenuItem(label.getText());
-		medium = new RadioMenuItem("Medium");
-		hard = new RadioMenuItem("Hard");
-
-		easy.setToggleGroup(difficultyToggle);
-		easy.setSelected(true);
-
-		medium.setToggleGroup(difficultyToggle);
-		hard.setToggleGroup(difficultyToggle);
-		difficultyMenu.getItems().addAll(easy, medium, hard);
-		menuBar.getMenus().add(difficultyMenu);
-
-		menuBar.getMenus().add(newGame);
-
-		changeGameMode = new Menu("Main Menu");
+		mainMenu = new Menu("Main Menu");
 
 		mainMenuItem = new MenuItem("Go to Main Menu");
-		changeGameMode.getItems().addAll(mainMenuItem);
-		menuBar.getMenus().add(changeGameMode);
+		mainMenu.getItems().addAll(mainMenuItem);
+		menuBar.getMenus().addAll(file, editMenu, mainMenu,helpMenu);
 
 	}
 
@@ -212,25 +209,58 @@ public abstract class BasicGameBuilder {
 		return selectedFile;
 	}
 
+	
+	
+	
+	//gehört vielleicht in controller muss besprochen werden
+	
 	public long getStartTime() {
 		return startTime;
 	}
+	
+	public long getEndTime() {
+		return endTime;
+	}
+	
+	public long getGameTime() {
+		return gameTime;
+	}
+	
 
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
+	
+	public void setEndTime(long endTime) {
+		this.endTime = endTime;
+	}
+	
+	public void setGameTime(long gameTime) {
+		this.gameTime = gameTime;
+	}
+	
+	
+	public int getGamePoints() {
+		return gamePoints;
+	}
+	
+	public void setGamePoints(int gamePoints) {
+		this.gamePoints = gamePoints;
+	}
+	
 
 	public SudokuField[][] getTextField() {
 		return textFields;
 	}
 
-	public OverviewStage getOverviewStage() {
-		return o;
-	}
+	
 	
 	public Label getGameLabel() {
 		return gameTextLabel;
 	}
+	
+
+	
 	
 
 	public abstract Scene getScene();

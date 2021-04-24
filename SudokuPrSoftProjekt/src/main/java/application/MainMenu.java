@@ -19,8 +19,8 @@ public class MainMenu {
 	
 	
 	static BorderPane pane = new BorderPane();
-	static Scene mainScene = new Scene(pane,400,400);
-	private Button sudoku;
+	static Scene mainScene = new Scene(pane,450,450);
+	private ToggleButton sudoku;
 	private Button samurai;
 	private Button freeform;
 	private Button load;
@@ -30,7 +30,8 @@ public class MainMenu {
 	private ToggleButton easy;
 	private ToggleButton medium;
 	private ToggleButton hard;
-	private Button setting = new Button("Settings");
+	private ToggleButton manual;
+	private Button createButton = new Button("Create");
 	private Button exit = new Button("Exit");
 	
 	MainMenuController controllerMainMenu = new MainMenuController(this);
@@ -39,13 +40,14 @@ public class MainMenu {
 	public Scene setUpMainMenu() {
 		
 		VBox container = new VBox();
-		container.setSpacing(10);
+		container.setSpacing(20);
 		
 		HBox gameModeButtons = new HBox();
 		gameModeButtons.setAlignment(Pos.CENTER);
 		gameModeButtons.setPrefWidth(80);
+		gameModeButtons.setSpacing(5);
 		
-		sudoku = new Button("Sudoku");
+		sudoku = new ToggleButton("Sudoku");
 		samurai = new Button("Samurai");
 		freeform = new Button("Freeform");
 		gameModeButtons.getChildren().addAll(sudoku,samurai,freeform);
@@ -54,12 +56,15 @@ public class MainMenu {
 		HBox difficultyButtons = new HBox();
 		difficultyButtons.setAlignment(Pos.CENTER);
 		difficultyButtons.setPrefWidth(80);
+		difficultyButtons.setSpacing(5);
 		
 		easy = new ToggleButton("Easy");
 		medium = new ToggleButton("Medium");
 		hard = new ToggleButton("Hard");
+		manual = new ToggleButton("Manual");
 		
-		difficultyButtons.getChildren().addAll(easy,medium,hard);
+		
+		difficultyButtons.getChildren().addAll(easy,medium,hard,manual);
 		
 	
 		
@@ -69,27 +74,31 @@ public class MainMenu {
 		sudoku.setOnAction(controllerMainMenu::handleToSudoku);
 		hard.setOnAction(controllerMainMenu::handleHard);
 		easy.setOnAction(controllerMainMenu::handleEasy);
-		
+		medium.setOnAction(controllerMainMenu::handleMedium);
+		manual.setOnAction(controllerMainMenu::handleManual);
 		samurai.setOnAction(controllerMainMenu::handleToSamurai);
-
+		freeform.setOnAction(controllerMainMenu::handleToFreeForm);
 		load.setOnAction(controllerMainMenu::handleToLoad);
+		
+		//nur test
+		createButton.setOnAction(controllerMainMenu::handleTest);
 		
 		exit.setOnAction(controllerMainMenu::handleExit);
 		
 		//design for buttons
-		 Stream.of(sudoku, samurai, freeform,load,exit,setting).forEach(button -> 
-		    button.getStyleClass().add("button1"));
+		 Stream.of(sudoku, samurai, freeform,load,exit,createButton, easy, medium, hard,manual).forEach(button -> 
+		    button.getStyleClass().add("myButton"));
 		
 		//größe der Buttons
-		 Stream.of(sudoku, samurai, freeform,load).forEach(button -> 
+		 Stream.of(sudoku, samurai, freeform,load, easy, medium, hard).forEach(button -> 
 		    button.setMinWidth(gameModeButtons.getPrefWidth()));
 		 
 		
 		
 		Label welcomeLabel = new Label("SudokuFx");
-		welcomeLabel.setFont(new Font("Arial",20));
+		welcomeLabel.setFont(new Font("Dekko",40));
 		
-		container.getChildren().addAll(welcomeLabel,gameModeButtons,difficultyButtons,load,setting,exit);
+		container.getChildren().addAll(welcomeLabel,gameModeButtons,difficultyButtons,load,createButton,exit);
 		container.setAlignment(Pos.CENTER);
 		
 		pane.setCenter(container);
@@ -98,28 +107,9 @@ public class MainMenu {
 		
 		mainScene.getStylesheets().add("/CSS/sudoku.css");
 		
-		
-		
-		
-		
-
 		//button styles
 		
-		
-		
-		
-		
-		
-		
-		
 		return mainScene;
-		
-		
-		
-		
-		
-		
-		
 		
 		
 	}

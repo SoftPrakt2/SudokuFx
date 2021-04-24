@@ -11,13 +11,7 @@ public abstract class BasicController {
 	
 	public abstract void createGameHandler(ActionEvent e);
 	
-	public abstract void enableEditHandler(ActionEvent e);
 	
-	public abstract void easyHandler(ActionEvent e);
-	
-	public abstract void mediumHandler(ActionEvent e);
-	
-	public abstract void hardHandler(ActionEvent e);
 	
 	public abstract void newGameHandler(ActionEvent e);
 	
@@ -27,9 +21,11 @@ public abstract class BasicController {
 	
 	public abstract void autoSolveHandler(ActionEvent e);
 	
-	
+	public abstract void manuelDoneHandler(ActionEvent e);
 	
 	public abstract void createGame();
+	
+	public abstract void resetHandler(ActionEvent e);
 	
 	
 	public void switchToMainMenu(ActionEvent e) {

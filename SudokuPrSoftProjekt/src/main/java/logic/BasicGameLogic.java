@@ -73,7 +73,7 @@ public abstract class BasicGameLogic{
 	public abstract boolean valid(int row, int col, int guess);
 	
 	
-
+	
 	
 
 	public abstract void setUpLogicArray();
@@ -90,9 +90,13 @@ public abstract class BasicGameLogic{
 	
 	public abstract Cell[][] getCells();
 	
-	public abstract void connectArrays(SudokuField[][] sudokuField);
+	public abstract void setCell(int col, int row, int guess);
 	
-	public abstract boolean compareResult(SudokuField[][] sudokuField);
+	public abstract void validManualInput(Cell[][] cells);
+	
+//	public abstract void connectArrays(SudokuField[][] sudokuField);
+//	
+//	public abstract boolean compareResult(SudokuField[][] sudokuField);
 	
 	
 	
