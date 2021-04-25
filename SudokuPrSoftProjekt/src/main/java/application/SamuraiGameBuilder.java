@@ -127,6 +127,18 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 
 
+	
+
+
+
+	@Override
+	public void createNumbers() {
+		// TODO Auto-generated method stub
+		System.out.println("just test");
+	}
+
+
+
 
 	
 	

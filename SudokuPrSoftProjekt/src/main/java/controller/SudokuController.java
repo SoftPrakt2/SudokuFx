@@ -26,7 +26,7 @@ public class SudokuController extends BasicController {
 	}
 
 	public void createGameHandler(ActionEvent e) {
-		createGame();
+		createGame(scene.getDifficulty());
 	}
 
 	public void newGameHandler(ActionEvent e) {
@@ -38,7 +38,8 @@ public class SudokuController extends BasicController {
 				fields[i][j].setDisable(false);
 			}
 		}
-		scene.setGameTime(10);
+		scene.setStartTime(System.currentTimeMillis());
+		scene.setGamePoints(10);
 	}
 
 	public void resetHandler(ActionEvent e) {
@@ -46,7 +47,7 @@ public class SudokuController extends BasicController {
 			for (int j = 0; j < 9; j++) {
 				if (!fields[i][j].isDisabled())
 					fields[i][j].clear();
-
+				
 			}
 		}
 	}
@@ -134,30 +135,49 @@ public class SudokuController extends BasicController {
 
 	}
 
+
+	
+	
 	public void checkHandler(ActionEvent e) {
 		model.solveSudoku();
 		boolean gameState = compareResult(fields);
-
-		if (gameState) {
-			scene.setEndTime(System.currentTimeMillis());
-			scene.setGameTime((scene.getEndTime() - scene.getStartTime()) / 1000);
-
-			if (scene.getGameTime() < 60) {
-
+		long gameTime;
+		long sek;
+		long endTime = System.currentTimeMillis();
+		
+		if(gameState) {
+			gameTime = (endTime  - scene.getStartTime())/1000;
+			
+			if(gameTime < 60) {
 				scene.getGameLabel().setText("Congratulations you won! Points: Points: " + scene.getGamePoints()
-						+ " Time: " + scene.getGameTime() + "s");
+				+ " Time: " + gameTime + "s");
 			} else {
-				long differenz = scene.getGameTime() / 60;
-				long sek = differenz % 60;
+				gameTime = gameTime/60;
+				sek = gameTime%60;
 				scene.getGameLabel().setText("Congratulations you won! Points: " + scene.getGamePoints() + "Time: "
-						+ differenz + "min" + sek + " sek");
+						+ gameTime + "min" + sek + " sek");
 			}
+			
 		} else if (!gameState) {
 			scene.getGameLabel().setText("Sorry your Sudoku is not correct yet");
 			if (scene.getGamePoints() > 0)
 				scene.setGamePoints(scene.getGamePoints() - 1);
 		}
+		
+		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	// test für speicher und lade sachen, sicher besser in anderer klasse
 	FileChooser fileChooser = new FileChooser();
@@ -168,28 +188,15 @@ public class SudokuController extends BasicController {
 		fileChooser.setInitialFileName("sudoku");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("text file", "*.txt"));
 
-		// File file= fileChooser.showSaveDialog(Main.getStage());
 
-//	try {
-//		FileWriter filew = new FileWriter(file);
-//		BufferedWriter buf = new BufferedWriter(filew);
-//		buf.write("test");
-//		buf.close();
-//	} catch (IOException e1) {
-//		// TODO Auto-generated catch block
-//		e1.printStackTrace();
-//	}
-//	
-//	fileChooser.setInitialDirectory(file.getParentFile());
-//	
 
 	}
 
-	public void createGame() {
+	public void createGame(int difficulty) {
 
 		model.setUpLogicArray();
 		model.createSudoku();
-		model.difficulty(MainMenuController.difficulty);
+		model.difficulty(difficulty);
 
 		for (int i = 0; i < fields.length; i++) {
 			for (int j = 0; j < fields[i].length; j++) {

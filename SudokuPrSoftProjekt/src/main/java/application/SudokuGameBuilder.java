@@ -29,16 +29,14 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		
 	
 	public Scene initializeScene() {
-		System.out.println("hiiiiiiiiiiiiiiier" + MainMenuController.difficulty);
+		
 		gamePoints = 10;
 		pane.setCenter(createBoard());
 		pane.setPadding(new Insets(50,50,50,50));
 		
-		controller =  new SudokuController(this);
+	controller =  new SudokuController(this);
 	   createPlayButtons(pane);
 	   createMenuBar(pane);
-	  
-	  //controller.createGame();
 	  
 	   
 	  createGameItem.setOnAction(controller::createGameHandler);
@@ -69,9 +67,9 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	}
 	
 	
-	//statt createGame in inizializeScene?
+	//statt createGame in inizializeScene? erstellt die zahlen im spielfeld nach der eingestellten schwierigkeit
 	public void createNumbers() {
-		controller.createGame();
+		controller.createGame(difficulty);
 	}
 	
 	
