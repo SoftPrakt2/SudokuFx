@@ -14,41 +14,39 @@ import javafx.stage.Stage;
 public class MainMenuController {
 
 	MainMenu menu;
-	SudokuGameBuilder sudokuGame = new SudokuGameBuilder();
 	Scene playScene;
 
-	BasicGameBuilder samuraiGame = new SamuraiGameBuilder();
-	BasicGameBuilder freeFormGame = new FreeFormGameBuilder();
+	BasicGameBuilder game;
+	
 	OverviewStage overview = new OverviewStage();
 	Stage overviewStage = overview.showOverview("Played", "Played");
 
-	String selected;
+	
 
-	public static int difficulty;
+
+	public int difficulty;
+	
 
 	public MainMenuController(MainMenu menu) {
 		this.menu = menu;
 
 	}
 
+
 	public void handleToSudoku(ActionEvent e) {
-		selected = "Sudoku";
-		playScene = sudokuGame.initializeScene();
-		// sudokuGame.initializeScene();
-		// GUI.getStage().setScene(sudokuGame.getScene());
-		sudokuGame.setStartTime(System.currentTimeMillis());
+		game = new SudokuGameBuilder();
+		playScene = game.initializeScene();
 	}
 
 	public void handleToSamurai(ActionEvent e) {
-		selected = "Samurai";
-		playScene = samuraiGame.initializeScene();
-		// GUI.getStage().setScene(samuraiGame.getScene());
-
+		game = new SamuraiGameBuilder();
+		playScene = game.initializeScene();
 	}
 
 	public void handleToFreeForm(ActionEvent e) {
-		freeFormGame.initializeScene();
-		GUI.getStage().setScene(freeFormGame.getScene());
+		game = new FreeFormGameBuilder();
+		playScene = game.initializeScene();
+		
 	}
 
 	public void handleToLoad(ActionEvent e) {
@@ -60,37 +58,29 @@ public class MainMenuController {
 	}
 
 	public void handleHard(ActionEvent e) {
-		difficulty = 1;
-
-		System.out.println(difficulty);
+		game.setDifficulty(1);
 	}
-
-	public void handleManual(ActionEvent e) {
-		difficulty = 0;
-		System.out.println(difficulty);
-
-//		for(int i = 0; i <9; i++) {
-//			for(int j = 0; j <9; j++) {
-//				System.out.println(sudokuGame.getTextField()[i][j].getText());
-//			}
-//		}
-
-	}
-
-	public void handleTest(ActionEvent e) {
-		if (selected.equals("Sudoku"))
-			sudokuGame.createNumbers();
-
-		GUI.getStage().setScene(playScene);
-	}
-
+	
 	public void handleEasy(ActionEvent e) {
-		difficulty = 6;
-		System.out.println(difficulty);
+		game.setDifficulty(6);
+	
 	}
 
 	public void handleMedium(ActionEvent e) {
-		difficulty = 100;
+		game.setDifficulty(100);
 	}
+	
+
+	public void handleManual(ActionEvent e) {
+		game.setDifficulty(0);
+	}
+
+	public void handleGameStart(ActionEvent e) {
+			game.createNumbers();
+			game.setStartTime(System.currentTimeMillis());
+			GUI.getStage().setScene(playScene);
+	}
+
+	
 
 }

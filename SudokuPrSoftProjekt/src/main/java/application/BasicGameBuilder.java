@@ -40,11 +40,16 @@ public abstract class BasicGameBuilder {
 	protected Label gameTextLabel;
 	
 	protected Button done;
-
-	protected long startTime;
-	protected long endTime;
-	protected long gameTime;
 	
+	
+//variablen für die zeitmessung
+	protected long startTime;
+
+	
+	//schwierigkeit welche vom hauptmenü mit den gettern und settern unten definiert wird
+	protected int difficulty;
+	
+	//punkte für den spielstand 
 	protected int gamePoints = 10;
 
 	ButtonBar buttonBar;
@@ -56,6 +61,8 @@ public abstract class BasicGameBuilder {
 
 	// change back to void
 	public abstract Scene initializeScene();
+	
+	public abstract void createNumbers();
 
 	// vielleicht besser in den gamebuilderklassen direkt die boards zu zeichnen?
 	public abstract GridPane createBoard();
@@ -67,13 +74,13 @@ public abstract class BasicGameBuilder {
 		// playButtonMenu.setPrefWidth(100);
 		playButtonMenu.setSpacing(10);
 
-		HBox test = new HBox();
-		HBox test2 = new HBox();
-		HBox test3 = new HBox();
+		HBox buttonBox = new HBox();
+		HBox gameLabelBox = new HBox();
+		HBox emptySpaceBox = new HBox();
 		
 		Button empty = new Button("");
 		empty.setVisible(false);
-		test3.getChildren().add(empty);
+		emptySpaceBox.getChildren().add(empty);
 		
 		gameTextLabel = new Label("Game ongoing!");
 		gameTextLabel.setFont(new Font("Dekko", 25));
@@ -89,7 +96,7 @@ public abstract class BasicGameBuilder {
 	
 		done = new Button("done");
 		done.setVisible(false);
-		if(MainMenuController.difficulty == 0) done.setVisible(true);
+		//if(MainMenuController.difficulty == 0) done.setVisible(true);
 		
 		owngame.setVisible(false);
 
@@ -97,10 +104,10 @@ public abstract class BasicGameBuilder {
 				.forEach(button -> button.getStyleClass().add("myButton"));
 
 		
-		test.getChildren().addAll(hintButton, autosolve, check, done);
-		test.setSpacing(5);
+		buttonBox.getChildren().addAll(hintButton, autosolve, check, done);
+		buttonBox.setSpacing(5);
 	
-		test2.getChildren().addAll(gameTextLabel);
+		gameLabelBox.getChildren().addAll(gameTextLabel);
 
 		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefHeightProperty().bind(pane.heightProperty().divide(22)));
 		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(7)));
@@ -111,9 +118,9 @@ public abstract class BasicGameBuilder {
 
 	
 
-		test.setAlignment(Pos.TOP_CENTER);
-		test2.setAlignment(Pos.CENTER);
-		playButtonMenu.getChildren().addAll(test, test2,empty);
+		buttonBox.setAlignment(Pos.TOP_CENTER);
+		gameLabelBox.setAlignment(Pos.CENTER);
+		playButtonMenu.getChildren().addAll(buttonBox, gameLabelBox,empty);
 
 		
 		pane.setBottom(playButtonMenu);
@@ -218,25 +225,8 @@ public abstract class BasicGameBuilder {
 		return startTime;
 	}
 	
-	public long getEndTime() {
-		return endTime;
-	}
-	
-	public long getGameTime() {
-		return gameTime;
-	}
-	
-
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
-	}
-	
-	public void setEndTime(long endTime) {
-		this.endTime = endTime;
-	}
-	
-	public void setGameTime(long gameTime) {
-		this.gameTime = gameTime;
 	}
 	
 	
@@ -259,8 +249,13 @@ public abstract class BasicGameBuilder {
 		return gameTextLabel;
 	}
 	
-
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
 	
+	public int getDifficulty() {
+		return difficulty;
+	}
 	
 
 	public abstract Scene getScene();

@@ -81,7 +81,7 @@ public class MainMenu {
 		load.setOnAction(controllerMainMenu::handleToLoad);
 		
 		//nur test
-		createButton.setOnAction(controllerMainMenu::handleTest);
+		createButton.setOnAction(controllerMainMenu::handleGameStart);
 		
 		exit.setOnAction(controllerMainMenu::handleExit);
 		

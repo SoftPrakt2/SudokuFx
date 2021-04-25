@@ -106,13 +106,7 @@ public class SamuraiController extends BasicController {
 
 
 
-	@Override
-	public void createGame() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
+	
 
 
 
@@ -134,6 +128,19 @@ public class SamuraiController extends BasicController {
 
 	@Override
 	public void resetHandler(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
+
+
+
+
+	@Override
+	public void createGame(int difficulty) {
 		// TODO Auto-generated method stub
 		
 	}

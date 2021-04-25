@@ -23,7 +23,7 @@ public abstract class BasicController {
 	
 	public abstract void manuelDoneHandler(ActionEvent e);
 	
-	public abstract void createGame();
+	public abstract void createGame(int difficulty);
 	
 	public abstract void resetHandler(ActionEvent e);
 	
