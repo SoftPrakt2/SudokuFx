@@ -3,8 +3,10 @@ package controller;
 import java.io.File;
 
 import application.BasicGameBuilder;
+import application.MainMenu;
 import application.OverviewStage;
 import application.SudokuField;
+import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.stage.FileChooser;
 import logic.BasicGameLogic;
@@ -13,15 +15,15 @@ import logic.SudokuLogic;
 
 public class SudokuController extends BasicController {
 
-	BasicGameBuilder scene;
+	SudokuGameBuilder scene;
 
 	BasicGameLogic model;
-	SudokuField[][] fields;
+	SudokuField[][] sudokuField;
 
-	public SudokuController(BasicGameBuilder scene) {
+	public SudokuController(SudokuGameBuilder scene) {
 		this.scene = scene;
 		this.model = new SudokuLogic(Gamestate.OPEN, 0.0, false);
-		fields = scene.getTextField();
+		sudokuField = scene.getTextField();
 
 	}
 
@@ -33,9 +35,9 @@ public class SudokuController extends BasicController {
 
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				fields[i][j].clear();
-				fields[i][j].setText("");
-				fields[i][j].setDisable(false);
+				sudokuField[i][j].clear();
+				sudokuField[i][j].setText("");
+				sudokuField[i][j].setDisable(false);
 			}
 		}
 		scene.setStartTime(System.currentTimeMillis());
@@ -45,8 +47,9 @@ public class SudokuController extends BasicController {
 	public void resetHandler(ActionEvent e) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				if (!fields[i][j].isDisabled())
-					fields[i][j].clear();
+			if (!sudokuField[i][j].isDisabled())
+				sudokuField[i][j].clear();
+				
 				
 			}
 		}
@@ -57,7 +60,7 @@ public class SudokuController extends BasicController {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				model.getCells()[i][j].setValue(0);
-
+				
 			}
 		}
 
@@ -66,11 +69,11 @@ public class SudokuController extends BasicController {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 
-				if (!fields[i][j].getText().equals("")) {
-					fields[i][j].getText();
-					if (model.valid(j, i, Integer.parseInt(fields[i][j].getText()))) {
-						fields[i][j].setDisable(true);
-						model.setCell(j, i, Integer.parseInt(fields[i][j].getText()));
+				if (!sudokuField[i][j].getText().equals("")) {
+					sudokuField[i][j].getText();
+					if (model.valid(j, i, Integer.parseInt(sudokuField[i][j].getText()))) {
+						sudokuField[i][j].setDisable(true);
+						model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
 
 					} else {
 						help = false;
@@ -82,7 +85,7 @@ public class SudokuController extends BasicController {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 9; j++) {
 					model.getCells()[i][j].setValue(0);
-					fields[i][j].setDisable(false);
+					sudokuField[i][j].setDisable(false);
 				}
 			}
 		}
@@ -131,16 +134,16 @@ public class SudokuController extends BasicController {
 	public void autoSolveHandler(ActionEvent e) {
 		model.solveSudoku();
 		model.printCells();
-		connectArrays(fields);
-
+		connectArrays(scene.getTextField());
 	}
-
+		
+		
 
 	
 	
 	public void checkHandler(ActionEvent e) {
 		model.solveSudoku();
-		boolean gameState = compareResult(fields);
+		boolean gameState = compareResult(scene.getTextField());
 		long gameTime;
 		long sek;
 		long endTime = System.currentTimeMillis();
@@ -170,14 +173,6 @@ public class SudokuController extends BasicController {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	// test für speicher und lade sachen, sicher besser in anderer klasse
 	FileChooser fileChooser = new FileChooser();
@@ -197,22 +192,24 @@ public class SudokuController extends BasicController {
 		model.setUpLogicArray();
 		model.createSudoku();
 		model.difficulty(difficulty);
+		
 
-		for (int i = 0; i < fields.length; i++) {
-			for (int j = 0; j < fields[i].length; j++) {
 
+		for (int i = 0; i < sudokuField.length; i++) {
+			for (int j = 0; j < sudokuField[i].length; j++) {
+			
+					
 				String number = Integer.toString(model.getCells()[j][i].getValue());
-				if (fields[i][j].getText().equals("") && !number.equals("0")) {
-					fields[i][j].setText(number);
+				if (sudokuField[i][j].getText().equals("") && !number.equals("0")) {
+					sudokuField[i][j].setText(number);
 
 				}
-
+				
 			}
 
 		}
 
 		enableEdit();
-
 		model.solveSudoku();
 		model.printCells();
 	}
@@ -222,11 +219,11 @@ public class SudokuController extends BasicController {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 
-				if (fields[i][j].getText().equals("")) {
-					fields[i][j].setDisable(false);
+				if (sudokuField[i][j].getText().equals("")) {
+					sudokuField[i][j].setDisable(false);
 
 				} else {
-					fields[i][j].setDisable(true);
+					sudokuField[i][j].setDisable(true);
 				}
 			}
 		}

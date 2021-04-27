@@ -24,36 +24,10 @@ public class SamuraiController extends BasicController {
 	}
 	
 	
-	
-	
-	
-	
-	
 
 	@Override
 	public void createGameHandler(ActionEvent e) {
 	
-		System.out.println("hi");
-		
-		for (int i = 0; i < fields.length; i++) {
-			for (int j = 0; j < fields[i].length; j++) {
-					if(fields[i][j].getText().equals("0"))
-					fields[i][j].setText("1");
-
-
-}}}
-
-
-
-
-
-
-
-
-	@Override
-	public void newGameHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 
@@ -64,8 +38,21 @@ public class SamuraiController extends BasicController {
 
 
 	@Override
+	public void newGameHandler(ActionEvent e) {
+		
+		for (int i = 0; i < fields.length; i++) {
+			for (int j = 0; j < fields[i].length; j++) {
+					fields[i][j].setText("2");
+			}
+		}
+	}
+
+
+
+
+	@Override
 	public void checkHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 
@@ -78,7 +65,7 @@ public class SamuraiController extends BasicController {
 
 	@Override
 	public void saveHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -91,7 +78,7 @@ public class SamuraiController extends BasicController {
 
 	@Override
 	public void autoSolveHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -115,7 +102,7 @@ public class SamuraiController extends BasicController {
 
 	@Override
 	public void manuelDoneHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
@@ -128,7 +115,7 @@ public class SamuraiController extends BasicController {
 
 	@Override
 	public void resetHandler(ActionEvent e) {
-		// TODO Auto-generated method stub
+	
 		
 	}
 

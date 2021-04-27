@@ -1,17 +1,17 @@
 .root {
     -fx-padding: 5px ;
-  	-fx-background-color: linear-gradient(#00d2ff 0%, #3a47d5   100%);
+  	-fx-background-color: #D3D3D3;
 		}
 	
 	
 .grid-pane {
-	 -fx-background-color: #C0C0C0
+	 -fx-background-color: #D3D3D3
 }
 
 .cell {
 
  
-    -fx-background-color:  black,  	#F5F5F5;
+    -fx-background-color:  black,  	#D3D3D3;
 
   
     -fx-background-insets: 0, 0 ;
@@ -164,19 +164,45 @@
 	
 	
 }
-.myButton:hover {
-	-fx-background:linear-gradient(to bottom, #bab1ba 5%, #ededed 100%);
-	-fx-background-color:#bab1ba;
+
+
+
+.myButton2 {
+	-fx-background-color:transparent;
+	-fx-border-radius:28px;
+	-fx-border-color: #006400;
+	-fx-cursor:pointer;
+	-fx-color:#ffffff;
+	-fx-font-family:Georgia;
+	-fx-font-size:13px;
+	-fx-font-weight:bold;
+	-fx-font-style:italic;
+	-fx-padding:10px 35px;
+	
+}
+.myButton2:hover {
+	-fx-background-color:lime !important;
+	-fx-border-radius: 20%;
+	-fx-padding:16px 20px;
+	-fx-background-radius:0;
+	
 }
 
 
-	
-	
+.myButton2:selected {
+	-fx-background-color: -fx-focus-color;
+	-fx-border-radius:28px;
+}	
 	
 
 	
 
+.menu-bar {
+    -fx-background-color: #D3D3D3 ;
+  	
+    -fx-border-width: 2.0;
 
+}
 	
 
 	

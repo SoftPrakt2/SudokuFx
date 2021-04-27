@@ -59,7 +59,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		
 		
 		
-		textFields = new SudokuField[9][9];
+		textField = new SudokuField[9][9];
 		
 		playBoard.setVgap(15);
 		playBoard.setHgap(15);
@@ -156,7 +156,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	               
 	            	StackPane cell = new StackPane();
 		            SudokuField sudokuField = new SudokuField("");
-		            textFields[blockC][blockRow] = sudokuField;
+		            textField[blockC][blockRow] = sudokuField;
 
 	                cell.setStyle("-fx-pref-width: 5em;");
 	                sudokuField.setStyle("-fx-pref-margin: 15em;");

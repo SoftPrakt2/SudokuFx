@@ -31,7 +31,6 @@ import javafx.stage.Stage;
 public abstract class BasicGameBuilder {
 
 	protected VBox playButtonMenu;
-	protected Button play;
 	protected Button check;
 	protected Button owngame;
 	protected Button autosolve;
@@ -45,6 +44,7 @@ public abstract class BasicGameBuilder {
 //variablen für die zeitmessung
 	protected long startTime;
 
+	protected SudokuField[][] textField;
 	
 	//schwierigkeit welche vom hauptmenü mit den gettern und settern unten definiert wird
 	protected int difficulty;
@@ -56,7 +56,7 @@ public abstract class BasicGameBuilder {
 
 	BasicController controller;
 
-	SudokuField[][] textFields = new SudokuField[9][9];
+
 	GridPane playBoard;
 
 	// change back to void
@@ -86,7 +86,7 @@ public abstract class BasicGameBuilder {
 		gameTextLabel.setFont(new Font("Dekko", 25));
 		
 
-		play = new Button("Play");
+	
 		hintButton = new ToggleButton("Hint");
 		
 		check = new Button("Check");
@@ -100,9 +100,9 @@ public abstract class BasicGameBuilder {
 		
 		owngame.setVisible(false);
 
-		Stream.of(play, hintButton, check, autosolve, done)
-				.forEach(button -> button.getStyleClass().add("myButton"));
-
+		Stream.of(hintButton, check, autosolve, done)
+				.forEach(button -> button.getStyleClass().add("myButton2"));
+		
 		
 		buttonBox.getChildren().addAll(hintButton, autosolve, check, done);
 		buttonBox.setSpacing(5);
@@ -113,11 +113,6 @@ public abstract class BasicGameBuilder {
 		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(7)));
 		
 		
-	
-		HBox.setHgrow(play, Priority.ALWAYS);
-
-	
-
 		buttonBox.setAlignment(Pos.TOP_CENTER);
 		gameLabelBox.setAlignment(Pos.CENTER);
 		playButtonMenu.getChildren().addAll(buttonBox, gameLabelBox,empty);
@@ -202,6 +197,7 @@ public abstract class BasicGameBuilder {
 		mainMenuItem = new MenuItem("Go to Main Menu");
 		mainMenu.getItems().addAll(mainMenuItem);
 		menuBar.getMenus().addAll(file, editMenu, mainMenu,helpMenu);
+		menuBar.getStylesheets().add("menu-bar");
 
 	}
 
@@ -239,10 +235,10 @@ public abstract class BasicGameBuilder {
 	}
 	
 
-	public SudokuField[][] getTextField() {
-		return textFields;
+	public  SudokuField[][] getTextField() {
+		return textField;
 	}
-
+	
 	
 	
 	public Label getGameLabel() {
