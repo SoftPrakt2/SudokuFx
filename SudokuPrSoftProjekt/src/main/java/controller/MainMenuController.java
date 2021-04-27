@@ -34,6 +34,7 @@ public class MainMenuController {
 
 
 	public void handleToSudoku(ActionEvent e) {
+	
 		game = new SudokuGameBuilder();
 		playScene = game.initializeScene();
 	}
@@ -79,6 +80,8 @@ public class MainMenuController {
 			game.createNumbers();
 			game.setStartTime(System.currentTimeMillis());
 			GUI.getStage().setScene(playScene);
+			menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
+			menu.getDifficultyToggle().getSelectedToggle().setSelected(false);
 	}
 
 	

@@ -1,15 +1,15 @@
 package application;
 
+
+
 import controller.BasicController;
 import controller.SamuraiController;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 
@@ -35,10 +35,10 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	    
 	    controller = new SamuraiController(this);
 	    
-	    play.setOnAction(controller::createGameHandler);
+	    hintButton.setOnAction(controller::createGameHandler);
 	    
 	    mainMenuItem.setOnAction(controller::switchToMainMenu);
-	    
+	    autosolve.setOnAction(controller::newGameHandler);
 	
 	    samurai.getStylesheets().add("/CSS/sudoku.css");
 	    
@@ -51,19 +51,19 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	public GridPane createBoard() {
 		playBoard = new GridPane();
 		
-	//	pane.setPadding(new Insets(5, 5, 5, 5));
+		pane.setPadding(new Insets(5, 5, 5, 5));
 		
 		playBoard.setVgap(1);
 		playBoard.setHgap(1);
 		
-		textFields = new SudokuField[21][21];
+		textField = new SudokuField[21][21];
 		
 		
 		PseudoClass right = PseudoClass.getPseudoClass("right");
 	    PseudoClass bottom = PseudoClass.getPseudoClass("bottom");
 	
-		for(int spalte = 0; spalte <21; spalte++) {
-			for(int zeile = 0; zeile < 21; zeile++) {
+		for(int i = 0; i <21; i++) {
+			for(int j = 0; j < 21; j++) {
 				StackPane cell = new StackPane();
 				cell.getStyleClass().add("cell");
 				
@@ -71,52 +71,56 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(25));
 				
 				StackPane cellEmpty = new StackPane();
-				cellEmpty.getStyleClass().add("hidden");
+				//cellEmpty.getStyleClass().add("hidden");
 				SudokuField empty = new SudokuField("-");
 				empty.setStyle("-fx-pref-width: 2em;");
+				
 				cellEmpty.getChildren().add(empty);
 				cellEmpty.setDisable(true);
-				textFields[spalte][zeile] = empty;
+				textField[i][j] = empty;
 				
-			if((spalte == 9 || spalte == 10 || spalte ==11) && (zeile < 6 || zeile > 14)) {
+			if((i == 9 || i == 10 || i ==11) && (j < 6 || j > 14)) {
 				
-				playBoard.add(cellEmpty,spalte,zeile);
+			//	playBoard.add(cellEmpty,spalte,zeile);
 				 
-			} else if((spalte <6 || spalte > 14) && (zeile ==9 || zeile == 10 || zeile == 11)) {
+			} else if((i <6 || i > 14) && (j ==9 || j == 10 || j == 11)) {
 
-				playBoard.add(cellEmpty,spalte,zeile);
+			//	playBoard.add(cellEmpty,spalte,zeile);
 
 			} else {
 				
 				SudokuField sudokuField = new SudokuField("");
-				textFields[spalte][zeile] = sudokuField;
-				textFields[spalte][zeile].setMaxSize(50, 50);
 				
-				sudokuField.setDisable(true);
-				cell.pseudoClassStateChanged(right, spalte == 2 || spalte == 5 || spalte == 8 || spalte == 11 || spalte ==14 || spalte == 17);
-	            cell.pseudoClassStateChanged(bottom, zeile == 2 || zeile == 5 ||zeile ==8 ||zeile == 11|| zeile == 14 || zeile == 17);
-	            cellEmpty.pseudoClassStateChanged(right, spalte == 5);
-	           
+				textField[i][j] = sudokuField;
+				textField[i][j].setMaxSize(50, 50);
+				textField[i][j].setAlignment(Pos.CENTER);
 				
-				 sudokuField.setStyle("-fx-pref-width: 2em;");
+			
+				
+				cell.pseudoClassStateChanged(right, i == 2 || i == 5 || i == 11 || i == 14 || i == 17);
+	            cell.pseudoClassStateChanged(bottom, j == 2 || j == 5 ||j ==8 ||j == 11|| j == 14 || j == 17);
+	         
+	        	sudokuField.setDisable(true);
+	            
+				
+				
+			
 				 cell.getChildren().add(sudokuField);
-				 playBoard.add(cell,spalte,zeile);
+				 
+				 playBoard.add(cell,i,j);
 			}
 			}
 			
 		}
-		
+		textField[12][4].setText("3");
 		playBoard.setAlignment(Pos.CENTER);
-		playBoard.add(new Line(0,0,0,0),1,1);   
+	//	playBoard.add(new Line(0,0,0,0),1,1);   
 		
 		
 		return playBoard;
 	}
 
-	@Override
-	public SudokuField[][] getTextField() {
-		return textFields;
-	}
+	
 
 
 
