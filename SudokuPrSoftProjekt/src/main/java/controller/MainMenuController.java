@@ -74,6 +74,7 @@ public class MainMenuController {
 
 	public void handleManual(ActionEvent e) {
 		game.setDifficulty(0);
+		
 	}
 
 	public void handleGameStart(ActionEvent e) {

@@ -38,7 +38,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	   
 	  createGameItem.setOnAction(controller::createGameHandler);
 	  
-	
 	  autosolve.setOnAction(controller::checkHandler);
 	  
 	  clearFieldItem.setOnAction(controller::newGameHandler);
@@ -74,9 +73,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		playBoard = new GridPane();
 	
 		playBoard.setPadding(new Insets(5, 5, 5, 5));
-		
-	
-		
 
 		PseudoClass right = PseudoClass.getPseudoClass("right");
 		PseudoClass bottom = PseudoClass.getPseudoClass("bottom");
@@ -90,10 +86,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 				
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(12));
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(12));
-
-					
-				
-				
 			
 					textField[i][j] = new SudokuField("");
 			

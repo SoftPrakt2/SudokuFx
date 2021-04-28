@@ -32,9 +32,7 @@ public class SudokuLogic extends BasicGameLogic {
 	public  void validManualInput(Cell[][] cells) {
 		for(int i = 0; i < 9; i++) {
 			for(int j = 0; j < 9; j++) {
-				
-				
-				
+
 			}
 		}
 	}
@@ -105,7 +103,7 @@ public class SudokuLogic extends BasicGameLogic {
 						}
 						if(counter == 100) {
 							for(int colTwo = 0; colTwo < cells[row].length; colTwo++) {
-								this.cells[row][colTwo].setValue(0);   //hier geändert1111111111111111111111111111111111111111
+								this.cells[row][colTwo].setValue(0);   
 							}
 							col = -1;
 							counter = 0;

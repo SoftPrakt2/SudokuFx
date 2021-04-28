@@ -75,6 +75,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				SudokuField empty = new SudokuField("-");
 				empty.setStyle("-fx-pref-width: 2em;");
 				
+				
 				cellEmpty.getChildren().add(empty);
 				cellEmpty.setDisable(true);
 				textField[i][j] = empty;
@@ -98,8 +99,18 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 			
 				
 				cell.pseudoClassStateChanged(right, i == 2 || i == 5 || i == 11 || i == 14 || i == 17);
-	            cell.pseudoClassStateChanged(bottom, j == 2 || j == 5 ||j ==8 ||j == 11|| j == 14 || j == 17);
-	         
+	          //  cell.pseudoClassStateChanged(bottom, j == 2 || j == 5 ||j ==8 ||j == 11|| j == 14 || j == 17);
+	            
+				
+				if(i==8 && (j > 5 && j <= 14)) cell.pseudoClassStateChanged(right, i==8);
+	            if(j==14 && (i < 9 || i >11)) cell.pseudoClassStateChanged(bottom,j==14);
+	            if(j==17 && (i < 9 || i >11)) cell.pseudoClassStateChanged(bottom,j==17);
+	            if(j==2 && (i < 9 || i >11)) cell.pseudoClassStateChanged(bottom,j==2);
+	            if(j==5 && (i < 9 || i >11)) cell.pseudoClassStateChanged(bottom,j==5);
+	            if(j==8 && i > 5) cell.pseudoClassStateChanged(bottom,j==8);
+	            if(j==11) cell.pseudoClassStateChanged(bottom,j==11);
+	          //  if(i== 10) cell.pseudoClassStateChanged(bottom,i==10);
+	            
 	        	sudokuField.setDisable(true);
 	            
 				

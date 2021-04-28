@@ -5,6 +5,9 @@ import java.util.stream.Stream;
 
 import controller.BasicController;
 import controller.MainMenuController;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -52,7 +55,7 @@ public abstract class BasicGameBuilder {
 	//punkte für den spielstand 
 	protected int gamePoints = 10;
 
-	ButtonBar buttonBar;
+	
 
 	BasicController controller;
 
@@ -69,9 +72,11 @@ public abstract class BasicGameBuilder {
 
 	// creates Vbox and adds several buttons to scene
 	public void createPlayButtons(BorderPane pane) {
+		
+		DoubleProperty fontSize = new SimpleDoubleProperty(10);
+		
 
 		playButtonMenu = new VBox(10);
-		// playButtonMenu.setPrefWidth(100);
 		playButtonMenu.setSpacing(10);
 
 		HBox buttonBox = new HBox();
@@ -85,8 +90,6 @@ public abstract class BasicGameBuilder {
 		gameTextLabel = new Label("Game ongoing!");
 		gameTextLabel.setFont(new Font("Dekko", 25));
 		
-
-	
 		hintButton = new ToggleButton("Hint");
 		
 		check = new Button("Check");
@@ -95,8 +98,7 @@ public abstract class BasicGameBuilder {
 		owngame = new Button("Custom Game");
 	
 		done = new Button("done");
-		done.setVisible(false);
-		//if(MainMenuController.difficulty == 0) done.setVisible(true);
+		
 		
 		owngame.setVisible(false);
 
@@ -108,9 +110,16 @@ public abstract class BasicGameBuilder {
 		buttonBox.setSpacing(5);
 	
 		gameLabelBox.getChildren().addAll(gameTextLabel);
-
+		
+		
+		//passt größße der buttons an window an
 		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefHeightProperty().bind(pane.heightProperty().divide(22)));
-		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(7)));
+		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(4.5)));
+		
+		//regelt größe von text in buttons
+		fontSize.bind(pane.widthProperty().add(pane.heightProperty()).divide(100));
+		Stream.of(check, autosolve, hintButton, done)
+		.forEach(button -> button.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString())));
 		
 		
 		buttonBox.setAlignment(Pos.TOP_CENTER);
@@ -143,16 +152,10 @@ public abstract class BasicGameBuilder {
 	protected MenuItem mainMenuItem;
 	protected MenuItem createGameItem;
 
-	protected ToggleGroup difficultyToggle;
 
-	protected RadioMenuItem easy;
-	protected RadioMenuItem medium;
-	protected RadioMenuItem hard;
-	
 
 	RulesStage rule;
 
-	Label label = new Label("easy");
 
 	public void createMenuBar(BorderPane pane) {
 

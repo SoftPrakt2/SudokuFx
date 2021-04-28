@@ -1,8 +1,8 @@
 .root {
     -fx-padding: 5px ;
   	-fx-background-color: #D3D3D3;
+  	 
 		}
-	
 	
 .grid-pane {
 	 -fx-background-color: #D3D3D3
@@ -178,20 +178,22 @@
 	-fx-font-weight:bold;
 	-fx-font-style:italic;
 	-fx-padding:10px 35px;
-	
 }
+
 .myButton2:hover {
-	-fx-background-color:lime !important;
-	-fx-border-radius: 20%;
-	-fx-padding:16px 20px;
-	-fx-background-radius:0;
-	
+	-fx-background-radius: 28;
+	-fx-background-color:grey;
+	 -fx-background-insets: 0 0 0 0, 0, 0, 0;
+	 
 }
 
 
 .myButton2:selected {
-	-fx-background-color: -fx-focus-color;
+	-fx-background-color:  #A9A9A9;
+	-fx-background-radius: 28;
 	-fx-border-radius:28px;
+	-fx-padding:10px 35px;
+	-fx-font-weight: bold;
 }	
 	
 
