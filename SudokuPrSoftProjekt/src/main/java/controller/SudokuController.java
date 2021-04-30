@@ -114,9 +114,9 @@ public class SudokuController extends BasicController {
                if(!sudokuField[col][row].getText().equals("")) {
                    model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
                }
-               else {
-                   model.getCells()[row][col].setValue(0);
-               }
+//               else {
+//                   model.getCells()[row][col].setValue(0);
+//               }
             }
         }
 
@@ -224,15 +224,13 @@ public class SudokuController extends BasicController {
 		}
 
 		enableEdit();
-		model.solveSudoku();
+//		model.solveSudoku();
 		model.printCells();
 	}
 
 	public void enableEdit() {
-
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-
 				if (sudokuField[i][j].getText().equals("")) {
 					sudokuField[i][j].setDisable(false);
 
@@ -245,32 +243,26 @@ public class SudokuController extends BasicController {
 
 	@Override
 	public void hintHandeler(ActionEvent e) {
-		SudokuField[][] sudokuField2 = new SudokuField[9][9];
-		for(int row = 0; row < sudokuField.length; row++) {
-            for(int col = 0; col < sudokuField[row].length; col++) {
-            	sudokuField2[row][col] = sudokuField[row][col];
-                if(!sudokuField[col][row].getText().equals("")) {
-                    model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-                }
-                else {
-                    model.getCells()[row][col].setValue(0);
-                }
-             }
-         }
-		
-		
+//		for (int row = 0; row < sudokuField.length; row++) {
+//			for (int col = 0; col < sudokuField[row].length; col++) {
+//				if (!sudokuField[col][row].getText().equals("")) {
+//					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+//				} else {
+//					model.getCells()[row][col].setValue(0);
+//				}
+//			}
+//		}
+
 		model.hint();
-		for(int row = 0; row < sudokuField.length; row++) {
-            for(int col = 0; col < sudokuField[row].length; col++) {
-            		if(model.getCells()[row][col].getValue() != 0) {
-            			String number = Integer.toString(model.getCells()[row][col].getValue());
-                        sudokuField[col][row].setText(number);
-//                        if(!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals(sudokuField2[col][row].getText())) {
-//                			sudokuField[col][row].setStyle("-fx-text-fill: red");
-//                		}
-                	}
-            	
-             }
-         }
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				if (model.getCells()[row][col].getValue() != 0 && sudokuField[col][row].getText().equals("")) {
+					String number = Integer.toString(model.getCells()[row][col].getValue());
+					sudokuField[col][row].setText(number);
+					sudokuField[col][row].setStyle("-fx-text-fill: blue");
+				}
+
+			}
+		}
 	}
 }

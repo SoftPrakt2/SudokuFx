@@ -223,15 +223,16 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	public void difficulty(int diff) {
-		
-		for(int row = 0; row < this.cells.length;row++) {
-			for(int j = 0; j < this.cells[row].length;j++) {
-			int random =(int) (Math.random()*10)+1;
-			if(random <= diff) {
-				this.cells[row][j].setIsReal(true);
-			} else {
-				this.cells[row][j].setValue(0);
-			}
+
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int j = 0; j < this.cells[row].length; j++) {
+				int random = (int) (Math.random() * 10) + 1;
+				if (random <= diff) {
+					this.cells[row][j].setIsReal(true);
+				} 
+				else {
+					this.cells[row][j].setValue(0);
+				}
 			}
 		}
 	}
