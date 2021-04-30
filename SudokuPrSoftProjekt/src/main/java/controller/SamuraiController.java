@@ -131,6 +131,14 @@ public class SamuraiController extends BasicController {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+	@Override
+	public void hintHandeler(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 		
 	
 
