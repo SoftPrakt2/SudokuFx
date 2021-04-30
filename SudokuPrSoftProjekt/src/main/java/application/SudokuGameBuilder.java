@@ -56,6 +56,8 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	 
 	  pane.maxWidthProperty().bind(sudoku.widthProperty());
 	  
+	  hintButton.setOnAction(controller::hintHandeler);
+	  
 	
 	  sudoku.getStylesheets().add("/CSS/sudoku.css");
 	  

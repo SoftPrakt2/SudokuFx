@@ -27,6 +27,8 @@ public abstract class BasicController {
 	
 	public abstract void resetHandler(ActionEvent e);
 	
+	public abstract void hintHandeler(ActionEvent e);
+	
 	
 	public void switchToMainMenu(ActionEvent e) {
 		

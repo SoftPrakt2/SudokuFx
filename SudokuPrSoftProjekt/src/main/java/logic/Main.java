@@ -7,8 +7,9 @@ public class Main {
 		SudokuLogic test = new SudokuLogic(Gamestate.OPEN, 0.0, false);
 		SudokuLogic test2 = new SudokuLogic(Gamestate.OPEN, 0.0, false);
 		
-		test.createSudoku();
-		test.printCells();
+		test.setUpLogicArray();
+//		test.createSudoku();
+//		test.printCells();
 		
 //		x.setCell(int col, int row, int guess);
 		test.setCell(0, 1, 1);
@@ -60,10 +61,19 @@ public class Main {
 		System.out.println("===================");
 		test.printCells();
 		System.out.println("===================");
+		test.hint();
+		System.out.println("===================");
+		test.printCells();
+		System.out.println("===================");
+		test.solveSudoku();
+		System.out.println("===================");
+		test.printCells();
+		System.out.println("===================");
+		
 		
 		
 //		test2.autofill();
 		//test.autoSolve();
-		test.printCells();
+//		test.printCells();
 	}
 }

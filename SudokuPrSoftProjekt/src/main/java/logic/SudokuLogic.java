@@ -151,24 +151,30 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public void hint() {
-		int randomRow = (int)(Math.random() * 9) + 1;
-		int randomCol = (int)(Math.random() * 9) + 1;
+	public boolean hint() {
+		int randomRow = (int)(Math.random() * 8);
+		int randomCol = (int)(Math.random() * 8);
+		int randomGuess = (int)(Math.random() * 9) + 1;
 		
 		for(int row = 0; row < this.cells.length; row++) {
 			for(int col = 0; col < this.cells[row].length; col++) {
-				if(this.cells[row][col].getValue() == 0 && row == randomRow && col == randomCol) {
-					
-				}
-				else if(this.cells[row][col].getValue() != 0 && row == randomRow && col == randomCol) {
-					randomRow = (int)(Math.random() * 9) + 1;
-					randomCol = (int)(Math.random() * 9) + 1;
-					row = -1;
-					col = -1;
+				while(this.cells[row][col].getValue() != 0 && row == randomRow && col == randomCol) {
+					randomRow = (int)(Math.random() * 8);
+					randomCol = (int)(Math.random() * 8);
+					row = 0;
+					col = 0;
 					break;
+				}
+				if(this.cells[row][col].getValue() == 0 && row == randomRow && col == randomCol) {
+					while(!valid(row, col, randomGuess)) {
+						randomGuess = (int)(Math.random() * 9) + 1;
+					}
+					this.cells[row][col].setValue(randomGuess);
+					return true;
 				}
 			}
 		}
+		return false;
 	}
 
 
