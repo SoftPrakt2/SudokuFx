@@ -74,7 +74,6 @@ public class SudokuController extends BasicController {
 					if (model.valid(j, i, Integer.parseInt(sudokuField[i][j].getText()))) {
 						sudokuField[i][j].setDisable(true);
 						model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
-
 					} else {
 						help = false;
 					}
@@ -90,10 +89,10 @@ public class SudokuController extends BasicController {
 			}
 		}
 
-		model.printCells();
+//		model.printCells();
 
-		model.solveSudoku();
-		model.printCells();
+//		model.solveSudoku();
+//		model.printCells();
 	}
 
 	// in abstrakte klasse
@@ -106,30 +105,9 @@ public class SudokuController extends BasicController {
 	}
 
 	// same
-	public boolean compareResult(SudokuField[][] sudokuField) {
-//		boolean result = true;
-//		model.solveSudoku();
-//
-//		for (int i = 0; i < sudokuField.length; i++) {
-//			for (int j = 0; j < sudokuField[i].length; j++) {
-//				if (!sudokuField[i][j].getText().equals(Integer.toString(model.getCells()[j][i].getValue()))
-//						&& !sudokuField[i][j].getText().equals("")) {
-//					sudokuField[i][j].setStyle("-fx-text-fill: red");
-//					result = false;
-//				}
-//				if (sudokuField[i][j].getText().equals(""))
-//					result = false;
-//
-//				 if (sudokuField[i][j].getText().equals("")) {
-//					sudokuField[i][j].setStyle("-fx-text-fill: black");
-//				}  if(sudokuField[i][j].getText().equals(Integer.toString(model.getCells()[j][i].getValue()))){
-//					sudokuField[i][j].setStyle("-fx-text-fill: green");
-//					sudokuField[i][j].setDisable(true);
-//				}
-//			}
-//		}
-		
+	public boolean compareResult(SudokuField[][] sudokuField) {		
 		boolean result = false;
+		int count = 0;
 
         for(int row = 0; row < sudokuField.length; row++) {
             for(int col = 0; col < sudokuField[row].length; col++) {
@@ -141,36 +119,30 @@ public class SudokuController extends BasicController {
                }
             }
         }
-        int count = 0;
-        int count2 = 0;
 
         for(int row = 0; row < sudokuField.length; row++) {
             for(int col = 0; col < sudokuField[row].length; col++) {
-                if(!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].isDisabled()) {
-                    model.getCells()[row][col].setValue(0);
-                    if(!model.valid(row, col, Integer.parseInt(sudokuField[col][row].getText()))) {
-//                        model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-                    	model.setCell(row, col, Integer.parseInt(sudokuField[col][row].getText()));
-                        sudokuField[col][row].setStyle("-fx-text-fill: red");
-                        count++;
-                    }
-                    else {
-                        sudokuField[col][row].setStyle("-fx-text-fill: black");
-                    }
+                if(!sudokuField[col][row].getText().equals("")) {
+                	count++;
+                	if(!sudokuField[col][row].isDisabled()) {
+                		model.getCells()[row][col].setValue(0);
+                        if(!model.valid(row, col, Integer.parseInt(sudokuField[col][row].getText()))) {
+//                            model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+                        	model.setCell(row, col, Integer.parseInt(sudokuField[col][row].getText()));
+                            sudokuField[col][row].setStyle("-fx-text-fill: red");
+                            result = false;
+                        }
+                        else {
+                            sudokuField[col][row].setStyle("-fx-text-fill: black");
+                        }
+                	}
                 }
             }
         }
-        for(int row = 0; row < sudokuField.length; row++) {
-            for(int col = 0; col < sudokuField[row].length; col++) {
-            	if(!sudokuField[col][row].getText().equals("")) {
-            		count2++;
-            	}
-            }
+        if (count == 81 && result) {
+        	return true;
         }
-        if (count == 0 && count2 == 81) {
-        	result = true;
-        }
-        return result;
+        return false;
 	}
 
 	public void autoSolveHandler(ActionEvent e) {
