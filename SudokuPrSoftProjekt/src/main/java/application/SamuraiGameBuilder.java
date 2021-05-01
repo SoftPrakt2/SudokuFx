@@ -3,7 +3,7 @@ package application;
 
 
 import controller.BasicController;
-import controller.SamuraiController;
+import controller.GameController;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +12,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
+import logic.Gamestate;
+import logic.SamuraiLogic;
 
 public class SamuraiGameBuilder extends BasicGameBuilder {
 	
@@ -33,7 +35,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	    createMenuBar(pane);
 	   
 	    
-	    controller = new SamuraiController(this);
+	    controller = new GameController(this, new SamuraiLogic(Gamestate.OPEN, 0.0, false));
 	    
 	    hintButton.setOnAction(controller::createGameHandler);
 	    
@@ -72,7 +74,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				
 				StackPane cellEmpty = new StackPane();
 				//cellEmpty.getStyleClass().add("hidden");
-				SudokuField empty = new SudokuField("-");
+				SudokuField empty = new SudokuField("-1");
 				empty.setStyle("-fx-pref-width: 2em;");
 				
 				

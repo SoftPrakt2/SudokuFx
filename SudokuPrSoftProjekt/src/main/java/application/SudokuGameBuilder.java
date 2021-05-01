@@ -1,7 +1,7 @@
 package application;
 
 import controller.BasicController;
-import controller.SudokuController;
+import controller.GameController;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +11,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import logic.Gamestate;
+import logic.SudokuLogic;
 
 public class SudokuGameBuilder extends BasicGameBuilder {
 	
@@ -31,7 +33,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		pane.setCenter(createBoard());
 		pane.setPadding(new Insets(50,50,50,50));
 		
-		controller =  new SudokuController(this);
+		controller =  new GameController(this, new SudokuLogic(Gamestate.OPEN, 0.0, false));
 	   createPlayButtons(pane);
 	   createMenuBar(pane);
 	  

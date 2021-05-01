@@ -71,11 +71,7 @@ public abstract class BasicGameLogic{
 	public abstract boolean checkCol(int col, int guess);
 	public abstract boolean checkBox(int row, int col, int guess);
 	public abstract boolean valid(int row, int col, int guess);
-	
-	
-	
-	
-
+		
 	public abstract void setUpLogicArray();
 	
 	public abstract void createSudoku();

@@ -7,20 +7,13 @@ import application.SudokuField;
 
 public class SamuraiLogic extends BasicGameLogic {
 	
-	private Cell[] cells;
-	private Cell[] cellsCenter;
-	private Cell[] cellsOne;
-	private Cell[] cellsTwo;
-	private Cell[] cellsThree;
-	private Cell[] cellsFour;
+	private Cell[][] cells;
 	
-public SamuraiLogic(Gamestate gamestate, double timer, boolean isCorrect) {	super(gamestate, timer, isCorrect);
-		this.cells = new Cell[441];
-		this.cellsCenter = new Cell[81];
-		this.cellsOne = new Cell[81];
-		this.cellsTwo = new Cell[81];
-		this.cellsFour = new Cell[81];
+	public SamuraiLogic(Gamestate gamestate, double timer, boolean isCorrect) {	
+		super(gamestate, timer, isCorrect);
+		this.cells = new Cell [21][21];		
 	}
+
 
 @Override
 public boolean checkRow(int row, int guess) {
@@ -49,7 +42,6 @@ public boolean valid(int row, int col, int guess) {
 @Override
 public void setUpLogicArray() {
 	// TODO Auto-generated method stub
-	
 }
 
 @Override
@@ -77,15 +69,13 @@ public void difficulty(int diff) {
 }
 
 @Override
-public void printCells() {
-	// TODO Auto-generated method stub
-	
+public void printCells() {	
 }
 
 @Override
 public Cell[][] getCells() {
 	// TODO Auto-generated method stub
-	return null;
+	return this.cells;
 }
 
 @Override

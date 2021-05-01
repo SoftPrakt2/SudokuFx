@@ -255,8 +255,8 @@ public class SudokuLogic extends BasicGameLogic {
 				System.out.println("-------------------");
 			}
 		}
-	}
-		
+	}	
+	
 		//muss noch besprochen werden in welche klasse die methoden gehören
 	
 		//updatet den stand des sudoku arrays auf den stand des logik arrays, nach autosolve immer?
