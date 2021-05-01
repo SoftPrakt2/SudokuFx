@@ -75,53 +75,76 @@ public class SudokuLogic extends BasicGameLogic {
 
 
 	//erstellt generell sudoku spiel mit richtigen ziffern
-	public void createSudoku() {
-		int a;
-		int counter;
-		int globalCounter = 0;
-		int universalCounter = 0;
-		boolean isTrueOrFalse = false;
+	public boolean createSudoku() {
+//		int a;
+//		int counter;
+//		int globalCounter = 0;
+//		int universalCounter = 0;
+//		boolean isTrueOrFalse = false;
+//		
+//		for(int row = 0; row < this.cells.length; row++) {
+//			counter = 0;
+//			for(int col = 0; col < this.cells[row].length; col++) {
+//				a = (int) (Math.random() * 9) + 1;
+//				isTrueOrFalse = valid(row, col, a);
+//				globalCounter++;
+//				universalCounter++;
+//				if(isTrueOrFalse) {
+//					this.cells[row][col].setValue(a);
+//				}
+//				else {
+//					while(!isTrueOrFalse) {
+//						counter++;
+//						a = (int) (Math.random() * 9) + 1;
+//						isTrueOrFalse = valid(row, col, a);
+//						if(isTrueOrFalse) {
+//							this.cells[row][col].setValue(a);;
+//							break;
+//						}
+//						if(counter == 100) {
+//							for(int colTwo = 0; colTwo < cells[row].length; colTwo++) {
+//								this.cells[row][colTwo].setValue(0);   
+//							}
+//							col = -1;
+//							counter = 0;
+//							break;
+//						}
+//						if(globalCounter == 5000) {
+//							row = 0;
+//							col = 0;
+//							globalCounter = 0;
+//							break;
+//						}
+//						globalCounter++;
+//						universalCounter++;
+//					}
+//				}
+//			}
+//		}
+//		System.out.println("Global Counter = " + universalCounter);
 		
 		for(int row = 0; row < this.cells.length; row++) {
-			counter = 0;
 			for(int col = 0; col < this.cells[row].length; col++) {
-				a = (int) (Math.random() * 9) + 1;
-				isTrueOrFalse = valid(row, col, a);
-				globalCounter++;
-				universalCounter++;
-				if(isTrueOrFalse) {
-					this.cells[row][col].setValue(a);
-				}
-				else {
-					while(!isTrueOrFalse) {
+				if(this.cells[row][col].getValue() == 0) {
+					for(int y = 0; y < this.cells.length; y++) {
 						counter++;
-						a = (int) (Math.random() * 9) + 1;
-						isTrueOrFalse = valid(row, col, a);
-						if(isTrueOrFalse) {
-							this.cells[row][col].setValue(a);;
-							break;
-						}
-						if(counter == 100) {
-							for(int colTwo = 0; colTwo < cells[row].length; colTwo++) {
-								this.cells[row][colTwo].setValue(0);   
+						int a = (int)(Math.random() * 9) + 1;
+						if(valid(row, col, a) && !this.cells[row][col].isReal) {
+							this.cells[row][col].setValue(a);
+							if(solveSudoku()) {
+								return true;
 							}
-							col = -1;
-							counter = 0;
-							break;
+							else {
+								this.cells[row][col].setValue(0);
+							}
 						}
-						if(globalCounter == 5000) {
-							row = 0;
-							col = 0;
-							globalCounter = 0;
-							break;
-						}
-						globalCounter++;
-						universalCounter++;
 					}
+					return false;
 				}
 			}
 		}
-		System.out.println("Global Counter = " + universalCounter);	
+		System.out.println(counter);
+		return true;
 	}
 	
 	static int counter = 0;

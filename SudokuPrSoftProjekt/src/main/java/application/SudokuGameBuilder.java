@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import logic.Gamestate;
+import logic.SamuraiLogic;
 import logic.SudokuLogic;
 
 public class SudokuGameBuilder extends BasicGameBuilder {

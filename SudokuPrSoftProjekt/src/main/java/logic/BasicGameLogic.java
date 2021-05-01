@@ -74,7 +74,7 @@ public abstract class BasicGameLogic{
 		
 	public abstract void setUpLogicArray();
 	
-	public abstract void createSudoku();
+	public abstract boolean createSudoku();
 	
 	public abstract boolean hint();
 	
