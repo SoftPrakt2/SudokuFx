@@ -8,6 +8,8 @@ import application.OverviewStage;
 import application.SudokuField;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import logic.BasicGameLogic;
 import logic.Gamestate;
@@ -31,6 +33,7 @@ public class GameController extends BasicController {
 		scene.setStartTime(System.currentTimeMillis());
         scene.setGamePoints(10);
         scene.getGameLabel().setText("Game ongoing!");
+        model.setGameState(Gamestate.OPEN);
 	}
 
 	public void newGameHandler(ActionEvent e) {
@@ -44,6 +47,8 @@ public class GameController extends BasicController {
 		scene.setStartTime(System.currentTimeMillis());
 		scene.setGamePoints(10);
 		scene.getGameLabel().setText("");
+        model.setGameState(Gamestate.OPEN);
+        scene.getCheckButton().setDisable(false);
 		count = 0;
 	}
 
@@ -57,6 +62,8 @@ public class GameController extends BasicController {
 		scene.setStartTime(System.currentTimeMillis());
         scene.setGamePoints(10);
         scene.getGameLabel().setText("Game ongoing!");
+        model.setGameState(Gamestate.OPEN);
+        scene.getCheckButton().setDisable(false);
 	}
 
 	public void manuelDoneHandler(ActionEvent e) {
@@ -146,7 +153,7 @@ public class GameController extends BasicController {
 	        return result;
 	}
 
-	public void autoSolveHandler(ActionEvent e) {
+	public void autoSolveHandler(ActionEvent e) {		
 		if(compareResult(sudokuField)) {
 			for(int row = 0; row < sudokuField.length; row++) {
 	            for(int col = 0; col < sudokuField[row].length; col++) {
@@ -156,41 +163,62 @@ public class GameController extends BasicController {
 	            }
 	        }
 			model.solveSudoku();
+			model.setGameState(Gamestate.AutoSolved);
 //			model.printCells();
 			connectArrays(scene.getTextField());
 		}
 		else {
+			for(int row = 0; row < sudokuField.length; row++) {
+	            for(int col = 0; col < sudokuField[row].length; col++) {
+	               if(!sudokuField[col][row].getText().equals("")) {
+	                   model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+	               }
+	               else {
+	            	   model.getCells()[row][col].setValue(0);
+	               }
+	            }
+	        }
+			for(int row = 0; row < sudokuField.length; row++) {
+	            for(int col = 0; col < sudokuField[row].length; col++) {
+	               if(!sudokuField[col][row].getText().equals("")) {
+	                   model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+	               }
+	            }
+	        }
 			scene.getGameLabel().setText("Please remove the conflicts before autosolving!");
 		}
 	}
 	
 	public void checkHandler(ActionEvent e) {
-//		model.solveSudoku();
-//		compareResult(sudokuField);
-		boolean gameState = compareResult(sudokuField);
-		long gameTime;
-		long sek;
-		long endTime = System.currentTimeMillis();
-		
-		if(gameState && count == sudokuField.length * sudokuField.length) {
-			gameTime = (endTime  - scene.getStartTime())/1000;
-			
-			if(gameTime < 60) {
-				scene.getGameLabel().setText("Congratulations you won! Points: Points: " + scene.getGamePoints()
-				+ " Time: " + gameTime + "s");
-			} else {
-				gameTime = gameTime/60;
-				sek = gameTime%60;
-				scene.getGameLabel().setText("Congratulations you won! Points: " + scene.getGamePoints() + "Time: "
-						+ gameTime + "min" + sek + " sek");
-			}	
-		} else if(!gameState || count != sudokuField.length * sudokuField.length) {
-			scene.getGameLabel().setText("Sorry your Sudoku is not correct yet");
-			if (scene.getGamePoints() > 0)
-				scene.setGamePoints(scene.getGamePoints() - 1);
-		}
+//      model.solveSudoku();
+//      compareResult(sudokuField);
+      boolean gameState = compareResult(sudokuField);
+      long gameTime;
+      long sek;
+      long endTime = System.currentTimeMillis();
 
-	}
+      if(gameState && count == sudokuField.length * sudokuField.length) {
+          long diff = (endTime  - scene.getStartTime())/1000;
+          model.setGameState(Gamestate.DONE);
+          scene.getCheckButton().setDisable(true);
+          scene.setSecondsPlayed(diff);
+          System.out.println(scene.getMinPlayed());
+          if(diff < 60) {
+          scene.getGameLabel().setText("Congratulations you won! Points: " + scene.getGamePoints() + " Time: " + scene.getSecondsPlayed() + " sek");
+          }
+          else {
+              scene.setMinPlayed(diff/60);
+              scene.setSecondsPlayed(diff%60);
+              scene.getGameLabel().setText("Congratulations you won! Points: " + scene.getGamePoints() + " Time: " + scene.getMinPlayed() + " min " + scene.getSecondsPlayed() + " s ");
+          }
+
+      } else if(!gameState || count != sudokuField.length * sudokuField.length) {
+          scene.getGameLabel().setText("Sorry your Sudoku is not correct yet");
+          if (scene.getGamePoints() > 0)
+              scene.setGamePoints(scene.getGamePoints() - 1);
+      }
+
+  }
 
 	// test für speicher und lade sachen, sicher besser in anderer klasse
 	FileChooser fileChooser = new FileChooser();
@@ -243,8 +271,8 @@ public class GameController extends BasicController {
 					String number = Integer.toString(model.getCells()[row][col].getValue());
 					sudokuField[col][row].setText(number);
 					sudokuField[col][row].setStyle("-fx-text-fill: blue");
+					sudokuField[col][row].setFont(Font.font("Verdana", FontWeight.BOLD, 16));
 				}
-
 			}
 		}
 	}

@@ -56,7 +56,7 @@ import application.SudokuField;
 
 public abstract class BasicGameLogic{
 
-	private Gamestate gamestate;
+	protected Gamestate gamestate;
 	private double timer;
 	private boolean isCorrect;
 	
@@ -76,7 +76,7 @@ public abstract class BasicGameLogic{
 	
 	public abstract boolean createSudoku();
 	
-	public abstract boolean hint();
+	public abstract int [] hint();
 	
 	public abstract boolean solveSudoku();
 	
@@ -88,7 +88,9 @@ public abstract class BasicGameLogic{
 	
 	public abstract void setCell(int col, int row, int guess);
 	
-	public abstract void validManualInput(Cell[][] cells);
+	public abstract void setGameState(Gamestate gamestate);
+	
+	public abstract Gamestate getGameState();
 	
 //	public abstract void connectArrays(SudokuField[][] sudokuField);
 //	

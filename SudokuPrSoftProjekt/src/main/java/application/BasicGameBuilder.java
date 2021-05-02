@@ -46,6 +46,10 @@ public abstract class BasicGameBuilder {
 	
 //variablen für die zeitmessung
 	protected long startTime;
+	
+	protected long minPlayed;
+
+    protected long secondsPlayed;
 
 	protected SudokuField[][] textField;
 	
@@ -228,7 +232,6 @@ public abstract class BasicGameBuilder {
 		this.startTime = startTime;
 	}
 	
-	
 	public int getGamePoints() {
 		return gamePoints;
 	}
@@ -256,6 +259,25 @@ public abstract class BasicGameBuilder {
 		return difficulty;
 	}
 	
+	public long getSecondsPlayed() {
+        return secondsPlayed;
+    }
+
+    public void setSecondsPlayed(long secondsPlayed) {
+        this.secondsPlayed = secondsPlayed;
+    }
+    
+    public long getMinPlayed() {
+        return minPlayed;
+    }
+
+    public void setMinPlayed(long minPlayed) {
+        this.minPlayed = minPlayed;
+    }
+    
+    public Button getCheckButton() {
+    	return this.check;
+    }
 
 	public abstract Scene getScene();
 

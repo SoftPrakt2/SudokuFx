@@ -37,10 +37,27 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	    
 	    controller = new GameController(this, new SamuraiLogic(Gamestate.OPEN, 0.0, false));
 	    
-	    hintButton.setOnAction(controller::createGameHandler);
-	    
-	    mainMenuItem.setOnAction(controller::switchToMainMenu);
-	    autosolve.setOnAction(controller::newGameHandler);
+	    createGameItem.setOnAction(controller::createGameHandler);
+		  
+		  autosolve.setOnAction(controller::checkHandler);
+		  
+		  clearFieldItem.setOnAction(controller::newGameHandler);
+		  
+		  save.setOnAction(controller::saveHandler);
+		  
+		  check.setOnAction(controller::checkHandler);
+		  
+		  autosolve.setOnAction(controller::autoSolveHandler);
+		  
+		  done.setOnAction(controller::manuelDoneHandler);
+
+		  reset.setOnAction(controller::resetHandler);
+		  
+		  mainMenuItem.setOnAction(controller::switchToMainMenu);
+		 
+		  pane.maxWidthProperty().bind(samurai.widthProperty());
+		  
+		  hintButton.setOnAction(controller::hintHandeler);
 	
 	    samurai.getStylesheets().add("/CSS/sudoku.css");
 	    
@@ -122,10 +139,12 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				 
 				 playBoard.add(cell,i,j);
 			}
+			
+			
 			}
 			
 		}
-		textField[12][4].setText("3");
+//		textField[12][4].setText("3");
 		playBoard.setAlignment(Pos.CENTER);
 	//	playBoard.add(new Line(0,0,0,0),1,1);   
 		
@@ -135,23 +154,17 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 	
 
-
+	public void createNumbers() {
+		controller.createGame(difficulty);
+	}
 
 	@Override
 	public Scene getScene() {
 		return samurai;
 	}
 
-
-
-	
-
-
-
-	@Override
-	public void createNumbers() {
-		// TODO Auto-generated method stub
-		System.out.println("just test");
+	public SudokuField[][] getTextField() {
+		return textField;
 	}
 
 
