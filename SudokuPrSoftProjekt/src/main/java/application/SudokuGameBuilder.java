@@ -1,6 +1,7 @@
 package application;
 
-import controller.BasicController;
+import java.util.Iterator;
+
 import controller.GameController;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
@@ -12,66 +13,38 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import logic.Gamestate;
-import logic.SamuraiLogic;
 import logic.SudokuLogic;
 
 public class SudokuGameBuilder extends BasicGameBuilder {
-	
-	 
-	
-	
-	  BorderPane pane = new BorderPane();
-	  Scene sudoku = new Scene(pane,670,670);
-	  BasicController controller;
-	  
-	  
-		
-	
-	public Scene initializeScene() {
-		textField = new SudokuField[9][9];
-		
-		gamePoints = 10;
-		pane.setCenter(createBoard());
-		pane.setPadding(new Insets(50,50,50,50));
-		
-		controller =  new GameController(this, new SudokuLogic(Gamestate.OPEN, 0.0, false));
-	   createPlayButtons(pane);
-	   createMenuBar(pane);
-	  
-	   
-	  createGameItem.setOnAction(controller::createGameHandler);
-	  
-	  autosolve.setOnAction(controller::checkHandler);
-	  
-	  clearFieldItem.setOnAction(controller::newGameHandler);
-	  
-	  save.setOnAction(controller::saveHandler);
-	  
-	  check.setOnAction(controller::checkHandler);
-	  
-	  autosolve.setOnAction(controller::autoSolveHandler);
-	  
-	  done.setOnAction(controller::manuelDoneHandler);
 
-	  reset.setOnAction(controller::resetHandler);
-	  
-	  mainMenuItem.setOnAction(controller::switchToMainMenu);
-	 
-	  pane.maxWidthProperty().bind(sudoku.widthProperty());
-	  
-	  hintButton.setOnAction(controller::hintHandeler);
-	  
-	
-	  sudoku.getStylesheets().add("/CSS/sudoku.css");
-	  
-	  
-	return sudoku;
-	}
+	  public SudokuGameBuilder () {
+		  	super();
+		  	scene = new Scene(pane,670,670);
+		  	textField = new SudokuField[9][9];
+		  	gameType = "Sudoku";
+		   
+	  }
+
+	  public Scene initializeScene() {
+		
+		  controller =  new GameController(this, new SudokuLogic(Gamestate.OPEN, 0.0, false));
+	   
+	        pane.setCenter(createBoard());
+	        pane.setPadding(new Insets(50,50,50,50));
+
+	       createMenuBar(pane);
+	       createPlayButtons(pane);
+
+	      scene.getStylesheets().add("/CSS/sudoku.css");
+
+
+	    return scene;
+	    }
 	
 	
 	//statt createGame in inizializeScene? erstellt die zahlen im spielfeld nach der eingestellten schwierigkeit
 	
-	
+
 
 	@Override
 	public GridPane createBoard() {
@@ -93,7 +66,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(12));
 			
 					textField[i][j] = new SudokuField("");
-			
 				
 					textField[i][j].setMaxSize(50, 50);
 					textField[i][j].setFont(Font.font("Arial", FontWeight.BOLD,15));
@@ -128,12 +100,15 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 
 		@Override
 		public Scene getScene() {
-			return sudoku;
+			return scene;
 		}
 
 		public SudokuField[][] getTextField() {
 			return textField;
 		}
+		
+		
+		
 		
 
 }

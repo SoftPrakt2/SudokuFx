@@ -1,8 +1,5 @@
 package application;
 
-
-
-import controller.BasicController;
 import controller.GameController;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
@@ -14,57 +11,33 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import logic.Gamestate;
 import logic.SamuraiLogic;
+import logic.SudokuLogic;
 
 public class SamuraiGameBuilder extends BasicGameBuilder {
-	
-	
-	
-	 BorderPane pane;
-	 Scene samurai;
-	 BasicController controller;
-	
-	 //anders gemacht 2404
-	public Scene initializeScene() {
-		
-		pane = new BorderPane();
-		samurai = new Scene(pane,1000,1000);
-	
-		pane.setCenter(createBoard());
-	
-	    createPlayButtons(pane);
-	    createMenuBar(pane);
-	   
-	    
-	    controller = new GameController(this, new SamuraiLogic(Gamestate.OPEN, 0.0, false));
-	    
-	    createGameItem.setOnAction(controller::createGameHandler);
-		  
-		  autosolve.setOnAction(controller::checkHandler);
-		  
-		  clearFieldItem.setOnAction(controller::newGameHandler);
-		  
-		  save.setOnAction(controller::saveHandler);
-		  
-		  check.setOnAction(controller::checkHandler);
-		  
-		  autosolve.setOnAction(controller::autoSolveHandler);
-		  
-		  done.setOnAction(controller::manuelDoneHandler);
 
-		  reset.setOnAction(controller::resetHandler);
-		  
-		  mainMenuItem.setOnAction(controller::switchToMainMenu);
-		 
-		  pane.maxWidthProperty().bind(samurai.widthProperty());
-		  
-		  hintButton.setOnAction(controller::hintHandeler);
+	 public SamuraiGameBuilder () {
+		  	super();
+		  	scene = new Scene(pane,1000,1000);
+		  	textField = new SudokuField[21][21];
+		  	gameType = "Sudoku";
+		   
+	  }
 	
-	    samurai.getStylesheets().add("/CSS/sudoku.css");
-	    
-	  return samurai;
+	public Scene initializeScene() {
+	 		 controller =  new GameController(this, new SamuraiLogic(Gamestate.OPEN, 0.0, false));
+	 		   
+		        pane.setCenter(createBoard());
+		        pane.setPadding(new Insets(50,50,50,50));
+
+		       createMenuBar(pane);
+		       createPlayButtons(pane);
+
+		      scene.getStylesheets().add("/CSS/sudoku.css");
+
+
+		    return scene;
 	}
 	
-
 
 	@Override
 	public GridPane createBoard() {
@@ -75,7 +48,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		playBoard.setVgap(1);
 		playBoard.setHgap(1);
 		
-		textField = new SudokuField[21][21];
+		//textField = new SudokuField[21][21];
 		
 		
 		PseudoClass right = PseudoClass.getPseudoClass("right");
@@ -91,7 +64,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				
 				StackPane cellEmpty = new StackPane();
 				//cellEmpty.getStyleClass().add("hidden");
-				SudokuField empty = new SudokuField("-1");
+				SudokuField empty = new SudokuField("-");
 				empty.setStyle("-fx-pref-width: 2em;");
 				
 				
@@ -102,19 +75,19 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 			if((i == 9 || i == 10 || i ==11) && (j < 6 || j > 14)) {
 				
 			//	playBoard.add(cellEmpty,spalte,zeile);
-				 
+				textField[i][j].setPlayable(false); 
+				
 			} else if((i <6 || i > 14) && (j ==9 || j == 10 || j == 11)) {
-
+				textField[i][j].setPlayable(false); 
 			//	playBoard.add(cellEmpty,spalte,zeile);
 
 			} else {
 				
-				SudokuField sudokuField = new SudokuField("");
-				
-				textField[i][j] = sudokuField;
+			
+				textField[i][j] = new SudokuField("");	
 				textField[i][j].setMaxSize(50, 50);
 				textField[i][j].setAlignment(Pos.CENTER);
-				
+				textField[i][j].setPlayable(true);
 			
 				
 				cell.pseudoClassStateChanged(right, i == 2 || i == 5 || i == 11 || i == 14 || i == 17);
@@ -130,21 +103,19 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	            if(j==11) cell.pseudoClassStateChanged(bottom,j==11);
 	          //  if(i== 10) cell.pseudoClassStateChanged(bottom,i==10);
 	            
-	        	sudokuField.setDisable(true);
+	            textField[i][j].setDisable(true);
 	            
 				
 				
 			
-				 cell.getChildren().add(sudokuField);
+				 cell.getChildren().add(textField[i][j]);
 				 
 				 playBoard.add(cell,i,j);
 			}
-			
-			
 			}
 			
 		}
-//		textField[12][4].setText("3");
+		textField[12][4].setText("3");
 		playBoard.setAlignment(Pos.CENTER);
 	//	playBoard.add(new Line(0,0,0,0),1,1);   
 		
@@ -154,17 +125,23 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 	
 
-	public void createNumbers() {
-		controller.createGame(difficulty);
-	}
+
 
 	@Override
 	public Scene getScene() {
-		return samurai;
+		return scene;
 	}
 
-	public SudokuField[][] getTextField() {
-		return textField;
+
+
+	
+
+
+
+	@Override
+	public void createNumbers() {
+		// TODO Auto-generated method stub
+		controller.createGame(difficulty);
 	}
 
 

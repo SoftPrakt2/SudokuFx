@@ -184,7 +184,6 @@ public class SamuraiLogic extends BasicGameLogic {
 			random = (int) (Math.random() * 5) + 1;
 			if (random == 1) {
 				helpForHint = topLeft.hint();
-				if (helpForHint != null) {
 					if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
 							&& center.valid(helpForHint[0] - 6, helpForHint[1] - 6,
 									topLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
@@ -192,12 +191,9 @@ public class SamuraiLogic extends BasicGameLogic {
 						correctRandom = true;
 					}
 					break;
-				}
-				
 			}
 			if (random == 2) {
 				helpForHint = topRight.hint();
-				if (helpForHint != null) {
 					if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
 							&& center.valid(helpForHint[0] - 6, helpForHint[1] + 6,
 									topRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
@@ -205,11 +201,9 @@ public class SamuraiLogic extends BasicGameLogic {
 						correctRandom = true;
 					}
 					break;
-				}
 			}
 			if (random == 3) {
 				helpForHint = center.hint();
-				if (helpForHint != null) {
 					if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
 							&& topLeft.valid(helpForHint[0] + 6, helpForHint[1] + 6,
 									center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
@@ -235,11 +229,9 @@ public class SamuraiLogic extends BasicGameLogic {
 						correctRandom = true;
 					}
 					break;
-				}
 			}
 			if (random == 4) {
 				helpForHint = bottomLeft.hint();
-				if (helpForHint != null) {
 					if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
 							&& center.valid(helpForHint[0] + 6, helpForHint[1] - 6,
 									bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
@@ -247,11 +239,9 @@ public class SamuraiLogic extends BasicGameLogic {
 						correctRandom = true;
 					}
 					break;
-				}
 			}
 			if (random == 5) {
 				helpForHint = bottomRight.hint();
-				if (helpForHint != null) {
 					if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
 							&& center.valid(helpForHint[0] + 6, helpForHint[1] + 6,
 									bottomRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
@@ -260,9 +250,7 @@ public class SamuraiLogic extends BasicGameLogic {
 					}
 					break;
 				}
-			}
 		}
-
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				this.getCells()[row][col].setValue(topLeft.getCells()[row][col].getValue());
@@ -443,5 +431,4 @@ public class SamuraiLogic extends BasicGameLogic {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

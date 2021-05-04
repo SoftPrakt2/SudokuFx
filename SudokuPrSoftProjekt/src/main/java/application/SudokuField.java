@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 
 public class SudokuField extends TextField{
 	
+	boolean playable = true;
 	
 	public SudokuField(String txt) {
 		super(txt);
@@ -22,16 +23,11 @@ public class SudokuField extends TextField{
 	            }
 	        });
 	    }
-	 
-	
-	
-	 
-	 
+
 	 public void onlyOneNumber() {
 		 this.textProperty().addListener(
 			        (observable,oldV,newV)-> {
-			            if(newV.length() > 1) this.setText(oldV);
-			            
+			            if(newV.length() > 1) this.setText(oldV);   
 			        }
 			);
 	 }
@@ -56,6 +52,10 @@ public class SudokuField extends TextField{
 		this.textProperty().addListener((observable,oldV,newV) -> 
 		this.setStyle("-fx-text-fill: black"));
 	};
+	
+	public void setPlayable(boolean playable) {
+        this.playable = playable;
+    }
 }
 
 

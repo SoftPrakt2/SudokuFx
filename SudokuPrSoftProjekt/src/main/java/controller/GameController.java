@@ -3,6 +3,7 @@ package controller;
 import java.io.File;
 
 import application.BasicGameBuilder;
+import application.GUI;
 import application.MainMenu;
 import application.OverviewStage;
 import application.SudokuField;
@@ -15,7 +16,7 @@ import logic.BasicGameLogic;
 import logic.Gamestate;
 import logic.SudokuLogic;
 
-public class GameController extends BasicController {
+public class GameController {
 
 	BasicGameBuilder scene;
 	BasicGameLogic model;
@@ -119,7 +120,7 @@ public class GameController extends BasicController {
 
 	        for(int row = 0; row < sudokuField.length; row++) {
 	            for(int col = 0; col < sudokuField[row].length; col++) {
-	               if(!sudokuField[col][row].getText().equals("")) {
+	               if(!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
 	                   model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 	               }
 	               else {
@@ -131,7 +132,7 @@ public class GameController extends BasicController {
 
 	        for(int row = 0; row < sudokuField.length; row++) {
 	            for(int col = 0; col < sudokuField[row].length; col++) {
-	                if(!sudokuField[col][row].getText().equals("")) {
+	                if(!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
 	                	count++;
 	                    model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 
@@ -157,7 +158,7 @@ public class GameController extends BasicController {
 		if(compareResult(sudokuField)) {
 			for(int row = 0; row < sudokuField.length; row++) {
 	            for(int col = 0; col < sudokuField[row].length; col++) {
-	               if(!sudokuField[col][row].getText().equals("")) {
+	               if(!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
 	                   model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 	               }
 	            }
@@ -170,7 +171,7 @@ public class GameController extends BasicController {
 		else {
 			for(int row = 0; row < sudokuField.length; row++) {
 	            for(int col = 0; col < sudokuField[row].length; col++) {
-	               if(!sudokuField[col][row].getText().equals("")) {
+	               if(!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
 	                   model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 	               }
 	               else {
@@ -180,7 +181,7 @@ public class GameController extends BasicController {
 	        }
 			for(int row = 0; row < sudokuField.length; row++) {
 	            for(int col = 0; col < sudokuField[row].length; col++) {
-	               if(!sudokuField[col][row].getText().equals("")) {
+	               if(!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
 	                   model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 	               }
 	            }
@@ -238,7 +239,7 @@ public class GameController extends BasicController {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				String number = Integer.toString(model.getCells()[j][i].getValue());
-				if (sudokuField[i][j].getText().equals("") && !number.equals("0")) {
+				if ((!sudokuField[i][j].getText().equals("") || !sudokuField[i][j].getText().equals("-")) && !number.equals("0")) {
 					sudokuField[i][j].setText(number);
 				}
 			}
@@ -262,12 +263,11 @@ public class GameController extends BasicController {
 		}
 	}
 
-	@Override
 	public void hintHandeler(ActionEvent e) {
 		model.hint();
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
-				if (model.getCells()[row][col].getValue() != 0 && sudokuField[col][row].getText().equals("")) {
+				if (model.getCells()[row][col].getValue() != 0 && sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
 					String number = Integer.toString(model.getCells()[row][col].getValue());
 					sudokuField[col][row].setText(number);
 					sudokuField[col][row].setStyle("-fx-text-fill: blue");
@@ -275,5 +275,14 @@ public class GameController extends BasicController {
 				}
 			}
 		}
+	}
+	
+	public void switchToMainMenu(ActionEvent e) {
+		
+		
+		//so bleibt das spiel in der scene wenn man einmal auf hauptmenü geht und dann wieder zurück
+		GUI.getStage().setScene(GUI.getMainMenu().getScene());
+		
+		//wenn man will das es neu startet müsste man mainmenu initialize machen
 	}
 }

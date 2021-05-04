@@ -3,7 +3,7 @@ package application;
 import java.io.File;
 import java.util.stream.Stream;
 
-import controller.BasicController;
+import controller.GameController;
 import controller.MainMenuController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -30,26 +30,39 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import logic.Gamestate;
+import logic.SudokuLogic;
 
 public abstract class BasicGameBuilder {
-
+	
+	protected Scene scene;
+	protected BorderPane pane;
 	protected VBox playButtonMenu;
 	protected Button check;
 	protected Button owngame;
 	protected Button autosolve;
 	protected Button create;
+	Button empty;
 	protected ToggleButton hintButton;
 	protected Label gameTextLabel;
+	protected HBox buttonBox;
+	HBox gameLabelBox;
+	HBox emptySpaceBox;
+	
+	
 	
 	protected Button done;
+	
+	  public BasicGameBuilder () {
+		  pane = new BorderPane();
+	  }
+	
 	
 	
 //variablen für die zeitmessung
 	protected long startTime;
 	
-	protected long minPlayed;
-
-    protected long secondsPlayed;
+	protected String gameType;
 
 	protected SudokuField[][] textField;
 	
@@ -58,15 +71,15 @@ public abstract class BasicGameBuilder {
 	
 	//punkte für den spielstand 
 	protected int gamePoints = 10;
-
 	
+	protected long minPlayed;
+	
+	protected long secondsPlayed;
+	
+	protected GameController controller;
 
-	BasicController controller;
+	protected GridPane playBoard;
 
-
-	GridPane playBoard;
-
-	// change back to void
 	public abstract Scene initializeScene();
 	
 	public abstract void createNumbers();
@@ -77,15 +90,13 @@ public abstract class BasicGameBuilder {
 	// creates Vbox and adds several buttons to scene
 	public void createPlayButtons(BorderPane pane) {
 		
-		DoubleProperty fontSize = new SimpleDoubleProperty(10);
 		
-
 		playButtonMenu = new VBox(10);
 		playButtonMenu.setSpacing(10);
 
-		HBox buttonBox = new HBox();
-		HBox gameLabelBox = new HBox();
-		HBox emptySpaceBox = new HBox();
+		 buttonBox = new HBox();
+		 gameLabelBox = new HBox();
+		 emptySpaceBox = new HBox();
 		
 		Button empty = new Button("");
 		empty.setVisible(false);
@@ -106,39 +117,41 @@ public abstract class BasicGameBuilder {
 		
 		owngame.setVisible(false);
 
-		Stream.of(hintButton, check, autosolve, done)
-				.forEach(button -> button.getStyleClass().add("myButton2"));
-		
-		
-		buttonBox.getChildren().addAll(hintButton, autosolve, check, done);
-		buttonBox.setSpacing(5);
-	
-		gameLabelBox.getChildren().addAll(gameTextLabel);
-		
-		
-		//passt größße der buttons an window an
-		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefHeightProperty().bind(pane.heightProperty().divide(22)));
-		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(4.5)));
-		
-		//regelt größe von text in buttons
-		fontSize.bind(pane.widthProperty().add(pane.heightProperty()).divide(100));
-		Stream.of(check, autosolve, hintButton, done)
-		.forEach(button -> button.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString())));
-		
-		
-		buttonBox.setAlignment(Pos.TOP_CENTER);
-		gameLabelBox.setAlignment(Pos.CENTER);
-		playButtonMenu.getChildren().addAll(buttonBox, gameLabelBox,empty);
+		styleButtons();
+		setButtonActions();
 
-		
 		pane.setBottom(playButtonMenu);
 		BorderPane.setAlignment(playButtonMenu, Pos.CENTER);
-		
-		
-		
-	
-		
 	}
+	
+	public void styleButtons() {
+		DoubleProperty fontSize = new SimpleDoubleProperty(10);
+		
+		Stream.of(hintButton, check, autosolve, done).forEach(button -> button.getStyleClass().add("myButton2"));
+
+		buttonBox.getChildren().addAll(hintButton, autosolve, check, done);
+		buttonBox.setSpacing(5);
+
+		gameLabelBox.getChildren().addAll(gameTextLabel);
+
+		//passt größße der buttons an window an
+		Stream.of(hintButton, check, autosolve, done)
+				.forEach(button -> button.prefHeightProperty().bind(pane.heightProperty().divide(22)));
+		Stream.of(hintButton, check, autosolve, done)
+				.forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(4.5)));
+
+		//regelt größe von text in buttons
+		fontSize.bind(pane.widthProperty().add(pane.heightProperty()).divide(100));
+		Stream.of(check, autosolve, hintButton, done).forEach(
+				button -> button.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString())));
+
+		buttonBox.setAlignment(Pos.TOP_CENTER);
+		gameLabelBox.setAlignment(Pos.CENTER);
+		playButtonMenu.getChildren().addAll(buttonBox, gameLabelBox,emptySpaceBox);
+	}
+	
+	
+	
 
 	protected Menu helpMenu;
 	protected MenuItem rules;
@@ -183,7 +196,7 @@ public abstract class BasicGameBuilder {
 		save = new MenuItem("Save");
 		load = new MenuItem("Load");
 
-		load.setOnAction(e -> openFile());
+		//load.setOnAction(e -> openFile());
 
 		file.getItems().addAll(save, load);
 		
@@ -205,20 +218,57 @@ public abstract class BasicGameBuilder {
 		mainMenu.getItems().addAll(mainMenuItem);
 		menuBar.getMenus().addAll(file, editMenu, mainMenu,helpMenu);
 		menuBar.getStylesheets().add("menu-bar");
+		
 
 	}
-
-	public File openFile() {
-		FileChooser chooser = new FileChooser();
-		chooser.setTitle("Choose a Sudoku");
-		File defaultDirectory = new File("d:/sudoku");
-		chooser.setInitialDirectory(defaultDirectory);
-		Stage window = GUI.getStage();
-		File selectedFile = chooser.showOpenDialog(window);
-
-		return selectedFile;
+	
+	
+	public void setButtonActions() {
+		  createGameItem.setOnAction(controller::createGameHandler);
+	      autosolve.setOnAction(controller::checkHandler);
+	      clearFieldItem.setOnAction(controller::newGameHandler);
+	      save.setOnAction(controller::saveHandler);
+	      check.setOnAction(controller::checkHandler);
+	      autosolve.setOnAction(controller::autoSolveHandler);
+	      done.setOnAction(controller::manuelDoneHandler);     
+//	      load.setOnAction(controller::importGame);
+	      reset.setOnAction(controller::resetHandler);
+	      mainMenuItem.setOnAction(controller::switchToMainMenu);
+	      pane.maxWidthProperty().bind(scene.widthProperty());
+	      hintButton.setOnAction(controller::hintHandeler);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
+//	public File openFile() {
+//		FileChooser chooser = new FileChooser();
+//		chooser.setTitle("Choose a Sudoku");
+//		File defaultDirectory = new File("d:/sudoku");
+//		chooser.setInitialDirectory(defaultDirectory);
+//		Stage window = GUI.getStage();
+//		File selectedFile = chooser.showOpenDialog(window);
+//
+//		return selectedFile;
+//	}
+	
 	
 	
 	
@@ -231,6 +281,15 @@ public abstract class BasicGameBuilder {
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
+	
+	public long getMinPlayed() {
+		return minPlayed;
+	}
+	
+	public void setMinPlayed(long minPlayed) {
+		this.minPlayed = minPlayed;
+	}
+	
 	
 	public int getGamePoints() {
 		return gamePoints;
@@ -259,25 +318,27 @@ public abstract class BasicGameBuilder {
 		return difficulty;
 	}
 	
+	
+	public void setGameType(String gameType) {
+		this.gameType = gameType;
+	}
+	
+	public String getGameType() {
+		return gameType;
+	}
+	
 	public long getSecondsPlayed() {
-        return secondsPlayed;
-    }
-
-    public void setSecondsPlayed(long secondsPlayed) {
-        this.secondsPlayed = secondsPlayed;
-    }
-    
-    public long getMinPlayed() {
-        return minPlayed;
-    }
-
-    public void setMinPlayed(long minPlayed) {
-        this.minPlayed = minPlayed;
-    }
-    
-    public Button getCheckButton() {
-    	return this.check;
-    }
+		return secondsPlayed;
+	}
+	
+	public void setSecondsPlayed(long secondsPlayed) {
+		this.secondsPlayed = secondsPlayed;
+	}
+	
+	public Button getCheckButton() {
+		return this.check;
+	}
+	
 
 	public abstract Scene getScene();
 

@@ -21,17 +21,11 @@ public class MainMenuController {
 	OverviewStage overview = new OverviewStage();
 	Stage overviewStage = overview.showOverview("Played", "Played");
 
-	
-
-
 	public int difficulty;
-	
 
 	public MainMenuController(MainMenu menu) {
 		this.menu = menu;
-
 	}
-
 
 	public void handleToSudoku(ActionEvent e) {
 	
@@ -47,7 +41,6 @@ public class MainMenuController {
 	public void handleToFreeForm(ActionEvent e) {
 		game = new FreeFormGameBuilder();
 		playScene = game.initializeScene();
-		
 	}
 
 	public void handleToLoad(ActionEvent e) {
@@ -84,7 +77,4 @@ public class MainMenuController {
 			menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
 			menu.getDifficultyToggle().getSelectedToggle().setSelected(false);
 	}
-
-	
-
 }
