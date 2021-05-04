@@ -1,84 +1,82 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>SudokuFx</groupId>
-  <artifactId>SudokuFx</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  
-   <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-  
-        
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>SudokuFx</groupId>
+	<artifactId>SudokuFx</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
 
- 
-  <sonar.projectKey>SoftPrakt2_SudokuFx</sonar.projectKey>
-  <sonar.organization>softprakt2</sonar.organization>
-  <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-  
-  
-  
-  
-  			
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>11</maven.compiler.source>
+		<maven.compiler.target>11</maven.compiler.target>
 
-</properties> 
+		<sonar.projectKey>SoftPrakt2_SudokuFx</sonar.projectKey>
+		<sonar.organization>softprakt2</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
+	</properties>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.11.1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+		
+
+	</dependencies>
 
 
 
-      
-    <dependencies>
-    
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-controls</artifactId>
-            <version>13</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>13</version>
-        </dependency>
- 
 
-  <dependency>
-   <groupId>junit</groupId>
-    <artifactId>junit</artifactId>
-    <version>4.13.2</version>
-    <scope>test</scope>
-  </dependency>
-  
-  
-  
- 
- 
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+	</build>
 
-</dependencies>
-  
-  				
-  
-  
- 	 <build>
-        <sourceDirectory>src/main/java</sourceDirectory>
-        <testSourceDirectory>test</testSourceDirectory>
-    </build>
-    
-    
-    
-    
-  				  
-    		
-    	
-                  
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
-  
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </project>
