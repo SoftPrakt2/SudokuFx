@@ -56,6 +56,7 @@ public abstract class BasicGameBuilder {
 	  public BasicGameBuilder () {
 		  pane = new BorderPane();
 	  }
+	  
 	
 	
 	
@@ -227,11 +228,11 @@ public abstract class BasicGameBuilder {
 		  createGameItem.setOnAction(controller::createGameHandler);
 	      autosolve.setOnAction(controller::checkHandler);
 	      clearFieldItem.setOnAction(controller::newGameHandler);
-	      save.setOnAction(controller::saveHandler);
 	      check.setOnAction(controller::checkHandler);
 	      autosolve.setOnAction(controller::autoSolveHandler);
 	      done.setOnAction(controller::manuelDoneHandler);     
-//	      load.setOnAction(controller::importGame);
+//		      load.setOnAction(controller::importGame);
+//		      save.setOnAction(controller::saveGame);
 	      reset.setOnAction(controller::resetHandler);
 	      mainMenuItem.setOnAction(controller::switchToMainMenu);
 	      pane.maxWidthProperty().bind(scene.widthProperty());

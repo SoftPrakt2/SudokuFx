@@ -21,6 +21,7 @@ public class Storage {
 	JSONObject jsonObject;
 	JSONParser parser = new JSONParser();
 	
+	
 	public FileChooser setUpFileChooser() {
 		fileChooser = new FileChooser();
 		fileChooser.setTitle("Choose a file");
@@ -47,6 +48,4 @@ public class Storage {
 		return jsonObject;
 	}
 	
-	
-
 }

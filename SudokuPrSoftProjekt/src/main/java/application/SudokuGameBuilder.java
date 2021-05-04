@@ -51,6 +51,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		playBoard = new GridPane();
 	
 		playBoard.setPadding(new Insets(5, 5, 5, 5));
+		
 
 		PseudoClass right = PseudoClass.getPseudoClass("right");
 		PseudoClass bottom = PseudoClass.getPseudoClass("bottom");

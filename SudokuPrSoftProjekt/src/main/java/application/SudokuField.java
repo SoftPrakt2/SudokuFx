@@ -56,19 +56,15 @@ public class SudokuField extends TextField{
 	public void setPlayable(boolean playable) {
         this.playable = playable;
     }
+
+
+			public boolean getPlayable() {
+			    return playable;
+			}
+				
+				
+				
 }
-
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
 	
 	
 	
