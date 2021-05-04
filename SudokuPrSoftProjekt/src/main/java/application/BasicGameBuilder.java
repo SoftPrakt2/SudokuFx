@@ -57,7 +57,7 @@ public abstract class BasicGameBuilder {
 		  pane = new BorderPane();
 	  }
 	  
-	
+	//test2
 	
 	
 //variablen für die zeitmessung
