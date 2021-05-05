@@ -61,7 +61,7 @@
 
   <build>
     <sourceDirectory>SudokuPrSoftProjekt/src/main/java</sourceDirectory>
-
+	  <testSourceDirectory>SudokuPrSoftProjekt/src/test/java/test</testSourceDirectory>
 
     <plugins>
                <plugin>
