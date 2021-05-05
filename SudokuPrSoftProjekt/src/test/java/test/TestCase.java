@@ -1,6 +1,9 @@
 package test;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.*;
 
 import logic.BasicGameLogic;
@@ -23,7 +26,7 @@ public class TestCase {
 		assertTrue(model.getCells()[8][8].getValue() == 0);
 
 		// *createSudoku() *		
-	model.createSudoku();
+		model.createSudoku();
 		assertFalse(model.getCells()[0][0].getValue() == 0);
 		assertFalse(model.getCells()[1][7].getValue() == 0);
 		assertFalse(model.getCells()[8][8].getValue() == 0);
@@ -33,7 +36,6 @@ public class TestCase {
 		assertTrue(model.getCells()[4][4].getValue() != 0);
 		assertTrue(model.getCells()[4][4].getIsReal());
 		
-
 		// *setCell() *		 
 		model.setUpLogicArray();
 		model.createSudoku();

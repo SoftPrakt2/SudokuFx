@@ -32,7 +32,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		       createMenuBar(pane);
 		       createPlayButtons(pane);
 
-		      scene.getStylesheets().add("/CSS/sudoku.css");
+		      scene.getStylesheets().add("/css/sudoku.css");
 
 
 		    return scene;

@@ -19,7 +19,7 @@ public class MainMenuController {
 	BasicGameBuilder game;
 	
 	OverviewStage overview = new OverviewStage();
-	Stage overviewStage = overview.showOverview("Played", "Played");
+	//Stage overviewStage = overview.showOverview("Played", "Played");
 
 	
 
@@ -32,7 +32,7 @@ public class MainMenuController {
 
 	}
 
-
+	
 	public void handleToSudoku(ActionEvent e) {
 	
 		game = new SudokuGameBuilder();
@@ -51,7 +51,7 @@ public class MainMenuController {
 	}
 
 	public void handleToLoad(ActionEvent e) {
-		overviewStage.show();
+		//overviewStage.show();
 	}
 
 	public void handleExit(ActionEvent e) {

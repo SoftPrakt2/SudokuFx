@@ -123,7 +123,7 @@ public class MainMenu {
 		
 		
 		//stylesheets für scene
-		mainScene.getStylesheets().add("/CSS/sudoku.css");
+		mainScene.getStylesheets().add("/css/sudoku.css");
 		
 	
 		

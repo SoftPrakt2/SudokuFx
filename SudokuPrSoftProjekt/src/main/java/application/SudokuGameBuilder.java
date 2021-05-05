@@ -35,7 +35,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	       createMenuBar(pane);
 	       createPlayButtons(pane);
 
-	      scene.getStylesheets().add("/CSS/sudoku.css");
+	      scene.getStylesheets().add("/css/sudoku.css");
 
 
 	    return scene;
@@ -44,7 +44,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	
 	//statt createGame in inizializeScene? erstellt die zahlen im spielfeld nach der eingestellten schwierigkeit
 	
-
 
 	@Override
 	public GridPane createBoard() {
