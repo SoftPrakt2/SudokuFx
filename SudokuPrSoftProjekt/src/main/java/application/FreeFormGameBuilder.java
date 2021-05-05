@@ -30,8 +30,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	    createPlayButtons(pane);
 	    createMenuBar(pane);
 	  
-	    
-	
+	    	
 	  
 	    
 	    freeform.getStylesheets().add("/css/sudoku.css");

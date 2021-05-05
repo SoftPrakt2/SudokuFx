@@ -14,7 +14,7 @@ import logic.SudokuLogic;
 
 public class SudokuGameBuilder extends BasicGameBuilder {
 
-	  public SudokuGameBuilder () {
+	public SudokuGameBuilder () {
 		  	super();
 		  	scene = new Scene(pane,670,670);
 		  	textField = new SudokuField[9][9];
