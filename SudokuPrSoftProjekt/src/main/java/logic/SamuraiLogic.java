@@ -24,12 +24,151 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public boolean checkRow(int row, int guess) {
 		// TODO Auto-generated method stub
+//		if (row < 6) {
+//			for (int col = 0; col < 9; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					System.out.println("test");
+//					return false;
+//				}
+//			}
+//			for (int col = 12; col < 21; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
+//
+//		if (row >= 6 && row < 9) {
+//			for (int col = 0; col < 9; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int col = 6; col < 15; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int col = 15; col < 21; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
+//
+//		if (row > 8 && row < 12) {
+//			for (int col = 9; col < 12; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
+//
+//		if (row >= 12 && row < 15) {
+//			for (int col = 0; col < 9; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int col = 6; col < 15; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int col = 15; col < 21; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
+//
+//		if (row > 14) {
+//			for (int col = 0; col < 9; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int col = 12; col < 21; col++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
 		return false;
 	}
 
 	@Override
 	public boolean checkCol(int col, int guess) {
 		// TODO Auto-generated method stub
+//		if (col < 6) {
+//			for (int row = 0; row < 9; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int row = 12; row < 21; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
+//
+//		if (col >= 6 && col < 9) {
+//			for (int row = 0; row < 9; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int row = 6; row < 15; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int row = 15; row < 21; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
+//
+//		if (col > 8 && col < 12) {
+//			for (int row = 9; row < 12; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
+//
+//		if (col >= 12 && col < 15) {
+//			for (int row = 0; row < 9; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int row = 6; row < 15; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int row = 15; row < 21; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
+//
+//		if (col > 14) {
+//			for (int row = 0; row < 9; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//			for (int row = 12; row < 21; row++) {
+//				if (this.cells[row][col].getValue() == guess) {
+//					return false;
+//				}
+//			}
+//		}
 		return false;
 	}
 
@@ -42,6 +181,41 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public boolean valid(int row, int col, int guess) {
 		// TODO Auto-generated method stub
+		if(row >= 6 && row < 9 && col >= 6 && col < 9) {
+			if(this.topLeft.valid(row, col, guess)
+					&& this.center.valid(row - 6, col - 6, guess)){
+				return true;
+			}
+		}
+		else if(row >= 0 && row < 9 && col >= 0 && col < 9) {
+			if(this.topLeft.valid(row, col, guess)) {
+				return true;
+			}
+		}
+		
+		if(row >= 6 && row < 9 && col >= 12 && col < 15) {
+			if(this.topRight.valid(row, col - 12, guess) 
+					&& this.center.valid(row, col - 6, guess)) {
+				return true;
+			}
+		}
+		else if(row >= 0 && row < 9 && col >= 12 && col < 21) {
+			if(this.topRight.valid(row, col - 12, guess)) {
+				return true;
+			}
+		}
+		
+		if(row >= 6 && row < 9 && col >= 6 && col < 9) {
+			if(this.topRight.valid(row, col - 6, guess) 
+					&& this.center.valid(row - 6, col, guess)) {
+				return true;
+			}
+		}
+		else if(row >= 0 && row < 9 && col >= 12 && col < 21) {
+			if(this.topRight.valid(row, col, guess)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -68,98 +242,19 @@ public class SamuraiLogic extends BasicGameLogic {
 
 	@Override
 	public boolean createSudoku() {
-		// TODO Auto-generated method stub
-
-		topLeft.createSudoku();
-		center.getCells()[0][0].setValue(topLeft.getCells()[6][6].getValue());
-		center.getCells()[0][1].setValue(topLeft.getCells()[6][7].getValue());
-		center.getCells()[0][2].setValue(topLeft.getCells()[6][8].getValue());
-		center.getCells()[1][0].setValue(topLeft.getCells()[7][6].getValue());
-		center.getCells()[1][1].setValue(topLeft.getCells()[7][7].getValue());
-		center.getCells()[1][2].setValue(topLeft.getCells()[7][8].getValue());
-		center.getCells()[2][0].setValue(topLeft.getCells()[8][6].getValue());
-		center.getCells()[2][1].setValue(topLeft.getCells()[8][7].getValue());
-		center.getCells()[2][2].setValue(topLeft.getCells()[8][8].getValue());
-
-//	center.setCell(0, 0, topLeft.getCells()[6][6].getValue());
-//	center.setCell(0, 1, topLeft.getCells()[6][7].getValue());
-//	center.setCell(0, 2, topLeft.getCells()[6][8].getValue());
-//	center.setCell(1, 0, topLeft.getCells()[7][6].getValue());
-//	center.setCell(1, 1, topLeft.getCells()[7][7].getValue());
-//	center.setCell(1, 2, topLeft.getCells()[7][8].getValue());
-//	center.setCell(2, 0, topLeft.getCells()[8][6].getValue());
-//	center.setCell(2, 1, topLeft.getCells()[8][7].getValue());
-//	center.setCell(2, 2, topLeft.getCells()[8][8].getValue());
-		topLeft.printCells();
-
 		center.createSudoku();
-		topRight.getCells()[6][0].setValue(center.getCells()[0][6].getValue());
-		topRight.getCells()[6][1].setValue(center.getCells()[0][7].getValue());
-		topRight.getCells()[6][2].setValue(center.getCells()[0][8].getValue());
-		topRight.getCells()[7][0].setValue(center.getCells()[1][6].getValue());
-		topRight.getCells()[7][1].setValue(center.getCells()[1][7].getValue());
-		topRight.getCells()[7][2].setValue(center.getCells()[1][8].getValue());
-		topRight.getCells()[8][0].setValue(center.getCells()[2][6].getValue());
-		topRight.getCells()[8][1].setValue(center.getCells()[2][7].getValue());
-		topRight.getCells()[8][2].setValue(center.getCells()[2][8].getValue());
-
-//	topRight.setCell(6, 0, center.getCells()[0][6].getValue());
-//	topRight.setCell(6, 1, center.getCells()[0][7].getValue());
-//	topRight.setCell(6, 2, center.getCells()[0][8].getValue());
-//	topRight.setCell(7, 0, center.getCells()[1][6].getValue());
-//	topRight.setCell(7, 1, center.getCells()[1][7].getValue());
-//	topRight.setCell(7, 2, center.getCells()[1][8].getValue());
-//	topRight.setCell(8, 0, center.getCells()[2][6].getValue());
-//	topRight.setCell(8, 1, center.getCells()[2][7].getValue());
-//	topRight.setCell(8, 2, center.getCells()[2][8].getValue());
-		center.printCells();
-
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				topLeft.getCells()[row + 6][col + 6].setValue(center.getCells()[row][col].getValue());
+				topRight.getCells()[row + 6][col].setValue(center.getCells()[row][col + 6].getValue());
+				bottomLeft.getCells()[row][col + 6].setValue(center.getCells()[row + 6][col].getValue());
+				bottomRight.getCells()[row][col].setValue(center.getCells()[row + 6][col + 6].getValue());
+			}
+		}
+		topLeft.createSudoku();
 		topRight.createSudoku();
-		bottomLeft.getCells()[0][6].setValue(center.getCells()[6][0].getValue());
-		bottomLeft.getCells()[0][7].setValue(center.getCells()[6][1].getValue());
-		bottomLeft.getCells()[0][8].setValue(center.getCells()[6][2].getValue());
-		bottomLeft.getCells()[1][6].setValue(center.getCells()[7][0].getValue());
-		bottomLeft.getCells()[1][7].setValue(center.getCells()[7][1].getValue());
-		bottomLeft.getCells()[1][8].setValue(center.getCells()[7][2].getValue());
-		bottomLeft.getCells()[2][6].setValue(center.getCells()[8][0].getValue());
-		bottomLeft.getCells()[2][7].setValue(center.getCells()[8][1].getValue());
-		bottomLeft.getCells()[2][8].setValue(center.getCells()[8][2].getValue());
-
-//	bottomLeft.setCell(0, 6, center.getCells()[6][0].getValue());
-//	bottomLeft.setCell(0, 7, center.getCells()[6][1].getValue());
-//	bottomLeft.setCell(0, 8, center.getCells()[6][2].getValue());
-//	bottomLeft.setCell(1, 6, center.getCells()[7][0].getValue());
-//	bottomLeft.setCell(1, 7, center.getCells()[7][1].getValue());
-//	bottomLeft.setCell(1, 8, center.getCells()[7][2].getValue());
-//	bottomLeft.setCell(2, 6, center.getCells()[8][0].getValue());
-//	bottomLeft.setCell(2, 7, center.getCells()[8][1].getValue());
-//	bottomLeft.setCell(2, 8, center.getCells()[8][2].getValue());
-		topRight.printCells();
-
 		bottomLeft.createSudoku();
-		bottomRight.getCells()[0][0].setValue(center.getCells()[6][6].getValue());
-		bottomRight.getCells()[0][1].setValue(center.getCells()[6][7].getValue());
-		bottomRight.getCells()[0][2].setValue(center.getCells()[6][8].getValue());
-		bottomRight.getCells()[1][0].setValue(center.getCells()[7][6].getValue());
-		bottomRight.getCells()[1][1].setValue(center.getCells()[7][7].getValue());
-		bottomRight.getCells()[1][2].setValue(center.getCells()[7][8].getValue());
-		bottomRight.getCells()[2][0].setValue(center.getCells()[8][6].getValue());
-		bottomRight.getCells()[2][1].setValue(center.getCells()[8][7].getValue());
-		bottomRight.getCells()[2][2].setValue(center.getCells()[8][8].getValue());
-
-//	bottomRight.setCell(0, 0, center.getCells()[6][6].getValue());
-//	bottomRight.setCell(0, 1, center.getCells()[6][7].getValue());
-//	bottomRight.setCell(0, 2, center.getCells()[6][8].getValue());
-//	bottomRight.setCell(1, 0, center.getCells()[7][6].getValue());
-//	bottomRight.setCell(1, 1, center.getCells()[7][7].getValue());
-//	bottomRight.setCell(1, 2, center.getCells()[7][8].getValue());
-//	bottomRight.setCell(2, 0, center.getCells()[8][6].getValue());
-//	bottomRight.setCell(2, 1, center.getCells()[8][7].getValue());
-//	bottomRight.setCell(2, 2, center.getCells()[8][8].getValue());
-		bottomLeft.printCells();
-
 		bottomRight.createSudoku();
-		bottomRight.printCells();
 
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
@@ -184,72 +279,72 @@ public class SamuraiLogic extends BasicGameLogic {
 			random = (int) (Math.random() * 5) + 1;
 			if (random == 1) {
 				helpForHint = topLeft.hint();
-					if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
-							&& center.valid(helpForHint[0] - 6, helpForHint[1] - 6,
-									topLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-						topLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-						correctRandom = true;
-					}
-					break;
+				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
+						&& center.valid(helpForHint[0] - 6, helpForHint[1] - 6,
+								topLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
+					topLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					correctRandom = true;
+				}
+				break;
 			}
 			if (random == 2) {
 				helpForHint = topRight.hint();
-					if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
-							&& center.valid(helpForHint[0] - 6, helpForHint[1] + 6,
-									topRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-						topRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-						correctRandom = true;
-					}
-					break;
+				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
+						&& center.valid(helpForHint[0] - 6, helpForHint[1] + 6,
+								topRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
+					topRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					correctRandom = true;
+				}
+				break;
 			}
 			if (random == 3) {
 				helpForHint = center.hint();
-					if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
-							&& topLeft.valid(helpForHint[0] + 6, helpForHint[1] + 6,
-									center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-						center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-						correctRandom = true;
-					}
-					if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
-							&& topRight.valid(helpForHint[0] + 6, helpForHint[1] - 6,
-									center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-						center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-						correctRandom = true;
-					}
-					if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
-							&& bottomLeft.valid(helpForHint[0] - 6, helpForHint[1] + 6,
-									center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-						center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-						correctRandom = true;
-					}
-					if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
-							&& bottomRight.valid(helpForHint[0] - 6, helpForHint[1] - 6,
-									center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-						center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-						correctRandom = true;
-					}
-					break;
+				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
+						&& topLeft.valid(helpForHint[0] + 6, helpForHint[1] + 6,
+								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
+					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					correctRandom = true;
+				}
+				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
+						&& topRight.valid(helpForHint[0] + 6, helpForHint[1] - 6,
+								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
+					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					correctRandom = true;
+				}
+				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
+						&& bottomLeft.valid(helpForHint[0] - 6, helpForHint[1] + 6,
+								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
+					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					correctRandom = true;
+				}
+				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
+						&& bottomRight.valid(helpForHint[0] - 6, helpForHint[1] - 6,
+								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
+					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					correctRandom = true;
+				}
+				break;
 			}
 			if (random == 4) {
 				helpForHint = bottomLeft.hint();
-					if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
-							&& center.valid(helpForHint[0] + 6, helpForHint[1] - 6,
-									bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-						bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-						correctRandom = true;
-					}
-					break;
+				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
+						&& center.valid(helpForHint[0] + 6, helpForHint[1] - 6,
+								bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
+					bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					correctRandom = true;
+				}
+				break;
 			}
 			if (random == 5) {
 				helpForHint = bottomRight.hint();
-					if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
-							&& center.valid(helpForHint[0] + 6, helpForHint[1] + 6,
-									bottomRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-						bottomRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-						correctRandom = true;
-					}
-					break;
+				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
+						&& center.valid(helpForHint[0] + 6, helpForHint[1] + 6,
+								bottomRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
+					bottomRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					correctRandom = true;
 				}
+				break;
+			}
 		}
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
@@ -265,96 +360,20 @@ public class SamuraiLogic extends BasicGameLogic {
 
 	@Override
 	public boolean solveSudoku() {
-		topLeft.solveSudoku();
-		center.getCells()[0][0].setValue(topLeft.getCells()[6][6].getValue());
-		center.getCells()[0][1].setValue(topLeft.getCells()[6][7].getValue());
-		center.getCells()[0][2].setValue(topLeft.getCells()[6][8].getValue());
-		center.getCells()[1][0].setValue(topLeft.getCells()[7][6].getValue());
-		center.getCells()[1][1].setValue(topLeft.getCells()[7][7].getValue());
-		center.getCells()[1][2].setValue(topLeft.getCells()[7][8].getValue());
-		center.getCells()[2][0].setValue(topLeft.getCells()[8][6].getValue());
-		center.getCells()[2][1].setValue(topLeft.getCells()[8][7].getValue());
-		center.getCells()[2][2].setValue(topLeft.getCells()[8][8].getValue());
-
-//	center.setCell(0, 0, topLeft.getCells()[6][6].getValue());
-//	center.setCell(0, 1, topLeft.getCells()[6][7].getValue());
-//	center.setCell(0, 2, topLeft.getCells()[6][8].getValue());
-//	center.setCell(1, 0, topLeft.getCells()[7][6].getValue());
-//	center.setCell(1, 1, topLeft.getCells()[7][7].getValue());
-//	center.setCell(1, 2, topLeft.getCells()[7][8].getValue());
-//	center.setCell(2, 0, topLeft.getCells()[8][6].getValue());
-//	center.setCell(2, 1, topLeft.getCells()[8][7].getValue());
-//	center.setCell(2, 2, topLeft.getCells()[8][8].getValue());
-		topLeft.printCells();
 
 		center.solveSudoku();
-		topRight.getCells()[6][0].setValue(center.getCells()[0][6].getValue());
-		topRight.getCells()[6][1].setValue(center.getCells()[0][7].getValue());
-		topRight.getCells()[6][2].setValue(center.getCells()[0][8].getValue());
-		topRight.getCells()[7][0].setValue(center.getCells()[1][6].getValue());
-		topRight.getCells()[7][1].setValue(center.getCells()[1][7].getValue());
-		topRight.getCells()[7][2].setValue(center.getCells()[1][8].getValue());
-		topRight.getCells()[8][0].setValue(center.getCells()[2][6].getValue());
-		topRight.getCells()[8][1].setValue(center.getCells()[2][7].getValue());
-		topRight.getCells()[8][2].setValue(center.getCells()[2][8].getValue());
-
-//	topRight.setCell(6, 0, center.getCells()[0][6].getValue());
-//	topRight.setCell(6, 1, center.getCells()[0][7].getValue());
-//	topRight.setCell(6, 2, center.getCells()[0][8].getValue());
-//	topRight.setCell(7, 0, center.getCells()[1][6].getValue());
-//	topRight.setCell(7, 1, center.getCells()[1][7].getValue());
-//	topRight.setCell(7, 2, center.getCells()[1][8].getValue());
-//	topRight.setCell(8, 0, center.getCells()[2][6].getValue());
-//	topRight.setCell(8, 1, center.getCells()[2][7].getValue());
-//	topRight.setCell(8, 2, center.getCells()[2][8].getValue());
-		center.printCells();
-
+		for (int row = 0; row < 3; row++) {
+			for (int col = 0; col < 3; col++) {
+				topLeft.getCells()[row + 6][col + 6].setValue(center.getCells()[row][col].getValue());
+				topRight.getCells()[row + 6][col].setValue(center.getCells()[row][col + 6].getValue());
+				bottomLeft.getCells()[row][col + 6].setValue(center.getCells()[row + 6][col].getValue());
+				bottomRight.getCells()[row][col].setValue(center.getCells()[row + 6][col + 6].getValue());
+			}
+		}
+		topLeft.solveSudoku();
 		topRight.solveSudoku();
-		bottomLeft.getCells()[0][6].setValue(center.getCells()[6][0].getValue());
-		bottomLeft.getCells()[0][7].setValue(center.getCells()[6][1].getValue());
-		bottomLeft.getCells()[0][8].setValue(center.getCells()[6][2].getValue());
-		bottomLeft.getCells()[1][6].setValue(center.getCells()[7][0].getValue());
-		bottomLeft.getCells()[1][7].setValue(center.getCells()[7][1].getValue());
-		bottomLeft.getCells()[1][8].setValue(center.getCells()[7][2].getValue());
-		bottomLeft.getCells()[2][6].setValue(center.getCells()[8][0].getValue());
-		bottomLeft.getCells()[2][7].setValue(center.getCells()[8][1].getValue());
-		bottomLeft.getCells()[2][8].setValue(center.getCells()[8][2].getValue());
-
-//	bottomLeft.setCell(0, 6, center.getCells()[6][0].getValue());
-//	bottomLeft.setCell(0, 7, center.getCells()[6][1].getValue());
-//	bottomLeft.setCell(0, 8, center.getCells()[6][2].getValue());
-//	bottomLeft.setCell(1, 6, center.getCells()[7][0].getValue());
-//	bottomLeft.setCell(1, 7, center.getCells()[7][1].getValue());
-//	bottomLeft.setCell(1, 8, center.getCells()[7][2].getValue());
-//	bottomLeft.setCell(2, 6, center.getCells()[8][0].getValue());
-//	bottomLeft.setCell(2, 7, center.getCells()[8][1].getValue());
-//	bottomLeft.setCell(2, 8, center.getCells()[8][2].getValue());
-		topRight.printCells();
-
 		bottomLeft.solveSudoku();
-		bottomRight.getCells()[0][0].setValue(center.getCells()[6][6].getValue());
-		bottomRight.getCells()[0][1].setValue(center.getCells()[6][7].getValue());
-		bottomRight.getCells()[0][2].setValue(center.getCells()[6][8].getValue());
-		bottomRight.getCells()[1][0].setValue(center.getCells()[7][6].getValue());
-		bottomRight.getCells()[1][1].setValue(center.getCells()[7][7].getValue());
-		bottomRight.getCells()[1][2].setValue(center.getCells()[7][8].getValue());
-		bottomRight.getCells()[2][0].setValue(center.getCells()[8][6].getValue());
-		bottomRight.getCells()[2][1].setValue(center.getCells()[8][7].getValue());
-		bottomRight.getCells()[2][2].setValue(center.getCells()[8][8].getValue());
-
-//	bottomRight.setCell(0, 0, center.getCells()[6][6].getValue());
-//	bottomRight.setCell(0, 1, center.getCells()[6][7].getValue());
-//	bottomRight.setCell(0, 2, center.getCells()[6][8].getValue());
-//	bottomRight.setCell(1, 0, center.getCells()[7][6].getValue());
-//	bottomRight.setCell(1, 1, center.getCells()[7][7].getValue());
-//	bottomRight.setCell(1, 2, center.getCells()[7][8].getValue());
-//	bottomRight.setCell(2, 0, center.getCells()[8][6].getValue());
-//	bottomRight.setCell(2, 1, center.getCells()[8][7].getValue());
-//	bottomRight.setCell(2, 2, center.getCells()[8][8].getValue());
-		bottomLeft.printCells();
-
 		bottomRight.solveSudoku();
-		bottomRight.printCells();
 
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
@@ -380,15 +399,10 @@ public class SamuraiLogic extends BasicGameLogic {
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				this.setCell(row, col, topLeft.getCells()[row][col].getValue());
-//				this.getCells()[row][col].setValue(topLeft.getCells()[row][col].getValue());
 				this.setCell(row, col + 12, topRight.getCells()[row][col].getValue());
-//				this.getCells()[row][col + 12].setValue(topRight.getCells()[row][col].getValue());
 				this.setCell(row + 6, col + 6, center.getCells()[row][col].getValue());
-//				this.getCells()[row + 6][col + 6].setValue(center.getCells()[row][col].getValue());
 				this.setCell(row + 12, col, bottomLeft.getCells()[row][col].getValue());
-//				this.getCells()[row + 12][col].setValue(bottomLeft.getCells()[row][col].getValue());
 				this.setCell(row + 12, col + 12, bottomRight.getCells()[row][col].getValue());
-//				this.getCells()[row + 12][col + 12].setValue(bottomRight.getCells()[row][col].getValue());
 			}
 		}
 	}
@@ -409,26 +423,22 @@ public class SamuraiLogic extends BasicGameLogic {
 
 	@Override
 	public Cell[][] getCells() {
-		// TODO Auto-generated method stub
 		return this.cells;
 	}
 
 	@Override
 	public void setCell(int col, int row, int guess) {
-		// TODO Auto-generated method stub
 		this.cells[col][row].setValue(guess);
 		this.cells[col][row].setIsReal(true);
 	}
 
 	@Override
 	public void setGameState(Gamestate gamestate) {
-		// TODO Auto-generated method stub
-		
+		this.gamestate = gamestate;
 	}
 
 	@Override
 	public Gamestate getGameState() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 }
