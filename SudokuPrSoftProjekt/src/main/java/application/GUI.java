@@ -12,6 +12,8 @@ public class GUI extends Application  {
   static MainMenu mainMenu = new MainMenu();
   static Scene mainMenuScene = mainMenu.setUpMainMenu();
 	
+  //this is just a test
+  
 	public static void main(String[] args) {
 		launch(args);
 	}
