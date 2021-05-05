@@ -13,10 +13,11 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.7</maven.compiler.source>
         <maven.compiler.target>1.7</maven.compiler.target>
-	
-	<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-    <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-    <sonar.coverage.jacoco.xmlReportPaths>SudokuPrSoftProjekt/jacoco-coverage-report/target/site/jacoco-aggregate/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths> 
+	 
+<sonar.coverage.exclusions>jacoco-report/**</sonar.coverage.exclusions>
+<aggregate.report.dir>SudokuPrSoftProjekt/jacoco-coverage-report/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
+<sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir} 
+</sonar.coverage.jacoco.xmlReportPaths>
 	
 	
     <sonar.language>java</sonar.language>
