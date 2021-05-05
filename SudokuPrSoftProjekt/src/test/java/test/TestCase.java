@@ -16,7 +16,7 @@ public class TestCase {
 
 	@Test
 	public void test() {
-		//test2
+		//test3
 		SudokuLogic model = new SudokuLogic(Gamestate.OPEN, 0, false);
 
 		// *setUpLogicArray() *			
