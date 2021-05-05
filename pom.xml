@@ -65,7 +65,7 @@
 
   <build>
     <sourceDirectory>SudokuPrSoftProjekt/src/main/java</sourceDirectory>
-	  <testSourceDirectory>SudokuPrSoftProjekt/src/test/java/test</testSourceDirectory>
+	  <testSourceDirectory>SudokuPrSoftProjekt/src/test/java</testSourceDirectory>
 
     <plugins>
                <plugin>
@@ -92,7 +92,7 @@
 	    <plugin>
     <groupId>org.jacoco</groupId>
     <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.6.0.201210061924</version>
+    <version>2.20</version>
     <configuration>
         <destFile>SudokuPrSoftProjekt/target/jacoco.exec</destFile>
         <append>true</append>
