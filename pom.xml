@@ -103,20 +103,20 @@
                     </configuration>
 	    </plugin>
 		    
-	 <plugin>
-    <groupId>org.jacoco</groupId>
-    <artifactId>jacoco-maven-plugin</artifactId>
-    <version>0.8.5</version>
-    <executions>
-     <execution>
-      <id>report</id>
-      <goals>
-       <goal>report</goal>
-      </goals>
-      <phase>verify</phase>
-     </execution>
-    </executions>
-   </plugin>
+	<plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.2</version>
+        <executions>
+          <execution>
+            <id>default</id>
+            <goals>
+              <goal>prepare-agent</goal>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
 
   </plugins>
   </build>
