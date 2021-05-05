@@ -231,8 +231,8 @@ public abstract class BasicGameBuilder {
 	      check.setOnAction(controller::checkHandler);
 	      autosolve.setOnAction(controller::autoSolveHandler);
 	      done.setOnAction(controller::manuelDoneHandler);     
-//		      load.setOnAction(controller::importGame);
-//		      save.setOnAction(controller::saveGame);
+	//	      load.setOnAction(controller::importGame);
+		//      save.setOnAction(controller::saveGame);
 	      reset.setOnAction(controller::resetHandler);
 	      mainMenuItem.setOnAction(controller::switchToMainMenu);
 	      pane.maxWidthProperty().bind(scene.widthProperty());

@@ -3,14 +3,14 @@ module SudokuPrSoftProjekt {
     exports application;
 
     exports logic;
+   
+    requires transitive com.fasterxml.jackson.databind;
+    requires transitive  javafx.base;
+    requires transitive  javafx.controls;
+    requires transitive  javafx.graphics;
 
-    requires com.fasterxml.jackson.databind;
-    requires javafx.base;
-    requires javafx.controls;
-    requires javafx.graphics;
-
-    requires javafx.fxml;
-    requires json.simple;
+    requires transitive javafx.fxml;
+    requires transitive json.simple;
 	
 	
 

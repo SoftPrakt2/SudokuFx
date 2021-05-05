@@ -2,7 +2,6 @@ package application;
 	
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 
@@ -40,7 +39,7 @@ public class GUI extends Application  {
 	    
 	}
 	    
-		
+	
 	   
 	    private void closeProgram() {
 	    	CloseWindowStage c = new CloseWindowStage();

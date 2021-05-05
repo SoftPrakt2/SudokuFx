@@ -1,30 +1,18 @@
 package controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import application.BasicGameBuilder;
 import application.GUI;
-import application.MainMenu;
-import application.OverviewStage;
 import application.Storage;
 import application.SudokuField;
-import application.SudokuGameBuilder;
-import application.SudokuSaveModel;
 import javafx.event.ActionEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.FileChooser;
 import logic.BasicGameLogic;
 import logic.Gamestate;
-import logic.SudokuLogic;
 
 public class GameController {
 
@@ -54,6 +42,7 @@ public class GameController {
 		model.setGameState(Gamestate.OPEN);
 	}
 
+	
 	public void newGameHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
@@ -158,9 +147,7 @@ public class GameController {
 							sudokuField[col][row].setStyle("-fx-text-fill: red");
 							result = false;
 						}
-//	                        if(model.valid(row, col, Integer.parseInt(sudokuField[col][row].getText()))) {
-//	                            result = true;
-//	                        }
+
 					}
 				}
 			}
@@ -203,11 +190,9 @@ public class GameController {
 	}
 
 	public void checkHandler(ActionEvent e) {
-//      model.solveSudoku();
-//      compareResult(sudokuField);
+
 		boolean gameState = compareResult(sudokuField);
-		long gameTime;
-		long sek;
+		
 		long endTime = System.currentTimeMillis();
 
 		if (gameState && count == sudokuField.length * sudokuField.length) {
