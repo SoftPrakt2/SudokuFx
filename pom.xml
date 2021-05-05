@@ -16,7 +16,7 @@
 	 
 <sonar.coverage.exclusions>jacoco-report/**</sonar.coverage.exclusions>
 <aggregate.report.dir>SudokuPrSoftProjekt/jacoco-coverage-report/target/site/jacoco-aggregate/jacoco.xml</aggregate.report.dir>
-<sonar.coverage.jacoco.xmlReportPaths>${basedir}/${aggregate.report.dir} 
+<sonar.coverage.jacoco.xmlReportPaths>SudokuPrSoftProjekt/src/test/java
 </sonar.coverage.jacoco.xmlReportPaths>
 	
 	
