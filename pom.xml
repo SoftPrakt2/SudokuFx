@@ -57,12 +57,10 @@
         </dependency>
 
 
-  <dependency>
-   <groupId>junit</groupId>
-    <artifactId>junit</artifactId>
+     <groupId>org.junit.jupiter</groupId>
+    <artifactId>junit-jupiter-engine</artifactId>
     <version>5.5.2</version>
-    <scope>test</scope>
-  </dependency>
+	</dependency>
 
 
 
