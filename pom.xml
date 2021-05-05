@@ -50,7 +50,7 @@
             <artifactId>javafx-controls</artifactId>
             <version>13</version>
         </dependency>
-        <dependency>
+     <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
             <version>13</version>
@@ -93,12 +93,23 @@
                     <version>2.8.2</version>
                 </plugin>
 	    
-	
+	<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M3</version>
+            </plugin>
+
+            
+       
+ 
+
+	    
+	    
 		    
 	<plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
-        <version>0.8.2</version>
+        <version>0.8.3</version>
         <executions>
           <execution>
             <id>default</id>
