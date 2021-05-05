@@ -93,7 +93,10 @@
                     <version>2.8.2</version>
                 </plugin>
 	    
-	    
+	    <plugin>
+                   <artifactId>jacoco-maven-plugin</artifactId>
+    			<version>0.8.1</version>
+                </plugin>
 
 
 
