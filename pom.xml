@@ -16,7 +16,7 @@
 	
 	<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-    <sonar.jacoco.xmlReportPaths>SudokuPrSoftProjekt/target/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths> 
+    <sonar.coverage.jacoco.xmlReportPaths>SudokuPrSoftProjekt/target/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths> 
     <sonar.language>java</sonar.language>
 
 	
