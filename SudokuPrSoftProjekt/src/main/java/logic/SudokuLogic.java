@@ -3,13 +3,14 @@ package logic;
 import application.SudokuField;
 
 public class SudokuLogic extends BasicGameLogic {
-
+	
 	private Cell[][] cells;
+	static int counter = 0;
 
-	public SudokuLogic(Gamestate gamestate, double timer, boolean isCorrect) {
-		super(gamestate, timer, isCorrect);
-		this.cells = new Cell[9][9];
-	}
+	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
+        super(gamestate, minutesPlayed,secondsPlayed, isCorrect);
+        this.cells = new Cell[9][9];
+    }
 
 	public Cell[][] getCells() {
 		return cells;
@@ -19,6 +20,9 @@ public class SudokuLogic extends BasicGameLogic {
 		this.cells = cells;
 	}
 
+	/**
+	 * Überprüft ob die Methoden checkRow, checkCol und CheckBox true zurückgeben
+	 */
 	@Override
 	public boolean valid(int row, int col, int guess) {
 		if (checkRow(row, guess) && checkCol(col, guess) && checkBox(row, col, guess)) {
@@ -27,6 +31,9 @@ public class SudokuLogic extends BasicGameLogic {
 		return false;
 	}
 
+	/**
+	 * Überprüft in der übergebenen Reihe ob eine idente Zahl vorhanden ist
+	 */
 	@Override
 	public boolean checkRow(int row, int guess) {
 		for (int col = 0; col < this.cells.length; col++) {
@@ -37,6 +44,9 @@ public class SudokuLogic extends BasicGameLogic {
 		return true;
 	}
 
+	/**
+	 * Überprüft in der übergebenen Zeile ob eine idente Zahl vorhanden ist
+	 */
 	@Override
 	public boolean checkCol(int col, int guess) {
 		for (int row = 0; row < this.cells.length; row++) {
@@ -47,6 +57,9 @@ public class SudokuLogic extends BasicGameLogic {
 		return true;
 	}
 
+	/**
+	 * Überprüft in der Box der übergebenen Reihe und Zeile eine idente Zahl vorhanden ist.
+	 */
 	@Override
 	public boolean checkBox(int row, int col, int guess) {
 		int r = row - row % 3;
@@ -62,55 +75,11 @@ public class SudokuLogic extends BasicGameLogic {
 		return true;
 	}
 
-	// erstellt generell sudoku spiel mit richtigen ziffern
+	/**
+	 * Autogenerator für ein neues Sudoku
+	 * Befüllt rekursiv das im Hintergrund liegene Sudoku-Array.
+	 */
 	public boolean createSudoku() {
-//		int a;
-//		int counter;
-//		int globalCounter = 0;
-//		int universalCounter = 0;
-//		boolean isTrueOrFalse = false;
-//		
-//		for(int row = 0; row < this.cells.length; row++) {
-//			counter = 0;
-//			for(int col = 0; col < this.cells[row].length; col++) {
-//				a = (int) (Math.random() * 9) + 1;
-//				isTrueOrFalse = valid(row, col, a);
-//				globalCounter++;
-//				universalCounter++;
-//				if(isTrueOrFalse) {
-//					this.cells[row][col].setValue(a);
-//				}
-//				else {
-//					while(!isTrueOrFalse) {
-//						counter++;
-//						a = (int) (Math.random() * 9) + 1;
-//						isTrueOrFalse = valid(row, col, a);
-//						if(isTrueOrFalse) {
-//							this.cells[row][col].setValue(a);
-//							break;
-//						}
-//						if(counter == 100) {
-//							for(int colTwo = 0; colTwo < cells[row].length; colTwo++) {
-//								this.cells[row][colTwo].setValue(0);   
-//							}
-//							col = -1;
-//							counter = 0;
-//							break;
-//						}
-//						if(globalCounter == 5000) {
-//							row = 0;
-//							col = 0;
-//							globalCounter = 0;
-//							break;
-//						}
-//						globalCounter++;
-//						universalCounter++;
-//					}
-//				}
-//			}
-//		}
-//		System.out.println("Global Counter = " + universalCounter);
-
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				if (this.cells[row][col].getValue() == 0) {
@@ -134,8 +103,9 @@ public class SudokuLogic extends BasicGameLogic {
 		return true;
 	}
 
-	static int counter = 0;
-
+	/*
+	 * Löst ein Sudoku rekursiv
+	 */
 	public boolean solveSudoku() {
 		Cell[][] copy = this.cells;
 		for (int row = 0; row < this.cells.length; row++) {
@@ -164,11 +134,16 @@ public class SudokuLogic extends BasicGameLogic {
 		return true;
 	}
 
+	/**
+	 * Generiert automatische eine zufällig Zahl
+	 * Hilfsarray mit den derzeitigen Werten des Sudokus wird erstellt
+	 * Generiert daraufhin eine Lösung des derzeitigen Sudokustandes
+	 * Überprüft ob generiert Zahl laut Lösung in die Zelle passt und fügt diese in Hilfsarray ein
+	 * derzeitige Sudoku nimmt Werte des Hilfsarray an
+	 */
 	@Override
 	public int[] hint() {
 		int[] coordinates = new int[2];
-//		int randomRow = (int) (Math.random() * 8);
-//		int randomCol = (int) (Math.random() * 8);
 		int randomGuess = (int) (Math.random() * 9) + 1;
 		int counter = 0;
 		int counter2 = 0;
@@ -209,48 +184,52 @@ public class SudokuLogic extends BasicGameLogic {
 		}
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-//				this.cells[row][col].setValue(help[row][col]);
 				this.setCell(row, col, help[row][col]);
 			}
 		}
 		return coordinates;
 	}
 
+	/**
+	 * Befüllt Sudokuarray mit mit dem Wert 0
+	 */
 	@Override
 	public void setUpLogicArray() {
+        int box = 1;
+        int uid = 0;
+        for (int i = 0; i < this.cells.length; i++) {
+            for (int j = 0; j < this.cells[i].length; j++) {
+                if (i < 3 && j < 3) {
+                    box = 1;
+                }
 
-		int box = 1;
-		int uid = 0;
-		for (int i = 0; i < this.cells.length; i++) {
-			for (int j = 0; j < this.cells[i].length; j++) {
-				if (i < 3 && j < 3) {
-					box = 1;
-				}
+                else if (i < 3 && j < 6) {
+                    box = 2;
+                } else if (i < 3 && j < 9) {
+                    box = 3;
+                } else if (i < 6 && j < 3) {
+                    box = 4;
+                } else if (i < 6 && j < 6) {
+                    box = 5;
+                } else if (i < 6 && j < 9) {
+                    box = 6;
+                } else if (i < 9 && j < 3) {
+                    box = 7;
+                } else if (i < 9 && j < 6) {
+                    box = 8;
+                } else if (i < 9 && j < 9) {
+                    box = 9;
+                }
+                Cell cell = new Cell(uid, i, j, box, 0, 0);
+                cells[i][j] = cell;
+                uid++;
+            }
+        }
+    }
 
-				else if (i < 3 && j < 6) {
-					box = 2;
-				} else if (i < 3 && j < 9) {
-					box = 3;
-				} else if (i < 6 && j < 3) {
-					box = 4;
-				} else if (i < 6 && j < 6) {
-					box = 5;
-				} else if (i < 6 && j < 9) {
-					box = 6;
-				} else if (i < 9 && j < 3) {
-					box = 7;
-				} else if (i < 9 && j < 6) {
-					box = 8;
-				} else if (i < 9 && j < 9) {
-					box = 9;
-				}
-				Cell cell = new Cell(uid, i, j, box, 0, 0);
-				cells[i][j] = cell;
-				uid++;
-			}
-		}
-	}
-
+	/**
+	 * Abhängig von der Übergebenen Zahl werden zufällige Zahl des Arrays auf 0 gesetzt
+	 */
 	public void difficulty(int diff) {
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int j = 0; j < this.cells[row].length; j++) {
@@ -284,6 +263,9 @@ public class SudokuLogic extends BasicGameLogic {
 		}
 	}
 
+	/**
+	 * Getter und Setter der Variablen
+	 */
 	@Override
 	public void setGameState(Gamestate gamestate) {
 		// TODO Auto-generated method stub

@@ -4,20 +4,18 @@ package test;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.*;
+import org.junit.Test;
 
-import logic.BasicGameLogic;
 import logic.Cell;
 import logic.Gamestate;
-import logic.SamuraiLogic;
 import logic.SudokuLogic;
 
 public class TestCase {
-
+	
 	@Test
 	public void test() {
 		//test4
-		SudokuLogic model = new SudokuLogic(Gamestate.OPEN, 0, false);
+		SudokuLogic model = new SudokuLogic(Gamestate.OPEN, 0,0 , false);
 
 		// *setUpLogicArray() *			
 		model.setUpLogicArray();
@@ -92,7 +90,6 @@ public class TestCase {
 //		model.getCells()[0][1].setValue(9);
 //		assertFalse(model.solveSudoku());
 			
-			
 		// *setGameState() *	
 		model.setUpLogicArray();
 		model.createSudoku();
@@ -109,7 +106,7 @@ public class TestCase {
 			
 			
 			// *setCells() *	
-			SudokuLogic model2 = new SudokuLogic(Gamestate.OPEN, 0, false);
+			SudokuLogic model2 = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
 			Cell[][] cellArray = new Cell [9][9];
 			for (int row = 0; row < 9; row++) {
 				for (int col = 0; col < 9; col++) {

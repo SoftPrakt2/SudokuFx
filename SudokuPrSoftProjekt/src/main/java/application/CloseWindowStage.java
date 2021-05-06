@@ -9,12 +9,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class CloseWindowStage {
-	
-	
-	
+
 	//speichert antwort je nach dem welcher knopf gedrückt wird
 	 boolean answer;
-	
 		
 	 public boolean showPopUp(String title, String message) {
 			Stage window = new Stage();

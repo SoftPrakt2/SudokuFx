@@ -1,5 +1,9 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -19,7 +23,7 @@ public class GameController {
 	BasicGameBuilder scene;
 	BasicGameLogic model;
 	SudokuField[][] sudokuField;
-	static int count = 0;
+	static int numberCounter = 0;
 
 	JSONObject myObject = new JSONObject();
 	JSONArray testList = new JSONArray();
@@ -34,15 +38,24 @@ public class GameController {
 		sudokuField = scene.getTextField();
 	}
 
+	/**
+	 * 
+	 * Erstellt abhängig von der Schwierigkeit ein Sudoku-Spiel
+	 * Setzt die Punkte des Spiels auf 10
+	 * Setzt GameText auf "Game ongoing"
+	 * Setzt GameState auf OPEN
+	 */
 	public void createGameHandler(ActionEvent e) {
 		createGame(scene.getDifficulty());
-		scene.setStartTime(System.currentTimeMillis());
-		scene.setGamePoints(10);
+		model.setGamePoints(10);
 		scene.getGameLabel().setText("Game ongoing!");
 		model.setGameState(Gamestate.OPEN);
 	}
 
-	
+	/**
+	 * 
+	 * Löscht sämtliche Zahlen aus dem Spielfeld und setzt die verschiedenen Spielstatuse auf den Anfangszustand
+	 */
 	public void newGameHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
@@ -51,14 +64,18 @@ public class GameController {
 				sudokuField[i][j].setDisable(false);
 			}
 		}
-		scene.setStartTime(System.currentTimeMillis());
-		scene.setGamePoints(10);
+		model.setStartTime(System.currentTimeMillis());
+		model.setGamePoints(10);
 		scene.getGameLabel().setText("");
 		model.setGameState(Gamestate.OPEN);
 		scene.getCheckButton().setDisable(false);
-		count = 0;
+		numberCounter = 0;
 	}
 
+	/**
+	 * 
+	 * Löscht Benutzereingaben für das Spiel
+	 */
 	public void resetHandler(ActionEvent e) {
         for (int i = 0; i < sudokuField.length; i++) {
             for (int j = 0; j < sudokuField[i].length; j++) {
@@ -67,11 +84,15 @@ public class GameController {
 
             }
         }
-        scene.setStartTime(System.currentTimeMillis());
-        scene.setGamePoints(10);
+        model.setStartTime(System.currentTimeMillis());
+        model.setGamePoints(10);
         scene.getGameLabel().setText("Game ongoing!");
     }
 
+	/**
+	 * 
+	 * Fixiert die manuelle Sudokuerstellung des Spielers und übergibt die eingegebenen Zahlen der Logik
+	 */
 	public void manuelDoneHandler(ActionEvent e) {
 
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -103,25 +124,16 @@ public class GameController {
 				}
 			}
 		}
-
-//		model.printCells();
-//		model.solveSudoku();
-//		model.printCells();
 	}
 
-	// in abstrakte klasse
-	public void connectArrays(SudokuField[][] sudokuField) {
-		for (int row = 0; row < sudokuField.length; row++) {
-			for (int col = 0; col < sudokuField[row].length; col++) {
-				sudokuField[row][col].setText(Integer.toString(model.getCells()[col][row].getValue()));
-			}
-		}
-	}
-
-	// same
+	/**
+	 * 
+	 * Überprüft ob Konflikte zwischen den dem Benutzer eingegebnen Zahlen herschen
+	 * Kennzeichnet diese rot
+	 */
 	public boolean compareResult(SudokuField[][] sudokuField) {
 		boolean result = true;
-		count = 0;
+		numberCounter = 0;
 
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
@@ -136,13 +148,12 @@ public class GameController {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
 				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
-					count++;
+					numberCounter++;
 					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 
 					if (!sudokuField[col][row].isDisabled()) {
 						model.getCells()[row][col].setValue(0);
 						if (!model.valid(row, col, Integer.parseInt(sudokuField[col][row].getText()))) {
-//	                            model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 							model.setCell(row, col, Integer.parseInt(sudokuField[col][row].getText()));
 							sudokuField[col][row].setStyle("-fx-text-fill: red");
 							result = false;
@@ -155,6 +166,24 @@ public class GameController {
 		return result;
 	}
 
+	
+	/**
+	 * 
+	 * Hilfsmethode für die Befüllung der TextFields mit den Zahlen aus dem model
+	 */
+	public void connectArrays(SudokuField[][] sudokuField) {
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				sudokuField[row][col].setText(Integer.toString(model.getCells()[col][row].getValue()));
+			}
+		}
+	}
+	
+	/**
+	 * 
+	 * Löst sofern keine Konflikte vorhanden sind das derzeitige Spielfeld
+	 * Fals Konflikte vorhanden sind werden diese markiert und der Benutzer wird darauf hingewiesen
+	 */
 	public void autoSolveHandler(ActionEvent e) {
 		if (compareResult(sudokuField)) {
 			for (int row = 0; row < sudokuField.length; row++) {
@@ -166,7 +195,6 @@ public class GameController {
 			}
 			model.solveSudoku();
 			model.setGameState(Gamestate.AutoSolved);
-//			model.printCells();
 			connectArrays(scene.getTextField());
 		} else {
 			for (int row = 0; row < sudokuField.length; row++) {
@@ -189,38 +217,45 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * 
+	 * Überprüft ob der derzeitige Stand der Eingagen eine gültige Lösung ist und
+	 * gibt abhängig davon unterschiedliche Informationen aus
+	 */
 	public void checkHandler(ActionEvent e) {
 
 		boolean gameState = compareResult(sudokuField);
 		
 		long endTime = System.currentTimeMillis();
 
-		if (gameState && count == sudokuField.length * sudokuField.length) {
-			long diff = (endTime - scene.getStartTime()) / 1000;
+		if (gameState && numberCounter == sudokuField.length * sudokuField.length) {
+			long diff = (endTime - model.getStartTime()) / 1000;
 			model.setGameState(Gamestate.DONE);
 			scene.getCheckButton().setDisable(true);
-			scene.setSecondsPlayed(diff);
-			System.out.println(scene.getMinPlayed());
+			model.setSecondsPlayed(diff);
+			System.out.println(model.getMinutesPlayed());
 			if (diff < 60) {
-				scene.getGameLabel().setText("Congratulations you won! Points: " + scene.getGamePoints() + " Time: "
-						+ scene.getSecondsPlayed() + " sek");
+				scene.getGameLabel().setText("Congratulations you won! Points: " + model.getgamePoints() + " Time: "
+						+ model.getSecondsPlayed() + " sek");
 			} else {
-				scene.setMinPlayed(diff / 60);
-				scene.setSecondsPlayed(diff % 60);
-				scene.getGameLabel().setText("Congratulations you won! Points: " + scene.getGamePoints() + " Time: "
-						+ scene.getMinPlayed() + " min " + scene.getSecondsPlayed() + " s ");
+				model.setMinutesPlayed(diff / 60);
+				model.setSecondsPlayed(diff % 60);
+				scene.getGameLabel().setText("Congratulations you won! Points: " + model.getgamePoints() + " Time: "
+						+ model.getMinutesPlayed() + " min " + model.getSecondsPlayed() + " s ");
 			}
 
-		} else if (!gameState || count != sudokuField.length * sudokuField.length) {
+		} else if (!gameState || numberCounter != sudokuField.length * sudokuField.length) {
 			scene.getGameLabel().setText("Sorry your Sudoku is not correct yet");
-			if (scene.getGamePoints() > 0)
-				scene.setGamePoints(scene.getGamePoints() - 1);
+			if (model.getgamePoints() > 0)
+				model.setGamePoints(model.getgamePoints() - 1);
 		}
 
 	}
 
-
-
+	/**
+	 * 
+	 * Erstellt ein Spiel anhand der eingestellten Schwierigkeit
+	 */
 	public void createGame(int difficulty) {
 		model.setUpLogicArray();
 		model.createSudoku();
@@ -236,12 +271,13 @@ public class GameController {
 				}
 			} 
 		}
-
 		enableEdit();
-//		model.solveSudoku();
 		model.printCells();
 	}
 
+	/**
+	 * Leere Textfelder werden für den Benutzer freigegeben
+	 */
 	public void enableEdit() {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {

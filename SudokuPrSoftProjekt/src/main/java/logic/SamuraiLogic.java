@@ -11,15 +11,15 @@ public class SamuraiLogic extends BasicGameLogic {
 	private SudokuLogic bottomLeft;
 	private SudokuLogic bottomRight;
 
-	public SamuraiLogic(Gamestate gamestate, double timer, boolean isCorrect) {
-		super(gamestate, timer, isCorrect);
-		this.cells = new Cell[21][21];
-		topLeft = new SudokuLogic(Gamestate.OPEN, 0.0, false);
-		topRight = new SudokuLogic(Gamestate.OPEN, 0.0, false);
-		center = new SudokuLogic(Gamestate.OPEN, 0.0, false);
-		bottomLeft = new SudokuLogic(Gamestate.OPEN, 0.0, false);
-		bottomRight = new SudokuLogic(Gamestate.OPEN, 0.0, false);
-	}
+	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
+        super(gamestate, minutesPlayed,secondsPlayed, isCorrect);
+        this.cells = new Cell[21][21];
+        topLeft = new SudokuLogic(Gamestate.OPEN, 0,0, false);
+        topRight = new SudokuLogic(Gamestate.OPEN, 0,0, false);
+        center = new SudokuLogic(Gamestate.OPEN, 0,0, false);
+        bottomLeft = new SudokuLogic(Gamestate.OPEN, 0,0, false);
+        bottomRight = new SudokuLogic(Gamestate.OPEN, 0,0, false);
+    }
 
 	@Override
 	public boolean checkRow(int row, int guess) {
@@ -233,13 +233,13 @@ public class SamuraiLogic extends BasicGameLogic {
 		for (int i = 0; i < this.cells.length; i++) {
 			for (int j = 0; j < this.cells[i].length; j++) {
 				box++;
-				Cell cell = new Cell(uid, i, j, box, 0, -1);
+				Cell cell = new Cell(i, j, box, 0, 0, 0);
 				cells[i][j] = cell;
 				uid++;
 			}
 		}
 	}
-
+	
 	@Override
 	public boolean createSudoku() {
 		center.createSudoku();

@@ -52,50 +52,91 @@
 
 package logic;
 
-import application.SudokuField;
-
-public abstract class BasicGameLogic{
+/**
+ * 
+ * Stellt die Basisvariablen und Methoden für die ableitenden Logiken dar
+ * Deklariert abstract Methoden, welche von den Unterklassen implementiert werden müssen.
+ *
+ */
+public abstract class BasicGameLogic {
 
 	protected Gamestate gamestate;
-	private double timer;
 	private boolean isCorrect;
-	
-	public BasicGameLogic(Gamestate gamestate, double timer, boolean isCorrect) {
+
+	private int gamePoints = 10;
+	private long minutesPlayed;
+	private long secondsPlayed;
+	private long startTime;
+
+	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
 		this.gamestate = gamestate;
-		this.timer = timer;
+		this.minutesPlayed = minutesPlayed;
+		this.secondsPlayed = secondsPlayed;
 		this.isCorrect = isCorrect;
 	}
 	
 	public abstract boolean checkRow(int row, int guess);
+
 	public abstract boolean checkCol(int col, int guess);
+
 	public abstract boolean checkBox(int row, int col, int guess);
+
 	public abstract boolean valid(int row, int col, int guess);
-		
+
 	public abstract void setUpLogicArray();
-	
+
 	public abstract boolean createSudoku();
-	
-	public abstract int [] hint();
-	
+
+	public abstract int[] hint();
+
 	public abstract boolean solveSudoku();
-	
+
 	public abstract void difficulty(int diff);
-	
+
 	public abstract void printCells();
-	
+
 	public abstract Cell[][] getCells();
-	
+
 	public abstract void setCell(int col, int row, int guess);
-	
+
 	public abstract void setGameState(Gamestate gamestate);
-	
+
 	public abstract Gamestate getGameState();
-	
-//	public abstract void connectArrays(SudokuField[][] sudokuField);
-//	
-//	public abstract boolean compareResult(SudokuField[][] sudokuField);
-	
-	
-	
+
+	/**
+	 * Getter und Setter für Instanzvariablen
+	 * 
+	 */
+	public int getgamePoints() {
+		return gamePoints;
+	}
+
+	public long getMinutesPlayed() {
+		return minutesPlayed;
+	}
+
+	public long getSecondsPlayed() {
+		return secondsPlayed;
+	}
+
+	public void setMinutesPlayed(long minutesPlayed) {
+		this.minutesPlayed = minutesPlayed;
+	}
+
+	public void setSecondsPlayed(long secondsPlayed) {
+		this.secondsPlayed = secondsPlayed;
+	}
+
+	public void setGamePoints(int gamePoints) {
+		this.gamePoints = gamePoints;
+	}
+
+	public long getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(long startTime) {
+		this.startTime = startTime;
+	}
 }
