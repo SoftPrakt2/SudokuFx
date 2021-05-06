@@ -9,7 +9,7 @@ import logic.Cell;
 import logic.Gamestate;
 import logic.SudokuLogic;
 
-class SudokuLogicTest {
+public class SudokuLogicTest {
 
 	@Test
 	public void test() {
