@@ -21,8 +21,8 @@ public class GUI extends Application  {
 	@Override
 	public void start(Stage scene) {
 		
-		 
-		 window = scene;
+		//test commit 
+		window = scene;
 		 scene.setMaxWidth(1500);
 		 scene.setMaxHeight(1500);
 		
