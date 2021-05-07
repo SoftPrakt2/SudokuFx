@@ -1,12 +1,9 @@
 package test;
 
-
-
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import logic.Cell;
 import logic.Gamestate;
@@ -24,8 +21,6 @@ public class SudokuLogicTest {
 		assertTrue(model.getCells()[0][0].getValue() == 0);
 		assertTrue(model.getCells()[1][7].getValue() == 0);
 		assertTrue(model.getCells()[8][8].getValue() == 0);
-
-
 
 	// *createSudoku() *		
 	model.createSudoku();
