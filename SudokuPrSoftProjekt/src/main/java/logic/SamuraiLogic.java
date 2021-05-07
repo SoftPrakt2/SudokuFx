@@ -10,6 +10,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	private SudokuLogic center;
 	private SudokuLogic bottomLeft;
 	private SudokuLogic bottomRight;
+	private static int counter = 0;
 
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
         super(gamestate, minutesPlayed,secondsPlayed, isCorrect);
@@ -192,8 +193,7 @@ public class SamuraiLogic extends BasicGameLogic {
 				return true;
 			}
 		}
-		
-		if(row >= 6 && row < 9 && col >= 12 && col < 15) {
+		else if(row >= 6 && row < 9 && col >= 12 && col < 15) {
 			if(this.topRight.valid(row, col - 12, guess) 
 					&& this.center.valid(row, col - 6, guess)) {
 				return true;
@@ -204,15 +204,30 @@ public class SamuraiLogic extends BasicGameLogic {
 				return true;
 			}
 		}
-		
-		if(row >= 6 && row < 9 && col >= 6 && col < 9) {
-			if(this.topRight.valid(row, col - 6, guess) 
-					&& this.center.valid(row - 6, col, guess)) {
+		else if(row >= 6 && row < 15 && col >= 6 && col < 15) {
+			if(this.center.valid(row - 6, col - 6, guess)) {
+				
+			}
+		}
+		else if(row >= 12 && row < 15 && col >= 6 && col < 9) {
+			if(this.bottomLeft.valid(row - 12, col, guess)
+					&& this.center.valid(row - 6, col - 6, guess)) {
 				return true;
 			}
 		}
-		else if(row >= 0 && row < 9 && col >= 12 && col < 21) {
-			if(this.topRight.valid(row, col, guess)) {
+		else if(row >= 12 && row < 21 && col >= 0 && col < 9) {
+			if(this.bottomLeft.valid(row - 12, col, guess)) {
+				return true;
+			}
+		}
+		else if(row >= 12 && row < 15 && col >= 12 && col < 15) {
+			if(this.bottomRight.valid(row - 12, col - 12, guess)
+					&& this.center.valid(row - 6, col - 6, guess)) {
+				return true;
+			}
+		}
+		else if(row >= 12 && row < 21 && col >= 12 && col < 121) {
+			if(this.bottomRight.valid(row - 12, col - 12, guess)) {
 				return true;
 			}
 		}
@@ -233,7 +248,7 @@ public class SamuraiLogic extends BasicGameLogic {
 		for (int i = 0; i < this.cells.length; i++) {
 			for (int j = 0; j < this.cells[i].length; j++) {
 				box++;
-				Cell cell = new Cell(i, j, box, 0, 0, 0);
+				Cell cell = new Cell(i, j, box, 0, 0, -1);
 				cells[i][j] = cell;
 				uid++;
 			}
@@ -274,6 +289,7 @@ public class SamuraiLogic extends BasicGameLogic {
 		boolean correctRandom = false;
 		int[] helpForHint = new int[2];
 		int random = (int) (Math.random() * 5) + 1;
+		int[] returnCoordinates = new int[2];
 
 		while (!correctRandom) {
 			random = (int) (Math.random() * 5) + 1;
@@ -282,8 +298,10 @@ public class SamuraiLogic extends BasicGameLogic {
 				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
 						&& center.valid(helpForHint[0] - 6, helpForHint[1] - 6,
 								topLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					topLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					correctRandom = true;
+//					topLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					center.getCells()[helpForHint[0] - 6][helpForHint[1] - 6]
+							.setValue(topLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue());
+					
 				}
 				break;
 			}
@@ -292,8 +310,10 @@ public class SamuraiLogic extends BasicGameLogic {
 				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
 						&& center.valid(helpForHint[0] - 6, helpForHint[1] + 6,
 								topRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					topRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					correctRandom = true;
+//					topRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					center.getCells()[helpForHint[0] - 6][helpForHint[1] + 6]
+							.setValue(topRight.getCells()[helpForHint[0]][helpForHint[1]].getValue());
+					
 				}
 				break;
 			}
@@ -302,26 +322,34 @@ public class SamuraiLogic extends BasicGameLogic {
 				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
 						&& topLeft.valid(helpForHint[0] + 6, helpForHint[1] + 6,
 								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					correctRandom = true;
+//					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					topLeft.getCells()[helpForHint[0] + 6][helpForHint[1] + 6]
+							.setValue(center.getCells()[helpForHint[0]][helpForHint[1]].getValue());
+					
 				}
 				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
 						&& topRight.valid(helpForHint[0] + 6, helpForHint[1] - 6,
 								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					correctRandom = true;
+//					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					topRight.getCells()[helpForHint[0] + 6][helpForHint[1] - 6]
+							.setValue(center.getCells()[helpForHint[0]][helpForHint[1]].getValue());
+					
 				}
 				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
 						&& bottomLeft.valid(helpForHint[0] - 6, helpForHint[1] + 6,
 								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					correctRandom = true;
+//					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					bottomLeft.getCells()[helpForHint[0] - 6][helpForHint[1] + 6]
+							.setValue(center.getCells()[helpForHint[0]][helpForHint[1]].getValue());
+					
 				}
 				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
 						&& bottomRight.valid(helpForHint[0] - 6, helpForHint[1] - 6,
 								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					correctRandom = true;
+//					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					bottomRight.getCells()[helpForHint[0] - 6][helpForHint[1] - 6]
+							.setValue(center.getCells()[helpForHint[0]][helpForHint[1]].getValue());
+					
 				}
 				break;
 			}
@@ -330,8 +358,10 @@ public class SamuraiLogic extends BasicGameLogic {
 				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
 						&& center.valid(helpForHint[0] + 6, helpForHint[1] - 6,
 								bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					correctRandom = true;
+//					bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					center.getCells()[helpForHint[0] + 6][helpForHint[1] - 6]
+							.setValue(bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue());
+					
 				}
 				break;
 			}
@@ -340,19 +370,37 @@ public class SamuraiLogic extends BasicGameLogic {
 				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
 						&& center.valid(helpForHint[0] + 6, helpForHint[1] + 6,
 								bottomRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					bottomRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					correctRandom = true;
+//					bottomRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
+					center.getCells()[helpForHint[0] + 6][helpForHint[1] + 6]
+							.setValue(bottomRight.getCells()[helpForHint[0]][helpForHint[1]].getValue());
+					
 				}
 				break;
 			}
+			correctRandom = true;
 		}
+		
+//		topLeft.printCells();
+//		topLeft.hint();
+//		topLeft.printCells();
+		
+		
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				this.getCells()[row][col].setValue(topLeft.getCells()[row][col].getValue());
+//				this.setCell(row, col, this.topLeft.getCells()[row][col].getValue());
+				
 				this.getCells()[row][col + 12].setValue(topRight.getCells()[row][col].getValue());
+//				this.setCell(row, col + 12, this.topRight.getCells()[row][col].getValue());
+				
 				this.getCells()[row + 6][col + 6].setValue(center.getCells()[row][col].getValue());
+//				this.setCell(row + 6, col + 6, this.center.getCells()[row][col].getValue());
+				
 				this.getCells()[row + 12][col].setValue(bottomLeft.getCells()[row][col].getValue());
+//				this.setCell(row + 12, col, this.bottomLeft.getCells()[row][col].getValue());
+				
 				this.getCells()[row + 12][col + 12].setValue(bottomRight.getCells()[row][col].getValue());
+//				this.setCell(row + 12, col + 12, this.bottomRight.getCells()[row][col].getValue());
 			}
 		}
 		return null;
@@ -361,6 +409,9 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public boolean solveSudoku() {
 
+		System.out.println("--------------------------------------");
+		topLeft.printCells();
+		
 		center.solveSudoku();
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
@@ -370,18 +421,31 @@ public class SamuraiLogic extends BasicGameLogic {
 				bottomRight.getCells()[row][col].setValue(center.getCells()[row + 6][col + 6].getValue());
 			}
 		}
+		System.out.println("--------------------------------------");
+		topLeft.printCells();
+		System.out.println("--------------------------------------");
 		topLeft.solveSudoku();
+		
 		topRight.solveSudoku();
 		bottomLeft.solveSudoku();
 		bottomRight.solveSudoku();
 
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
-				this.getCells()[row][col].setValue(topLeft.getCells()[row][col].getValue());
-				this.getCells()[row][col + 12].setValue(topRight.getCells()[row][col].getValue());
-				this.getCells()[row + 6][col + 6].setValue(center.getCells()[row][col].getValue());
-				this.getCells()[row + 12][col].setValue(bottomLeft.getCells()[row][col].getValue());
-				this.getCells()[row + 12][col + 12].setValue(bottomRight.getCells()[row][col].getValue());
+//				this.getCells()[row][col].setValue(topLeft.getCells()[row][col].getValue());
+				this.setCell(row, col, this.topLeft.getCells()[row][col].getValue());
+				
+//				this.getCells()[row][col + 12].setValue(topRight.getCells()[row][col].getValue());
+				this.setCell(row, col + 12, this.topRight.getCells()[row][col].getValue());
+				
+//				this.getCells()[row + 6][col + 6].setValue(center.getCells()[row][col].getValue());
+				this.setCell(row + 6, col + 6, this.center.getCells()[row][col].getValue());
+				
+//				this.getCells()[row + 12][col].setValue(bottomLeft.getCells()[row][col].getValue());
+				this.setCell(row + 12, col, this.bottomLeft.getCells()[row][col].getValue());
+				
+//				this.getCells()[row + 12][col + 12].setValue(bottomRight.getCells()[row][col].getValue());
+				this.setCell(row + 12, col + 12, this.bottomRight.getCells()[row][col].getValue());
 			}
 		}
 		return true;
@@ -398,11 +462,20 @@ public class SamuraiLogic extends BasicGameLogic {
 
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
-				this.setCell(row, col, topLeft.getCells()[row][col].getValue());
-				this.setCell(row, col + 12, topRight.getCells()[row][col].getValue());
-				this.setCell(row + 6, col + 6, center.getCells()[row][col].getValue());
-				this.setCell(row + 12, col, bottomLeft.getCells()[row][col].getValue());
-				this.setCell(row + 12, col + 12, bottomRight.getCells()[row][col].getValue());
+//				this.getCells()[row][col].setValue(topLeft.getCells()[row][col].getValue());
+				this.setCell(row, col, this.topLeft.getCells()[row][col].getValue());
+				
+//				this.getCells()[row][col + 12].setValue(topRight.getCells()[row][col].getValue());
+				this.setCell(row, col + 12, this.topRight.getCells()[row][col].getValue());
+				
+//				this.getCells()[row + 6][col + 6].setValue(center.getCells()[row][col].getValue());
+				this.setCell(row + 6, col + 6, this.center.getCells()[row][col].getValue());
+				
+//				this.getCells()[row + 12][col].setValue(bottomLeft.getCells()[row][col].getValue());
+				this.setCell(row + 12, col, this.bottomLeft.getCells()[row][col].getValue());
+				
+//				this.getCells()[row + 12][col + 12].setValue(bottomRight.getCells()[row][col].getValue());
+				this.setCell(row + 12, col + 12, this.bottomRight.getCells()[row][col].getValue());
 			}
 		}
 	}
@@ -427,9 +500,9 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public void setCell(int col, int row, int guess) {
-		this.cells[col][row].setValue(guess);
-		this.cells[col][row].setIsReal(true);
+	public void setCell(int row, int col, int guess) {
+		this.cells[row][col].setValue(guess);
+		this.cells[row][col].setIsReal(true);
 	}
 
 	@Override
