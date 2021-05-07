@@ -11,7 +11,7 @@ module SudokuPrSoftProjekt {
 
     requires transitive javafx.fxml;
     requires transitive json.simple;
-    requires junit;
+  
 	
 
 }
