@@ -6,7 +6,6 @@ public class SudokuLogic extends BasicGameLogic {
 	
 	private Cell[][] cells;
 	static int counter = 0;
-	private Cell[][] copy;
 
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
         super(gamestate, minutesPlayed,secondsPlayed, isCorrect);
@@ -241,10 +240,9 @@ public class SudokuLogic extends BasicGameLogic {
 					this.cells[row][j].setValue(0);
 				}
 			}
-		}
-		this.copy = this.cells;
+		}		
 	}
-
+	
 	public void setCell(int col, int row, int guess) {
 		this.cells[col][row].setValue(guess);
 		this.cells[col][row].setIsReal(true);
@@ -279,6 +277,7 @@ public class SudokuLogic extends BasicGameLogic {
 		// TODO Auto-generated method stub
 		return this.gamestate;
 	}
+
 
 	// muss noch besprochen werden in welche klasse die methoden gehören
 

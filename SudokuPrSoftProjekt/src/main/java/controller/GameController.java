@@ -77,9 +77,10 @@ public class GameController {
 	public void resetHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (!model.getCells()[j][i].getIsReal())
+				if (!model.getCells()[j][i].getIsReal()) {
 					sudokuField[i][j].clear();
-
+					model.getCells()[j][i].setValue(0);
+				}
 			}
 		}
 		model.setStartTime(System.currentTimeMillis());
@@ -190,6 +191,16 @@ public class GameController {
                 for (int col = 0; col < sudokuField[row].length; col++) {
                     if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
                         model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+                    }
+                }
+            }
+            model.solveSudoku();
+            model.printCells();
+            for (int row = 0; row < sudokuField.length; row++) {
+                for (int col = 0; col < sudokuField[row].length; col++) {
+                    if (model.getCells()[row][col].getValue() == 0) {
+                        resetHandler(e);
+                        System.out.println("fuck you");
                     }
                 }
             }
