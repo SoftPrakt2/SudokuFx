@@ -3,10 +3,10 @@ package test;
 
 
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import logic.Cell;
 import logic.Gamestate;
@@ -16,10 +16,6 @@ public class SudokuLogicTest {
 
 	@Test
 	public void test() {
-		
-		
-				
-		
 		//test4
 		SudokuLogic model = new SudokuLogic(Gamestate.OPEN, 0,0 , false);
 
