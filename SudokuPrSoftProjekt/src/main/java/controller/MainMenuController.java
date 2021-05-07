@@ -81,16 +81,16 @@ public class MainMenuController {
 	 * Stellen die schwierigkeit des zuvor ausgewählten Sudoku-Spiels ein
 	 */
 	public void handleHard(ActionEvent e) {
-		game.setDifficulty(1);
+		game.setDifficulty(3);
 	}
 	
 	public void handleEasy(ActionEvent e) {
-		game.setDifficulty(6);
+		game.setDifficulty(7);
 	
 	}
 
 	public void handleMedium(ActionEvent e) {
-		game.setDifficulty(100);
+		game.setDifficulty(5);
 	}
 	
 	public void handleManual(ActionEvent e) {

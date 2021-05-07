@@ -66,7 +66,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 
 				textField[i][j] = new SudokuField("");
 
-				textField[i][j].setMaxSize(50, 50);
+				textField[i][j].setMaxSize(100, 100);
 				textField[i][j].setFont(Font.font("Arial", FontWeight.BOLD, 15));
 				textField[i][j].setAlignment(Pos.CENTER);
 

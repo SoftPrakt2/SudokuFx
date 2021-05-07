@@ -67,6 +67,7 @@ public abstract class BasicGameLogic {
 	private long minutesPlayed;
 	private long secondsPlayed;
 	private long startTime;
+	private String gameText = "";
 
 	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
@@ -139,4 +140,23 @@ public abstract class BasicGameLogic {
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
+	
+	public String getGameText() {
+        if(this.getGameState() == Gamestate.OPEN) {
+            gameText = "Game ongoing!";
+        }
+        if(this.getGameState() == Gamestate.DONE) {
+            gameText = "Congratulations you won!";
+        }
+        if(this.getGameState() == Gamestate.INCORRECT) {
+            gameText = "Sorry your Sudoku is not correct yet";
+        }
+        if(this.getGameState() == Gamestate.AutoSolved) {
+            gameText = "Autosolved";
+        }
+        if(this.getGameState() == Gamestate.CONFLICT) {
+            gameText = "Please remove the conflicts before autosolving";
+        }
+        return gameText;
+    }
 }

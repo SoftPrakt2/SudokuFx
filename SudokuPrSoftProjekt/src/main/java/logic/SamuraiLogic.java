@@ -182,56 +182,56 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public boolean valid(int row, int col, int guess) {
 		// TODO Auto-generated method stub
-		if(row >= 6 && row < 9 && col >= 6 && col < 9) {
-			if(this.topLeft.valid(row, col, guess)
-					&& this.center.valid(row - 6, col - 6, guess)){
-				return true;
-			}
-		}
-		else if(row >= 0 && row < 9 && col >= 0 && col < 9) {
-			if(this.topLeft.valid(row, col, guess)) {
-				return true;
-			}
-		}
-		else if(row >= 6 && row < 9 && col >= 12 && col < 15) {
-			if(this.topRight.valid(row, col - 12, guess) 
-					&& this.center.valid(row, col - 6, guess)) {
-				return true;
-			}
-		}
-		else if(row >= 0 && row < 9 && col >= 12 && col < 21) {
-			if(this.topRight.valid(row, col - 12, guess)) {
-				return true;
-			}
-		}
-		else if(row >= 6 && row < 15 && col >= 6 && col < 15) {
-			if(this.center.valid(row - 6, col - 6, guess)) {
-				
-			}
-		}
-		else if(row >= 12 && row < 15 && col >= 6 && col < 9) {
-			if(this.bottomLeft.valid(row - 12, col, guess)
-					&& this.center.valid(row - 6, col - 6, guess)) {
-				return true;
-			}
-		}
-		else if(row >= 12 && row < 21 && col >= 0 && col < 9) {
-			if(this.bottomLeft.valid(row - 12, col, guess)) {
-				return true;
-			}
-		}
-		else if(row >= 12 && row < 15 && col >= 12 && col < 15) {
-			if(this.bottomRight.valid(row - 12, col - 12, guess)
-					&& this.center.valid(row - 6, col - 6, guess)) {
-				return true;
-			}
-		}
-		else if(row >= 12 && row < 21 && col >= 12 && col < 121) {
-			if(this.bottomRight.valid(row - 12, col - 12, guess)) {
-				return true;
-			}
-		}
-		return false;
+//		if(row >= 6 && row < 9 && col >= 6 && col < 9) {
+//			if(this.topLeft.valid(row, col, guess)
+//					&& this.center.valid(row - 6, col - 6, guess)){
+//				return true;
+//			}
+//		}
+//		else if(row >= 0 && row < 9 && col >= 0 && col < 9) {
+//			if(this.topLeft.valid(row, col, guess)) {
+//				return true;
+//			}
+//		}
+//		else if(row >= 6 && row < 9 && col >= 12 && col < 15) {
+//			if(this.topRight.valid(row, col - 12, guess) 
+//					&& this.center.valid(row, col - 6, guess)) {
+//				return true;
+//			}
+//		}
+//		else if(row >= 0 && row < 9 && col >= 12 && col < 21) {
+//			if(this.topRight.valid(row, col - 12, guess)) {
+//				return true;
+//			}
+//		}
+//		else if(row >= 6 && row < 15 && col >= 6 && col < 15) {
+//			if(this.center.valid(row - 6, col - 6, guess)) {
+//				
+//			}
+//		}
+//		else if(row >= 12 && row < 15 && col >= 6 && col < 9) {
+//			if(this.bottomLeft.valid(row - 12, col, guess)
+//					&& this.center.valid(row - 6, col - 6, guess)) {
+//				return true;
+//			}
+//		}
+//		else if(row >= 12 && row < 21 && col >= 0 && col < 9) {
+//			if(this.bottomLeft.valid(row - 12, col, guess)) {
+//				return true;
+//			}
+//		}
+//		else if(row >= 12 && row < 15 && col >= 12 && col < 15) {
+//			if(this.bottomRight.valid(row - 12, col - 12, guess)
+//					&& this.center.valid(row - 6, col - 6, guess)) {
+//				return true;
+//			}
+//		}
+//		else if(row >= 12 && row < 21 && col >= 12 && col < 121) {
+//			if(this.bottomRight.valid(row - 12, col - 12, guess)) {
+//				return true;
+//			}
+//		}
+		return true;
 	}
 
 	@Override
@@ -407,11 +407,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public boolean solveSudoku() {
-
-		System.out.println("--------------------------------------");
-		topLeft.printCells();
-		
+	public boolean solveSudoku() {		
 		center.solveSudoku();
 		for (int row = 0; row < 3; row++) {
 			for (int col = 0; col < 3; col++) {
@@ -421,11 +417,7 @@ public class SamuraiLogic extends BasicGameLogic {
 				bottomRight.getCells()[row][col].setValue(center.getCells()[row + 6][col + 6].getValue());
 			}
 		}
-		System.out.println("--------------------------------------");
-		topLeft.printCells();
-		System.out.println("--------------------------------------");
 		topLeft.solveSudoku();
-		
 		topRight.solveSudoku();
 		bottomLeft.solveSudoku();
 		bottomRight.solveSudoku();

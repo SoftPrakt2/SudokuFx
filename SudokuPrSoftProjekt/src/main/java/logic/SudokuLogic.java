@@ -6,6 +6,7 @@ public class SudokuLogic extends BasicGameLogic {
 	
 	private Cell[][] cells;
 	static int counter = 0;
+	private Cell[][] copy;
 
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
         super(gamestate, minutesPlayed,secondsPlayed, isCorrect);
@@ -84,7 +85,7 @@ public class SudokuLogic extends BasicGameLogic {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				if (this.cells[row][col].getValue() == 0) {
 					for (int y = 0; y < this.cells.length; y++) {
-						counter++;
+//						counter++;
 						int a = (int) (Math.random() * 9) + 1;
 						if (valid(row, col, a)) {
 							this.cells[row][col].setValue(a);
@@ -107,22 +108,21 @@ public class SudokuLogic extends BasicGameLogic {
 	 * Löst ein Sudoku rekursiv
 	 */
 	public boolean solveSudoku() {
-		Cell[][] copy = this.cells;
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				if (this.cells[row][col].getValue() == 0) {
 					for (int y = 0; y < this.cells.length; y++) {
 						counter++;
-						if (counter == 150000) {
-							this.cells = copy;
-							return false;
+						if(counter == 150000) {
+							return true;
 						}
 						if (valid(row, col, y + 1)) {
 							this.cells[row][col].setValue(y + 1);
 							if (solveSudoku()) {
 								return true;
 							} else {
-								this.cells[row][col].setValue(0);
+								this.cells[row][col].setValue(0);							
+								System.out.println("Test");
 							}
 						}
 					}
@@ -184,7 +184,8 @@ public class SudokuLogic extends BasicGameLogic {
 		}
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				this.setCell(row, col, help[row][col]);
+				this.getCells()[row][col].setValue(help[row][col]);
+//				this.setCell(row, col, help[row][col]);
 			}
 		}
 		return coordinates;
@@ -241,6 +242,7 @@ public class SudokuLogic extends BasicGameLogic {
 				}
 			}
 		}
+		this.copy = this.cells;
 	}
 
 	public void setCell(int col, int row, int guess) {
