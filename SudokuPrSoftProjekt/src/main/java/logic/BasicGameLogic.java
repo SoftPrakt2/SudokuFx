@@ -105,6 +105,7 @@ public abstract class BasicGameLogic {
 
 	public abstract Gamestate getGameState();
 
+	public abstract boolean testIfSolved();
 	/**
 	 * Getter und Setter für Instanzvariablen
 	 * 

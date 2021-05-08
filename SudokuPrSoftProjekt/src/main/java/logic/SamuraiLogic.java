@@ -506,4 +506,10 @@ public class SamuraiLogic extends BasicGameLogic {
 	public Gamestate getGameState() {
 		return null;
 	}
+
+	@Override
+	public boolean testIfSolved() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

@@ -121,7 +121,6 @@ public class SudokuLogic extends BasicGameLogic {
 								return true;
 							} else {
 								this.cells[row][col].setValue(0);							
-								System.out.println("Test");
 							}
 						}
 					}
@@ -130,6 +129,17 @@ public class SudokuLogic extends BasicGameLogic {
 			}
 		}
 		System.out.println(counter);
+		return true;
+	}
+	
+	public boolean testIfSolved() {
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int col = 0; col < this.cells[row].length; col++) {
+				if(this.cells[row][col].getValue() == 0) {
+					return false;
+				}
+			}
+		}
 		return true;
 	}
 
