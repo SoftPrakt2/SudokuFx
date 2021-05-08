@@ -108,6 +108,7 @@ public class MainMenuController {
 			GUI.getStage().setScene(playScene);
 			menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
 			menu.getDifficultyToggle().getSelectedToggle().setSelected(false);
+			if(game.getDifficulty() > 0) game.getDoneButton().setDisable(true);
 	}
 
 	

@@ -150,7 +150,7 @@ public abstract class BasicGameBuilder {
 	protected MenuItem save;
 	protected MenuItem load;
 	protected Menu file;
-	protected MenuItem clearFieldItem;
+//	protected MenuItem clearFieldItem;
 	protected MenuItem reset;
 	protected Menu editMenu;
 	protected Menu difficultyMenu;
@@ -191,10 +191,10 @@ public abstract class BasicGameBuilder {
 
 		// newgame menu eintrag
 		editMenu = new Menu("Edit");
-		clearFieldItem = new MenuItem("Clear Field");
+//		clearFieldItem = new MenuItem("Clear Field");
 		createGameItem = new MenuItem("Create Game");
 		reset = new MenuItem("Reset");
-		editMenu.getItems().addAll(createGameItem, clearFieldItem, reset);
+		editMenu.getItems().addAll(createGameItem, reset);
 
 		mainMenu = new Menu("Main Menu");
 
@@ -209,9 +209,9 @@ public abstract class BasicGameBuilder {
 	 * Weist den Buttons und MenüItems Actions zu
 	 */
 	public void setButtonActions() {
-		createGameItem.setOnAction(controller::createGameHandler);
+		createGameItem.setOnAction(controller::newGameHandler);
 		autosolve.setOnAction(controller::checkHandler);
-		clearFieldItem.setOnAction(controller::newGameHandler);
+	
 		check.setOnAction(controller::checkHandler);
 		autosolve.setOnAction(controller::autoSolveHandler);
 		done.setOnAction(controller::manuelDoneHandler);
@@ -253,6 +253,10 @@ public abstract class BasicGameBuilder {
 
 	public Button getCheckButton() {
 		return this.check;
+	}
+	
+	public Button getDoneButton() {
+		return this.done;
 	}
 
 	public abstract Scene getScene();

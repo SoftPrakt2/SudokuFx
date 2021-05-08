@@ -11,6 +11,8 @@ import application.BasicGameBuilder;
 import application.GUI;
 import application.Storage;
 import application.SudokuField;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -68,6 +70,7 @@ public class GameController {
 		model.setGameState(Gamestate.OPEN);
 		scene.getCheckButton().setDisable(false);
 		numberCounter = 0;
+		createGame(scene.getDifficulty());
 	}
 
 	/**
@@ -192,11 +195,14 @@ public class GameController {
 			}
 			model.solveSudoku();
 			model.printCells();
+			model.setGameState(Gamestate.AutoSolved);
 			if(!model.testIfSolved()) {
 				resetHandler(e);
 				model.solveSudoku();
+				model.setGameState(Gamestate.UNSOLVABLE);
 			}
-			model.setGameState(Gamestate.AutoSolved);
+			scene.getGameLabel().setText(model.getGameText());
+			model.setGamePoints(0);
 			connectArrays(scene.getTextField());
 		} else {
 			for (int row = 0; row < sudokuField.length; row++) {
@@ -254,8 +260,6 @@ public class GameController {
 
 		} else if (!gameState || numberCounter != sudokuField.length * sudokuField.length) {
 			scene.getGameLabel().setText(model.getGameText());
-			if (model.getgamePoints() > 0)
-				model.setGamePoints(model.getgamePoints() - 1);
 		}
 
 	}
@@ -295,8 +299,20 @@ public class GameController {
 						&& !number.equals("0")) {
 					sudokuField[i][j].setText(number);
 					sudokuField[i][j].setPlayable(false);
+					
 				}
+//				sudokuField[i][j].textProperty().addListener(new ChangeListener<String>() {
+//				    @Override
+//				    public void changed(ObservableValue<? extends String> observable,
+//				            String oldValue, String newValue) {
+//				    		compareResult(sudokuField);
+//				       
+//				    }
+//				});
 			}
+			
+			
+			
 		}
 		model.setGamePoints(10);
 		scene.getGameLabel().setText("Game ongoing!");
@@ -321,6 +337,9 @@ public class GameController {
 	}
 
 	public void hintHandeler(ActionEvent e) {
+		
+		if (model.getgamePoints() > 0) model.setGamePoints(model.getgamePoints() - 1);
+	
 		model.hint();
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {

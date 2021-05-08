@@ -4,6 +4,7 @@ import controller.GameController;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
@@ -27,7 +28,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		gameType = "Sudoku";
 	}
 
-	/**
+/**
 	 * Übergibt dieser Scene den jeweiligen Controller
 	 * Erstellt die Scene mit den Buttons, der MenuBar und dem Sudoku-Spielfeld
 	 */

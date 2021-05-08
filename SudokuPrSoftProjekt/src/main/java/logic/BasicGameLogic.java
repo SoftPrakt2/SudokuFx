@@ -158,6 +158,10 @@ public abstract class BasicGameLogic {
         if(this.getGameState() == Gamestate.CONFLICT) {
             gameText = "Please remove the conflicts before autosolving";
         }
+        if(this.getGameState() == Gamestate.UNSOLVABLE) {
+        	gameText = "Unsolvable Sudoku! New Solution generated";
+        }
+        
         return gameText;
     }
 }
