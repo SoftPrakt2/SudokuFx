@@ -23,8 +23,7 @@ import javafx.scene.text.Text;
 public class MainMenu {
 	
 	
-	static BorderPane pane = new BorderPane();
-	static Scene mainScene = new Scene(pane,600,600);
+	
 	
 	private ToggleButton sudoku;
 	private ToggleButton samurai;
@@ -48,6 +47,10 @@ public class MainMenu {
 	
 	
 	public Scene setUpMainMenu() {
+		
+		
+		BorderPane pane = new BorderPane();
+		Scene mainScene = new Scene(pane,600,600);
 		
 		
 		//behälter für gamemode Buttons und verhalten für toggles
@@ -134,9 +137,6 @@ public class MainMenu {
 	
 	
 	
-	public  Scene getScene() {
-		return mainScene;
-	}
 	
 	public ToggleGroup getPlayModeToggle() {
 		return toggleGroupGameMode;

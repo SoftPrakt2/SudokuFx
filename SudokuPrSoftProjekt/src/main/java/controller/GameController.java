@@ -42,7 +42,7 @@ public class GameController {
 		sudokuField = scene.getTextField();
 	}
 
-	/**
+		/**
 	 * 
 	 * Erstellt abhängig von der Schwierigkeit ein Sudoku-Spiel Setzt die Punkte des
 	 * Spiels auf 10 Setzt GameText auf "Game ongoing" Setzt GameState auf OPEN
@@ -355,7 +355,7 @@ public class GameController {
 	}
 
 	public void switchToMainMenu(ActionEvent e) {
-		GUI.getStage().setScene(GUI.getMainMenu().getScene());
+		GUI.getStage().setScene(GUI.getMainMenu());
 	}
 
 //test

@@ -5,11 +5,12 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 
+
 public class GUI extends Application  {
 
   static Stage window;
-  static MainMenu mainMenu = new MainMenu();
-  static Scene mainMenuScene = mainMenu.setUpMainMenu();
+
+
 	
   //this is just a test
   
@@ -25,8 +26,7 @@ public class GUI extends Application  {
 		window = scene;
 		 scene.setMaxWidth(1500);
 		 scene.setMaxHeight(1500);
-		
-		 window.setScene(new MainMenu().setUpMainMenu());	
+				 window.setScene(new MainMenu().setUpMainMenu());	
 		 
 		 window.show();
 	
@@ -39,7 +39,7 @@ public class GUI extends Application  {
 	    
 	}
 	    
-	    private void closeProgram() {
+	private void closeProgram() {
 	    	CloseWindowStage c = new CloseWindowStage();
 			Boolean answer = c.showPopUp("Closing","Are you sure that you want to close the program?");
 			if(answer) window.close();
@@ -51,14 +51,12 @@ public class GUI extends Application  {
 	    }
 	    
 	    
-	    public static MainMenu getMainMenu() {
-	    	return mainMenu;
+	    public static Scene getMainMenu() {
+	    	return new MainMenu().setUpMainMenu();
 	    }
 	
 	    
 	    	
 	   
 	}
-	
-	
 	
