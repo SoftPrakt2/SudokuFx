@@ -27,6 +27,7 @@ public class GameController {
 	SudokuField[][] sudokuField;
 	static int numberCounter = 0;
 
+	
 	JSONObject myObject = new JSONObject();
 	JSONArray testList = new JSONArray();
 	JSONArray array = new JSONArray();

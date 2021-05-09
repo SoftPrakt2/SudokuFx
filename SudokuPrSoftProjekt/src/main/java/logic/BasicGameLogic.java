@@ -63,6 +63,7 @@ public abstract class BasicGameLogic {
 	protected Gamestate gamestate;
 	private boolean isCorrect;
 
+	
 	private int gamePoints = 10;
 	private long minutesPlayed;
 	private long secondsPlayed;

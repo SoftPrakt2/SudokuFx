@@ -55,6 +55,7 @@ public abstract class BasicGameBuilder {
 		pane = new BorderPane();
 	}
 
+	
 	protected String gameType;
 
 	protected SudokuField[][] textField;
