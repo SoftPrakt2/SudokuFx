@@ -135,9 +135,9 @@ public class GameController {
 
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
-				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
+				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-				} else {
+				} else if(!sudokuField[col][row].getText().equals("-1")) {
 					model.getCells()[row][col].setValue(0);
 				}
 			}
@@ -145,7 +145,7 @@ public class GameController {
 
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
-				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
+				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 					numberCounter++;
 					// vielleicht unnötig
 					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
@@ -188,7 +188,7 @@ public class GameController {
 		if (compareResult(sudokuField)) {
 			for (int row = 0; row < sudokuField.length; row++) {
 				for (int col = 0; col < sudokuField[row].length; col++) {
-					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
+					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 					}
 				}
@@ -207,7 +207,7 @@ public class GameController {
 		} else {
 			for (int row = 0; row < sudokuField.length; row++) {
 				for (int col = 0; col < sudokuField[row].length; col++) {
-					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-")) {
+					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 					}
 					// nochmal drüber schaun

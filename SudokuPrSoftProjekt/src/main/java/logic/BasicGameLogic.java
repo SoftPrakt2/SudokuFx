@@ -77,9 +77,9 @@ public abstract class BasicGameLogic {
 		this.isCorrect = isCorrect;
 	}
 	
-	public abstract boolean checkRow(int row, int guess);
+	public abstract boolean checkRow(int row, int col, int guess);
 
-	public abstract boolean checkCol(int col, int guess);
+	public abstract boolean checkCol(int row, int col, int guess);
 
 	public abstract boolean checkBox(int row, int col, int guess);
 

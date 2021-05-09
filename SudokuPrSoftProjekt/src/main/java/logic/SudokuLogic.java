@@ -25,7 +25,7 @@ public class SudokuLogic extends BasicGameLogic {
 	 */
 	@Override
 	public boolean valid(int row, int col, int guess) {
-		if (checkRow(row, guess) && checkCol(col, guess) && checkBox(row, col, guess)) {
+		if (checkRow(row, col, guess) && checkCol(row, col, guess) && checkBox(row, col, guess)) {
 			return true;
 		}
 		return false;
@@ -35,8 +35,8 @@ public class SudokuLogic extends BasicGameLogic {
 	 * Überprüft in der übergebenen Reihe ob eine idente Zahl vorhanden ist
 	 */
 	@Override
-	public boolean checkRow(int row, int guess) {
-		for (int col = 0; col < this.cells.length; col++) {
+	public boolean checkRow(int row, int col, int guess) {
+		for (col = 0; col < this.cells.length; col++) {
 			if (this.cells[row][col].getValue() == guess) {
 				return false;
 			}
@@ -48,8 +48,8 @@ public class SudokuLogic extends BasicGameLogic {
 	 * Überprüft in der übergebenen Zeile ob eine idente Zahl vorhanden ist
 	 */
 	@Override
-	public boolean checkCol(int col, int guess) {
-		for (int row = 0; row < this.cells.length; row++) {
+	public boolean checkCol(int row, int col, int guess) {
+		for (row = 0; row < this.cells.length; row++) {
 			if (this.cells[row][col].getValue() == guess) {
 				return false;
 			}
@@ -112,9 +112,9 @@ public class SudokuLogic extends BasicGameLogic {
 				if (this.cells[row][col].getValue() == 0) {
 					for (int y = 0; y < this.cells.length; y++) {
 						counter++;
-						if(counter == 150000) {
-							return true;
-						}
+//						if(counter == 500000) {
+//							return true;
+//						}
 						if (valid(row, col, y + 1)) {
 							this.cells[row][col].setValue(y + 1);
 							if (solveSudoku()) {

@@ -81,6 +81,10 @@ public class MainMenuController {
 	 * Stellen die schwierigkeit des zuvor ausgewählten Sudoku-Spiels ein
 	 */
 	public void handleHard(ActionEvent e) {
+		if(game instanceof SamuraiGameBuilder) {
+			System.out.println("Test");
+			game.setDifficulty(4);
+		}
 		game.setDifficulty(3);
 	}
 	
