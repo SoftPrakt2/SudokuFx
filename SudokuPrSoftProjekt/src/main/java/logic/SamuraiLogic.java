@@ -10,7 +10,7 @@ public class SamuraiLogic extends BasicGameLogic {
 //	private SudokuLogic center;
 //	private SudokuLogic bottomLeft;
 //	private SudokuLogic bottomRight;
-	static int counter = 0;
+	public static int counter = 0;
 
 	private SudokuLogic topLeft = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
 	private SudokuLogic topRight = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
