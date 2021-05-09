@@ -36,7 +36,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	    freeform.getStylesheets().add("/css/sudoku.css");
 	    mainMenuItem.setOnAction( e-> {
 	    	MainMenu mainmenu = new MainMenu();
-			
+			//
 			
 	    });
 	  return freeform;
