@@ -48,6 +48,7 @@ import javafx.stage.Stage;
         MainMenu mainMenu = new MainMenu();
         mainMenu.getPlayModeToggle();
      
+        
     }
 
     /**
