@@ -37,21 +37,24 @@ public class MainMenu {
 	private ToggleButton medium;
 	private ToggleButton hard;
 	private ToggleButton manual;
-	private Button createButton = new Button("Create");
-	private Button exit = new Button("Exit");
+	private Button createButton;
+	private Button exit;
 	private DoubleProperty fontSize = new SimpleDoubleProperty(10);
 	
-	Label welcomeLabel = new Label("SudokuFx");
+	Label welcomeLabel;
 	MainMenuController controllerMainMenu = new MainMenuController(this);
 	
-	
+	 Scene mainScene;
 	
 	public Scene setUpMainMenu() {
 		
 		
 		BorderPane pane = new BorderPane();
-		Scene mainScene = new Scene(pane,600,600);
+		mainScene = new Scene(pane,600,600);
 		
+		createButton = new Button("Create");
+		exit = new Button("Exit");
+		welcomeLabel = new Label("SudokuFx");
 		
 		//behälter für gamemode Buttons und verhalten für toggles
 		HBox gameModeButtons = new HBox();
@@ -137,7 +140,6 @@ public class MainMenu {
 	
 	
 	
-	
 	public ToggleGroup getPlayModeToggle() {
 		return toggleGroupGameMode;
 	}
@@ -145,5 +147,7 @@ public class MainMenu {
 	public ToggleGroup getDifficultyToggle() {
 		return toggleGroupDifficulty;
 	}
+	
+	
 	
 }

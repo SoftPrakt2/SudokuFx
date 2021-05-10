@@ -21,6 +21,7 @@ import logic.SudokuLogic;
  */
 public class SudokuGameBuilder extends BasicGameBuilder {
 
+	
 	public SudokuGameBuilder() {
 		super();
 		scene = new Scene(pane, 670, 670);
@@ -29,7 +30,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	}
 
 /**
-	 * Übergibt dieser Scene den jeweiligen Controller
+ * 	 * Übergibt dieser Scene den jeweiligen Controller
 	 * Erstellt die Scene mit den Buttons, der MenuBar und dem Sudoku-Spielfeld
 	 */
 	public Scene initializeScene() {

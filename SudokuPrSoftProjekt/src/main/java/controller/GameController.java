@@ -1,9 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -11,8 +7,6 @@ import application.BasicGameBuilder;
 import application.GUI;
 import application.Storage;
 import application.SudokuField;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -144,7 +138,7 @@ public class GameController {
 			}
 		}
 
-		for (int row = 0; row < sudokuField.length; row++) {
+			for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
 				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 					numberCounter++;

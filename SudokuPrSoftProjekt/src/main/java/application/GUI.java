@@ -11,12 +11,14 @@ public class GUI extends Application  {
   static Stage window;
 
 
+ static Scene mainScene;
 	
   //this is just a test
   
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
 	
 	
 	@Override
@@ -26,9 +28,10 @@ public class GUI extends Application  {
 		window = scene;
 		 scene.setMaxWidth(1500);
 		 scene.setMaxHeight(1500);
-				 window.setScene(new MainMenu().setUpMainMenu());	
+		 mainScene = new MainMenu().setUpMainMenu();
+				 window.setScene(mainScene);	
 		 
-		 window.show();
+			 window.show();
 	
 		 window.setTitle("SudokuFx");
 	    window.setOnCloseRequest(e-> {
@@ -52,11 +55,11 @@ public class GUI extends Application  {
 	    
 	    
 	    public static Scene getMainMenu() {
-	    	return new MainMenu().setUpMainMenu();
+	    	return mainScene;
 	    }
 	
 	    
-	    	
+	    
 	   
 	}
 	

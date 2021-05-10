@@ -17,6 +17,7 @@ import javafx.stage.Stage;
  * Entsprechend den ausgewählten Spielknöpfen werden die jeweiligen GameBuilder instanziiert.
  *
  */
+
 public class MainMenuController {
 
 	MainMenu menu;

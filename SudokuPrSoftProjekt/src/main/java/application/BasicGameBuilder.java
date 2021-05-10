@@ -1,37 +1,24 @@
 package application;
 
-import java.io.File;
 import java.util.stream.Stream;
 
 import controller.GameController;
-import controller.MainMenuController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import logic.Gamestate;
-import logic.SudokuLogic;
 
 public abstract class BasicGameBuilder {
 
@@ -42,20 +29,20 @@ public abstract class BasicGameBuilder {
 	protected Button owngame;
 	protected Button autosolve;
 	protected Button create;
-	Button empty;
+	protected Button empty;
 	protected ToggleButton hintButton;
 	protected Label gameTextLabel;
 	protected HBox buttonBox;
-	HBox gameLabelBox;
-	HBox emptySpaceBox;
+	protected HBox gameLabelBox;
+	protected HBox emptySpaceBox;
 
 	protected Button done;
-
+	
+	
 	public BasicGameBuilder() {
 		pane = new BorderPane();
 	}
 
-	
 	protected String gameType;
 
 	protected SudokuField[][] textField;
@@ -220,7 +207,6 @@ public abstract class BasicGameBuilder {
 		// save.setOnAction(controller::saveGame);
 		reset.setOnAction(controller::resetHandler);
 		mainMenuItem.setOnAction(controller::switchToMainMenu);
-		pane.maxWidthProperty().bind(scene.widthProperty());
 		hintButton.setOnAction(controller::hintHandeler);
 	}
 
