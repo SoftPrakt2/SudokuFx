@@ -7,6 +7,8 @@ public class SudokuLogic extends BasicGameLogic {
 	private Cell[][] cells;
 	static int counter = 0;
 
+	
+	
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
         super(gamestate, minutesPlayed,secondsPlayed, isCorrect);
         this.cells = new Cell[9][9];

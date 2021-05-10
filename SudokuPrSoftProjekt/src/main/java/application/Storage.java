@@ -33,7 +33,7 @@ public class Storage {
 	FileChooser fileChooser;
 
 	JSONParser parser = new JSONParser();
-	File saveFile = new File("/D:/test2/saveGames.json");
+	File saveFile = new File("/C:/test2/saveGames.json");
 	JSONObject jsonObject = convertToJSON(saveFile);
 	
 	Scene storageScene;
