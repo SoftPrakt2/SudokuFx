@@ -69,7 +69,9 @@ public abstract class BasicGameLogic {
 	private long secondsPlayed;
 	private long startTime;
 	private String gameText = "";
-
+	
+	private int gameID = 0;
+	
 	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
 		this.gamestate = gamestate;
@@ -165,4 +167,14 @@ public abstract class BasicGameLogic {
         
         return gameText;
     }
+	
+	public int getGameID() {
+		return gameID;
+	}
+	
+	public void setGameID(int gameID) {
+		this.gameID = gameID;
+	}
+	
+	
 }

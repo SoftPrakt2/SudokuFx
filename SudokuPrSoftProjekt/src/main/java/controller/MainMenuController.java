@@ -6,6 +6,7 @@ import application.GUI;
 import application.MainMenu;
 import application.OverviewStage;
 import application.SamuraiGameBuilder;
+import application.Storage;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
@@ -25,7 +26,9 @@ public class MainMenuController {
 
 	BasicGameBuilder game;
 	
-	OverviewStage overview = new OverviewStage();
+	Storage overview;
+	private Scene storageScene;
+	
 	//Stage overviewStage = overview.showOverview("Played", "Played");
 
 	public int difficulty;
@@ -42,6 +45,7 @@ public class MainMenuController {
 		game = new SudokuGameBuilder();
 		playScene = game.initializeScene();
 	}
+	
 
 	/**
 	 * 
@@ -66,7 +70,9 @@ public class MainMenuController {
 	 * Instanziiert ein StorageObjekt und ruft die Scene des Storage-Objekts auf
 	 */
 	public void handleToLoad(ActionEvent e) {
-		//overviewStage.show();
+		 overview = new Storage();
+		 storageScene = overview.showStorageScene();
+			GUI.getStage().setScene(storageScene);
 	}
 
 	/**

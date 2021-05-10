@@ -1,12 +1,24 @@
 package controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.BasicGameBuilder;
 import application.GUI;
 import application.Storage;
 import application.SudokuField;
+import application.SudokuSaveModel;
 import javafx.event.ActionEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -22,14 +34,17 @@ public class GameController {
 	static int numberCounter = 0;
 
 	
-	JSONObject myObject = new JSONObject();
-	JSONArray testList = new JSONArray();
-	JSONArray array = new JSONArray();
-	JSONObject game = new JSONObject();
 	Storage storage = new Storage();
-	FileChooser chooser = storage.setUpFileChooser();
+
+
+	File file = storage.getSaveFile();
+	
+	
+
 	long loadedSeconds;
 	long loadedMinutes;
+	int gameID = 1;
+	int gameIDhelper;
 
 	public GameController(BasicGameBuilder scene, BasicGameLogic model) {
 		this.scene = scene;
@@ -46,6 +61,7 @@ public class GameController {
 		createGame(scene.getDifficulty());
 	}
 
+	
 	/**
 	 * 
 	 * Löscht sämtliche Zahlen aus dem Spielfeld und setzt die verschiedenen
@@ -352,6 +368,234 @@ public class GameController {
 	public void switchToMainMenu(ActionEvent e) {
 		GUI.getStage().setScene(GUI.getMainMenu());
 	}
+	
+	
+	//speicher funktionen
+	public void loadIntoSudokuField(JSONArray json, JSONArray json2) {
+		Iterator<String> iterator = json.iterator();
+		Iterator<Boolean> booleanIterator = json2.iterator();
+
+		for (SudokuField[] sss : scene.getTextField()) {
+			for (SudokuField field : sss) {
+				field.setText(iterator.next());
+				if (booleanIterator.next() == true) {
+					field.setDisable(true);
+				} else {
+					field.setDisable(false);
+				}
+
+			}
+		}
+
+		model.setUpLogicArray();
+
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				if (!sudokuField[row][col].getText().equals("") && !sudokuField[row][col].getText().equals("-1")) {
+
+					model.setCell(col, row, Integer.parseInt(sudokuField[row][col].getText()));
+				} else {
+					model.setCell(col, row, 0);
+
+				}
+
+			}
+
+		}
+
+	}
+	
+	
+public void saveGame(ActionEvent e) {
+		
+		JSONObject jsonFile = storage.convertToJSON(file);
+		JSONArray jsonArray = (JSONArray) jsonFile.get("games");
+		
+		SudokuSaveModel sudokuSave = new SudokuSaveModel();
+
+		ArrayList<String> gameArray = new ArrayList<>();
+		ArrayList<Boolean> playableArray = new ArrayList<>();
+
+		
+		sudokuSave.type = scene.getGameType();
+		for (SudokuField[] sss : scene.getTextField()) {
+			for (SudokuField field : sss) {
+
+				gameArray.add(field.getText());
+				playableArray.add(field.isDisable());
+			}
+		}
+
+		calculateGameTime();
+
+		JSONObject newJSONGameData = new JSONObject();
+		
+		
+		if (gameIDexists()) {
+			JSONArray savedGamesArray = (JSONArray) storage.convertToJSON(file).get("games");
+			for (int i = 0; i < savedGamesArray.size(); i++) {
+				 JSONObject overwrittenGame = (JSONObject) savedGamesArray.get(i);
+				if ((int) (long) overwrittenGame.get("gameID") == gameIDhelper) {
+					
+					System.out.println("hiiiiiiiiiiiiii");
+					overwrittenGame.remove("gameNumbers");
+					overwrittenGame.remove("playAble");
+					
+					overwrittenGame.put("gameNumbers", gameArray);
+					overwrittenGame.put("playAble", playableArray);
+					jsonArray.remove(i);
+					jsonArray.add(overwrittenGame);
+				}
+			}
+		} else {
+			
+			newJSONGameData.put("type", scene.getGameType());
+			newJSONGameData.put("gameNumbers", gameArray);
+			newJSONGameData.put("playAble", playableArray);
+			newJSONGameData.put("difficulty", "easy");
+			newJSONGameData.put("points", model.getgamePoints());
+			newJSONGameData.put("gameState", model.getGameState());
+			newJSONGameData.put("minutesPlayed", model.getMinutesPlayed());
+			newJSONGameData.put("secondsPlayed", model.getSecondsPlayed());
+			jsonArray.add(newJSONGameData);
+		
+		newJSONGameData.put("gameID", getLastGameID(file) + 1);
+		gameID++;
+		
+		}
+		jsonFile.put("games", jsonArray);
+		
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			mapper.writeValue(file, jsonFile);
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		}
+		}
+
+
+public int getLastGameID(File file) {
+	JSONParser parser = new JSONParser();
+
+	int gameId = 0;
+
+	try {
+		Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
+		JSONObject jsonObject = (JSONObject) obj;
+
+		JSONArray gameArray = (JSONArray) jsonObject.get("games");
+
+		JSONObject helper = (JSONObject) gameArray.get(gameArray.size()-1);
+
+		gameId = (int) (long) helper.get("gameID");
+
+	} catch (FileNotFoundException ex) {
+		ex.printStackTrace();
+	} catch (IOException ex) {
+		ex.printStackTrace();
+	} catch (ParseException ex) {
+		ex.printStackTrace();
+	} catch (Exception ex) {
+		ex.printStackTrace();
+	}
+
+	System.out.println(gameId);
+
+	if (gameId == 0)
+		return 0;
+	else
+		return gameId;
+
+}
+
+
+
+
+public boolean gameIDexists() {
+	JSONObject obj = storage.convertToJSON(file);
+
+	JSONArray gameArray = (JSONArray) obj.get("games");
+
+	for (int i = 0; i < gameArray.size(); i++) {
+		JSONObject helper = (JSONObject) gameArray.get(i);
+		int id = (int) (long) helper.get("gameID");
+//		System.out.println(id);
+//		System.out.println(model.getGameID());
+		if (id == model.getGameID()) {
+			gameIDhelper = id;
+			return true;
+		}
+	}
+	return false;
+}
+	
+	
+	
+public void setModelID(int id) {
+	model.setGameID(id);
+}
+
+public void setUpLogic(ActionEvent e) {
+	model.setUpLogicArray();
+}
+
+public int getModelGamePoints() {
+	return model.getgamePoints();
+}
+
+public void setModelGamePoints(int gamePoints) {
+	model.setGamePoints(gamePoints);
+}
+
+public long getModelMinutesPlayed() {
+	return model.getMinutesPlayed();
+}
+
+public long getModelSecondsPlayed() {
+	return model.getSecondsPlayed();
+}
+
+public String getDifficulty() {
+	String difficulty = "";
+	if (scene.getDifficulty() == 3)
+		difficulty = "hard";
+	if (scene.getDifficulty() == 5)
+		difficulty = "medium";
+	if (scene.getDifficulty() == 7)
+		difficulty = "easy";
+	if (scene.getDifficulty() == 0)
+		difficulty = "manual";
+	return difficulty;
+}
+
+public void setModellStartTime() {
+	model.setStartTime(System.currentTimeMillis());
+}
+
+public void setLoadedMinutes(long loadedMinutes) {
+	this.loadedMinutes = loadedMinutes;
+}
+
+public long getLoadedMinutes() {
+	return loadedMinutes;
+}
+
+public void setLoadedSeconds(long loadedSeconds) {
+	this.loadedSeconds = loadedSeconds;
+}
+
+public long getLoadedSeconds() {
+	return loadedSeconds;
+}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 //test
 }

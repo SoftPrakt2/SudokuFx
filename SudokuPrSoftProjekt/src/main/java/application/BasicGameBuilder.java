@@ -69,6 +69,7 @@ public abstract class BasicGameBuilder {
 	 * setButtonActions auf Fügt die Buttons anschließend in das übegergeben
 	 * BorderPane
 	 */
+	
 	public void createPlayButtons(BorderPane pane) {
 		playButtonMenu = new VBox(10);
 		playButtonMenu.setSpacing(10);
@@ -203,8 +204,8 @@ public abstract class BasicGameBuilder {
 		check.setOnAction(controller::checkHandler);
 		autosolve.setOnAction(controller::autoSolveHandler);
 		done.setOnAction(controller::manuelDoneHandler);
-		// load.setOnAction(controller::importGame);
-		// save.setOnAction(controller::saveGame);
+	//	 load.setOnAction(controller::importGame);
+		  save.setOnAction(controller::saveGame);
 		reset.setOnAction(controller::resetHandler);
 		mainMenuItem.setOnAction(controller::switchToMainMenu);
 		hintButton.setOnAction(controller::hintHandeler);

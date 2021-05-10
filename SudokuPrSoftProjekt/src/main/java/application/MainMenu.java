@@ -88,6 +88,7 @@ public class MainMenu {
 		difficultyButtons.getChildren().addAll(easy,medium,hard,manual);
 		
 		
+	
 		load = new Button("Load");
 		
 		
