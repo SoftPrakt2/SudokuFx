@@ -306,120 +306,43 @@ public class SamuraiLogic extends BasicGameLogic {
 		return true;
 	}
 
+
+
 	@Override
-	public int[] hint() {
-		// TODO Auto-generated method stub
-		boolean correctRandom = false;
-		int randomRow = 0;
-		int randomCol = 0;
-		int randomHint = 0;
-		int[] helpForHint = new int[2];
-		int random = (int) (Math.random() * 5) + 1;
-		int[] returnCoordinates = new int[2];
+    public boolean hint() {
+        // TODO Auto-generated method stub
+        boolean correctRandom = false;
+        int randomRow = 0;
+        int randomCol = 0;
+        int randomNumber = 0;
 
-		
-		
-		while (!correctRandom) {
-			random = (int) (Math.random() * 5) + 1;
-			if (random == 1) {
-				helpForHint = topLeft.hint();
-				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
-						&& center.valid(helpForHint[0] - 6, helpForHint[1] - 6,
-								topLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-//					topLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(0);
-					topLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(random);
-					center.getCells()[helpForHint[0] - 6][helpForHint[1] - 6]
-							.setValue(topLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue());
-					
-				}
-				break;
-			}
-			if (random == 2) {
-				helpForHint = topRight.hint();
-				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
-						&& center.valid(helpForHint[0] - 6, helpForHint[1] + 6,
-								topRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-//					topRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(random);
-					center.getCells()[helpForHint[0] - 6][helpForHint[1] + 6]
-							.setValue(topRight.getCells()[helpForHint[0]][helpForHint[1]].getValue());
-					
-				}
-				break;
-			}
-			if (random == 3) {
-				helpForHint = center.hint();
-				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
-						&& topLeft.valid(helpForHint[0] + 6, helpForHint[1] + 6,
-								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(random);
-					topLeft.getCells()[helpForHint[0] + 6][helpForHint[1] + 6]
-							.setValue(center.getCells()[helpForHint[0]][helpForHint[1]].getValue());
-					
-				}
-				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
-						&& topRight.valid(helpForHint[0] + 6, helpForHint[1] - 6,
-								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(random);
-					topRight.getCells()[helpForHint[0] + 6][helpForHint[1] - 6]
-							.setValue(center.getCells()[helpForHint[0]][helpForHint[1]].getValue());
-					
-				}
-				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] >= 0 && helpForHint[1] < 3
-						&& bottomLeft.valid(helpForHint[0] - 6, helpForHint[1] + 6,
-								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(random);
-					bottomLeft.getCells()[helpForHint[0] - 6][helpForHint[1] + 6]
-							.setValue(center.getCells()[helpForHint[0]][helpForHint[1]].getValue());
-					
-				}
-				if (helpForHint[0] > 5 && helpForHint[0] < 9 && helpForHint[1] > 5 && helpForHint[1] < 9
-						&& bottomRight.valid(helpForHint[0] - 6, helpForHint[1] - 6,
-								center.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					center.getCells()[helpForHint[0]][helpForHint[1]].setValue(random);
-					bottomRight.getCells()[helpForHint[0] - 6][helpForHint[1] - 6]
-							.setValue(center.getCells()[helpForHint[0]][helpForHint[1]].getValue());
-					
-				}
-				break;
-			}
-			if (random == 4) {
-				helpForHint = bottomLeft.hint();
-				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] > 5 && helpForHint[1] < 9
-						&& center.valid(helpForHint[0] + 6, helpForHint[1] - 6,
-								bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].setValue(random);
-					center.getCells()[helpForHint[0] + 6][helpForHint[1] - 6]
-							.setValue(bottomLeft.getCells()[helpForHint[0]][helpForHint[1]].getValue());
-					
-				}
-				break;
-			}
-			if (random == 5) {
-				helpForHint = bottomRight.hint();
-				if (helpForHint[0] >= 0 && helpForHint[0] < 3 && helpForHint[1] >= 0 && helpForHint[1] < 3
-						&& center.valid(helpForHint[0] + 6, helpForHint[1] + 6,
-								bottomRight.getCells()[helpForHint[0]][helpForHint[1]].getValue())) {
-					bottomRight.getCells()[helpForHint[0]][helpForHint[1]].setValue(random);
-					center.getCells()[helpForHint[0] + 6][helpForHint[1] + 6]
-							.setValue(bottomRight.getCells()[helpForHint[0]][helpForHint[1]].getValue());
-					
-				}
-				break;
-			}
-			correctRandom = true;
-		}
+        int help[][] = new int[21][21];
+        for (int row = 0; row < this.cells.length; row++) {
+            for (int col = 0; col < this.cells[row].length; col++) {
+                help[row][col] = this.cells[row][col].getValue();
+            }
+        }
 
-		for (int row = 0; row < 9; row++) {
-			for (int col = 0; col < 9; col++) {
-				this.getCells()[row][col].setValue(topLeft.getCells()[row][col].getValue());
-				this.getCells()[row][col + 12].setValue(topRight.getCells()[row][col].getValue());
-				this.getCells()[row + 6][col + 6].setValue(center.getCells()[row][col].getValue());
-				this.getCells()[row + 12][col].setValue(bottomLeft.getCells()[row][col].getValue());
-				this.getCells()[row + 12][col + 12].setValue(bottomRight.getCells()[row][col].getValue());
-			}
-		}
-		return returnCoordinates;
-	}
+        this.solveSudoku();
+
+        while (!correctRandom) {
+            randomRow = (int) (Math.random() * 20) + 0;
+            randomCol = (int) (Math.random() * 20) + 0;
+            randomNumber = (int) (Math.random() * 9) + 1;
+            if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0) {
+                help[randomRow][randomCol] = randomNumber;
+                correctRandom = true;
+            }
+        }
+
+        for (int row = 0; row < 21; row++) {
+            for (int col = 0; col < 21; col++) {
+                this.cells[row][col].setValue(help[row][col]);
+            }
+        }
+        return true;
+    }
+	
 
 	@Override
 	public boolean solveSudoku() {
@@ -431,6 +354,7 @@ public class SamuraiLogic extends BasicGameLogic {
 //						if(counter == 10000000) {
 //							return true;
 //						}
+					
 						if (valid(row, col, y + 1)) {
 							this.cells[row][col].setValue(y + 1);
 							if (solveSudoku()) {

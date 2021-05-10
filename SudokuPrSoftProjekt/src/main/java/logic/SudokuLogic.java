@@ -20,6 +20,7 @@ public class SudokuLogic extends BasicGameLogic {
 		this.cells = cells;
 	}
 
+
 	/**
 	 * Überprüft ob die Methoden checkRow, checkCol und CheckBox true zurückgeben
 	 */
@@ -151,7 +152,7 @@ public class SudokuLogic extends BasicGameLogic {
 	 * derzeitige Sudoku nimmt Werte des Hilfsarray an
 	 */
 	@Override
-	public int[] hint() {
+	public boolean hint() {
 		int[] coordinates = new int[2];
 		int randomGuess = (int) (Math.random() * 9) + 1;
 		int counter = 0;
@@ -197,7 +198,7 @@ public class SudokuLogic extends BasicGameLogic {
 //				this.setCell(row, col, help[row][col]);
 			}
 		}
-		return coordinates;
+		return true;
 	}
 
 	/**

@@ -90,7 +90,7 @@ public abstract class BasicGameLogic {
 
 	public abstract boolean createSudoku();
 
-	public abstract int[] hint();
+	public abstract boolean hint();
 
 	public abstract boolean solveSudoku();
 
