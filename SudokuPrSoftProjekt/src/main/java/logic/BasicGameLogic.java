@@ -69,7 +69,6 @@ public abstract class BasicGameLogic {
 	private long secondsPlayed;
 	private long startTime;
 	private String gameText = "";
-	
 	private int gameID = 0;
 	
 	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
@@ -92,7 +91,7 @@ public abstract class BasicGameLogic {
 
 	public abstract boolean createSudoku();
 
-	public abstract boolean hint();
+	public abstract int[] hint();
 
 	public abstract boolean solveSudoku();
 

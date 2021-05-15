@@ -1,11 +1,16 @@
 package application;
 
+import java.util.ArrayList;
 import java.util.stream.Stream;
+
+import com.sun.javafx.property.adapter.PropertyDescriptor.Listener;
 
 import controller.GameController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,10 +40,12 @@ public abstract class BasicGameBuilder {
 	protected HBox buttonBox;
 	protected HBox gameLabelBox;
 	protected HBox emptySpaceBox;
+	
+	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
+	
 
 	protected Button done;
-	
-	
+
 	public BasicGameBuilder() {
 		pane = new BorderPane();
 	}
@@ -46,6 +53,7 @@ public abstract class BasicGameBuilder {
 	protected String gameType;
 
 	protected SudokuField[][] textField;
+	
 
 	// schwierigkeit welche vom hauptmenü mit den gettern und settern unten
 	// definiert wird
@@ -69,7 +77,7 @@ public abstract class BasicGameBuilder {
 	 * setButtonActions auf Fügt die Buttons anschließend in das übegergeben
 	 * BorderPane
 	 */
-	
+
 	public void createPlayButtons(BorderPane pane) {
 		playButtonMenu = new VBox(10);
 		playButtonMenu.setSpacing(10);
@@ -200,15 +208,56 @@ public abstract class BasicGameBuilder {
 	public void setButtonActions() {
 		createGameItem.setOnAction(controller::newGameHandler);
 		autosolve.setOnAction(controller::checkHandler);
-	
+
 		check.setOnAction(controller::checkHandler);
 		autosolve.setOnAction(controller::autoSolveHandler);
 		done.setOnAction(controller::manuelDoneHandler);
-	//	 load.setOnAction(controller::importGame);
-		  save.setOnAction(controller::saveGame);
+		// load.setOnAction(controller::importGame);
+		save.setOnAction(controller::saveGame);
 		reset.setOnAction(controller::resetHandler);
 		mainMenuItem.setOnAction(controller::switchToMainMenu);
 		hintButton.setOnAction(controller::hintHandeler);
+	}
+
+	
+	public void addListeners(SudokuField[][] sudokuField) {
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				ChangeListener<String> changeListener = new ChangeListener<>() {
+					@Override
+					public void changed(ObservableValue<? extends String> observable, String oldValue,
+							String newValue) {
+						// TODO Auto-generated method stub
+						controller.compareResult(sudokuField);
+						
+					}
+				};
+
+				sudokuField[col][row].textProperty().addListener(changeListener);
+				listeners.add(changeListener);
+				
+//				sudokuField[col][row].textProperty().addListener(new ChangeListener<String>() {
+//					@Override
+//					public void changed(ObservableValue<? extends String> observable, String oldValue,
+//							String newValue) {
+//						controller.compareResult(sudokuField);
+//					}
+//				});
+				
+			}
+		}
+	}
+
+	public void removeListeners(SudokuField[][] sudokuField) {
+		
+		for (ChangeListener l : listeners) {
+			for (SudokuField[] sss : sudokuField) {
+				for (SudokuField field : sss) {
+				
+				field.textProperty().removeListener(l);
+				}
+			}
+		}
 	}
 
 	/**
@@ -242,7 +291,7 @@ public abstract class BasicGameBuilder {
 	public Button getCheckButton() {
 		return this.check;
 	}
-	
+
 	public Button getDoneButton() {
 		return this.done;
 	}
