@@ -19,6 +19,8 @@ import application.GUI;
 import application.Storage;
 import application.SudokuField;
 import application.SudokuSaveModel;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -34,17 +36,12 @@ public class GameController {
 	BasicGameLogic model;
 	SudokuField[][] sudokuField;
 	static int numberCounter = 0;
-	
-	
 
 	Storage storage = new Storage();
 
 	File file = storage.getSaveFile();
-
-	long loadedSeconds;
-	long loadedMinutes;
 	int gameID = 1;
-	int gameIDhelper;
+	IntegerProperty helper = new SimpleIntegerProperty();
 
 	public GameController(BasicGameBuilder scene, BasicGameLogic model) {
 		this.scene = scene;
@@ -99,7 +96,7 @@ public class GameController {
 		model.setStartTime(System.currentTimeMillis());
 		model.setGamePoints(10);
 		model.setGameState(Gamestate.OPEN);
-		scene.getGameLabel().setText(model.getGameText());
+		scene.getGameInfoLabel().setText(model.getGameText());
 	}
 
 	/**
@@ -191,26 +188,18 @@ public class GameController {
 	public void autoSolveHandler(ActionEvent e) {
 		scene.removeListeners(sudokuField);
 		if (compareResult(sudokuField)) {
-//			for (int row = 0; row < sudokuField.length; row++) {
-//				for (int col = 0; col < sudokuField[row].length; col++) {
-//					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-//						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-//					}
-//					else 
-//				}
-//			}
-			
 			connectWithModel();
 			model.solveSudoku();
 			model.printCells();
 			model.setGameState(Gamestate.AutoSolved);
+			model.setGamePoints(0);
+			scene.getGameInfoLabel().setText("Points: " + model.getgamePoints() + " | Difficulty: " + getDifficulty());
+			scene.getGameNotificationLabel().setText(model.getGameText());
 			if (!model.testIfSolved()) {
 				resetHandler(e);
 				model.solveSudoku();
 				model.setGameState(Gamestate.UNSOLVABLE);
 			}
-			scene.getGameLabel().setText(model.getGameText());
-			model.setGamePoints(0);
 			connectArrays(scene.getTextField());
 		} else {
 			for (int row = 0; row < sudokuField.length; row++) {
@@ -225,7 +214,7 @@ public class GameController {
 				}
 			}
 			model.setGameState(Gamestate.CONFLICT);
-			scene.getGameLabel().setText(model.getGameText());
+			scene.getGameNotificationLabel().setText(model.getGameText());
 		}
 	}
 
@@ -237,28 +226,27 @@ public class GameController {
 	public void checkHandler(ActionEvent e) {
 
 		boolean gameState = compareResult(sudokuField);
-//		if (gameState == true) {
-//			for (int i = 0; i < sudokuField.length; i++) {
-//				for (int j = 0; j < sudokuField[i].length; j++) {
-//					sudokuField[j][i].setStyle("-fx-text-fill: black");
-//				}
-//			}
-//		}
+		if (gameState == true) {
+			for (int i = 0; i < sudokuField.length; i++) {
+				for (int j = 0; j < sudokuField[i].length; j++) {
+					sudokuField[j][i].setStyle("-fx-text-fill: black");
+				}
+			}
+		}
 
 		if (gameState && numberCounter == sudokuField.length * sudokuField.length) {
-			long timeHelp = calculateGameTime();
-			model.setGameState(Gamestate.DONE);
-			if (timeHelp < 60) {
-				scene.getGameLabel().setText(model.getGameText() + " Points: " + model.getgamePoints() + " Time: "
-						+ model.getSecondsPlayed() + " sek");
-			} else {
+			calculateGameTime();
 
-				scene.getGameLabel().setText(model.getGameText() + " Points: " + model.getgamePoints() + " Time: "
-						+ model.getMinutesPlayed() + " min " + model.getSecondsPlayed() + " s ");
+			if (!model.getGameState().equals(Gamestate.AutoSolved)) {
+				model.setGameState(Gamestate.DONE);
+				scene.getGameNotificationLabel().setText(model.getGameText());
 			}
+			scene.getPlayTimeLabel().setText(
+					" | Playtime: " + model.getMinutesPlayed() + " minutes " + model.getSecondsPlayed() + " seconds ");
 
 		} else if (!gameState || numberCounter != sudokuField.length * sudokuField.length) {
-			scene.getGameLabel().setText(model.getGameText());
+
+			scene.getGameNotificationLabel().setText(model.getGameText());
 		}
 
 	}
@@ -271,7 +259,7 @@ public class GameController {
 		long time;
 		long endTime = System.currentTimeMillis();
 		time = (endTime - model.getStartTime()) / 1000;
-		time += loadedMinutes * 60 + loadedSeconds;
+		time += model.getLoadedMinutes() * 60 + model.getLoadedSeconds();
 		model.setSecondsPlayed(time);
 		if (time > 60) {
 			model.setMinutesPlayed(time / 60);
@@ -300,25 +288,15 @@ public class GameController {
 					sudokuField[i][j].setPlayable(false);
 
 				}
-//				sudokuField[i][j].textProperty().addListener(new ChangeListener<String>() {
-//					@Override
-//					public void changed(ObservableValue<? extends String> observable, String oldValue,
-//							String newValue) {
-//						compareResult(sudokuField);
-//					}
-//				});
 			}
 		}
 		scene.addListeners(sudokuField);
-//		scene.removeListeners(sudokuField);
 		model.setGamePoints(10);
-		scene.getGameLabel().setText("Game ongoing!");
+		scene.getGameInfoLabel().setText("Points: " + model.getgamePoints() + " Difficulty: " + getDifficulty());
 		model.setGameState(Gamestate.OPEN);
 		enableEdit();
 		model.printCells();
 	}
-
-	
 
 	/**
 	 * Leere Textfelder werden für den Benutzer freigegeben
@@ -331,49 +309,9 @@ public class GameController {
 				} else {
 					sudokuField[i][j].setDisable(true);
 				}
-
-				SudokuField s = sudokuField[j][i];
-				final int help = i;
-				final int help2 = j;
-
-//				sudokuField[j][i].textProperty().addListener(new ChangeListener<String>() {
-//
-//					@Override
-//					public void changed(ObservableValue<? extends String> observable, String oldValue,
-//							String newValue) {
-//						// TODO Auto-generated method stub
-//						if (!newValue.equals("")) {
-//							checkIfok();
-//						}
-//					}
-//				});
 			}
 		}
 	}
-
-//	public void checkIfok() {
-//		connectWithModel();
-//
-//		for (int row = 0; row < sudokuField.length; row++) {
-//			for (int col = 0; col < sudokuField[row].length; col++) {
-//				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-//					numberCounter++;
-//					// vielleicht unnötig
-//					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-//					if (!model.getCells()[row][col].getIsReal()) {
-//						// nochmal genauer drüberschaun zwecks verständnis
-//						model.getCells()[row][col].setValue(0);
-//						if (!model.valid(row, col, Integer.parseInt(sudokuField[col][row].getText()))) {
-//							model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-//							sudokuField[col][row].setStyle("-fx-text-fill: red");
-//							model.setGameState(Gamestate.INCORRECT);
-////							model.getCells()[row][col].setValue(0);
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
 
 	public void connectWithModel() {
 		for (int row = 0; row < sudokuField.length; row++) {
@@ -415,7 +353,7 @@ public class GameController {
 				}
 			}
 			model.setGameState(Gamestate.CONFLICT);
-			scene.getGameLabel().setText(model.getGameText());
+			scene.getGameInfoLabel().setText("Points: " + model.getgamePoints() + " Difficulty: " + getDifficulty());
 		}
 	}
 
@@ -423,104 +361,16 @@ public class GameController {
 		GUI.getStage().setScene(GUI.getMainMenu());
 	}
 
-	// speicher funktionen
-	public void loadIntoSudokuField(JSONArray json, JSONArray json2) {
-		Iterator<String> iterator = json.iterator();
-		Iterator<Boolean> booleanIterator = json2.iterator();
-
-		for (SudokuField[] sss : scene.getTextField()) {
-			for (SudokuField field : sss) {
-				field.setText(iterator.next());
-				if (booleanIterator.next() == true) {
-					field.setDisable(true);
-				} else {
-					field.setDisable(false);
-				}
-
-			}
-		}
-
-		model.setUpLogicArray();
-
+	public void saveGame(ActionEvent e) {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
-				if (!sudokuField[row][col].getText().equals("") && !sudokuField[row][col].getText().equals("-1")) {
-
-					model.setCell(col, row, Integer.parseInt(sudokuField[row][col].getText()));
-				} else {
-					model.setCell(col, row, 0);
-
+				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
+					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 				}
-
-			}
-
-		}
-
-	}
-
-	public void saveGame(ActionEvent e) {
-
-		JSONObject jsonFile = storage.convertToJSON(file);
-		JSONArray jsonArray = (JSONArray) jsonFile.get("games");
-
-		SudokuSaveModel sudokuSave = new SudokuSaveModel();
-
-		ArrayList<String> gameArray = new ArrayList<>();
-		ArrayList<Boolean> playableArray = new ArrayList<>();
-
-		sudokuSave.type = scene.getGameType();
-		for (SudokuField[] sss : scene.getTextField()) {
-			for (SudokuField field : sss) {
-
-				gameArray.add(field.getText());
-				playableArray.add(field.isDisable());
 			}
 		}
-
 		calculateGameTime();
-
-		JSONObject newJSONGameData = new JSONObject();
-
-		if (gameIDexists()) {
-			JSONArray savedGamesArray = (JSONArray) storage.convertToJSON(file).get("games");
-			for (int i = 0; i < savedGamesArray.size(); i++) {
-				JSONObject overwrittenGame = (JSONObject) savedGamesArray.get(i);
-				if ((int) (long) overwrittenGame.get("gameID") == gameIDhelper) {
-
-					System.out.println("hiiiiiiiiiiiiii");
-					overwrittenGame.remove("gameNumbers");
-					overwrittenGame.remove("playAble");
-
-					overwrittenGame.put("gameNumbers", gameArray);
-					overwrittenGame.put("playAble", playableArray);
-					jsonArray.remove(i);
-					jsonArray.add(overwrittenGame);
-				}
-			}
-		} else {
-
-			newJSONGameData.put("type", scene.getGameType());
-			newJSONGameData.put("gameNumbers", gameArray);
-			newJSONGameData.put("playAble", playableArray);
-			newJSONGameData.put("difficulty", "easy");
-			newJSONGameData.put("points", model.getgamePoints());
-			newJSONGameData.put("gameState", model.getGameState());
-			newJSONGameData.put("minutesPlayed", model.getMinutesPlayed());
-			newJSONGameData.put("secondsPlayed", model.getSecondsPlayed());
-			jsonArray.add(newJSONGameData);
-
-			newJSONGameData.put("gameID", getLastGameID(file) + 1);
-			gameID++;
-
-		}
-		jsonFile.put("games", jsonArray);
-
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.writeValue(file, jsonFile);
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		}
+		model.saveGame();
 	}
 
 	public int getLastGameID(File file) {
@@ -554,33 +404,6 @@ public class GameController {
 			return 0;
 		else
 			return gameId;
-
-	}
-
-	public boolean gameIDexists() {
-		JSONObject obj = storage.convertToJSON(file);
-
-		JSONArray gameArray = (JSONArray) obj.get("games");
-
-		for (int i = 0; i < gameArray.size(); i++) {
-			JSONObject helper = (JSONObject) gameArray.get(i);
-			int id = (int) (long) helper.get("gameID");
-//		System.out.println(id);
-//		System.out.println(model.getGameID());
-			if (id == model.getGameID()) {
-				gameIDhelper = id;
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public void setModelID(int id) {
-		model.setGameID(id);
-	}
-
-	public void setUpLogic(ActionEvent e) {
-		model.setUpLogicArray();
 	}
 
 	public int getModelGamePoints() {
@@ -611,26 +434,4 @@ public class GameController {
 			difficulty = "manual";
 		return difficulty;
 	}
-
-	public void setModellStartTime() {
-		model.setStartTime(System.currentTimeMillis());
-	}
-
-	public void setLoadedMinutes(long loadedMinutes) {
-		this.loadedMinutes = loadedMinutes;
-	}
-
-	public long getLoadedMinutes() {
-		return loadedMinutes;
-	}
-
-	public void setLoadedSeconds(long loadedSeconds) {
-		this.loadedSeconds = loadedSeconds;
-	}
-
-	public long getLoadedSeconds() {
-		return loadedSeconds;
-	}
-
-//test
 }

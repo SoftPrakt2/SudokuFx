@@ -11,6 +11,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[21][21];
+		gameType = "Samurai";
 	}
 
 	@Override
@@ -577,4 +578,5 @@ public class SamuraiLogic extends BasicGameLogic {
 		}
 		return true;
 	}
+
 }

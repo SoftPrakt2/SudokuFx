@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import logic.BasicGameLogic;
 import logic.Gamestate;
 import logic.SudokuLogic;
 
@@ -21,27 +22,26 @@ import logic.SudokuLogic;
  */
 public class SudokuGameBuilder extends BasicGameBuilder {
 
-	
-	public SudokuGameBuilder() {
-		super();
-		scene = new Scene(pane, 670, 670);
-		textField = new SudokuField[9][9];
-		gameType = "Sudoku";
-	}
+	public SudokuGameBuilder(BasicGameLogic model) {
+        super(model);
+        textField = new SudokuField[9][9];
+        gameType = "Sudoku";
+    }
 
 /**
  * 	 * Übergibt dieser Scene den jeweiligen Controller
 	 * Erstellt die Scene mit den Buttons, der MenuBar und dem Sudoku-Spielfeld
 	 */
 	public Scene initializeScene() {
-		controller = new GameController(this, new SudokuLogic(Gamestate.OPEN, 0, 0, false));
-
+		controller = new GameController(this, model);
+		scene = new Scene(pane, 670, 670);
 		pane.setCenter(createBoard());
 		pane.setPadding(new Insets(50, 50, 50, 50));
 
 		createMenuBar(pane);
 		createPlayButtons(pane);
-
+		createStatusBar(pane);
+		
 		scene.getStylesheets().add("/css/sudoku.css");
 
 		return scene;
@@ -63,13 +63,13 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 				StackPane cell = new StackPane();
 				cell.getStyleClass().add("cell");
 
-				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(12));
-				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(12));
+				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(10));
+				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));
 
 				textField[i][j] = new SudokuField("");
 
 				textField[i][j].setMaxSize(100, 100);
-				textField[i][j].setFont(Font.font("Arial", FontWeight.BOLD, 15));
+				textField[i][j].setFont(Font.font("Arial", FontWeight.BOLD, 23));
 				textField[i][j].setAlignment(Pos.CENTER);
 
 				cell.pseudoClassStateChanged(right, i == 2 || i == 5);

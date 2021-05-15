@@ -11,6 +11,9 @@ import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import logic.Gamestate;
+import logic.SamuraiLogic;
+import logic.SudokuLogic;
 
 /**
  * 
@@ -42,7 +45,7 @@ public class MainMenuController {
 	 * Instanziiert den BasicGameBuilder als SudokuGameBuilder und ladet die SudokuScene
 	 */
 	public void handleToSudoku(ActionEvent e) {
-		game = new SudokuGameBuilder();
+		game = new SudokuGameBuilder(new SudokuLogic(Gamestate.OPEN,0,0,false));
 		playScene = game.initializeScene();
 	}
 	
@@ -52,7 +55,7 @@ public class MainMenuController {
 	 * Instanziiert den BasicGameBuilder als SamuraiGameBuilder und ladet die SamuraiScene
 	 */
 	public void handleToSamurai(ActionEvent e) {
-		game = new SamuraiGameBuilder();
+		game = new SamuraiGameBuilder(new SamuraiLogic(Gamestate.OPEN,0,0,false));
 		playScene = game.initializeScene();
 	}
 
@@ -61,7 +64,7 @@ public class MainMenuController {
 	 * Instanziiert den BasicGameBuilder als FreeFormGameBuilder und ladet die FreeFormScene
 	 */
 	public void handleToFreeForm(ActionEvent e) {
-		game = new FreeFormGameBuilder();
+		game = new FreeFormGameBuilder(new SudokuLogic(Gamestate.OPEN,0,0,false));
 		playScene = game.initializeScene();
 	}
 

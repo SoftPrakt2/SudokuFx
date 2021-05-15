@@ -8,10 +8,17 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
+import logic.BasicGameLogic;
 
 public class FreeFormGameBuilder extends BasicGameBuilder {
 	
-	 static BorderPane pane;
+	 public FreeFormGameBuilder(BasicGameLogic model) {
+		super(model);
+		// TODO Auto-generated constructor stub
+	}
+
+
+	static BorderPane pane;
 	  Scene freeform;
 	  ToggleButton hint;
 	

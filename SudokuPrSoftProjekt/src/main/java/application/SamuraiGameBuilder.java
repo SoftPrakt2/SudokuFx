@@ -9,6 +9,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
+import logic.BasicGameLogic;
 import logic.Gamestate;
 import logic.SamuraiLogic;
 import logic.SudokuLogic;
@@ -22,27 +23,28 @@ import javafx.scene.Node;
  */
 public class SamuraiGameBuilder extends BasicGameBuilder {
 
-	public SamuraiGameBuilder() {
-		super();
-		scene = new Scene(pane, 1000, 1000);
-		textField = new SudokuField[21][21];
-		gameType = "Sudoku";
-
-	}
+	public SamuraiGameBuilder(BasicGameLogic model) {
+        super(model);
+        scene = new Scene(pane, 1000, 1000);
+        textField = new SudokuField[21][21];
+        gameType = "Samurai";
+    }
 
 	/**
 	 * Übergibt dieser Scene den jeweiligen Controller Erstellt die Scene mit den
 	 * Buttons, der MenuBar und dem Sudoku-Spielfeld
 	 */
 	public Scene initializeScene() {
-		controller = new GameController(this, new SamuraiLogic(Gamestate.OPEN, 0, 0, false));
-
+		controller = new GameController(this, model);
+		
+		
 		pane.setCenter(createBoard());
 		pane.setPadding(new Insets(50, 50, 50, 50));
 
 		createMenuBar(pane);
 		createPlayButtons(pane);
-
+		createStatusBar(pane);
+		
 		scene.getStylesheets().add("/css/sudoku.css");
 
 		return scene;
@@ -65,8 +67,8 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				StackPane cell = new StackPane();
 				cell.getStyleClass().add("cell");
 
-				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(25));
-				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(25));
+				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(22));
+				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(22));
 
 				StackPane cellEmpty = new StackPane();
 				SudokuField empty = new SudokuField("-");
@@ -130,18 +132,6 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 			if (j == 11 || (j == 8 && (i > 5 && i < 15)))
 				nodeArray[i][j].pseudoClassStateChanged(bottom, j == 8 || j == 11);
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-
 		}
 
 	}

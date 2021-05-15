@@ -66,12 +66,3 @@ public class SudokuField extends TextField{
 				
 }
 	
-	
-	
-	
-	
-	
-	
-	
-	
-

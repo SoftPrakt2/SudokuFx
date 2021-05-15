@@ -15,12 +15,12 @@ import logic.SudokuLogic;
 
 public class GameControllerTest {
 
-	@Test
-	public void start(){
-		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
-
-		// *setUpLogicArray() *
-		model.setUpLogicArray();
-		assertTrue(model.getCells()[0][0].getValue() == -1);
-	}
+//	@Test
+//	public void start(){
+//		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+//
+//		// *setUpLogicArray() *
+//		model.setUpLogicArray();
+//		assertTrue(model.getCells()[0][0].getValue() == -1);
+//	}
 }
