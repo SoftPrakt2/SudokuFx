@@ -16,6 +16,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -48,22 +50,19 @@ public abstract class BasicGameBuilder {
 	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
 
 	protected Button done;
-	
+
 	VBox toolbox = new VBox();
 	BasicGameLogic model;
-	
-	
+
 	public BasicGameBuilder(BasicGameLogic model) {
 		pane = new BorderPane();
 		this.model = model;
 	}
-	
 
-	
 	protected String gameType;
 
 	protected SudokuField[][] textField;
-	
+
 	// schwierigkeit welche vom hauptmenü mit den gettern und settern unten
 	// definiert wird
 	protected int difficulty;
@@ -86,7 +85,7 @@ public abstract class BasicGameBuilder {
 	 * setButtonActions auf Fügt die Buttons anschließend in das übegergeben
 	 * BorderPane
 	 */
-	
+
 	public void createPlayButtons(BorderPane pane) {
 		ToolBar toolbar = new ToolBar();
 		FontAwesome fontAwesome = new FontAwesome();
@@ -95,38 +94,36 @@ public abstract class BasicGameBuilder {
 		Glyph autosolv = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
 		
 		
+	
 		
+
 		hintButton = new Button("");
 		hintButton.setGraphic(hint);
 
-		
-		
 		autosolve = new Button("_A");
-		
+
 		autosolve.setGraphic(autosolv);
 		create = new Button("Create Game");
 		owngame = new Button("Custom Game");
 		check = new Button("");
 		check.setGraphic(g);
-		
-		
 
 		KeyCombination autoS = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
-		Mnemonic mn = new Mnemonic(autosolve,autoS);
+		Mnemonic mn = new Mnemonic(autosolve, autoS);
 		scene.addMnemonic(mn);
 
 		done = new Button("done");
 
-		owngame.setVisible(false);
+		done.setVisible(false);
 
-		
 		setButtonActions();
-		
+
 		toolbar.getItems().addAll(hintButton, autosolve, check, done);
-		
+
 		toolbox.getChildren().add(toolbar);
-	
+
 	}
+
 	public void addListeners(SudokuField[][] sudokuField) {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
@@ -136,39 +133,28 @@ public abstract class BasicGameBuilder {
 							String newValue) {
 						// TODO Auto-generated method stub
 						controller.compareResult(sudokuField);
-						
+
 					}
 				};
 
 				sudokuField[col][row].textProperty().addListener(changeListener);
 				listeners.add(changeListener);
-				
-//				sudokuField[col][row].textProperty().addListener(new ChangeListener<String>() {
-//					@Override
-//					public void changed(ObservableValue<? extends String> observable, String oldValue,
-//							String newValue) {
-//						controller.compareResult(sudokuField);
-//					}
-//				});
-				
+
 			}
 		}
 	}
 
 	public void removeListeners(SudokuField[][] sudokuField) {
-		
+
 		for (ChangeListener l : listeners) {
 			for (SudokuField[] sss : sudokuField) {
 				for (SudokuField field : sss) {
-				
-				field.textProperty().removeListener(l);
+
+					field.textProperty().removeListener(l);
 				}
 			}
 		}
 	}
-
-	
-	
 
 	protected Menu helpMenu;
 	protected MenuItem rules;
@@ -179,8 +165,10 @@ public abstract class BasicGameBuilder {
 
 	protected MenuItem reset;
 	protected Menu editMenu;
-	protected Menu difficultyMenu;
 
+	protected Menu propertyMenu;
+	protected RadioMenuItem conflictItem;
+	protected MenuItem hintItem;
 
 	protected Menu mainMenu;
 	protected MenuItem mainMenuItem;
@@ -194,10 +182,10 @@ public abstract class BasicGameBuilder {
 	 */
 	public void createMenuBar(BorderPane pane) {
 		VBox menuBox = new VBox();
-		
+
 		// menuBar for the scene
 		menuBar = new MenuBar();
-		StatusBar test = new StatusBar();
+	
 
 		// Help eintrag mit rules menu
 		helpMenu = new Menu("Help");
@@ -207,6 +195,12 @@ public abstract class BasicGameBuilder {
 			rule.showPopUp("Sudoku Rules");
 		});
 		helpMenu.getItems().add(rules);
+
+		propertyMenu = new Menu("Properties");
+		conflictItem = new RadioMenuItem("Show Conflicts");
+		conflictItem.setSelected(false);
+		hintItem = new MenuItem("More hints dude");
+		propertyMenu.getItems().addAll(conflictItem,hintItem);
 
 		// savemenu mit save und load optionen
 		file = new Menu("File");
@@ -228,15 +222,13 @@ public abstract class BasicGameBuilder {
 
 		mainMenuItem = new MenuItem("Go to Main Menu");
 		mainMenu.getItems().addAll(mainMenuItem);
-		menuBar.getMenus().addAll(file, editMenu, mainMenu, helpMenu);
+		menuBar.getMenus().addAll(file, editMenu, mainMenu, helpMenu, propertyMenu);
 		menuBar.getStylesheets().add("menu-bar");
-		
+
 		toolbox.getChildren().addAll(menuBar);
 		pane.setTop(toolbox);
-	
-	}
-	
 
+	}
 
 	/**
 	 * Weist den Buttons und MenüItems Actions zu
@@ -244,37 +236,37 @@ public abstract class BasicGameBuilder {
 	public void setButtonActions() {
 		createGameItem.setOnAction(controller::newGameHandler);
 		autosolve.setOnAction(controller::checkHandler);
-	
+
 		check.setOnAction(controller::checkHandler);
 		autosolve.setOnAction(controller::autoSolveHandler);
 		done.setOnAction(controller::manuelDoneHandler);
-	//	 load.setOnAction(controller::importGame);
-		  save.setOnAction(controller::saveGame);
+		// load.setOnAction(controller::importGame);
+		save.setOnAction(controller::saveGame);
 		reset.setOnAction(controller::resetHandler);
 		mainMenuItem.setOnAction(controller::switchToMainMenu);
 		hintButton.setOnAction(controller::hintHandeler);
+		conflictItem.setOnAction(controller::switchOffConflicts);
+		hintItem.setOnAction(controller::handleMoreHints);
 	}
-	
-	
+
 	public void createStatusBar(BorderPane pane) {
 		gameNotificationLabel = new Label();
 		playTimeLabel = new Label();
 		gameInfoLabel = new Label();
-	
+
 		StatusBar statusBar = new StatusBar();
 		statusBar.setText("");
-		
+
 		statusBar.getRightItems().add(gameInfoLabel);
 		statusBar.getRightItems().add(playTimeLabel);
-		
+
 		statusBar.getLeftItems().add(gameNotificationLabel);
-		
-		
-		Stream.of(gameInfoLabel, playTimeLabel, gameNotificationLabel).forEach(label -> label.getStyleClass().add("gamelabel"));
-	
+
+		Stream.of(gameInfoLabel, playTimeLabel, gameNotificationLabel)
+				.forEach(label -> label.getStyleClass().add("gamelabel"));
+
 		pane.setBottom(statusBar);
 	}
-	
 
 	/**
 	 * 
@@ -295,7 +287,7 @@ public abstract class BasicGameBuilder {
 	public int getDifficulty() {
 		return difficulty;
 	}
-	
+
 	public Label getPlayTimeLabel() {
 		return playTimeLabel;
 	}
@@ -311,19 +303,25 @@ public abstract class BasicGameBuilder {
 	public Button getCheckButton() {
 		return this.check;
 	}
-	
+
 	public Button getDoneButton() {
 		return this.done;
 	}
-	
-	//hat infos über punkte, schwierigkeit, und spielzeit
+
+	// hat infos über punkte, schwierigkeit, und spielzeit
 	public Label getGameInfoLabel() {
 		return gameInfoLabel;
 	}
-	
+
 	public Label getGameNotificationLabel() {
 		return gameNotificationLabel;
 	}
+	
+	
+	public RadioMenuItem getConflictItem() {
+		return conflictItem;
+	}
+	
 	
 	
 

@@ -12,6 +12,7 @@ public class SamuraiLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[21][21];
 		gameType = "Samurai";
+		hintCounter = 10;
 	}
 
 	@Override

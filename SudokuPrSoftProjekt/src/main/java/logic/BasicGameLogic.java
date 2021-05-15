@@ -36,6 +36,9 @@ public abstract class BasicGameLogic {
 	protected int gameIDhelper;
 	public String gameText = "";
 	private int gameID = 0;
+	
+	protected int hintCounter;
+	
 
 	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
@@ -127,6 +130,15 @@ public abstract class BasicGameLogic {
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
+	
+	public int getHintCounter() {
+		return hintCounter;
+	}
+	
+	public void setHintCounter(int hintCounter) {
+		this.hintCounter = hintCounter;
+	}
+	
 
 	public String getGameText() {
 		if (this.getGameState() == Gamestate.OPEN) {

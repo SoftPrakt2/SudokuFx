@@ -109,6 +109,7 @@ public class MainMenuController {
 	
 	public void handleManual(ActionEvent e) {
 		game.setDifficulty(0);
+		game.getDoneButton().setVisible(true);
 	}
 
 	/**

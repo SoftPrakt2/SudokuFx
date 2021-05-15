@@ -36,6 +36,8 @@ public class GameController {
 	BasicGameLogic model;
 	SudokuField[][] sudokuField;
 	static int numberCounter = 0;
+	static int countHintsPressed = 0;
+	
 
 	Storage storage = new Storage();
 
@@ -57,6 +59,7 @@ public class GameController {
 	public void createGameHandler(ActionEvent e) {
 		createGame(scene.getDifficulty());
 	}
+	
 
 	/**
 	 * 
@@ -290,7 +293,7 @@ public class GameController {
 				}
 			}
 		}
-		scene.addListeners(sudokuField);
+	//	scene.addListeners(sudokuField);
 		model.setGamePoints(10);
 		scene.getGameInfoLabel().setText("Points: " + model.getgamePoints() + " Difficulty: " + getDifficulty());
 		model.setGameState(Gamestate.OPEN);
@@ -326,6 +329,10 @@ public class GameController {
 	}
 
 	public void hintHandeler(ActionEvent e) {
+		
+		
+		if(countHintsPressed < model.getHintCounter()) {
+		
 		if (compareResult(sudokuField)) {
 			if (model.getgamePoints() > 0)
 				model.setGamePoints(model.getgamePoints() - 1);
@@ -342,6 +349,7 @@ public class GameController {
 					}
 				}
 			}
+			countHintsPressed++;
 		} else {
 			if (model.getgamePoints() > 0)
 				model.setGamePoints(model.getgamePoints() - 1);
@@ -355,11 +363,40 @@ public class GameController {
 			model.setGameState(Gamestate.CONFLICT);
 			scene.getGameInfoLabel().setText("Points: " + model.getgamePoints() + " Difficulty: " + getDifficulty());
 		}
+		
+	} else {
+		scene.getGameNotificationLabel().setText("No more hints left");
+	}
+		
 	}
 
 	public void switchToMainMenu(ActionEvent e) {
 		GUI.getStage().setScene(GUI.getMainMenu());
 	}
+	
+	
+	//methode für auto konflikt removen und adden
+	
+	public void switchOffConflicts(ActionEvent e) {
+		if(scene.getConflictItem().isSelected())
+		scene.addListeners(sudokuField);
+		else
+			scene.removeListeners(sudokuField);
+	}
+	
+	
+	
+	//methode für hintcount erhöhen
+	public void handleMoreHints(ActionEvent e) {
+		model.setHintCounter(model.getHintCounter() * 2);
+		scene.getGameNotificationLabel().setText("Extra supplies yo");
+	}
+	
+	
+	
+	
+	
+	
 
 	public void saveGame(ActionEvent e) {
 		for (int row = 0; row < sudokuField.length; row++) {

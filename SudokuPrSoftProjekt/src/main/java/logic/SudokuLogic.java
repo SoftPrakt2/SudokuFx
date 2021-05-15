@@ -11,6 +11,7 @@ public class SudokuLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[9][9];
 		gameType = "Sudoku";
+		hintCounter = 3;
 	}
 	
 	public Cell[][] getCells() {
