@@ -248,6 +248,8 @@ public abstract class BasicGameLogic {
 	}
 
 	public boolean modelIDexists() {
+		Storage storage = new Storage();
+		File file = storage.getSaveFile();
 		JSONObject obj = storage.convertToJSON(file);
 		JSONArray gameArray = (JSONArray) obj.get("games");
 

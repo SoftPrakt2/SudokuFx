@@ -32,7 +32,7 @@ public class Storage {
 
 	FileChooser fileChooser;
 	JSONParser parser = new JSONParser();
-	File saveFile = new File("/C:/test2/saveGames.json");
+	File saveFile = new File("/D:/test2/saveGames.json");
 	JSONObject jsonObject = convertToJSON(saveFile);
 	Scene storageScene;
 	BorderPane storagePane;
@@ -108,7 +108,7 @@ public class Storage {
 		help.remove(index);
 		jsonObject.put("games", help);
 
-		saveFile = new File("/C:/test2/saveGames.json");
+		saveFile = new File("/D:/test2/saveGames.json");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.writeValue(saveFile, jsonObject);
