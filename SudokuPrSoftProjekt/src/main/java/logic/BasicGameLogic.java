@@ -23,8 +23,7 @@ import application.SudokuField;
  */
 public abstract class BasicGameLogic {
 
-	Storage storage = new Storage();
-	File file = storage.getSaveFile();
+
 	protected Gamestate gamestate;
 	private boolean isCorrect;
 	protected String gameType = "";
@@ -161,6 +160,9 @@ public abstract class BasicGameLogic {
 	}
 
 	public void saveGame() {
+		Storage storage = new Storage();
+		File file = storage.getSaveFile();
+		
 		JSONObject jsonFile = storage.convertToJSON(file);
 		JSONArray jsonArray = (JSONArray) jsonFile.get("games");
 		JSONObject newJSONGameData = new JSONObject();
