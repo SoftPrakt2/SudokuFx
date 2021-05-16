@@ -3,6 +3,7 @@ package application;
 import java.io.File;
 import java.util.stream.Stream;
 
+
 import controller.GameController;
 import controller.MainMenuController;
 import javafx.beans.binding.Bindings;
@@ -60,17 +61,17 @@ public abstract class BasicGameBuilder {
 	//test2
 	
 	
-//variablen für die zeitmessung
+//variablen fÃ¼r die zeitmessung
 	protected long startTime;
 	
 	protected String gameType;
 
 	protected SudokuField[][] textField;
 	
-	//schwierigkeit welche vom hauptmenü mit den gettern und settern unten definiert wird
+	//schwierigkeit welche vom hauptmenÃ¼ mit den gettern und settern unten definiert wird
 	protected int difficulty;
 	
-	//punkte für den spielstand 
+	//punkte fÃ¼r den spielstand 
 	protected int gamePoints = 10;
 	
 	protected long minPlayed;
@@ -135,13 +136,13 @@ public abstract class BasicGameBuilder {
 
 		gameLabelBox.getChildren().addAll(gameTextLabel);
 
-		//passt größße der buttons an window an
+		//passt grÃ¶ÃŸÃŸe der buttons an window an
 		Stream.of(hintButton, check, autosolve, done)
 				.forEach(button -> button.prefHeightProperty().bind(pane.heightProperty().divide(22)));
 		Stream.of(hintButton, check, autosolve, done)
 				.forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(4.5)));
 
-		//regelt größe von text in buttons
+		//regelt grÃ¶ÃŸe von text in buttons
 		fontSize.bind(pane.widthProperty().add(pane.heightProperty()).divide(100));
 		Stream.of(check, autosolve, hintButton, done).forEach(
 				button -> button.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSize.asString())));
@@ -273,7 +274,7 @@ public abstract class BasicGameBuilder {
 	
 	
 	
-	//gehört vielleicht in controller muss besprochen werden
+	//gehÃ¶rt vielleicht in controller muss besprochen werden
 	
 	public long getStartTime() {
 		return startTime;
