@@ -51,6 +51,7 @@ public class GameController {
 		sudokuField = scene.getTextField();
 	}
 
+	//test
 	/**
 	 * 
 	 * Erstellt abhängig von der Schwierigkeit ein Sudoku-Spiel Setzt die Punkte des
