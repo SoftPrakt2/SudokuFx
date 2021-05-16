@@ -18,11 +18,16 @@ import controller.StorageController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -35,8 +40,8 @@ public class Storage {
 	
 	JSONParser parser = new JSONParser();
 	
-	URL url = getClass().getResource("/json/saveGames.json");
-	File saveFile = new File("/D:/test2/saveGames.json");
+	URL url  = getClass().getResource("/json/saveGames.json");
+	File saveFile = new File(url.getPath());
 	
 	
 	
@@ -61,10 +66,28 @@ public class Storage {
 	Scene gameScene;
 	StorageController controller;
 	int saveCounter = 1;
+	ContextMenu contextMenu = new ContextMenu();
+	MenuItem deleteMenuItem = new MenuItem("Delete");
 
 	public Scene showStorageScene() {
 		controller = new StorageController(this);
 
+		contextMenu.getItems().add(deleteMenuItem);
+		
+		listView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				if(event.getButton().equals(MouseButton.SECONDARY)) {
+					contextMenu.show(listView,event.getScreenX(), event.getScreenY());
+				}
+			}
+		});
+		
+		
+		
+		
 		Stage window = new Stage();
 		VBox layout = new VBox(10);
 		layout.setPadding(new Insets(5, 5, 5, 50));
@@ -85,7 +108,7 @@ public class Storage {
 		layout.getChildren().addAll(label, listView, load, back, delete);
 		back.setOnAction(e -> GUI.getStage().setScene(GUI.getMainMenu()));
 		fillListVew();
-		delete.setOnAction(e -> deleteEntry(e));
+		deleteMenuItem.setOnAction(e -> deleteEntry(e));
 		load.setOnAction(controller::handleLoadAction);
 
 		return storageScene;
@@ -122,7 +145,7 @@ public class Storage {
 		help.remove(index);
 		jsonObject.put("games", help);
 
-		saveFile = new File("/D:/test2/saveGames.json");
+		saveFile = new File(url.getPath());
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.writeValue(saveFile, jsonObject);
