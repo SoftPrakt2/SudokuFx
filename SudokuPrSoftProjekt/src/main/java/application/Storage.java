@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.HashMap;
 
 import org.json.simple.JSONArray;
@@ -31,15 +32,28 @@ import javafx.stage.Stage;
 public class Storage {
 
 	FileChooser fileChooser;
+	
 	JSONParser parser = new JSONParser();
-	File saveFile = new File("/D:/test2/saveGames.json");
+	
+	URL url = getClass().getResource("/json/saveGames.json");
+	File saveFile = new File(url.getPath());
+	
+	
+	
 	JSONObject jsonObject = convertToJSON(saveFile);
+	
 	Scene storageScene;
+	
 	BorderPane storagePane;
+	
 	Button load;
+	
 	Button back;
+	
 	Button delete;
+	
 	String gameIdentifier;
+	
 	HashMap<String, JSONObject> saveMap = new HashMap<>();
 	ListView<String> listView = new ListView<>();
 	ObservableList<String> jsonObservableList = FXCollections.observableArrayList();
@@ -108,7 +122,7 @@ public class Storage {
 		help.remove(index);
 		jsonObject.put("games", help);
 
-		saveFile = new File("/D:/test2/saveGames.json");
+		saveFile = new File(url.getPath());
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.writeValue(saveFile, jsonObject);
