@@ -71,7 +71,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(22));
 
 				StackPane cellEmpty = new StackPane();
-				SudokuField empty = new SudokuField("-");
+				SudokuField empty = new SudokuField("-1");
 				empty.setStyle("-fx-pref-width: 2em;");
 
 				cellEmpty.getChildren().add(empty);

@@ -51,7 +51,6 @@ public class GameController {
 		sudokuField = scene.getTextField();
 	}
 
-	//test
 	/**
 	 * 
 	 * Erstellt abhängig von der Schwierigkeit ein Sudoku-Spiel Setzt die Punkte des
@@ -91,7 +90,7 @@ public class GameController {
 	public void resetHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (!model.getCells()[j][i].getIsReal()) {
+				if (!model.getCells()[j][i].getIsReal() && !sudokuField[i][j].getText().equals("-1")) {
 					sudokuField[i][j].clear();
 					model.getCells()[j][i].setValue(0);
 				}
