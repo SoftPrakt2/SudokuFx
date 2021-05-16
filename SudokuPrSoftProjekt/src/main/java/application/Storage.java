@@ -36,7 +36,7 @@ public class Storage {
 	JSONParser parser = new JSONParser();
 	
 	URL url = getClass().getResource("/json/saveGames.json");
-	File saveFile = new File(url.getPath());
+	File saveFile = new File("/D:/test2/saveGames.json");
 	
 	
 	
@@ -122,7 +122,7 @@ public class Storage {
 		help.remove(index);
 		jsonObject.put("games", help);
 
-		saveFile = new File(url.getPath());
+		saveFile = new File("/D:/test2/saveGames.json");
 		ObjectMapper mapper = new ObjectMapper();
 		try {
 			mapper.writeValue(saveFile, jsonObject);
