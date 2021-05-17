@@ -1,10 +1,19 @@
 package controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.BasicGameBuilder;
 import application.GUI;
-import application.MainMenu;
 import application.SamuraiGameBuilder;
 import application.Storage;
 import application.SudokuField;
@@ -53,7 +62,10 @@ public class StorageController {
 		model.setGamePoints((int) (long) storage.getSaveMap().get(helper).get("points"));
 		model.setGameID((int) (long) storage.getSaveMap().get(helper).get("gameID"));
 		System.out.println(model.getGameID());
+		
+		
 		game.setDifficulty(1);
+		
 
 		model.printCells();
 		// model.setSecondsPlayed(storage.getSaveMap().get(helper).get(e));
@@ -75,4 +87,92 @@ public class StorageController {
 		}
 		GUI.getStage().setScene(gameScene);
 	}
+	
+	
+	
+	
+	public void deleteEntry(ActionEvent e) {
+
+		
+		int index = storage.getListView().getSelectionModel().getSelectedIndex();
+		storage.getObservableList().remove(index);
+		JSONArray help = (JSONArray) storage.getJSONObject().get("games");
+		storage.getJSONObject().remove("games");
+		help.remove(index);
+		
+		
+		
+		storage.getJSONObject().put("games", help);
+
+		
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			mapper.writeValue(storage.getSaveFile(), storage.getJSONObject());
+		} catch (IOException ie) {
+			ie.printStackTrace();
+		}
+		
+	}
+	
+	
+	public JSONObject convertToJSON(File file) {
+		
+		JSONObject jsonObject = new JSONObject();
+		
+		JSONParser parser = new JSONParser();
+		
+		try {
+			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
+			jsonObject = (JSONObject) obj;
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return jsonObject;
+	}
+	
+	public int getLastGameID(File file) {
+		JSONParser parser = new JSONParser();
+
+		int gameId = 0;
+
+		try {
+			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
+			JSONObject jsonObject = (JSONObject) obj;
+
+			JSONArray array = (JSONArray) jsonObject.get("games");
+
+			JSONObject helper = (JSONObject) array.get(array.size() - 1);
+
+			gameId = (int) (long) helper.get("gameID");
+
+		} catch (FileNotFoundException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		System.out.println(gameId);
+
+		if (gameId == 0)
+			return 0;
+		else
+			return gameId;
+	}
+	
+	
+	
+	
+	
+	
+	
 }

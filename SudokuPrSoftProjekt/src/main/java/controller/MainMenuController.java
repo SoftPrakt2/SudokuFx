@@ -11,6 +11,7 @@ import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import logic.BasicGameLogic;
 import logic.Gamestate;
 import logic.SamuraiLogic;
 import logic.SudokuLogic;
@@ -28,6 +29,7 @@ public class MainMenuController {
 	Scene playScene;
 
 	BasicGameBuilder game;
+	BasicGameLogic model;
 	
 	Storage overview;
 	private Scene storageScene;
@@ -45,8 +47,12 @@ public class MainMenuController {
 	 * Instanziiert den BasicGameBuilder als SudokuGameBuilder und ladet die SudokuScene
 	 */
 	public void handleToSudoku(ActionEvent e) {
+		
 		game = new SudokuGameBuilder(new SudokuLogic(Gamestate.OPEN,0,0,false));
+		
 		playScene = game.initializeScene();
+		
+	
 	}
 	
 
@@ -76,6 +82,9 @@ public class MainMenuController {
 		 overview = new Storage();
 		 storageScene = overview.showStorageScene();
 			GUI.getStage().setScene(storageScene);
+		
+//		playScene = game.getScene();
+//		GUI.getStage().setScene(playScene);
 	}
 
 	/**
@@ -84,6 +93,7 @@ public class MainMenuController {
 	 */
 	public void handleExit(ActionEvent e) {
 		GUI.getStage().close();
+	//	GUI.getStage().setScene(game.getScene());
 	}
 
 	/**

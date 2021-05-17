@@ -278,7 +278,9 @@ public class GameController {
 	public void createGame(int difficulty) {
 		model.setUpLogicArray();
 		model.createSudoku();
-		model.difficulty(difficulty);
+		model.setDifficulty(difficulty);
+		System.out.println(model.getDifficulty());
+		model.difficulty();
 		model.setStartTime(System.currentTimeMillis());
 
 		for (int i = 0; i < sudokuField.length; i++) {

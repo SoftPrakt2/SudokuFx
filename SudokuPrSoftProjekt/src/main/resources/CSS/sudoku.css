@@ -36,6 +36,15 @@
     
 }
 
+.list-view .list-cell:even {
+-fx-background-color: blue;
+-fx-text-fill: black;
+}
+.list-view .list-cell:odd {
+-fx-background-color: blue;
+-fx-text-fill: black;
+}
+
 
 
 .button1 {
@@ -76,6 +85,13 @@
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-padding: 10 20 10 20;
+}
+
+
+.mainMenuLabelsSmall {
+	-fx-font-family: 'Georgia';
+	-fx-font-size: 12px;
+	-fx-text-fill: #A9A9A9;
 }
 
 

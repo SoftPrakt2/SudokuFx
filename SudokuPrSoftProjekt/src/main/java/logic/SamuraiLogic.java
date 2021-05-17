@@ -515,7 +515,8 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public void difficulty(int diff) {
+	public void difficulty() {
+		int diff = this.difficulty;
 		// TODO Auto-generated method stub
 		for(int row = 0; row < this.cells.length; row++) {
 			for(int col = 0; col < this.cells[row].length; col++) {

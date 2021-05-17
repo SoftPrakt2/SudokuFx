@@ -345,7 +345,8 @@ public class SudokuLogic extends BasicGameLogic {
 	 * Abhängig von der Übergebenen Zahl werden zufällige Zahl des Arrays auf 0
 	 * gesetzt
 	 */
-	public void difficulty(int diff) {
+	public void difficulty() {
+		int diff = this.difficulty;
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int j = 0; j < this.cells[row].length; j++) {
 				int random = (int) (Math.random() * 10) + 1;

@@ -3,6 +3,7 @@ package application;
 import java.util.ArrayList;
 import java.util.stream.Stream;
 
+import org.controlsfx.control.PopOver;
 import org.controlsfx.control.StatusBar;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
@@ -48,6 +49,7 @@ public abstract class BasicGameBuilder {
 	protected Label gameInfoLabel;
 	protected Label playTimeLabel;
 	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
+	ToolBar toolbar;
 
 	protected Button done;
 
@@ -87,16 +89,12 @@ public abstract class BasicGameBuilder {
 	 */
 
 	public void createPlayButtons(BorderPane pane) {
-		ToolBar toolbar = new ToolBar();
+		toolbar = new ToolBar();
 		FontAwesome fontAwesome = new FontAwesome();
 		Glyph g = fontAwesome.create(FontAwesome.Glyph.CHECK);
 		Glyph hint = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
 		Glyph autosolv = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
 		
-		
-	
-		
-
 		hintButton = new Button("");
 		hintButton.setGraphic(hint);
 
@@ -122,7 +120,21 @@ public abstract class BasicGameBuilder {
 
 		toolbox.getChildren().add(toolbar);
 
+		
+		//popover test
+		PopOver popOver = new PopOver(new Label("test Pop out"));
+		
+	
+		
 	}
+	
+	
+	public void defineShortCuts() {
+		
+	}
+	
+	
+	
 
 	public void addListeners(SudokuField[][] sudokuField) {
 		for (int row = 0; row < sudokuField.length; row++) {

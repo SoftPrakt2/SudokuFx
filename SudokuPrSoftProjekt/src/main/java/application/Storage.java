@@ -6,20 +6,20 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Optional;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import controller.StorageController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContextMenu;
@@ -30,92 +30,181 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.stage.Stage;
 
 public class Storage {
 
-	FileChooser fileChooser;
-	
-	JSONParser parser = new JSONParser();
-	
-	URL url  = getClass().getResource("/json/saveGames.json");
-	File saveFile = new File(url.getPath());
-	
-	
-	
-	JSONObject jsonObject = convertToJSON(saveFile);
-	
-	Scene storageScene;
-	
-	BorderPane storagePane;
-	
-	Button load;
-	
 	Button back;
+
+	// variablen für Anzeige der Spiele in der Liste
+	protected String gameIdentifier;
+	protected int saveCounter = 1;
+
+	StorageController controller = new StorageController(this);
+
+	// Objekte bezüglich File und JSON Funktionalität
+	JSONParser parser = new JSONParser();
+	URL url = getClass().getResource("/json/saveGames.json");
+	File saveFile = new File(url.getPath());
+	JSONObject jsonObject = controller.convertToJSON(saveFile);
 	
-	Button delete;
 	
-	String gameIdentifier;
-	
-	HashMap<String, JSONObject> saveMap = new HashMap<>();
-	ListView<String> listView = new ListView<>();
-	ObservableList<String> jsonObservableList = FXCollections.observableArrayList();
-	BasicGameBuilder loadedGame;
-	Scene gameScene;
-	StorageController controller;
-	int saveCounter = 1;
+
+	// ÜberBehälter für die Scene
+	protected Scene storageScene;
+	protected BorderPane storagePane;
+
+	// Objekte für die ListView und die HashMap welche benötigt wird um den Spieler
+	// auswählen lassen zu können welches Spiel er laden will
+	protected ListView<String> listView = new ListView<>();
+	protected HashMap<String, JSONObject> saveMap = new HashMap<>();
+	protected ObservableList<String> jsonObservableList = FXCollections.observableArrayList();
+
+	// Right Click Menu Items
 	ContextMenu contextMenu = new ContextMenu();
 	MenuItem deleteMenuItem = new MenuItem("Delete");
+	MenuItem loadMenuItem = new MenuItem("Load Game");
+
+	// Labels and ContainerBoxes for gamestats at the bottom of the screen
+	protected VBox storageContainerBox = new VBox();
+	protected VBox gameStatsBox = new VBox();
+	protected Label gameInfoHead = new Label("GameStats");
+	protected Label pointsLabel;
+	protected Label averagePointsLabel;
+	protected Label averageTimeLabel;
+	
+	
 
 	public Scene showStorageScene() {
-		controller = new StorageController(this);
 
-		contextMenu.getItems().add(deleteMenuItem);
+		storagePane = new BorderPane();
+		storageScene = new Scene(storageContainerBox, 500, 500);
+
+		fillListVew();
+
+		contextMenu.getItems().addAll(deleteMenuItem, loadMenuItem);
+
+		storageContainerBox.setSpacing(10);
+		storageContainerBox.setPadding(new Insets(20, 20, 20, 20));
+
+		pointsLabel = new Label();
+		pointsLabel.setText("Overall Points: " + calculateGamePoints());
+		averagePointsLabel = new Label("Average Points: " + (double) calculateGamePoints());
+		averageTimeLabel = new Label("Average PlayTime: " + calculateAverageTimePlayed());
+		pointsLabel.setAlignment(Pos.BASELINE_LEFT);
+		gameStatsBox.getChildren().addAll(gameInfoHead, pointsLabel, averageTimeLabel, averagePointsLabel);
+		gameStatsBox.setAlignment(Pos.CENTER);
+
+		back = new Button("Back");
 		
+		storageContainerBox.getChildren().addAll(listView, gameStatsBox, back);
+
+		
+
+		addContextMenuFunctionality();
+
+		deleteMenuItem.setOnAction(e -> {
+			controller.deleteEntry(e);
+			redraw();
+		});
+		loadMenuItem.setOnAction(controller::handleLoadAction);
+
+		back.setOnAction(e -> GUI.getStage().setScene(GUI.getMainMenu()));
+
+		GUI.getStage().setScene(storageScene);
+
+		return storageScene;
+	}
+
+	// Methoe welche Funktionalität für Rechtsklick Menü ermöglicht
+	public void addContextMenuFunctionality() {
 		listView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
-				if(event.getButton().equals(MouseButton.SECONDARY)) {
-					contextMenu.show(listView,event.getScreenX(), event.getScreenY());
+				if (event.getButton().equals(MouseButton.SECONDARY)) {
+					contextMenu.show(listView, event.getScreenX(), event.getScreenY());
 				}
 			}
 		});
-		
-		
-		
-		
-		Stage window = new Stage();
-		VBox layout = new VBox(10);
-		layout.setPadding(new Insets(5, 5, 5, 50));
+	}
+	
 
-		window.setWidth(500);
-		storagePane = new BorderPane();
-		storageScene = new Scene(layout, 500, 500);
-		window.setScene(storageScene);
-
-		Label label = new Label("Please select a savegame");
-		Label chosenLabel = new Label("Bitte wähle einen Spielstand");
-
-		load = new Button("Load");
-		back = new Button("Back");
-		delete = new Button("Delete");
-
-		storagePane.setCenter(listView);
-		layout.getChildren().addAll(label, listView, load, back, delete);
-		back.setOnAction(e -> GUI.getStage().setScene(GUI.getMainMenu()));
-		fillListVew();
-		deleteMenuItem.setOnAction(e -> deleteEntry(e));
-		load.setOnAction(controller::handleLoadAction);
-
-		return storageScene;
+	public void redraw() {
+		System.out.println(calculateGamePoints());
+		pointsLabel.setText("Overall Points: " + calculateGamePoints());
 	}
 
+	public double calculateGamePoints() {
+		JSONObject helpObject = controller.convertToJSON(saveFile);
+		double gamePoints = 0;
+		JSONArray helpArray = (JSONArray) helpObject.get("games");
+
+		for (int i = 0; i < helpArray.size(); i++) {
+			JSONObject obj = (JSONObject) helpArray.get(i);
+			gamePoints += (double) (long) obj.get("points");
+		}
+		return gamePoints;
+	}
+
+	public String calculateAverageTimePlayed() {
+		JSONObject helpObject = controller.convertToJSON(saveFile);
+		JSONArray helpArray = (JSONArray) helpObject.get("games");
+		String averageGameTimeString = "";
+		int minPlayed = 0;
+		int secPlayed = 0;
+		int counter = 0;
+		int showMinutes;
+		int showSeconds;
+
+		for (int i = 0; i < helpArray.size(); i++) {
+			JSONObject obj = (JSONObject) helpArray.get(i);
+			minPlayed += (int) (long) (obj.get("minutesPlayed")) * 60;
+			secPlayed += (int) (long) (obj.get("secondsPlayed"));
+			counter++;
+		}
+		if (counter > 0) {
+			int playTime = (minPlayed + secPlayed) / counter;
+			showMinutes = playTime / 60;
+			showSeconds = playTime % 60;
+			averageGameTimeString = showMinutes + " minutes " + showSeconds + " seconds ";
+		}
+
+		return averageGameTimeString;
+	}
+
+	public String getMostPlayedType() {
+		JSONObject helpObject = controller.convertToJSON(saveFile);
+		JSONArray helpArray = (JSONArray) helpObject.get("games");
+		int sudokuCounter = 0;
+		int freeFormCounter = 0;
+		int samuraiCounter = 0;
+		String gameType = "";
+		HashMap<String, Integer> gameTypeMap = new HashMap<>();
+
+		for (int i = 0; i < helpArray.size(); i++) {
+			JSONObject obj = (JSONObject) helpArray.get(i);
+			if (((String) obj.get("type")).equals("Samurai"))
+				samuraiCounter++;
+			if (((String) obj.get("type")).equals("Sudoku"))
+				sudokuCounter++;
+			if (((String) obj.get("type")).equals("FreeForm"))
+				freeFormCounter++;
+		}
+		gameTypeMap.put("Sudoku", sudokuCounter);
+		gameTypeMap.put("Samurai", samuraiCounter);
+		gameTypeMap.put("FreeForm", freeFormCounter);
+
+		Optional<Entry<String, Integer>> maxEntry = gameTypeMap.entrySet().stream()
+				.max((Entry<String, Integer> e1, Entry<String, Integer> e2) -> e1.getValue().compareTo(e2.getValue()));
+		String s = maxEntry.get().toString();
+
+		return s;
+	}
+
+	// befüllt die Liste mit Werten aus der Speicherdatei
 	public void fillListVew() {
-		JSONObject helpObject = convertToJSON(saveFile);
+		JSONObject helpObject = controller.convertToJSON(saveFile);
 		JSONArray helpArray = (JSONArray) helpObject.get("games");
 
 		for (int i = 0; i < helpArray.size(); i++) {
@@ -124,9 +213,9 @@ public class Storage {
 
 			gameIdentifier = (String) obj.get("type") + " " + helper;
 
-			String gameString = (String) obj.get("type") + " " + helper + " Time: " + obj.get("minutesPlayed") + " min "
-					+ obj.get("secondsPlayed") + " sek " + "Difficulty: " + obj.get("difficulty") + " Points: "
-					+ obj.get("points");
+			String gameString = "Game " + helper + ": " + (String) obj.get("type") + " | Time: "
+					+ obj.get("minutesPlayed") + " min " + obj.get("secondsPlayed") + " sek " + " | Difficulty: "
+					+ obj.get("difficulty") + " | Points: " + obj.get("points");
 			jsonObservableList.add(gameString);
 			saveMap.put(gameString, obj);
 			saveCounter++;
@@ -136,85 +225,14 @@ public class Storage {
 		saveCounter = 0;
 	}
 
-	public void deleteEntry(ActionEvent e) {
 
-		int index = listView.getSelectionModel().getSelectedIndex();
-		jsonObservableList.remove(index);
-		JSONArray help = (JSONArray) jsonObject.get("games");
-		jsonObject.remove("games");
-		help.remove(index);
-		jsonObject.put("games", help);
-
-		saveFile = new File(url.getPath());
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			mapper.writeValue(saveFile, jsonObject);
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		}
-	}
-
-	public FileChooser setUpFileChooser() {
-		fileChooser = new FileChooser();
-		fileChooser.setTitle("Choose a file");
-
-		fileChooser.getExtensionFilters().addAll(new ExtensionFilter("JSON", "*.json"));
-		return fileChooser;
-	}
-
-	public JSONObject convertToJSON(File file) {
-
-		try {
-			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
-			jsonObject = (JSONObject) obj;
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return jsonObject;
-	}
-
-	public int getLastGameID(File file) {
-		JSONParser parser = new JSONParser();
-
-		int gameId = 0;
-
-		try {
-			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
-			JSONObject jsonObject = (JSONObject) obj;
-
-			JSONArray array = (JSONArray) jsonObject.get("games");
-
-			JSONObject helper = (JSONObject) array.get(array.size() - 1);
-
-			gameId = (int) (long) helper.get("gameID");
-
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		System.out.println(gameId);
-
-		if (gameId == 0)
-			return 0;
-		else
-			return gameId;
-
-	}
 
 	public File getSaveFile() {
 		return saveFile;
+	}
+
+	public JSONObject getJSONObject() {
+		return jsonObject;
 	}
 
 	public HashMap<String, JSONObject> getSaveMap() {

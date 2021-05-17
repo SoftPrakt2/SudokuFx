@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.Storage;
 import application.SudokuField;
+import controller.StorageController;
 
 /**
  * 
@@ -39,6 +40,8 @@ public abstract class BasicGameLogic {
 	
 	protected int hintCounter;
 	
+	protected int difficulty;
+	
 
 	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
@@ -64,7 +67,7 @@ public abstract class BasicGameLogic {
 
 	public abstract boolean solveSudoku();
 
-	public abstract void difficulty(int diff);
+	public abstract void difficulty();
 
 	public abstract void printCells();
 
@@ -118,6 +121,15 @@ public abstract class BasicGameLogic {
 	public long getLoadedSeconds() {
 		return loadedSecondsPlayed;
 	}
+	
+	public int getDifficulty() {
+		return difficulty;
+	}
+	
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
+	
 
 	public void setGamePoints(int gamePoints) {
 		this.gamePoints = gamePoints;
@@ -171,11 +183,15 @@ public abstract class BasicGameLogic {
 		this.gameID = gameID;
 	}
 
+	
 	public void saveGame() {
 		Storage storage = new Storage();
+		StorageController storageController = new StorageController(storage);
 		File file = storage.getSaveFile();
 		
-		JSONObject jsonFile = storage.convertToJSON(file);
+		
+		
+		JSONObject jsonFile = storageController.convertToJSON(file);
 		JSONArray jsonArray = (JSONArray) jsonFile.get("games");
 		JSONObject newJSONGameData = new JSONObject();
 		ArrayList<String> gameArray = new ArrayList<>();
@@ -189,7 +205,7 @@ public abstract class BasicGameLogic {
 		}
 
 		if (modelIDexists()) {
-			JSONArray savedGamesArray = (JSONArray) storage.convertToJSON(file).get("games");
+			JSONArray savedGamesArray = (JSONArray) storageController.convertToJSON(file).get("games");
 			for (int i = 0; i < savedGamesArray.size(); i++) {
 				JSONObject overwrittenGame = (JSONObject) savedGamesArray.get(i);
 				if ((int) (long) overwrittenGame.get("gameID") == gameIDhelper) {
@@ -226,10 +242,10 @@ public abstract class BasicGameLogic {
 			newJSONGameData.put("secondsPlayed", getSecondsPlayed());
 			jsonArray.add(newJSONGameData);
 
-			newJSONGameData.put("gameID", storage.getLastGameID(file) + 1);
+			newJSONGameData.put("gameID", storageController.getLastGameID(file) + 1);
 			gameID++;
 
-			System.out.println(storage.getLastGameID(file));
+			System.out.println(storageController.getLastGameID(file));
 		}
 		jsonFile.put("games", jsonArray);
 
@@ -241,6 +257,8 @@ public abstract class BasicGameLogic {
 		}
 	}
 
+	
+	
 	// load funktion
 	public void loadIntoModel(JSONArray json, JSONArray json2) {
 		setUpLogicArray();
@@ -261,8 +279,9 @@ public abstract class BasicGameLogic {
 
 	public boolean modelIDexists() {
 		Storage storage = new Storage();
+		StorageController storageController = new StorageController(storage);
 		File file = storage.getSaveFile();
-		JSONObject obj = storage.convertToJSON(file);
+		JSONObject obj = storageController.convertToJSON(file);
 		JSONArray gameArray = (JSONArray) obj.get("games");
 
 		for (int i = 0; i < gameArray.size(); i++) {

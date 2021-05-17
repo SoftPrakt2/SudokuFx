@@ -24,7 +24,7 @@ public class MainMenu {
 	
 	
 	
-	
+	private Label selectModeLabel;
 	private ToggleButton sudoku;
 	private ToggleButton samurai;
 	private ToggleButton freeform;
@@ -33,11 +33,19 @@ public class MainMenu {
 	
 	
 	ToggleGroup toggleGroupDifficulty;
+	private Label selectDifficultyLabel;
 	private ToggleButton easy;
 	private ToggleButton medium;
 	private ToggleButton hard;
 	private ToggleButton manual;
+	
+	
+	
+	private Label createLabel;
 	private Button createButton;
+	
+	
+	
 	private Button exit;
 	private DoubleProperty fontSize = new SimpleDoubleProperty(10);
 	
@@ -45,19 +53,35 @@ public class MainMenu {
 	MainMenuController controllerMainMenu = new MainMenuController(this);
 	
 	 Scene mainScene;
+	 
+	 
+	
 	
 	public Scene setUpMainMenu() {
 		
 		
 		BorderPane pane = new BorderPane();
 		mainScene = new Scene(pane,600,600);
+		mainScene.getStylesheets().add("/css/sudoku.css");
 		
+		
+		VBox createGameBox = new VBox();
+		createLabel = new Label("Step 3: Play");
+		createLabel.getStyleClass().add("mainMenuLabelsSmall");
 		createButton = new Button("Create");
+		createGameBox.getChildren().addAll(createLabel, createButton);
+		createGameBox.setAlignment(Pos.CENTER);
+		
+		
 		exit = new Button("Exit");
 		welcomeLabel = new Label("SudokuFx");
 		
 		//behälter für gamemode Buttons und verhalten für toggles
+		VBox gameModeBox = new VBox();
 		HBox gameModeButtons = new HBox();
+		selectModeLabel = new Label("Step 1: Choose a GameMode");
+		selectModeLabel.getStyleClass().add("mainMenuLabelsSmall");
+		
 		gameModeButtons.setAlignment(Pos.CENTER);
 		gameModeButtons.setPrefWidth(80);
 		gameModeButtons.setSpacing(5);
@@ -68,11 +92,20 @@ public class MainMenu {
 		sudoku.setToggleGroup(toggleGroupGameMode);
 		samurai.setToggleGroup(toggleGroupGameMode);
 		freeform.setToggleGroup(toggleGroupGameMode);
+		
+		
 		gameModeButtons.getChildren().addAll(sudoku,samurai,freeform);
+		gameModeBox.getChildren().addAll(selectModeLabel,gameModeButtons);
+		gameModeBox.setSpacing(2);
+		gameModeBox.setAlignment(Pos.CENTER);
 		
 		
 		//behälter für difficulty Buttons und verhalten für toggles
+		VBox gameDifficultyBox = new VBox();
 		HBox difficultyButtons = new HBox();
+		selectDifficultyLabel = new Label ("Step 2: Choose the difficulty of the game");
+		selectDifficultyLabel.getStyleClass().add("mainMenuLabelsSmall");
+		
 		difficultyButtons.setAlignment(Pos.CENTER);
 		difficultyButtons.setPrefWidth(80);
 		difficultyButtons.setSpacing(5);
@@ -86,8 +119,8 @@ public class MainMenu {
 		hard.setToggleGroup(toggleGroupDifficulty);
 		manual.setToggleGroup(toggleGroupDifficulty);
 		difficultyButtons.getChildren().addAll(easy,medium,hard,manual);
-		
-		
+		gameDifficultyBox.getChildren().addAll(selectDifficultyLabel, difficultyButtons);
+		gameDifficultyBox.setAlignment(Pos.CENTER);
 	
 		load = new Button("Load");
 		
@@ -124,13 +157,13 @@ public class MainMenu {
 		
 		VBox container = new VBox();
 		container.setSpacing(20);
-		container.getChildren().addAll(welcomeLabel,gameModeButtons,difficultyButtons,load,createButton,exit);
+		container.getChildren().addAll(welcomeLabel,gameModeBox,gameDifficultyBox,createGameBox,load,exit);
 		container.setAlignment(Pos.CENTER);
 		pane.setCenter(container);
 		
 		
 		//stylesheets für scene
-		mainScene.getStylesheets().add("/css/sudoku.css");
+		
 		
 	
 		
