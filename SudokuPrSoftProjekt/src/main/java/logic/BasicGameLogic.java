@@ -38,6 +38,8 @@ public abstract class BasicGameLogic {
 	public String gameText = "";
 	private int gameID = 0;
 	
+	private String difficultyString;
+	
 	protected int hintCounter;
 	
 	protected int difficulty;
@@ -78,6 +80,10 @@ public abstract class BasicGameLogic {
 	public abstract void setGameState(Gamestate gamestate);
 
 	public abstract Gamestate getGameState();
+	
+	public String getGameType() {
+		return gameType;
+	}
 
 	public abstract boolean testIfSolved();
 
@@ -178,120 +184,26 @@ public abstract class BasicGameLogic {
 	public int getGameID() {
 		return gameID;
 	}
+	
+	public String getDifficultyString() {
+		return difficultyString;
+	}
 
 	public void setGameID(int gameID) {
 		this.gameID = gameID;
 	}
 
-	
-	public void saveGame() {
-		Storage storage = new Storage();
-		StorageController storageController = new StorageController(storage);
-		File file = storage.getSaveFile();
-		
-		
-		
-		JSONObject jsonFile = storageController.convertToJSON(file);
-		JSONArray jsonArray = (JSONArray) jsonFile.get("games");
-		JSONObject newJSONGameData = new JSONObject();
-		ArrayList<String> gameArray = new ArrayList<>();
-		ArrayList<Boolean> playAbleArray = new ArrayList<>();
-
-		for (Cell[] cellArray : this.getCells()) {
-			for (Cell c : cellArray) {
-				gameArray.add(Integer.toString(c.getValue()));
-				playAbleArray.add(c.getIsReal());
+	public void setDifficultyString() {
+		if (difficulty == 3) {
+			difficultyString = "Hard";
 			}
+		if(difficulty == 5) {
+			difficultyString = "Medium";
 		}
-
-		if (modelIDexists()) {
-			JSONArray savedGamesArray = (JSONArray) storageController.convertToJSON(file).get("games");
-			for (int i = 0; i < savedGamesArray.size(); i++) {
-				JSONObject overwrittenGame = (JSONObject) savedGamesArray.get(i);
-				if ((int) (long) overwrittenGame.get("gameID") == gameIDhelper) {
-
-					System.out.println("hiiiiiiiiiiiiii");
-					overwrittenGame.remove("gameNumbers");
-					overwrittenGame.remove("playAble");
-					overwrittenGame.remove("points");
-					overwrittenGame.remove("gameState");
-					overwrittenGame.remove("secondsPlayed");
-					overwrittenGame.remove("minutesPlayed");
-
-					overwrittenGame.put("gameNumbers", gameArray);
-					overwrittenGame.put("playAble", playAbleArray);
-					overwrittenGame.put("points", getgamePoints());
-					overwrittenGame.put("gameState", getGameState());
-					overwrittenGame.put("secondsPlayed", secondsPlayed);
-					overwrittenGame.put("minutesPlayed", minutesPlayed);
-
-					jsonArray.remove(i);
-					jsonArray.add(overwrittenGame);
-				}
-			}
-		} else {
-			System.out.println("test");
-
-			newJSONGameData.put("type", gameType);
-			newJSONGameData.put("gameNumbers", gameArray);
-			newJSONGameData.put("playAble", playAbleArray);
-			newJSONGameData.put("difficulty", "easy");
-			newJSONGameData.put("points", getgamePoints());
-			newJSONGameData.put("gameState", getGameState());
-			newJSONGameData.put("minutesPlayed", getMinutesPlayed());
-			newJSONGameData.put("secondsPlayed", getSecondsPlayed());
-			jsonArray.add(newJSONGameData);
-
-			newJSONGameData.put("gameID", storageController.getLastGameID(file) + 1);
-			gameID++;
-
-			System.out.println(storageController.getLastGameID(file));
+		if(difficulty == 7) {
+			difficultyString = "Easy";
+		} if(difficulty == 0) {
+			difficultyString = "Manual";
 		}
-		jsonFile.put("games", jsonArray);
-
-		try {
-			ObjectMapper mapper = new ObjectMapper();
-			mapper.writeValue(file, jsonFile);
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		}
-	}
-
-	
-	
-	// load funktion
-	public void loadIntoModel(JSONArray json, JSONArray json2) {
-		setUpLogicArray();
-
-		Iterator<String> iterator = json.iterator();
-		Iterator<Boolean> booleanIterator = json2.iterator();
-
-		for (Cell[] cellArray : this.getCells()) {
-			for (Cell c : cellArray) {
-
-				c.setValue(Integer.parseInt(iterator.next()));
-				if (booleanIterator.next() == true) {
-					c.setIsReal(true);
-				}
-			}
-		}
-	}
-
-	public boolean modelIDexists() {
-		Storage storage = new Storage();
-		StorageController storageController = new StorageController(storage);
-		File file = storage.getSaveFile();
-		JSONObject obj = storageController.convertToJSON(file);
-		JSONArray gameArray = (JSONArray) obj.get("games");
-
-		for (int i = 0; i < gameArray.size(); i++) {
-			JSONObject helper = (JSONObject) gameArray.get(i);
-			int id = (int) (long) helper.get("gameID");
-			if (id == getGameID()) {
-				gameIDhelper = id;
-				return true;
-			}
-		}
-		return false;
 	}
 }

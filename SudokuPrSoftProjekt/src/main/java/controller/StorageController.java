@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.BasicGameBuilder;
 import application.GUI;
@@ -21,22 +22,30 @@ import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import logic.BasicGameLogic;
-import logic.Gamestate;
-import logic.SamuraiLogic;
-import logic.SudokuLogic;
+
+import logic.*;
 
 public class StorageController {
 
 	Scene playScene;
 	BasicGameBuilder game;
 	BasicGameLogic model;
+	
+	String gameIdentifier;
+	SudokuStorageModel saveModel;
+	
 	Scene gameScene;
 	Storage storage;
-	public int difficulty;
+	File[] dir;
+	
 
 	public StorageController(Storage storage) {
 		this.storage = storage;
+		saveModel = new SudokuStorageModel(model);
+	//	dir = new File(saveModel.getDirectory()).listFiles();
 	}
+	
+	
 	//test
 	public void handleLoadAction(ActionEvent e) {
 		String helper = "";
@@ -55,23 +64,16 @@ public class StorageController {
 		}
 
 		gameScene = game.initializeScene();
-		JSONArray help = (JSONArray) storage.getSaveMap().get(helper).get("gameNumbers");
-		JSONArray help2 = (JSONArray) storage.getSaveMap().get(helper).get("playAble");
+	
 
-		model.loadIntoModel(help, help2);
+		saveModel.loadIntoModel(model,(JSONObject) storage.getSaveMap().get(helper));
 		model.setGamePoints((int) (long) storage.getSaveMap().get(helper).get("points"));
-		model.setGameID((int) (long) storage.getSaveMap().get(helper).get("gameID"));
-		System.out.println(model.getGameID());
-		
-		
-		game.setDifficulty(1);
-		
-
-		model.printCells();
+	//	model.setGameID((int) (long) storage.getSaveMap().get(helper).get("gameID"));
+	
+	
 		// model.setSecondsPlayed(storage.getSaveMap().get(helper).get(e));
 		model.setStartTime(System.currentTimeMillis());
-		model.setLoadedSeconds((int) (long) storage.getSaveMap().get(helper).get("secondsPlayed"));
-		model.setLoadedMinutes((int) (long) storage.getSaveMap().get(helper).get("minutesPlayed"));
+	
 
 		SudokuField[][] s = game.getTextField();
 
@@ -86,55 +88,90 @@ public class StorageController {
 			}
 		}
 		GUI.getStage().setScene(gameScene);
+		storage.getStage().close();
 	}
 	
 	
 	
+	public void fillListVew() {
 	
-	public void deleteEntry(ActionEvent e) {
+		
+//		
+		JSONObject obj;
+		
+	
+		File [] dir = new File(saveModel.getDirectory()).listFiles();
+		
+			for(File child : dir) {
+			
+				obj = saveModel.convertToJSON(child.getAbsoluteFile());
+			
+				String gameString = "Game "  + ": " + (String) obj.get("type") + " | Time: "
+						+ obj.get("minutesPlayed") + " min " + obj.get("secondsPlayed") + " sek " + " | Difficulty: "
+						+ obj.get("difficulty") + " | Points: " + obj.get("points");
+				storage.getObservableList().add(gameString);
+				storage.getSaveMap().put(gameString, obj);
+				System.out.println(storage.getSaveMap().keySet());
+			}
+		
+			storage.getListView().setItems(storage.getObservableList());
+			
+	}
+	
+	
+	public void deleteEntry(ActionEvent e)  {
+		System.out.println("yeeeeeeet");
+
+		int counter = 0;
+		
+		int deleteIndex = storage.getListView().getSelectionModel().getSelectedIndex();
+		System.out.println(deleteIndex + "indexxxxxxxxxxxx");
+		File [] dir = new File(saveModel.getDirectory()).listFiles();
+		
+		for(File child : dir) {
+			
+			try {
+				if(counter ==deleteIndex) {
+				storage.getObservableList().remove(deleteIndex);
+		
+				Files.delete(Paths.get(child.getAbsolutePath()));
+				}
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			//	storage.getObservableList().remove(deleteIndex);
+		//		storage.getHashMap().clear();
+			
+		//	storage.getObservableList().remove(deleteIndex);
+			counter++;
+		}
+	}
 
 		
-		int index = storage.getListView().getSelectionModel().getSelectedIndex();
-		storage.getObservableList().remove(index);
-		JSONArray help = (JSONArray) storage.getJSONObject().get("games");
-		storage.getJSONObject().remove("games");
-		help.remove(index);
+//		int index = storage.getListView().getSelectionModel().getSelectedIndex();
+//		storage.getObservableList().remove(index);
+//		JSONArray help = (JSONArray) storage.getJSONObject().get("games");
+//		storage.getJSONObject().remove("games");
+//		help.remove(index);
+//		
+//		
+//		
+//		storage.getJSONObject().put("games", help);
+//
+//		
+//		ObjectMapper mapper = new ObjectMapper();
+//		try {
+//			mapper.writeValue(storage.getSaveFile(), storage.getJSONObject());
+//		} catch (IOException ie) {
+//			ie.printStackTrace();
+//		}
 		
-		
-		
-		storage.getJSONObject().put("games", help);
+//	}
+	
+	
 
-		
-		ObjectMapper mapper = new ObjectMapper();
-		try {
-			mapper.writeValue(storage.getSaveFile(), storage.getJSONObject());
-		} catch (IOException ie) {
-			ie.printStackTrace();
-		}
-		
-	}
-	
-	
-	public JSONObject convertToJSON(File file) {
-		
-		JSONObject jsonObject = new JSONObject();
-		
-		JSONParser parser = new JSONParser();
-		
-		try {
-			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
-			jsonObject = (JSONObject) obj;
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-		return jsonObject;
-	}
 	
 	public int getLastGameID(File file) {
 		JSONParser parser = new JSONParser();

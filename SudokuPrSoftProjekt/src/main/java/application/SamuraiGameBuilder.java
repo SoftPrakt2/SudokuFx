@@ -143,7 +143,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	@Override
 	public void createNumbers() {
 		// TODO Auto-generated method stub
-		controller.createGame(difficulty);
+		controller.createGame();
 	}
 
 	/**

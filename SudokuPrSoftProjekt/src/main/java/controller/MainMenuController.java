@@ -4,7 +4,7 @@ import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
 import application.GUI;
 import application.MainMenu;
-import application.OverviewStage;
+
 import application.SamuraiGameBuilder;
 import application.Storage;
 import application.SudokuGameBuilder;
@@ -47,12 +47,9 @@ public class MainMenuController {
 	 * Instanziiert den BasicGameBuilder als SudokuGameBuilder und ladet die SudokuScene
 	 */
 	public void handleToSudoku(ActionEvent e) {
-		
-		game = new SudokuGameBuilder(new SudokuLogic(Gamestate.OPEN,0,0,false));
-		
+		model = new SudokuLogic(Gamestate.OPEN,0,0,false);
+		game = new SudokuGameBuilder(model);
 		playScene = game.initializeScene();
-		
-	
 	}
 	
 
@@ -61,7 +58,8 @@ public class MainMenuController {
 	 * Instanziiert den BasicGameBuilder als SamuraiGameBuilder und ladet die SamuraiScene
 	 */
 	public void handleToSamurai(ActionEvent e) {
-		game = new SamuraiGameBuilder(new SamuraiLogic(Gamestate.OPEN,0,0,false));
+		model = new SamuraiLogic(Gamestate.OPEN,0,0,false);
+		game = new SamuraiGameBuilder(model);
 		playScene = game.initializeScene();
 	}
 
@@ -80,11 +78,8 @@ public class MainMenuController {
 	 */
 	public void handleToLoad(ActionEvent e) {
 		 overview = new Storage();
-		 storageScene = overview.showStorageScene();
-			GUI.getStage().setScene(storageScene);
-		
-//		playScene = game.getScene();
-//		GUI.getStage().setScene(playScene);
+		overview.createStage();
+
 	}
 
 	/**
@@ -93,7 +88,6 @@ public class MainMenuController {
 	 */
 	public void handleExit(ActionEvent e) {
 		GUI.getStage().close();
-	//	GUI.getStage().setScene(game.getScene());
 	}
 
 	/**
@@ -103,22 +97,21 @@ public class MainMenuController {
 	public void handleHard(ActionEvent e) {
 		if(game instanceof SamuraiGameBuilder) {
 			System.out.println("Test");
-			game.setDifficulty(4);
+			model.setDifficulty(4);
 		}
-		game.setDifficulty(3);
+		model.setDifficulty(3);
 	}
 	
 	public void handleEasy(ActionEvent e) {
-		game.setDifficulty(7);
-	
+		model.setDifficulty(7);
 	}
 
 	public void handleMedium(ActionEvent e) {
-		game.setDifficulty(5);
+		model.setDifficulty(5);
 	}
 	
 	public void handleManual(ActionEvent e) {
-		game.setDifficulty(0);
+		model.setDifficulty(0);
 		game.getDoneButton().setVisible(true);
 	}
 

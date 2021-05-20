@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import org.controlsfx.control.PopOver;
+import org.controlsfx.control.PopOver.ArrowLocation;
 import org.controlsfx.control.StatusBar;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
 import controller.GameController;
+import controller.PopOverController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +21,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
@@ -121,11 +126,6 @@ public abstract class BasicGameBuilder {
 		toolbox.getChildren().add(toolbar);
 
 		
-		//popover test
-		PopOver popOver = new PopOver(new Label("test Pop out"));
-		
-	
-		
 	}
 	
 	
@@ -171,20 +171,35 @@ public abstract class BasicGameBuilder {
 	protected Menu helpMenu;
 	protected MenuItem rules;
 	protected MenuBar menuBar;
+	protected MenuItem newGame;
 	protected MenuItem save;
 	protected MenuItem load;
 	protected Menu file;
+	
+	
 
 	protected MenuItem reset;
 	protected Menu editMenu;
 
 	protected Menu propertyMenu;
 	protected RadioMenuItem conflictItem;
-	protected MenuItem hintItem;
+	protected MenuItem moreHintsItem;
 
 	protected Menu mainMenu;
 	protected MenuItem mainMenuItem;
 	protected MenuItem createGameItem;
+	
+	protected Menu gameFunctions;
+	protected MenuItem hintMenuItem;
+	protected MenuItem autoSolveItem;
+	protected MenuItem checkItem;
+	
+	protected SeparatorMenuItem seperator;
+	protected MenuItem exitItem;
+	
+	protected MenuItem exportItem;
+	protected MenuItem importItem;
+	
 
 	RulesStage rule;
 
@@ -211,17 +226,40 @@ public abstract class BasicGameBuilder {
 		propertyMenu = new Menu("Properties");
 		conflictItem = new RadioMenuItem("Show Conflicts");
 		conflictItem.setSelected(false);
-		hintItem = new MenuItem("More hints dude");
-		propertyMenu.getItems().addAll(conflictItem,hintItem);
+		moreHintsItem = new MenuItem("Add hints");
+		propertyMenu.getItems().addAll(conflictItem,moreHintsItem);
 
 		// savemenu mit save und load optionen
 		file = new Menu("File");
 		save = new MenuItem("Save");
 		load = new MenuItem("Load");
+		newGame = new MenuItem("New");
+		exportItem = new MenuItem("Export");
+		importItem = new MenuItem("Import");
+		
+		seperator = new SeparatorMenuItem();
+		exitItem = new MenuItem("Exit");
 
 		// load.setOnAction(e -> openFile());
+		
+		//SpielButton Funktionen für Menuü
+		gameFunctions = new Menu("Game..");
+		
+		hintMenuItem = new MenuItem("Hint");
+		autoSolveItem = new MenuItem("AutoSolve");
+		checkItem = new MenuItem("Check");
+		gameFunctions.getItems().addAll(hintMenuItem,autoSolveItem,checkItem);
+		
 
-		file.getItems().addAll(save, load);
+		file.getItems().addAll(newGame, save, load,exportItem,importItem,seperator, exitItem);
+		
+		
+		
+		//menu Einträge für SpielFunktionen (Hint, Autosolve, check)
+		
+		
+		createPopUp();
+		
 
 		// newgame menu eintrag
 		editMenu = new Menu("Edit");
@@ -258,7 +296,16 @@ public abstract class BasicGameBuilder {
 		mainMenuItem.setOnAction(controller::switchToMainMenu);
 		hintButton.setOnAction(controller::hintHandeler);
 		conflictItem.setOnAction(controller::switchOffConflicts);
-		hintItem.setOnAction(controller::handleMoreHints);
+		moreHintsItem.setOnAction(controller::handleMoreHints);
+		//exitItem.setOnAction(e -> GUI.closeProgram());
+		exportItem.setOnAction(controller::exportGame);
+		importItem.setOnAction(controller::importGame);
+		
+		exitItem.setOnAction(e -> {
+			
+		 popOver.show(hintButton,-30);
+	
+		});
 	}
 
 	public void createStatusBar(BorderPane pane) {
@@ -279,6 +326,55 @@ public abstract class BasicGameBuilder {
 
 		pane.setBottom(statusBar);
 	}
+	
+	
+	PopOver popOver;
+	public void createPopUp() {
+		
+		PopOverController popcontrol = new PopOverController(popOver);
+		
+		VBox popOverBox = new VBox();
+		
+		Label newGameModeLabel = new Label("Choose new game settings");
+		
+		HBox gameModeButtons = new HBox();
+		gameModeButtons.setSpacing(2);
+		ToggleButton sudoku = new ToggleButton("Sudoku");
+		ToggleButton samurai = new ToggleButton("Samurai");
+		ToggleButton freeform = new ToggleButton("Freeform");
+		gameModeButtons.getChildren().addAll(sudoku,samurai,freeform);
+		
+		HBox difficultyButtons = new HBox();
+		difficultyButtons.setSpacing(2);
+		ToggleButton easy = new ToggleButton("Easy");
+		ToggleButton medium = new ToggleButton("Medium");
+		ToggleButton hard = new ToggleButton("Hard");
+		difficultyButtons.setSpacing(2);
+		difficultyButtons.getChildren().addAll(easy,medium,hard);
+		
+		sudoku.setOnAction(popcontrol::handleToSudoku);
+		samurai.setOnAction(popcontrol::handleToSamurai);
+		easy.setOnAction(popcontrol::handleEasy);
+		hard.setOnAction(popcontrol::handleHard);
+		
+		popOverBox.getChildren().addAll(newGameModeLabel, gameModeButtons,difficultyButtons);
+		popOverBox.setAlignment(Pos.CENTER);
+		gameModeButtons.setAlignment(Pos.CENTER);
+		difficultyButtons.setAlignment(Pos.CENTER);
+		
+		popOverBox.setPrefSize(250,150);
+		
+		
+		
+		popOver = new PopOver(popOverBox);
+	//	popOver.setPrefSize(300,300);
+		
+	//	popOverBox.getStylesheets().add(PopOver.class.getResource("/css/sudoku.css").toExternalForm());
+	//	popOver.getStyleClass().add("popover");
+		popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
+	}
+	
+	
 
 	/**
 	 * 

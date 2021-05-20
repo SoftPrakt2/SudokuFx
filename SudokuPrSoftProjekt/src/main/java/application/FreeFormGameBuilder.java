@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -22,7 +23,7 @@ import logic.SudokuLogic;
 
 public class FreeFormGameBuilder extends BasicGameBuilder {
 	
-	ColorPicker picker = new ColorPicker();
+	ColorPicker picker = new ColorPicker(Color.AQUA);
 	  
 	  public FreeFormGameBuilder(BasicGameLogic model) {
 		  super(model);
@@ -45,6 +46,9 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	    
 	    scene.getStylesheets().add("css/sudoku.css");
 	   
+	    
+	    
+	    
 	 
 	  return scene;
 	}
@@ -66,8 +70,8 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 			
 					
 						
-				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(12));
-					cell.prefWidthProperty().bind(playBoard.widthProperty().divide(12));
+				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(10));
+					cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));
 //			
 					
 				

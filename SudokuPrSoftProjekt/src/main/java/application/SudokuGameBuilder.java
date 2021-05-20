@@ -94,7 +94,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	 * Befüllt das Spielfeld beim ersten Start mit Zahlen abhängig von der im Hauptmenü eingestellten Schwierigkeit
 	 */
 	public void createNumbers() {
-		controller.createGame(difficulty);
+		controller.createGame();
 	}
 
 	/**
