@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Optional;
 
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -71,8 +73,17 @@ public class Storage {
 	protected Label averagePointsLabel;
 	protected Label averageTimeLabel;
 	
+	
+	FontAwesome fontAwesome = new FontAwesome();
+	Glyph folderGraphic = fontAwesome.create(FontAwesome.Glyph.FOLDER);
+	
+	
+
+	
 	protected Stage stage;
 	
+	
+	protected Button directoryButton;
 	
 	public Stage createStage() {
 		Scene storageScene = showStorageScene();
@@ -114,9 +125,12 @@ public class Storage {
 		gameStatsBox.getChildren().addAll(gameInfoHead, pointsLabel, averageTimeLabel, averagePointsLabel);
 		gameStatsBox.setAlignment(Pos.CENTER);
 
-		back = new Button("Back");
+		directoryButton = new Button();
+		directoryButton.setGraphic(folderGraphic);
+		directoryButton.setAlignment(Pos.BOTTOM_RIGHT);
+		directoryButton.setOnAction(controller::handleDirectorySwitch);
 		
-		storageContainerBox.getChildren().addAll(listView, gameStatsBox, back);
+		storageContainerBox.getChildren().addAll(listView, gameStatsBox, directoryButton);
 
 		
 
@@ -128,7 +142,7 @@ public class Storage {
 		});
 		loadMenuItem.setOnAction(controller::handleLoadAction);
 
-		back.setOnAction(e -> GUI.getStage().setScene(GUI.getMainMenu()));
+		
 
 	//	GUI.getStage().setScene(storageScene);
 

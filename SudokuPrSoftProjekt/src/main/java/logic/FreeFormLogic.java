@@ -1,13 +1,14 @@
 package logic;
 
 import application.SudokuField;
+import javafx.scene.paint.Color;
 
-public class SudokuLogic extends BasicGameLogic {
+public class FreeFormLogic extends BasicGameLogic {
 
 
 	static int counter = 0;
 
-	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
+	public FreeFormLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[9][9];
 		gameType = "Sudoku";

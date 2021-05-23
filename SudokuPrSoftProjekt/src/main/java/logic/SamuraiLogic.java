@@ -4,13 +4,13 @@ import application.SudokuField;
 
 public class SamuraiLogic extends BasicGameLogic {
 
-	private Cell[][] cells;
+
 	public static int counter = 0;
 	public static int N = 21;
 
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
-		this.cells = new Cell[21][21];
+		cells = new Cell[21][21];
 		gameType = "Samurai";
 		hintCounter = 10;
 	}

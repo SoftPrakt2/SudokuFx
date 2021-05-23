@@ -7,6 +7,7 @@ import javafx.scene.input.KeyCode;
 public class SudokuField extends TextField{
 	
 	boolean playable = true;
+	String color;
 	
 	public SudokuField(String txt) {
 		super(txt);
@@ -50,12 +51,23 @@ public class SudokuField extends TextField{
 		
 	public void updateColor() {
 		this.textProperty().addListener((observable,oldV,newV) -> 
-		this.setStyle("-fx-text-fill: black"));
+		this.setStyle("-fx-font-color: black"));
+		
+	
 	};
 	
 	public void setPlayable(boolean playable) {
         this.playable = playable;
     }
+	
+	public void setColor(String color) {
+		this.color = color;
+	}
+	
+	public String getColor() {
+		return color;
+	}
+	
 
 
 			public boolean getPlayable() {

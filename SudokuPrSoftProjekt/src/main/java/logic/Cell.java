@@ -1,5 +1,7 @@
 package logic;
 
+import javafx.scene.paint.Color;
+
 public class Cell {
 
 	// ID 1 - 81
@@ -23,6 +25,9 @@ public class Cell {
 	// Manuelle Eingabe
 	boolean isReal;
 
+	//Color color
+	Color color;
+	
 	public Cell(int uid, int row, int col, int box, int visibility, int value) {
 		super();
 		this.uid = uid;

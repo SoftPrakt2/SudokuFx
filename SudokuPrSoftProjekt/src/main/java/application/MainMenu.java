@@ -68,7 +68,7 @@ public class MainMenu {
 		VBox createGameBox = new VBox();
 		createLabel = new Label("Step 3: Play");
 		createLabel.getStyleClass().add("mainMenuLabelsSmall");
-		createButton = new Button("Create");
+		createButton = new Button("Play");
 		createGameBox.getChildren().addAll(createLabel, createButton);
 		createGameBox.setAlignment(Pos.CENTER);
 		

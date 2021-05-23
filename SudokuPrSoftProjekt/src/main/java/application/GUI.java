@@ -12,6 +12,9 @@ public class GUI extends Application  {
 
 
  static Scene mainScene;
+ MainMenu mainmenu = new MainMenu();
+ 
+
 	
   //this is just a test
   
@@ -27,7 +30,7 @@ public class GUI extends Application  {
 		window = scene;
 		 scene.setMaxWidth(1500);
 		 scene.setMaxHeight(1500);
-		 mainScene = new MainMenu().setUpMainMenu();
+		 mainScene = mainmenu.setUpMainMenu();
 				 window.setScene(mainScene);	
 		 
 			 window.show();
@@ -57,6 +60,8 @@ public class GUI extends Application  {
 	    	return mainScene;
 	    }
 	
+	    
+	    
 	    
 	    
 	   

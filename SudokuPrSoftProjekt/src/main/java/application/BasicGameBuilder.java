@@ -294,6 +294,13 @@ public abstract class BasicGameBuilder {
 		save.setOnAction(controller::saveGame);
 		reset.setOnAction(controller::resetHandler);
 		mainMenuItem.setOnAction(controller::switchToMainMenu);
+		
+		mainMenuItem.setOnAction(e -> {
+			controller.switchToMainMenu(e);
+		
+		} );
+		
+		
 		hintButton.setOnAction(controller::hintHandeler);
 		conflictItem.setOnAction(controller::switchOffConflicts);
 		moreHintsItem.setOnAction(controller::handleMoreHints);
@@ -331,7 +338,7 @@ public abstract class BasicGameBuilder {
 	PopOver popOver;
 	public void createPopUp() {
 		
-		PopOverController popcontrol = new PopOverController(popOver);
+		PopOverController popcontrol = new PopOverController(this);
 		
 		VBox popOverBox = new VBox();
 		
@@ -373,6 +380,13 @@ public abstract class BasicGameBuilder {
 	//	popOver.getStyleClass().add("popover");
 		popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
 	}
+	
+	
+	PopOver savePopOver;
+	public void createSavedPopUp() {
+		Label label = new Label("Your game was successfully saved!");
+	}
+	
 	
 	
 

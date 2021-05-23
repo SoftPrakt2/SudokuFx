@@ -38,6 +38,8 @@ public abstract class BasicGameLogic {
 	public String gameText = "";
 	private int gameID = 0;
 	
+	protected Cell[][] cells;
+	
 	private String difficultyString;
 	
 	protected int hintCounter;
@@ -73,7 +75,7 @@ public abstract class BasicGameLogic {
 
 	public abstract void printCells();
 
-	public abstract Cell[][] getCells();
+//	public abstract Cell[][] getCells();
 
 	public abstract void setCell(int col, int row, int guess);
 
@@ -84,6 +86,7 @@ public abstract class BasicGameLogic {
 	public String getGameType() {
 		return gameType;
 	}
+	
 
 	public abstract boolean testIfSolved();
 
@@ -91,6 +94,15 @@ public abstract class BasicGameLogic {
 	 * Getter und Setter für Instanzvariablen
 	 * 
 	 */
+	
+	
+	public Cell[][] getCells() {
+		return cells;
+	}
+
+	public void setCells(Cell[][] cells) {
+		this.cells = cells;
+	}
 
 	public int getgamePoints() {
 		return gamePoints;
@@ -206,4 +218,39 @@ public abstract class BasicGameLogic {
 			difficultyString = "Manual";
 		}
 	}
+	
+	
+	public long calculateGameTime() {
+		long time;
+		long endTime = System.currentTimeMillis();
+		time = (endTime - getStartTime()) / 1000;
+		time += getLoadedMinutes() * 60 + getLoadedSeconds();
+		setSecondsPlayed(time);
+		if (time > 60) {
+			setMinutesPlayed(time / 60);
+			setSecondsPlayed(time % 60);
+		}
+		return time;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
