@@ -286,6 +286,7 @@ public class SudokuLogic extends BasicGameLogic {
 				}
 			}
 			if (counter3 == 500) {
+				coordinates = null;
 				break;
 			}
 			if (counter2 == 8) {
@@ -335,7 +336,7 @@ public class SudokuLogic extends BasicGameLogic {
 				} else if (i < 9 && j < 9) {
 					box = 9;
 				}
-				Cell cell = new Cell(uid, i, j, box, 0, 0);
+				Cell cell = new Cell(i, j, box, 0);
 				cells[i][j] = cell;
 				uid++;
 			}
