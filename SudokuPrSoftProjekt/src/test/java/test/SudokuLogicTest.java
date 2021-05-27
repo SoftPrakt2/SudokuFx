@@ -1,28 +1,28 @@
-//package test;
-//
-//import static org.junit.Assert.assertFalse;
-//import static org.junit.Assert.assertTrue;
-//
-//import org.junit.jupiter.api.Test;
-//
-//import logic.Cell;
-//import logic.Gamestate;
-//import logic.SudokuLogic;
-//
-//public class SudokuLogicTest {
-//
-//	
-//	//testCases
-//	@Test
-//	public void test() {
-//		//test4
-//		SudokuLogic model = new SudokuLogic(Gamestate.OPEN, 0,0 , false);
-//
-//		// *setUpLogicArray() *			
-//		model.setUpLogicArray();
-//		assertTrue(model.getCells()[0][0].getValue() == 0);
-//		assertTrue(model.getCells()[1][7].getValue() == 0);
-//		assertTrue(model.getCells()[8][8].getValue() == 0);
+package test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.jupiter.api.Test;
+
+import logic.Cell;
+import logic.Gamestate;
+import logic.SudokuLogic;
+
+public class SudokuLogicTest {
+
+	
+	//testCases
+	@Test
+	public void test() {
+		//test4
+		SudokuLogic model = new SudokuLogic(Gamestate.OPEN, 0,0 , false);
+
+		// *setUpLogicArray() *			
+		model.setUpLogicArray();
+		assertTrue(model.getCells()[0][0].getValue() == 0);
+		assertTrue(model.getCells()[1][7].getValue() == 0);
+		assertTrue(model.getCells()[8][8].getValue() == 0);
 //
 //	// *createSudoku() *		
 //	model.createSudoku();
@@ -108,5 +108,5 @@
 //					
 //				}
 //			}
-//	}
-//}
+	}
+}
