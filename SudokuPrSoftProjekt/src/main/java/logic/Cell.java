@@ -36,7 +36,7 @@ public class Cell {
 		this.box = box;
 		this.guess = visibility;
 		this.value = value;
-		this.isReal = false;
+		this.isReal = true;
 	}
 	
 	public boolean getIsReal() {

@@ -121,6 +121,7 @@ public class SudokuLogic extends BasicGameLogic {
 //						}
 						if (valid(row, col, y + 1)) {
 							this.cells[row][col].setValue(y + 1);
+//							this.cells[row][col].setIsReal(true);
 							if (solveSudoku()) {
 								return true;
 							} else {
@@ -346,17 +347,41 @@ public class SudokuLogic extends BasicGameLogic {
 	 * gesetzt
 	 */
 	public void difficulty() {
-		int diff = this.difficulty;
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int j = 0; j < this.cells[row].length; j++) {
-				int random = (int) (Math.random() * 10) + 1;
-				if (random <= diff) {
-					this.cells[row][j].setIsReal(true);
-				} else {
-					this.cells[row][j].setValue(0);
-				}
+		int counter = 81;
+		if(this.difficulty == 3) counter = 56;
+		if(this.difficulty == 5) counter = 46;
+		if(this.difficulty == 7) counter = 36;
+		
+		while(counter != 0) {
+			int randomCol = (int) (Math.floor(Math.random() * 8.9999));
+			int randomRow = (int) (Math.floor(Math.random() * 8.9999));
+			if(this.cells[randomRow][randomCol].getValue() != 0 && this.cells[randomRow][randomCol].getIsReal()) {
+				this.cells[randomRow][randomCol].setValue(0);
+				this.cells[randomRow][randomCol].setIsReal(false);
+				counter--;
 			}
 		}
+		
+//		for (int row = 0; row < this.cells.length; row++) {
+//			for (int col = 0; col < this.cells[row].length; col++) {
+//				if(this.cells[row][col].getValue() != 0) {
+//					this.cells[row][col].setIsReal(true);
+//				}
+//			}
+//		}
+			
+			
+//		int diff = this.difficulty;
+//		for (int row = 0; row < this.cells.length; row++) {
+//			for (int j = 0; j < this.cells[row].length; j++) {
+//				int random = (int) (Math.random() * 10) + 1;
+//				if (random <= diff) {
+//					this.cells[row][j].setIsReal(true);
+//				} else {
+//					this.cells[row][j].setValue(0);
+//				}
+//			}
+//		}
 	}
 
 	public void setCell(int col, int row, int guess) {

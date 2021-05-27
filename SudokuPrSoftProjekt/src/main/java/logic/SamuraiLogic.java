@@ -516,21 +516,37 @@ public class SamuraiLogic extends BasicGameLogic {
 
 	@Override
 	public void difficulty() {
-		int diff = this.difficulty;
-		// TODO Auto-generated method stub
-		for(int row = 0; row < this.cells.length; row++) {
-			for(int col = 0; col < this.cells[row].length; col++) {
-				if(this.cells[row][col].getValue() != -1) {
-					int random = (int) (Math.random() * 10) + 1;
-					if(random <= diff) {
-						this.cells[row][col].setIsReal(true);
-					}
-					else {
-						this.cells[row][col].setValue(0);;
-					}
-				}
+		
+		int counter = 369;
+		if(this.difficulty == 3) counter = 230;
+		if(this.difficulty == 5) counter = 200;
+		if(this.difficulty == 7) counter = 180;
+		
+		while(counter != 0) {
+			int randomCol = (int) (Math.floor(Math.random() * 20.9999));
+			int randomRow = (int) (Math.floor(Math.random() * 20.9999));
+			if(this.cells[randomRow][randomCol].getValue() != 0 && this.cells[randomRow][randomCol].getIsReal() && this.cells[randomRow][randomCol].getValue() != -1) {
+				this.cells[randomRow][randomCol].setValue(0);
+				this.cells[randomRow][randomCol].setIsReal(false);
+				counter--;
 			}
 		}
+		
+//		int diff = this.difficulty;
+//		// TODO Auto-generated method stub
+//		for(int row = 0; row < this.cells.length; row++) {
+//			for(int col = 0; col < this.cells[row].length; col++) {
+//				if(this.cells[row][col].getValue() != -1) {
+//					int random = (int) (Math.random() * 10) + 1;
+//					if(random <= diff) {
+//						this.cells[row][col].setIsReal(true);
+//					}
+//					else {
+//						this.cells[row][col].setValue(0);;
+//					}
+//				}
+//			}
+//		}
 		
 	}
 
