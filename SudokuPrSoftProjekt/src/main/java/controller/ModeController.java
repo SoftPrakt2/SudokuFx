@@ -23,7 +23,7 @@ import logic.SudokuLogic;
  *
  */
 
-public class MainMenuController {
+public class ModeController {
 
 	MainMenu menu;
 	Scene playScene;
@@ -34,13 +34,13 @@ public class MainMenuController {
 	
 	private Scene storageScene;
 
-	// Stage overviewStage = overview.showOverview("Played", "Played");
+	
 
 	boolean initialized = false;
 
 	public int difficulty;
 
-	public MainMenuController(MainMenu menu) {
+	public <E extends MainMenu> ModeController( E menu) {
 		this.menu = menu;
 	}
 
@@ -50,41 +50,22 @@ public class MainMenuController {
 	 * SudokuScene
 	 */
 	public void handleToSudoku(ActionEvent e) {
+	model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+	game = new SudokuGameBuilder(model);
+	game.initializeGame();
 		
-
-	
-		
-		if(playScene != null && game instanceof SudokuGameBuilder) {
-			playScene = game.getScene();
-			System.out.println("yeet");
-		} else {
-			
-		
-		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
-		game = new SudokuGameBuilder(model);
-		playScene = game.initializeScene();
-		}
 	}
 
+	
 	/**
 	 * 
 	 * Instanziiert den BasicGameBuilder als SamuraiGameBuilder und ladet die
 	 * SamuraiScene
 	 */
 	public void handleToSamurai(ActionEvent e) {
-		
-		if(playScene != null && game instanceof SamuraiGameBuilder) {
-			playScene = game.getScene();
-		} else {
-			System.out.println("yeet");
-		
-			model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
-			game = new SamuraiGameBuilder(model);
-			playScene = game.initializeScene();
-		}
-		
-		
-	
+	model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+	game = new SamuraiGameBuilder(model);
+	game.initializeGame();
 	}
 	/**
 	 * 
@@ -93,7 +74,7 @@ public class MainMenuController {
 	 */
 	public void handleToFreeForm(ActionEvent e) {
 		game = new FreeFormGameBuilder(new SudokuLogic(Gamestate.OPEN, 0, 0, false));
-		playScene = game.initializeScene();
+		game.initializeGame();
 	}
 
 	/**
@@ -153,9 +134,13 @@ public class MainMenuController {
 	 */
 	public void handleGameStart(ActionEvent e) {
 		game.createNumbers();
-		GUI.getStage().setScene(playScene);
+		
+		GUI.getStage().setHeight(game.getHeight());
+		GUI.getStage().setWidth(game.getWidth());
+		GUI.getStage().getScene().setRoot(game.getPane());
 		menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
 		menu.getDifficultyToggle().getSelectedToggle().setSelected(false);
+
 		if (game.getDifficulty() > 0)
 			game.getDoneButton().setDisable(true);
 	}

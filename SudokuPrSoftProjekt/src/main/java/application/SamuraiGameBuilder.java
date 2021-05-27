@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import logic.BasicGameLogic;
@@ -25,36 +26,20 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 	public SamuraiGameBuilder(BasicGameLogic model) {
         super(model);
-        scene = new Scene(pane, 1000, 1000);
-        textField = new SudokuField[21][21];
-        gameType = "Samurai";
+       
+       textField = new SudokuField[21][21];
+       width = 1050;
+       height = 1050;
     }
 
-	/**
-	 * Übergibt dieser Scene den jeweiligen Controller Erstellt die Scene mit den
-	 * Buttons, der MenuBar und dem Sudoku-Spielfeld
-	 */
-	public Scene initializeScene() {
-		controller = new GameController(this, model);
-		
-		
-		pane.setCenter(createBoard());
-		pane.setPadding(new Insets(50, 50, 50, 50));
 
-		createMenuBar(pane);
-		createPlayButtons(pane);
-		createStatusBar(pane);
-		
-		scene.getStylesheets().add("/css/sudoku.css");
-
-		return scene;
-	}
 
 	/**
 	 * Zeichnet ein Samurai-Sudoku-Feld
 	 */
 	@Override
 	public GridPane createBoard() {
+		controller = new GameController(this, model);
 		playBoard = new GridPane();
 
 		pane.setPadding(new Insets(5, 5, 5, 5));
@@ -149,9 +134,6 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	/**
 	 * Getter und Setter für die Variablen dieser Klasse
 	 */
-	@Override
-	public Scene getScene() {
-		return scene;
-	}
+	
 
 }

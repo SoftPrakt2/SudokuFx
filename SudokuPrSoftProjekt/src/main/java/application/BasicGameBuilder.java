@@ -13,6 +13,7 @@ import controller.GameController;
 import controller.PopOverController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -32,12 +33,13 @@ import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import logic.BasicGameLogic;
 
 public abstract class BasicGameBuilder {
 
-	public Scene scene;
+
 	protected BorderPane pane;
 	protected VBox playButtonMenu;
 	protected Button check;
@@ -55,18 +57,25 @@ public abstract class BasicGameBuilder {
 	protected Label playTimeLabel;
 	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
 	ToolBar toolbar;
+	
+	int width;
+	int height;
 
 	protected Button done;
 
 	VBox toolbox = new VBox();
 	BasicGameLogic model;
+	
+	NewGamePopUp gamePopUp;
+	PopOver popover;
 
 	public BasicGameBuilder(BasicGameLogic model) {
 		pane = new BorderPane();
 		this.model = model;
+	
 	}
 
-	protected String gameType;
+	
 
 	protected SudokuField[][] textField;
 
@@ -78,7 +87,19 @@ public abstract class BasicGameBuilder {
 
 	protected GridPane playBoard;
 
-	public abstract Scene initializeScene();
+	public void initializeGame() {
+		controller = new GameController(this, model);
+		
+		gamePopUp = new NewGamePopUp(this,model);
+		
+		pane.setCenter(createBoard());
+		pane.setPadding(new Insets(50, 50, 50, 50));
+
+		createMenuBar(pane);
+		createPlayButtons(pane);
+		createStatusBar(pane);
+		
+	}
 
 	public abstract void createNumbers();
 
@@ -113,7 +134,7 @@ public abstract class BasicGameBuilder {
 
 		KeyCombination autoS = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
 		Mnemonic mn = new Mnemonic(autosolve, autoS);
-		scene.addMnemonic(mn);
+		GUI.getStage().getScene().addMnemonic(mn);
 
 		done = new Button("done");
 
@@ -257,8 +278,8 @@ public abstract class BasicGameBuilder {
 		
 		//menu Einträge für SpielFunktionen (Hint, Autosolve, check)
 		
-		
-		createPopUp();
+		popover = gamePopUp.createPopUp();
+		//createPopUp();
 		
 
 		// newgame menu eintrag
@@ -310,7 +331,7 @@ public abstract class BasicGameBuilder {
 		
 		exitItem.setOnAction(e -> {
 			
-		 popOver.show(hintButton,-30);
+		 popover.show(hintButton,-30);
 	
 		});
 	}
@@ -335,58 +356,7 @@ public abstract class BasicGameBuilder {
 	}
 	
 	
-	PopOver popOver;
-	public void createPopUp() {
-		
-		PopOverController popcontrol = new PopOverController(this);
-		
-		VBox popOverBox = new VBox();
-		
-		Label newGameModeLabel = new Label("Choose new game settings");
-		
-		HBox gameModeButtons = new HBox();
-		gameModeButtons.setSpacing(2);
-		ToggleButton sudoku = new ToggleButton("Sudoku");
-		ToggleButton samurai = new ToggleButton("Samurai");
-		ToggleButton freeform = new ToggleButton("Freeform");
-		gameModeButtons.getChildren().addAll(sudoku,samurai,freeform);
-		
-		HBox difficultyButtons = new HBox();
-		difficultyButtons.setSpacing(2);
-		ToggleButton easy = new ToggleButton("Easy");
-		ToggleButton medium = new ToggleButton("Medium");
-		ToggleButton hard = new ToggleButton("Hard");
-		difficultyButtons.setSpacing(2);
-		difficultyButtons.getChildren().addAll(easy,medium,hard);
-		
-		sudoku.setOnAction(popcontrol::handleToSudoku);
-		samurai.setOnAction(popcontrol::handleToSamurai);
-		easy.setOnAction(popcontrol::handleEasy);
-		hard.setOnAction(popcontrol::handleHard);
-		
-		popOverBox.getChildren().addAll(newGameModeLabel, gameModeButtons,difficultyButtons);
-		popOverBox.setAlignment(Pos.CENTER);
-		gameModeButtons.setAlignment(Pos.CENTER);
-		difficultyButtons.setAlignment(Pos.CENTER);
-		
-		popOverBox.setPrefSize(250,150);
-		
-		
-		
-		popOver = new PopOver(popOverBox);
-	//	popOver.setPrefSize(300,300);
-		
-	//	popOverBox.getStylesheets().add(PopOver.class.getResource("/css/sudoku.css").toExternalForm());
-	//	popOver.getStyleClass().add("popover");
-		popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
-	}
-	
-	
-	PopOver savePopOver;
-	public void createSavedPopUp() {
-		Label label = new Label("Your game was successfully saved!");
-	}
-	
+
 	
 	
 
@@ -414,13 +384,7 @@ public abstract class BasicGameBuilder {
 		return playTimeLabel;
 	}
 
-	public void setGameType(String gameType) {
-		this.gameType = gameType;
-	}
-
-	public String getGameType() {
-		return gameType;
-	}
+	
 
 	public Button getCheckButton() {
 		return this.check;
@@ -444,9 +408,18 @@ public abstract class BasicGameBuilder {
 		return conflictItem;
 	}
 	
+	public BorderPane getPane() {
+		return pane;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+	
+	public int getHeight() {
+		return height;
+	}
 	
 	
-
-	public abstract Scene getScene();
 
 }

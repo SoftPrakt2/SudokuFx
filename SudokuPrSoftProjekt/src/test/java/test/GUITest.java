@@ -9,11 +9,16 @@ import org.testfx.assertions.api.Assertions;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
+import application.GUI;
 import application.MainMenu;
+import application.SudokuGameBuilder;
+import controller.GameController;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import logic.Gamestate;
+import logic.SudokuLogic;
 
 @ExtendWith(ApplicationExtension.class)
   class GUITest  {
@@ -45,25 +50,37 @@ import javafx.stage.Stage;
      */
     @Start
     private void start(Stage stage) {
-        MainMenu mainMenu = new MainMenu();
-        mainMenu.getPlayModeToggle();
-     
-        
+    //	final String[] args = new String[];
+     //   GUI.main(args);
     }
 
     /**
      * @param robot - Will be injected by the test runner.
      */
-    @Test
-    void should_contain_button_with_text(FxRobot robot) {
-      
-        // or (lookup by css id):
-       
-    }
+
 
    /**
     * @param robot - Will be injected by the test runner.
     */
    
-}
 
+
+
+	
+	
+	
+	
+
+
+	    @Test
+	    public void test() {
+	    	
+	    	SudokuLogic logic = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+	    	SudokuGameBuilder sud = new SudokuGameBuilder(logic);
+	    	sud.initializeGame();
+	    	GameController mainMenu = new GameController(sud,logic);
+	    	
+	    	mainMenu.createGame();
+	    	mainMenu.enableEdit();
+	    }
+}

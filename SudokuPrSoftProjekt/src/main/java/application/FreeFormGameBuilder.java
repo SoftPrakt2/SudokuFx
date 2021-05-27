@@ -3,29 +3,16 @@ package application;
 import java.util.ArrayList;
 
 import controller.GameController;
-import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.css.PseudoClass;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import logic.BasicGameLogic;
-import logic.Gamestate;
-import logic.SamuraiLogic;
-import logic.SudokuLogic;
 
 public class FreeFormGameBuilder extends BasicGameBuilder {
 
@@ -38,28 +25,11 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 	public FreeFormGameBuilder(BasicGameLogic model) {
 		super(model);
-		scene = new Scene(pane, 670, 670);
 		textField = new SudokuField[9][9];
-		gameType = "FreeForm";
 	}
 
-	public Scene initializeScene() {
-		controller = new GameController(this, model);
-
-		pane.setCenter(createBoard());
-
-		createMenuBar(pane);
-		createPlayButtons(pane);
-
-		colorButton = new ToggleButton("Color");
-		
-		toolbar.getItems().add(picker);
-		toolbar.getItems().add(colorButton);
-
-		scene.getStylesheets().add("css/sudoku.css");
-
-		return scene;
-	}
+	
+	
 
 	public GridPane createBoard() {
 		playBoard = new GridPane();
@@ -121,15 +91,13 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 	}
 
-	@Override
-	public Scene getScene() {
-		// TODO Auto-generated method stub
-		return scene;
-	}
+	
 	
 	public ToggleButton getColorButton() {
 		return colorButton;
 	}
+
+	
 	
 
 }

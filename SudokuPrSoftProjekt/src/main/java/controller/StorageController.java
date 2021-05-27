@@ -32,19 +32,18 @@ public class StorageController {
 	BasicGameLogic model;
 
 	String gameIdentifier;
-	SudokuStorageModel saveModel;
+	SudokuStorageModel storageModel;
 
 	Scene gameScene;
 	Storage storage;
 	File[] dir;
-	
+
 	SharedStoragePreferences sharedStorage = new SharedStoragePreferences();
-	
 
 	public StorageController(Storage storage) {
 		this.storage = storage;
-		saveModel = new SudokuStorageModel(model);
-		// dir = new File(saveModel.getDirectory()).listFiles();
+		storageModel = new SudokuStorageModel();
+		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
 	}
 
 	// test
@@ -54,9 +53,12 @@ public class StorageController {
 		for (String key : storage.getSaveMap().keySet()) {
 			if (key.equals(storage.getListView().getSelectionModel().getSelectedItem())) {
 				helper = key;
+				// gib json object der storagemodel
+				storageModel.setJSONObject(storage.getSaveMap().get(key));
 				if (storage.getSaveMap().get(key).get("type").equals("Sudoku")) {
 					model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
 					game = new SudokuGameBuilder(model);
+
 				} else if (storage.getSaveMap().get(key).get("type").equals("Samurai")) {
 					model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
 					game = new SamuraiGameBuilder(model);
@@ -64,144 +66,101 @@ public class StorageController {
 			}
 		}
 
-		gameScene = game.initializeScene();
+		// geht weil in zeile 57 wurde das json object reingeladen
+		storageModel.setLoadedLogic(model);
+		// ladet die gespeicherten infos rein in das erstellte modell aus zeile 60 bzw
+		// 64
+		storageModel.loadIntoModel();
 
-		saveModel.loadIntoModel(model, (JSONObject) storage.getSaveMap().get(helper));
-		// model.setGamePoints((int) (long)
-		// storage.getSaveMap().get(helper).get("points"));
-		// model.setGameID((int) (long) storage.getSaveMap().get(helper).get("gameID"));
-
-		// model.setSecondsPlayed(storage.getSaveMap().get(helper).get(e));
-		model.setStartTime(System.currentTimeMillis());
+		game.initializeGame();
 
 		SudokuField[][] s = game.getTextField();
 
+		// storagemodelgetloaded einheitlich!!!
 		for (int i = 0; i < s.length; i++) {
 			for (int j = 0; j < s[i].length; j++) {
-				if (model.getCells()[j][i].getValue() != 0) {
-					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
+				if (storageModel.getLoadedLogic().getCells()[j][i].getValue() != 0) {
+					s[i][j].setText(Integer.toString(storageModel.getLoadedLogic().getCells()[j][i].getValue()));
 				}
-				if (!model.getCells()[j][i].getIsReal()) {
+				if (!storageModel.getLoadedLogic().getCells()[j][i].getIsReal()) {
 					s[i][j].setDisable(false);
 				}
 			}
 		}
-		GUI.getStage().setScene(gameScene);
+		
+
+		GUI.getStage().setHeight(game.getHeight());
+		GUI.getStage().setWidth(game.getWidth());
+		GUI.getStage().getScene().setRoot(game.getPane());
 		storage.getStage().close();
 	}
 
 	public void fillListVew() {
 
-//		
-		JSONObject obj;
-		
-	
+		JSONObject readedObject;
+		System.out.println(sharedStorage.getPreferedDirectory());
 
-		File[] dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
-		
-		
-		if(dir!=null) {
-		for (File child : dir) {
-			if(child.getName().endsWith(".json")) {
-			obj = saveModel.convertToJSON(child.getAbsoluteFile());
+		if (dir != null) {
+			for (File child : dir) {
+				if (child.getName().endsWith(".json")) {
+					readedObject = storageModel.convertToJSON(child.getAbsoluteFile());
 
-			String gameString = "GameType " + ": " + (String) obj.get("type") + " | Difficulty: "
-					+ obj.get("difficultyString") +
-					" | Time: " + obj.get("minutesPlayed") + " min " + obj.get("secondsPlayed") + " sek "
-					+ " | Points: " + obj.get("points");
-			storage.getObservableList().add(gameString);
-			storage.getSaveMap().put(gameString, obj);
-			System.out.println(storage.getSaveMap().keySet());
-		}
+					String gameString = "GameType " + ": " + (String) readedObject.get("type") + " | Difficulty: "
+							+ readedObject.get("difficultyString") + " | Time: " + readedObject.get("minutesPlayed")
+							+ " min " + readedObject.get("secondsPlayed") + " sek " + " | Points: "
+							+ readedObject.get("points");
+					storage.getObservableList().add(gameString);
+					storage.getSaveMap().put(gameString, readedObject);
+					System.out.println(storage.getSaveMap().keySet());
+				}
 
-		storage.getListView().setItems(storage.getObservableList());
+			}
+			storage.getListView().setItems(storage.getObservableList());
+			storageModel.calculateGameStats();
+			setGameStatInformations();
+			System.out.println(dir.length + "llllllllllllllll" + storage.getObservableList().size());
 		}
-		}
+	}
+
+	public void setGameStatInformations() {
+		storage.getPointsLabel().setText("Points: " + storageModel.getOverallGamePoints());
+		storage.getAverageTimeLabel().setText("Average Time played: " + storageModel.getPlayedMinutesOverall() + " min "
+				+ storageModel.getSecondsPlayedOverall() + " seconds ");
+		storage.getAveragePointsLabel().setText("Average Points: " + storageModel.getAveragePoints());
 	}
 
 	public void deleteEntry(ActionEvent e) {
-		System.out.println("yeeeeeeet");
+		System.out.println(storage.getListView().getSelectionModel().getSelectedIndex());
 
 		int counter = 0;
 
+		File[] helper = dir;
+
 		int deleteIndex = storage.getListView().getSelectionModel().getSelectedIndex();
-		System.out.println(deleteIndex + "indexxxxxxxxxxxx");
-		File[] dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
-
-		for (File child : dir) {
-
-			try {
-				if (counter == deleteIndex) {
-					storage.getObservableList().remove(deleteIndex);
-
-					Files.delete(Paths.get(child.getAbsolutePath()));
-				}
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			counter++;
-		}
-	}
-
-	// unnötig daweil
-	public int getLastGameID(File file) {
-		JSONParser parser = new JSONParser();
-
-		int gameId = 0;
-
-		try {
-			Object obj = parser.parse(new FileReader(file.getAbsolutePath()));
-			JSONObject jsonObject = (JSONObject) obj;
-
-			JSONArray array = (JSONArray) jsonObject.get("games");
-
-			JSONObject helper = (JSONObject) array.get(array.size() - 1);
-
-			gameId = (int) (long) helper.get("gameID");
-
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		}
-
-		System.out.println(gameId);
-
-		if (gameId == 0)
-			return 0;
-		else
-			return gameId;
-	}
 	
+				storage.getObservableList().remove(deleteIndex);
+				// Files.delete(Paths.get(dir[i].getAbsolutePath()));
+				dir[deleteIndex].delete();
+			
+
+				// TODO Auto-generated catch block
+
+				dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
+
+		
+	}
 	
 	public void handleDirectorySwitch(ActionEvent e) {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
-		
+
 		String path = directoryChooser.showDialog(GUI.getStage()).getAbsolutePath();
-		
+
 		sharedStorage.getStoragePrefs().put("DirectoryPath", path);
 		storage.getObservableList().clear();
 		storage.getHashMap().clear();
+		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
 		fillListVew();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
 }

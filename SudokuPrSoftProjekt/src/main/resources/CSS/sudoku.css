@@ -37,13 +37,16 @@
 }
 
 .list-view .list-cell:even {
--fx-background-color: blue;
--fx-text-fill: black;
+	
 }
 .list-view .list-cell:odd {
--fx-background-color: blue;
--fx-text-fill: black;
+
 }
+
+.list-view {
+-fx-border-color: red;	
+}
+
 
 
 .popover > .border {
@@ -187,6 +190,11 @@
 	-fx-font-size:17px;
 	
 	
+}
+
+.welcomeLabel {
+	-fx-font-family:Georgia;
+	-fx-font-size: 40px;
 }
 
 

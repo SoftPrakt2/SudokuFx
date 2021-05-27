@@ -11,7 +11,11 @@ import application.Storage;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import logic.BasicGameLogic;
+import logic.Cell;
 import logic.Gamestate;
 import logic.SamuraiLogic;
 import logic.SudokuLogic;
@@ -20,18 +24,23 @@ public class PopOverController {
 
 	Scene playScene;
 
-	BasicGameBuilder game;
-	BasicGameLogic model;
+	
+	BasicGameLogic standardlogic;
 
+	BasicGameBuilder standard;
+	
 	PopOver popover;
 
 	boolean oldGame;
 
 	public int difficulty;
-
-	public PopOverController(BasicGameBuilder game) {
-		this.game = game;
+	
+	public PopOverController(BasicGameBuilder standard, BasicGameLogic standardlogic) {
+		this.standard = standard;
+		this.standardlogic = standardlogic;
 	}
+	
+	
 
 	/**
 	 * 
@@ -40,11 +49,11 @@ public class PopOverController {
 	 */
 	public void handleToSudoku(ActionEvent e) {
 
-		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
-		game = new SudokuGameBuilder(model);
-
-		playScene = game.initializeScene();
-
+		standardlogic = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+		standard = new SudokuGameBuilder(standardlogic);
+		standard.initializeGame();
+	//	game2.getPane().setCenter(game.createBoard());
+		
 	}
 
 	/**
@@ -53,11 +62,13 @@ public class PopOverController {
 	 * SamuraiScene
 	 */
 	public void handleToSamurai(ActionEvent e) {
-		model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
-		game = new SamuraiGameBuilder(model);
+		standardlogic = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+		standard = new SamuraiGameBuilder(standardlogic);
+	//	standard.createBoard();
+		standard.initializeGame();
 
-		playScene = game.initializeScene();
 	}
+	
 
 	/**
 	 * 
@@ -65,34 +76,45 @@ public class PopOverController {
 	 * FreeFormScene
 	 */
 	public void handleToFreeForm(ActionEvent e) {
-		game = new FreeFormGameBuilder(new SudokuLogic(Gamestate.OPEN, 0, 0, false));
-		playScene = game.initializeScene();
+	
 	}
 
 	public void handleHard(ActionEvent e) {
-
-		model.setDifficulty(3);
-		game.createNumbers();
-		GUI.getStage().setScene(playScene);
+		
+		standardlogic.setDifficulty(5);
+		
+		
+		standard.getPane().setCenter(standard.createBoard());
+		
+		standard.createNumbers();
+		
+		GUI.getStage().setHeight(standard.getHeight());
+		GUI.getStage().setWidth(standard.getWidth());
+		GUI.getStage().getScene().setRoot(standard.getPane());
 	}
 
 	public void handleEasy(ActionEvent e) {
-		model.setDifficulty(7);
-		game.createNumbers();
-		GUI.getStage().setScene(playScene);
+		standardlogic.setDifficulty(7);
+		standard.createNumbers();
+		
+		GUI.getStage().getScene().setRoot(standard.getPane());
 	}
 
 	public void handleMedium(ActionEvent e) {
-		model.setDifficulty(5);
-		game.createNumbers();
-		GUI.getStage().setScene(playScene);
+		standardlogic.setDifficulty(5);
+		standard.createNumbers();
+		GUI.getStage().setHeight(standard.getHeight());
+		GUI.getStage().setWidth(standard.getWidth());
+		GUI.getStage().getScene().setRoot(standard.getPane());
 	}
 
 	public void handleManual(ActionEvent e) {
-		model.setDifficulty(0);
-		game.createNumbers();
-		game.getDoneButton().setVisible(true);
-		GUI.getStage().setScene(playScene);
+		standardlogic.setDifficulty(0);
+		standard.createNumbers();
+		standard.getDoneButton().setVisible(true);
+		GUI.getStage().setHeight(standard.getHeight());
+		GUI.getStage().setWidth(standard.getWidth());
+		GUI.getStage().getScene().setRoot(standard.getPane());
 	}
 
 }

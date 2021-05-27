@@ -7,6 +7,7 @@ import javafx.geometry.Pos;
 
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -25,32 +26,21 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	public SudokuGameBuilder(BasicGameLogic model) {
         super(model);
         textField = new SudokuField[9][9];
-        gameType = "Sudoku";
+        width = 700;
+        height = 700;
     }
 
 /**
  * 	 * Übergibt dieser Scene den jeweiligen Controller
 	 * Erstellt die Scene mit den Buttons, der MenuBar und dem Sudoku-Spielfeld
 	 */
-	public Scene initializeScene() {
-		controller = new GameController(this, model);
-		scene = new Scene(pane, 670, 670);
-		pane.setCenter(createBoard());
-		pane.setPadding(new Insets(50, 50, 50, 50));
-
-		createMenuBar(pane);
-		createPlayButtons(pane);
-		createStatusBar(pane);
-		
-		scene.getStylesheets().add("/css/sudoku.css");
-
-		return scene;
-	}
+	
 
 	/**
 	 * Zeichnet ein Sudoku-Feld
 	 */
 	public GridPane createBoard() {
+	
 		playBoard = new GridPane();
 
 		playBoard.setPadding(new Insets(5, 5, 5, 5));
@@ -100,10 +90,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	/**
 	 * Getter und Setter für die Variablen dieser Klasse
 	 */
-	@Override
-	public Scene getScene() {
-		return scene;
-	}
+	
 
 	public SudokuField[][] getTextField() {
 		return textField;

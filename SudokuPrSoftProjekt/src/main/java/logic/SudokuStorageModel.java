@@ -26,6 +26,8 @@ public class SudokuStorageModel {
 
 	Cell[][] gameArray;
 	
+	
+	String gametype = "";
 	String savedGameType;
 	int difficulty;
 	int gamePoints;
@@ -34,28 +36,31 @@ public class SudokuStorageModel {
 	long secondsPlayed;
 	String difficultyString;
 
-
+	JSONObject importedGame;
 
 	FileChooser chooser;
+	
+	
+	int playedMinutesOverall;
+	int playedSecondsOverall;
+	double averagePoints; 
+	double overAllPoints;
+	
 
 	SharedStoragePreferences storagePref = new SharedStoragePreferences();
 	
+	File[] saveDirectory = new File(storagePref.getPreferedDirectory()).listFiles();
+
 	
-	
-	public SudokuStorageModel(BasicGameLogic savedModel) {
-		this.savedModel = savedModel;
-	}
-	
-	
-	public void prepareSave() {
-		gameArray = savedModel.getCells();
-		savedGameType = savedModel.getGameType();
-		difficulty = savedModel.getDifficulty();
-		difficultyString = savedModel.getDifficultyString();
-		gamePoints = savedModel.getgamePoints();
-		gameState = savedModel.getGameState();
-		minutesPlayed = savedModel.getMinutesPlayed();
-		secondsPlayed = savedModel.getSecondsPlayed();
+	public void prepareSave(BasicGameLogic save) {
+		gameArray = save.getCells();
+		savedGameType = save.getGameType();
+		difficulty = save.getDifficulty();
+		difficultyString = save.getDifficultyString();
+		gamePoints = save.getgamePoints();
+		gameState = save.getGameState();
+		minutesPlayed = save.getMinutesPlayed();
+		secondsPlayed = save.getSecondsPlayed();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -97,35 +102,19 @@ public class SudokuStorageModel {
 	
 	
 
-	public void saveGame() {
+	public void saveGame(BasicGameLogic save) {
 		
-		prepareSave();
+		prepareSave(save);
 		
-//		if(savedGameType.equals("Sudoku")) {
-//			saveCounter = SharedStoragePreferences.sudokuSaveCounter;
-//			SharedStoragePreferences.sudokuSaveCounter += 1;
-//		}
-//		
-//		
-//		if(savedGameType.equals("Samurai"))  {
-//			saveCounter = SharedStoragePreferences.samuraiSaveCounter;
-//			SharedStoragePreferences.samuraiSaveCounter += 1;
-//		}
-//		if(savedGameType.equals("FreeForm")) {
-//			saveCounter = SharedStoragePreferences.freeFormSaveCounter;
-//			SharedStoragePreferences.freeFormSaveCounter += 1;
-//		}
-		
-
 		storeIntoJSON();
 		
-		String fileName = savedGameType + "_" + difficultyString + "_" +saveCounter +".json";
+		String fileName = savedGameType + "_" + difficultyString + "_" +System.currentTimeMillis() +".json";
 		File saveFile = new File(storagePref.getPreferedDirectory(), fileName);
 		storeIntoFile(saveFile);
 	}
 
-	public void exportGame() {
-		prepareSave();
+	public void exportGame(BasicGameLogic save) {
+		prepareSave(save);
 		storeIntoJSON();
 		chooser = new FileChooser();
 
@@ -135,43 +124,38 @@ public class SudokuStorageModel {
 		File file = chooser.showSaveDialog(GUI.getStage());
 		storeIntoFile(file);
 	}
-
-	public void importGame() {
+	
+	
+	
+	
+	
+	//filechooser anders machn is nicht so gut
+	public void getImportedGame() {
 		chooser = new FileChooser();
 		chooser.setTitle("Import your Game");
 		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON", "*.json"));
 		File file = chooser.showOpenDialog(GUI.getStage());
-		JSONObject obj = convertToJSON(file);
-		
-		String gameTypeHelper = (String)obj.get("type");
-		
-		System.out.println(gameTypeHelper);
-		
-//		if (obj.get("type").equals(savedModel.getGameType())) {
-//			
-//		}
-		
-		loadIntoModel(savedModel, obj);
-		
-		
+		importedGame = convertToJSON(file);
+		gametype = (String) importedGame.get("type");
 		
 	}
-
+	
 	
 
-	
+	public void loadIntoModel() {
+		gametype = (String) importedGame.get("type");
 
-	public void loadIntoModel(BasicGameLogic savedModel, JSONObject obj) {
 		Gson g = new Gson();
-		Cell[][] cell = g.fromJson((String)obj.get("gameNumbers"), Cell[][].class);
+		Cell[][] cell = g.fromJson((String)importedGame.get("gameNumbers"), Cell[][].class);
+		
 		savedModel.setCells(cell);
 		
-		savedModel.setGamePoints((int) (long) obj.get("points"));
-		savedModel.setDifficulty((int) (long) obj.get("difficulty"));
+		savedModel.setGamePoints((int) (long) importedGame.get("points"));
+		savedModel.setDifficulty((int) (long) importedGame.get("difficulty"));
 		
 		savedModel.setStartTime(System.currentTimeMillis());
-		savedModel.setLoadedSeconds((int) (long) obj.get("secondsPlayed"));
-		savedModel.setLoadedMinutes((int) (long) obj.get("minutesPlayed"));
+		savedModel.setLoadedSeconds((int) (long) importedGame.get("secondsPlayed"));
+		savedModel.setLoadedMinutes((int) (long) importedGame.get("minutesPlayed"));
 		savedModel.setDifficultyString();
 	}
 
@@ -199,13 +183,112 @@ public class SudokuStorageModel {
 		}
 		return jsonObject;
 	}
-
-	public String getDirectory() {
-		return directoryPath;
+	
+	
+	
+	public double calculateGamePoints() {
+//		JSONObject helpObject = controller.convertToJSON(saveFile);
+//		double gamePoints = 0;
+//		JSONArray helpArray = (JSONArray) helpObject.get("games");
+//
+//		for (int i = 0; i < helpArray.size(); i++) {
+//			JSONObject obj = (JSONObject) helpArray.get(i);
+//			gamePoints += (double) (long) obj.get("points");
+//		}
+//		return gamePoints;
+		return 5;
 	}
 
-	public void setDirectory(String directoryPath) {
-		this.directoryPath = directoryPath;
+	public String calculateAverageTimePlayed() {
+//		JSONObject helpObject = controller.convertToJSON(saveFile);
+//		JSONArray helpArray = (JSONArray) helpObject.get("games");
+//		String averageGameTimeString = "";
+//		int minPlayed = 0;
+//		int secPlayed = 0;
+//		int counter = 0;
+//		int showMinutes;
+//		int showSeconds;
+//
+//		for (int i = 0; i < helpArray.size(); i++) {
+//			JSONObject obj = (JSONObject) helpArray.get(i);
+//			minPlayed += (int) (long) (obj.get("minutesPlayed")) * 60;
+//			secPlayed += (int) (long) (obj.get("secondsPlayed"));
+//			counter++;
+//		}
+//		if (counter > 0) {
+//			int playTime = (minPlayed + secPlayed) / counter;
+//			showMinutes = playTime / 60;
+//			showSeconds = playTime % 60;
+//			averageGameTimeString = showMinutes + " minutes " + showSeconds + " seconds ";
+//		}
+
+		return "";
+	}
+	
+	
+	public void calculateGameStats() {
+		JSONObject helpJSON;
+		int fileCounter = 0;
+		
+		for (File file : saveDirectory) {
+			helpJSON = convertToJSON(file);
+			overAllPoints += (double) (long)helpJSON.get("points");
+			
+			playedMinutesOverall += (int) (long) (helpJSON.get("minutesPlayed")) * 60;
+			playedSecondsOverall += (int) (long) (helpJSON.get("secondsPlayed"));
+			
+	
+			fileCounter++;
+		}
+		if(fileCounter == 0) fileCounter = 1;
+		int helpCalculate = (playedMinutesOverall + playedSecondsOverall) / fileCounter;
+		
+		playedMinutesOverall = helpCalculate/60;
+		playedSecondsOverall = helpCalculate %60;
+		
+		averagePoints = gamePoints/fileCounter;
+		
+	}
+	
+	
+	
+	public BasicGameLogic getLoadedLogic() {
+		return savedModel;
+	}
+	
+	
+	public void setLoadedLogic(BasicGameLogic savedModel) {
+		this.savedModel = savedModel;
+	}
+	
+	
+	public void setJSONObject(JSONObject importedGame) {
+		this.importedGame = importedGame;
+	}
+	
+	public String getLoadedGameType() {
+		return gametype;
+	}
+	
+	public File[] getSaveDirectory() {
+		return saveDirectory;
+	}
+	
+	
+	public double getOverallGamePoints() {
+		return overAllPoints;
+	}
+	
+	public double getAveragePoints() {
+		return averagePoints;
+	}
+	
+	public int getPlayedMinutesOverall() {
+		return playedMinutesOverall;
+	}
+	
+	public int getSecondsPlayedOverall() {
+		return playedSecondsOverall;
 	}
 
 }

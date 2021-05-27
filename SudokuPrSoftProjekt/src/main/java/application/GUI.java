@@ -2,6 +2,7 @@ package application;
 	
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 
@@ -11,9 +12,9 @@ public class GUI extends Application  {
   static Stage window;
 
 
- static Scene mainScene;
+  Scene mainScene;
  MainMenu mainmenu = new MainMenu();
- 
+ static Pane mainPane;
 
 	
   //this is just a test
@@ -24,15 +25,18 @@ public class GUI extends Application  {
 	
 	
 	@Override
-	public void start(Stage scene) {
+	public  void start(Stage scene) {
 		
 		//test commit 
 		window = scene;
 		 scene.setMaxWidth(1500);
 		 scene.setMaxHeight(1500);
-		 mainScene = mainmenu.setUpMainMenu();
-				 window.setScene(mainScene);	
+		 mainmenu.setUpMainMenu();
+		 mainScene = mainmenu.getScene();
 		 
+		 mainPane = mainmenu.getPane();
+				window.setScene(mainScene);
+				 mainScene.getStylesheets().add("css/sudoku.css");
 			 window.show();
 	
 		 window.setTitle("SudokuFx");
@@ -56,8 +60,8 @@ public class GUI extends Application  {
 	    }
 	    
 	    
-	    public static Scene getMainMenu() {
-	    	return mainScene;
+	    public static Pane getMainMenu() {
+	    	return mainPane;
 	    }
 	
 	    
