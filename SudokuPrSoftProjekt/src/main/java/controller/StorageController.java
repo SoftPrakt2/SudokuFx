@@ -1,18 +1,8 @@
 package controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Scanner;
 
-import org.jacoco.maven.FileFilter;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import application.BasicGameBuilder;
 import application.GUI;
@@ -23,7 +13,12 @@ import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
 import javafx.stage.DirectoryChooser;
-import logic.*;
+import logic.BasicGameLogic;
+import logic.Gamestate;
+import logic.SamuraiLogic;
+import logic.SharedStoragePreferences;
+import logic.SudokuLogic;
+import logic.SudokuStorageModel;
 
 public class StorageController {
 
@@ -37,6 +32,7 @@ public class StorageController {
 	Scene gameScene;
 	Storage storage;
 	File[] dir;
+	
 
 	SharedStoragePreferences sharedStorage = new SharedStoragePreferences();
 
