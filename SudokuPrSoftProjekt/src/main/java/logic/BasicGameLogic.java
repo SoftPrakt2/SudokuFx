@@ -92,13 +92,7 @@ public abstract class BasicGameLogic {
 
 	public abstract void printCells();
 
-//	public abstract Cell[][] getCells();
-
 	public abstract void setCell(int col, int row, int guess);
-
-	public abstract void setGameState(Gamestate gamestate);
-
-	public abstract Gamestate getGameState();
 	
 	public String getGameType() {
 		return gameType;
@@ -184,6 +178,14 @@ public abstract class BasicGameLogic {
 	
 	public void setHintCounter(int hintCounter) {
 		this.hintCounter = hintCounter;
+	}
+	
+	public void setGameState(Gamestate gamestate) {
+		this.gamestate = gamestate;
+	};
+
+	public Gamestate getGameState() {
+		return this.gamestate;
 	}
 	
 
