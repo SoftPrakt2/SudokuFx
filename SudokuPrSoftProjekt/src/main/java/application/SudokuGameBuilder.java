@@ -41,6 +41,9 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	 */
 	public GridPane createBoard() {
 	
+	
+		
+		
 		playBoard = new GridPane();
 
 		playBoard.setPadding(new Insets(5, 5, 5, 5));
@@ -80,6 +83,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		return playBoard;
 	}
 
+	
 	/**
 	 * Befüllt das Spielfeld beim ersten Start mit Zahlen abhängig von der im Hauptmenü eingestellten Schwierigkeit
 	 */

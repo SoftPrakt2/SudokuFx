@@ -60,6 +60,7 @@ public class NewGamePopUp extends MainMenu {
 	
 	
 	
+	
 	popOver = new PopOver(popOverBox);
 
 	popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);

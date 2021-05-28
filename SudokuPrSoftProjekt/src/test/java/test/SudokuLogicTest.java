@@ -38,6 +38,7 @@ public class SudokuLogicTest {
 		assertEquals(count, 81);
 	}
 	
+	
 	@Test
 	public void testSetCells() {
 		SudokuLogic model2 = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);

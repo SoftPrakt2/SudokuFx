@@ -11,6 +11,13 @@ import org.controlsfx.glyphfont.Glyph;
 
 import controller.GameController;
 import controller.PopOverController;
+import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -34,6 +41,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import logic.BasicGameLogic;
 
@@ -55,8 +63,14 @@ public abstract class BasicGameBuilder {
 	protected StatusBar statusbar;
 	protected Label gameInfoLabel;
 	protected Label playTimeLabel;
+	
+	protected Label liveTimeLabel;
+	
+	
 	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
-	ToolBar toolbar;
+	protected ToolBar toolbar;
+	
+	protected AnimationTimer timer;
 	
 	int width;
 	int height;
@@ -98,7 +112,7 @@ public abstract class BasicGameBuilder {
 		createMenuBar(pane);
 		createPlayButtons(pane);
 		createStatusBar(pane);
-		
+		//createTimer();
 	}
 
 	public abstract void createNumbers();
@@ -139,10 +153,14 @@ public abstract class BasicGameBuilder {
 		done = new Button("done");
 
 		done.setVisible(false);
+		
+		
+		liveTimeLabel = new Label("");
+		
 
 		setButtonActions();
 
-		toolbar.getItems().addAll(hintButton, autosolve, check, done);
+		toolbar.getItems().addAll(hintButton, autosolve, check, done, liveTimeLabel);
 
 		toolbox.getChildren().add(toolbar);
 
@@ -153,6 +171,7 @@ public abstract class BasicGameBuilder {
 	public void defineShortCuts() {
 		
 	}
+	
 	
 	
 	
@@ -355,6 +374,62 @@ public abstract class BasicGameBuilder {
 		pane.setBottom(statusBar);
 	}
 	
+	public void createTimer() {
+		Label timeLabel = new Label();
+		StackPane timePane = new StackPane();
+		 DoubleProperty seconds = new SimpleDoubleProperty();
+		 DoubleProperty minutes = new SimpleDoubleProperty();
+		 int helpcounter = 0;
+		 
+		timeLabel.textProperty().bind(Bindings.concat(minutes.asString("%.0f minutes"), ":",seconds.asString("%.0f seconds")));
+	//	timeLabel.textProperty().bind(seconds.asString("%.0f seconds"));
+
+        BooleanProperty running = new SimpleBooleanProperty();
+
+         timer = new AnimationTimer() {
+
+            private long startTime ;
+
+            @Override
+            public void start() {
+                startTime = System.currentTimeMillis();
+                running.set(true);
+                super.start();
+            }
+
+            @Override
+            public void stop() {
+                running.set(false);
+                super.stop();
+            }
+
+            @Override
+            public void handle(long timestamp) {
+            
+            
+                long now = System.currentTimeMillis();
+                seconds.set((now - startTime) / 1000);
+            	
+                System.out.println(seconds.getValue());
+                
+                if(seconds.getValue().shortValue()%60 ==0 ) {
+                
+                	double helper = seconds.getValue();
+                	minutes.set(seconds.getValue().shortValue()/60);
+                	seconds.set(helper%60);
+                }
+                
+            }
+        };
+        mainMenuItem.setOnAction(e -> timer.start());
+        timePane.getChildren().add(timeLabel);
+        timePane.setAlignment(Pos.TOP_RIGHT);
+        toolbar.getItems().add(timePane);
+        
+     
+        
+        
+	}
 	
 
 	
@@ -419,6 +494,25 @@ public abstract class BasicGameBuilder {
 	public int getHeight() {
 		return height;
 	}
+	
+	public AnimationTimer getTimer() {
+		return timer;
+	}
+	
+	public Label getLiveTimeLabel() {
+		return liveTimeLabel;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 

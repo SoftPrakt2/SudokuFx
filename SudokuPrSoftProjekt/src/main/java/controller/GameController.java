@@ -9,6 +9,7 @@ import application.SamuraiGameBuilder;
 import application.Storage;
 import application.SudokuField;
 import application.SudokuGameBuilder;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
@@ -59,6 +60,7 @@ public class GameController {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				sudokuField[i][j].clear();
 
+				
 			}
 		}
 		model.setStartTime(System.currentTimeMillis());
@@ -250,6 +252,7 @@ public class GameController {
 
 		if (gameState && numberCounter == sudokuField.length * sudokuField.length) {
 			model.calculateGameTime();
+			//scene.getTimer().stop();
 
 			if (!model.getGameState().equals(Gamestate.AutoSolved)) {
 				model.setGameState(Gamestate.DONE);
@@ -297,6 +300,17 @@ public class GameController {
 		model.setGameState(Gamestate.OPEN);
 		enableEdit();
 		model.printCells();
+		setUpLiveTimer();
+	}
+	
+	
+	public void setUpLiveTimer() {
+	
+		model.startTimer();
+		
+		
+	
+	
 	}
 
 	/**
@@ -407,19 +421,19 @@ public class GameController {
 		SudokuStorageModel storageModel = new SudokuStorageModel();
 
 		
-		storageModel.getImportedGame();
+		storageModel.setImportedFile();
 		
-		if (storageModel.getLoadedGameType().equals("Sudoku")) {
+		if (storageModel.getGametype().equals("Sudoku")) {
 			storageModel.setLoadedLogic(new SudokuLogic(Gamestate.OPEN, 0, 0, false));
 			scene = new SudokuGameBuilder(storageModel.getLoadedLogic());
 		}
 		
-		if (storageModel.getLoadedGameType().equals("Samurai")) {
+		if (storageModel.getGametype().equals("Samurai")) {
 			storageModel.setLoadedLogic(new SamuraiLogic(Gamestate.OPEN, 0, 0, false));
 			scene = new SamuraiGameBuilder(storageModel.getLoadedLogic());
 		}
 		
-			
+		storageModel.setStoredInformations();
 		storageModel.loadIntoModel();
 		model = storageModel.getLoadedLogic();
 			
@@ -478,6 +492,7 @@ public class GameController {
 	}
 	
 	
+
 	
 
 

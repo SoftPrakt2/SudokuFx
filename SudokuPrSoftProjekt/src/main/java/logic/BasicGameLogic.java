@@ -14,6 +14,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import application.Storage;
 import application.SudokuField;
 import controller.StorageController;
+import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.geometry.Pos;
 
 /**
  * 
@@ -45,6 +54,14 @@ public abstract class BasicGameLogic {
 	protected int hintCounter;
 	
 	protected int difficulty;
+	
+	
+	
+	//Variablen für Timer
+	AnimationTimer timer;
+	DoubleProperty seconds = new SimpleDoubleProperty();
+	DoubleProperty minutes = new SimpleDoubleProperty();
+    BooleanProperty running = new SimpleBooleanProperty();
 	
 
 	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
@@ -235,7 +252,68 @@ public abstract class BasicGameLogic {
 	
 	
 	
+	 
+	public void startTimer() {
+	  seconds = new SimpleDoubleProperty();
+	  minutes = new SimpleDoubleProperty();
+	 IntegerProperty counter = new SimpleIntegerProperty();
+	 
+	 BooleanProperty test = new SimpleBooleanProperty();
+	 
+     running = new SimpleBooleanProperty();
+
+     timer = new AnimationTimer() {
+
+        private long startTime ;
+
+        @Override
+        public void start() {
+            startTime = System.currentTimeMillis();
+            running.set(true);
+            test.setValue(true);
+            super.start();
+        
+        }
+
+        @Override
+        public void stop() {
+            running.set(false);
+            super.stop();
+        }
+
+        @Override
+        public void handle(long timestamp) {
+        
+        
+            long now = System.currentTimeMillis() - ((long)seconds.getValue().shortValue());
+          
+            System.out.println(seconds.getValue());
+            
+            seconds.set((now - startTime) / 1000);
+        	
+          
+            
+            if(seconds.getValue().shortValue()%3 ==0 ) {
+            	minutes.set(seconds.getValue().shortValue()/3);
+            	seconds.set(0);
+            }
+            
+        }
+    };
+}
 	
+	
+	public AnimationTimer getLiveTimer() {
+		return timer;
+	}
+	
+	public DoubleProperty getSecondsProperty() {
+		return seconds;
+	}
+	
+	public DoubleProperty getMinutesProperty() {
+		return minutes;
+	}
 	
 	
 	

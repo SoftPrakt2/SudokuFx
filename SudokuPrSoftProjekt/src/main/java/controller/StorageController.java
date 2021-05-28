@@ -10,8 +10,12 @@ import application.SamuraiGameBuilder;
 import application.Storage;
 import application.SudokuField;
 import application.SudokuGameBuilder;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 import logic.BasicGameLogic;
 import logic.Gamestate;
@@ -32,6 +36,19 @@ public class StorageController {
 	Scene gameScene;
 	Storage storage;
 	File[] dir;
+
+	
+	
+	protected ObservableList<SudokuStorageModel> jsonObservableList = FXCollections.observableArrayList();
+	
+	TableColumn<SudokuStorageModel, String> gameTypecolumn = new TableColumn<>("GameType");
+	TableColumn<SudokuStorageModel, String> difficultycolumn = new TableColumn<>("Difficulty");
+	TableColumn<SudokuStorageModel, Integer> pointscolumn = new TableColumn<>("Points");
+	TableColumn<SudokuStorageModel, String> playtimecolumn = new TableColumn<>("PlayTime");
+	TableColumn<SudokuStorageModel, Gamestate> gamestatecolumn = new TableColumn<>("Gamestate");
+	TableColumn<SudokuStorageModel, Integer> gameidcolumn = new TableColumn<>("GameID");
+	
+	
 	
 
 	SharedStoragePreferences sharedStorage = new SharedStoragePreferences();
@@ -44,51 +61,46 @@ public class StorageController {
 
 	// test
 	public void handleLoadAction(ActionEvent e) {
-		String helper = "";
 
-		for (String key : storage.getSaveMap().keySet()) {
-			if (key.equals(storage.getListView().getSelectionModel().getSelectedItem())) {
-				helper = key;
-				// gib json object der storagemodel
-				storageModel.setJSONObject(storage.getSaveMap().get(key));
-				if (storage.getSaveMap().get(key).get("type").equals("Sudoku")) {
-					model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
-					game = new SudokuGameBuilder(model);
+		storageModel = storage.getTableView().getSelectionModel().getSelectedItem();
 
-				} else if (storage.getSaveMap().get(key).get("type").equals("Samurai")) {
-					model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
-					game = new SamuraiGameBuilder(model);
-				}
-			}
+		if (storageModel.getGametype().equals("Sudoku")) {
+			model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+			game = new SudokuGameBuilder(model);
+		}
+		if (storageModel.getGametype().equals("Samurai")) {
+			model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+			game = new SamuraiGameBuilder(model);
 		}
 
-		// geht weil in zeile 57 wurde das json object reingeladen
 		storageModel.setLoadedLogic(model);
-		// ladet die gespeicherten infos rein in das erstellte modell aus zeile 60 bzw
-		// 64
 		storageModel.loadIntoModel();
+		model = storageModel.getLoadedLogic();
 
 		game.initializeGame();
-
-		SudokuField[][] s = game.getTextField();
-
-		// storagemodelgetloaded einheitlich!!!
-		for (int i = 0; i < s.length; i++) {
-			for (int j = 0; j < s[i].length; j++) {
-				if (storageModel.getLoadedLogic().getCells()[j][i].getValue() != 0) {
-					s[i][j].setText(Integer.toString(storageModel.getLoadedLogic().getCells()[j][i].getValue()));
-				}
-				if (!storageModel.getLoadedLogic().getCells()[j][i].getIsReal()) {
-					s[i][j].setDisable(false);
-				}
-			}
-		}
-		
 
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());
 		GUI.getStage().getScene().setRoot(game.getPane());
 		storage.getStage().close();
+
+		SudokuField[][] s = game.getTextField();
+
+		for (int i = 0; i < s.length; i++) {
+			for (int j = 0; j < s[i].length; j++) {
+				if (model.getCells()[j][i].getValue() != 0) {
+					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
+				}
+				if (!model.getCells()[j][i].getIsReal()) {
+					s[i][j].setDisable(false);
+				}
+			}
+		}
+	}
+
+	
+	public void setUpTableView() {
+		storage.getTableView().getColumns().addAll(gameidcolumn, gameTypecolumn, difficultycolumn, pointscolumn, playtimecolumn, gamestatecolumn);
 	}
 
 	public void fillListVew() {
@@ -101,21 +113,25 @@ public class StorageController {
 				if (child.getName().endsWith(".json")) {
 					readedObject = storageModel.convertToJSON(child.getAbsoluteFile());
 
-					String gameString = "GameType " + ": " + (String) readedObject.get("type") + " | Difficulty: "
-							+ readedObject.get("difficultyString") + " | Time: " + readedObject.get("minutesPlayed")
-							+ " min " + readedObject.get("secondsPlayed") + " sek " + " | Points: "
-							+ readedObject.get("points");
-					storage.getObservableList().add(gameString);
-					storage.getSaveMap().put(gameString, readedObject);
-					System.out.println(storage.getSaveMap().keySet());
-				}
+					storageModel.setJSONObject(readedObject);
+					storageModel.setStoredInformations();
+					jsonObservableList.add(storageModel);
 
+				}
+				storageModel = new SudokuStorageModel();
 			}
-			storage.getListView().setItems(storage.getObservableList());
-			storageModel.calculateGameStats();
-			setGameStatInformations();
-			System.out.println(dir.length + "llllllllllllllll" + storage.getObservableList().size());
+			gameTypecolumn.setCellValueFactory(new PropertyValueFactory<>("gametype"));
+			difficultycolumn.setCellValueFactory(new PropertyValueFactory<>("difficultystring"));
+			pointscolumn.setCellValueFactory(new PropertyValueFactory<>("gamepoints"));
+			playtimecolumn.setCellValueFactory(new PropertyValueFactory<>("playtimestring"));
+			gamestatecolumn.setCellValueFactory(new PropertyValueFactory<>("gamestate"));
+			gameidcolumn.setCellValueFactory(new PropertyValueFactory<>("gameid"));
+			
+//			storageModel.calculateGameStats();
+//			setGameStatInformations();
+//			System.out.println(dir.length + "llllllllllllllll" + storage.getObservableList().size());
 		}
+		storage.getTableView().setItems(jsonObservableList);
 	}
 
 	public void setGameStatInformations() {
@@ -126,37 +142,29 @@ public class StorageController {
 	}
 
 	public void deleteEntry(ActionEvent e) {
-		System.out.println(storage.getListView().getSelectionModel().getSelectedIndex());
+		
+		int deleteIndex = storage.getTableView().getSelectionModel().getSelectedIndex();
 
-		int counter = 0;
-
-		File[] helper = dir;
-
-		int deleteIndex = storage.getListView().getSelectionModel().getSelectedIndex();
-	
-				storage.getObservableList().remove(deleteIndex);
-				// Files.delete(Paths.get(dir[i].getAbsolutePath()));
-				dir[deleteIndex].delete();
-			
-
-				// TODO Auto-generated catch block
-
-				dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
+		jsonObservableList.remove(deleteIndex);
+		
+		dir[deleteIndex].delete();
 
 		
+
+		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
+
 	}
-	
+
 	public void handleDirectorySwitch(ActionEvent e) {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 
 		String path = directoryChooser.showDialog(GUI.getStage()).getAbsolutePath();
 
 		sharedStorage.getStoragePrefs().put("DirectoryPath", path);
-		storage.getObservableList().clear();
-		storage.getHashMap().clear();
+		jsonObservableList.clear();
+
 		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
 		fillListVew();
 	}
-	
 
 }

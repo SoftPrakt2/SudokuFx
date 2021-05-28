@@ -55,6 +55,7 @@ public class ModeController {
 	game.initializeGame();
 		
 	}
+	
 
 	
 	/**
@@ -134,6 +135,8 @@ public class ModeController {
 	 */
 	public void handleGameStart(ActionEvent e) {
 		game.createNumbers();
+	//	game.getTimer().start();
+		
 		
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());

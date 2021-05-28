@@ -32,6 +32,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
        height = 1050;
     }
 
+	
 
 
 	/**
