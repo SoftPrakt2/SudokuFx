@@ -257,23 +257,23 @@ public class SamuraiLogic extends BasicGameLogic {
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				if (row < 6 && col > 8 && col < 12) {
-					cell = new Cell(row, col, box, 0, 0, -1);
+					cell = new Cell(row, col, box, -1);
 					cells[row][col] = cell;
 				}
 				else if (row > 8 && row < 12 && col < 6) {
-					cell = new Cell(row, col, box, 0, 0, -1);
+					cell = new Cell(row, col, box, -1);
 					cells[row][col] = cell;
 				}
 				else if (row > 8 && row < 12 && col > 14) {
-					cell = new Cell(row, col, box, 0, 0, -1);
+					cell = new Cell(row, col, box, -1);
 					cells[row][col] = cell;
 				}
 				else if (row > 14 && col > 8 && col < 12) {
-					cell = new Cell(row, col, box, 0, 0, -1);
+					cell = new Cell(row, col, box, -1);
 					cells[row][col] = cell;
 				}
 				else {
-					cell = new Cell(row, col, box, 0, 0, 0);
+					cell = new Cell(row, col, box,  0);
 					cells[row][col] = cell;
 				}
 				box++;
@@ -532,7 +532,6 @@ public class SamuraiLogic extends BasicGameLogic {
 				}
 			}
 		}
-		
 	}
 
 	@Override
