@@ -21,6 +21,7 @@ import javafx.beans.property.StringProperty;
  */
 public abstract class BasicGameLogic {
 
+	//test
 	protected Gamestate gamestate;
 	private boolean isCorrect;
 	protected String gameType = "";
