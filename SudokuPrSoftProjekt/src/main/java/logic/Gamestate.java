@@ -1,5 +1,5 @@
 package logic;
 
 public enum Gamestate {
-AutoSolved, OPEN, DONE, INCORRECT, CONFLICT, UNSOLVABLE;
+AUTOSOLVED, OPEN, DONE, INCORRECT, CONFLICT, UNSOLVABLE;
 }

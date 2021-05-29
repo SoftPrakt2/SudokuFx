@@ -20,7 +20,7 @@ import javafx.beans.property.StringProperty;
 public abstract class BasicGameLogic {
 
 	protected Gamestate gamestate;
-	private boolean isCorrect;
+	protected boolean isCorrect;
 	protected String gameType = "";
 	protected int gamePoints = 10;
 	protected long minutesPlayed;
@@ -28,7 +28,7 @@ public abstract class BasicGameLogic {
 
 	protected long startTime;
 	protected int gameIDhelper;
-	public String gameText = "";
+	protected String gameText = "";
 	private int gameID = 0;
 
 	protected Cell[][] cells;
@@ -45,7 +45,7 @@ public abstract class BasicGameLogic {
 	AnimationTimer timer;
 	BooleanProperty running = new SimpleBooleanProperty();
 
-	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
+	protected BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
 		this.gamestate = gamestate;
 		this.minutesPlayed = minutesPlayed;
@@ -143,7 +143,7 @@ public abstract class BasicGameLogic {
 
 	public void setGameState(Gamestate gamestate) {
 		this.gamestate = gamestate;
-	};
+	}
 
 	public Gamestate getGameState() {
 		return this.gamestate;
@@ -159,7 +159,7 @@ public abstract class BasicGameLogic {
 		if (this.getGameState() == Gamestate.INCORRECT) {
 			gameText = "Sorry your Sudoku is not correct yet";
 		}
-		if (this.getGameState() == Gamestate.AutoSolved) {
+		if (this.getGameState() == Gamestate.AUTOSOLVED) {
 			gameText = "Autosolved";
 		}
 		if (this.getGameState() == Gamestate.CONFLICT) {

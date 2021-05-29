@@ -2,21 +2,11 @@ package logic;
 
 public class SudokuLogic extends BasicGameLogic {
 
-	static int counter = 0;
-
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[9][9];
 		gameType = "Sudoku";
 		hintCounter = 3;
-	}
-
-	public Cell[][] getCells() {
-		return cells;
-	}
-
-	public void setCells(Cell[][] cells) {
-		this.cells = cells;
 	}
 
 	/**
@@ -84,7 +74,6 @@ public class SudokuLogic extends BasicGameLogic {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				if (this.cells[row][col].getValue() == 0) {
 					for (int y = 0; y < this.cells.length; y++) {
-//						counter++;
 						int a = (int) (Math.random() * 9) + 1;
 						if (valid(row, col, a)) {
 							this.cells[row][col].setValue(a);
@@ -99,7 +88,6 @@ public class SudokuLogic extends BasicGameLogic {
 				}
 			}
 		}
-		System.out.println(counter);
 		return true;
 	}
 
@@ -112,13 +100,8 @@ public class SudokuLogic extends BasicGameLogic {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				if (this.cells[row][col].getValue() == 0) {
 					for (int y = 0; y < this.cells.length; y++) {
-						counter++;
-//						if(counter == 500000) {
-//							return true;
-//						}
 						if (valid(row, col, y + 1)) {
 							this.cells[row][col].setValue(y + 1);
-//							this.cells[row][col].setIsReal(true);
 							if (solveSudoku()) {
 								return true;
 							} else {
@@ -130,60 +113,10 @@ public class SudokuLogic extends BasicGameLogic {
 				}
 			}
 		}
-		System.out.println(counter);
 		return true;
 	}
 
-//	public boolean solveSudoku() {
-//		int row = 0;
-//		int col = 0;
-//		boolean checkBlankSpaces = false;
-//
-//		/*
-//		 * verify if sudoku is already solved and if not solved, get next "blank" space
-//		 * position
-//		 */
-//		for (row = 0; row < this.cells.length; row++) {
-//			for (col = 0; col < this.cells[row].length; col++) {
-//				if (this.cells[row][col].getValue() == 0) {
-//					checkBlankSpaces = true;
-//					break;
-//				}
-//			}
-//			if (checkBlankSpaces == true) {
-//				break;
-//			}
-//		}
-//		// no more "blank" spaces means the puzzle is solved
-//		if (checkBlankSpaces == false) {
-//			return true;
-//		}
-//
-//		// try to fill "blank" space with correct num
-//		for (int num = 1; num <= 9; num++) {
-//			/*
-//			 * isSafe checks that num isn't already present in the row, column, or 3x3 box
-//			 * (see below)
-//			 */
-//			if (this.valid(row, col, num)) {
-//				this.cells[row][col].setValue(num);
-//
-//				if (solveSudoku()) {
-//					return true;
-//				}
-//
-//				/*
-//				 * if num is placed in incorrect position, mark as "blank" again then backtrack
-//				 * with a different num
-//				 */
-//				this.cells[row][col].setValue(0);
-//				;
-//			}
-//		}
-//		return false;
-//	}
-
-	// https://www.geeksforgeeks.org/sudoku-backtracking-7/
+//  https://www.geeksforgeeks.org/sudoku-backtracking-7/
 //	@Override
 //	public boolean solveSudoku(Cell[][] cells) {
 //
@@ -234,17 +167,6 @@ public class SudokuLogic extends BasicGameLogic {
 //			this.cells[row][col].setValue(0);
 //		}
 //		return false;
-//	}
-//
-//	public boolean testIfSolved() {
-//		for (int row = 0; row < this.cells.length; row++) {
-//			for (int col = 0; col < this.cells[row].length; col++) {
-//				if (this.cells[row][col].getValue() == 0) {
-//					return false;
-//				}
-//			}
-//		}
-//		return true;
 //	}
 
 	/**
@@ -358,26 +280,6 @@ public class SudokuLogic extends BasicGameLogic {
 				counter--;
 			}
 		}
-
-//		for (int row = 0; row < this.cells.length; row++) {
-//			for (int col = 0; col < this.cells[row].length; col++) {
-//				if(this.cells[row][col].getValue() != 0) {
-//					this.cells[row][col].setIsReal(true);
-//				}
-//			}
-//		}
-
-//		int diff = this.difficulty;
-//		for (int row = 0; row < this.cells.length; row++) {
-//			for (int j = 0; j < this.cells[row].length; j++) {
-//				int random = (int) (Math.random() * 10) + 1;
-//				if (random <= diff) {
-//					this.cells[row][j].setIsReal(true);
-//				} else {
-//					this.cells[row][j].setValue(0);
-//				}
-//			}
-//		}
 	}
 
 	public void setCell(int col, int row, int guess) {

@@ -2,9 +2,6 @@ package logic;
 
 public class SamuraiLogic extends BasicGameLogic {
 
-	public static int counter = 0;
-	public static int N = 21;
-
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		cells = new Cell[21][21];
@@ -292,7 +289,6 @@ public class SamuraiLogic extends BasicGameLogic {
 				}
 			}
 		}
-		System.out.println(counter);
 		return true;
 	}
 
@@ -492,7 +488,6 @@ public class SamuraiLogic extends BasicGameLogic {
 			 * isSafe checks that num isn't already present in the row, column, or 3x3 box
 			 * (see below)
 			 */
-			counter++;
 			if (this.valid(row, col, num)) {
 				this.cells[row][col].setValue(num);
 

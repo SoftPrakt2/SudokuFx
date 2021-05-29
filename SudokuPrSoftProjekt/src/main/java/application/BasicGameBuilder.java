@@ -67,7 +67,7 @@ public abstract class BasicGameBuilder {
 	NewGamePopUp gamePopUp;
 	PopOver popover;
 
-	public BasicGameBuilder(BasicGameLogic model) {
+	protected BasicGameBuilder(BasicGameLogic model) {
 		pane = new BorderPane();
 		this.model = model;
 
@@ -156,7 +156,6 @@ public abstract class BasicGameBuilder {
 					@Override
 					public void changed(ObservableValue<? extends String> observable, String oldValue,
 							String newValue) {
-						// TODO Auto-generated method stub
 						controller.compareResult(sudokuField);
 					}
 				};

@@ -26,8 +26,6 @@ public class GameController {
 	static int numberCounter = 0;
 	int countHintsPressed = 0;
 
-	// Storage storage = new Storage();
-
 	int gameID = 1;
 	IntegerProperty helper = new SimpleIntegerProperty();
 
@@ -201,7 +199,7 @@ public class GameController {
 		if (compareResult(sudokuField)) {
 			connectWithModel();
 			model.solveSudoku();
-			model.setGameState(Gamestate.AutoSolved);
+			model.setGameState(Gamestate.AUTOSOLVED);
 			model.setGamePoints(0);
 			scene.getGameInfoLabel()
 					.setText("Points: " + model.getgamePoints() + " | Difficulty: " + model.getDifficultyString());
@@ -251,7 +249,7 @@ public class GameController {
 			model.calculateGameTime();
 			// scene.getTimer().stop();
 
-			if (!model.getGameState().equals(Gamestate.AutoSolved)) {
+			if (!model.getGameState().equals(Gamestate.AUTOSOLVED)) {
 				model.setGameState(Gamestate.DONE);
 				scene.getGameNotificationLabel().setText(model.getGameText());
 				model.getLiveTimer().stop();
