@@ -6,9 +6,7 @@ import java.time.LocalTime;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -21,7 +19,6 @@ import javafx.beans.property.StringProperty;
  */
 public abstract class BasicGameLogic {
 
-	//test
 	protected Gamestate gamestate;
 	private boolean isCorrect;
 	protected String gameType = "";
@@ -88,7 +85,6 @@ public abstract class BasicGameLogic {
 	 * Getter und Setter für Instanzvariablen
 	 * 
 	 */
-
 	public Cell[][] getCells() {
 		return cells;
 	}
@@ -116,22 +112,6 @@ public abstract class BasicGameLogic {
 	public void setSecondsPlayed(long secondsPlayed) {
 		this.secondsPlayed = secondsPlayed;
 	}
-
-//	public void setLoadedMinutes(long loadedMinutesPlayed) {
-//		this.loadedMinutesPlayed = loadedMinutesPlayed;
-//	}
-//
-//	public void setLoadedSeconds(long loadedSecondsPlayed) {
-//		this.loadedSecondsPlayed = loadedSecondsPlayed;
-//	}
-
-//	public long getLoadedMinutes() {
-//		return loadedMinutesPlayed;
-//	}
-//
-//	public long getLoadedSeconds() {
-//		return loadedSecondsPlayed;
-//	}
 
 	public int getDifficulty() {
 		return difficulty;

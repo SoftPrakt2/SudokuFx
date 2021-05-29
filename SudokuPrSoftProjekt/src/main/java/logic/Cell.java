@@ -3,26 +3,26 @@ package logic;
 import javafx.scene.paint.Color;
 
 public class Cell {
-	
+
 	// Spalte 1 - 9
 	int col;
-	
+
 	// Reihe 1 - 9
-	int row;	
-	
+	int row;
+
 	// Box 1 - 9
 	int box;
-	
+
 	// Wert 1 - 9
 	int value;
-	
+
 	// Manuelle Eingabe
 	boolean isReal;
 
-	//Color color
+	// Color color
 	Color color;
-	
-	public Cell( int row, int col, int box, int value) {
+
+	public Cell(int row, int col, int box, int value) {
 		super();
 		this.row = row;
 		this.col = col;
@@ -30,15 +30,14 @@ public class Cell {
 		this.value = value;
 		this.isReal = true;
 	}
-	
+
 	public boolean getIsReal() {
 		return this.isReal;
 	}
-	
+
 	public void setIsReal(boolean newState) {
 		this.isReal = newState;
 	}
-
 
 	public int getCol() {
 		return col;
@@ -64,7 +63,6 @@ public class Cell {
 		this.box = box;
 	}
 
-
 	public int getValue() {
 		return value;
 	}
@@ -75,7 +73,6 @@ public class Cell {
 
 	@Override
 	public String toString() {
-		return "Feld [col=" + col + ", row=" + row + ", box=" + box 
-				+ ", value=" + value + "]";
+		return "Feld [col=" + col + ", row=" + row + ", box=" + box + ", value=" + value + "]";
 	}
 }

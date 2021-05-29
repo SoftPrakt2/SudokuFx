@@ -1,19 +1,15 @@
 package controller;
 
-import org.json.simple.JSONObject;
-
 import application.BasicGameBuilder;
 import application.GUI;
 import application.MainMenu;
 import application.SamuraiGameBuilder;
-import application.Storage;
 import application.SudokuField;
 import application.SudokuGameBuilder;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import logic.BasicGameLogic;
@@ -56,11 +52,10 @@ public class GameController {
 	 * Spielstatuse auf den Anfangszustand
 	 */
 	public void newGameHandler(ActionEvent e) {
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				sudokuField[i][j].clear();
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				sudokuField[row][col].clear();
 
-				
 			}
 		}
 		model.setStartTime(System.currentTimeMillis());
@@ -78,17 +73,17 @@ public class GameController {
 	 * Löscht Benutzereingaben für das Spiel
 	 */
 	public void resetHandler(ActionEvent e) {
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (!model.getCells()[j][i].getIsReal() && !sudokuField[i][j].getText().equals("-1")) {
-					sudokuField[i][j].clear();
-					model.getCells()[j][i].setValue(0);
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				if (!model.getCells()[col][row].getIsReal() && !sudokuField[row][col].getText().equals("-1")) {
+					sudokuField[row][col].clear();
+					model.getCells()[col][row].setValue(0);
 				}
 			}
 		}
 		model.setStartTime(System.currentTimeMillis());
 		model.setGamePoints(10);
-	
+
 		model.setGameState(Gamestate.OPEN);
 		scene.getGameInfoLabel().setText(model.getGameText());
 	}
@@ -101,13 +96,13 @@ public class GameController {
 	public void manuelDoneHandler(ActionEvent e) {
 		boolean help = true;
 
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (!sudokuField[i][j].getText().equals("")) {
-					sudokuField[i][j].getText();
-					if (model.valid(j, i, Integer.parseInt(sudokuField[i][j].getText()))) {
-						sudokuField[i][j].setDisable(true);
-						model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				if (!sudokuField[row][col].getText().equals("")) {
+					sudokuField[row][col].getText();
+					if (model.valid(col, row, Integer.parseInt(sudokuField[row][col].getText()))) {
+						sudokuField[row][col].setDisable(true);
+						model.setCell(col, row, Integer.parseInt(sudokuField[row][col].getText()));
 					} else {
 						help = false;
 					}
@@ -115,11 +110,11 @@ public class GameController {
 			}
 		}
 		if (!help) {
-			for (int i = 0; i < sudokuField.length; i++) {
-				for (int j = 0; j < sudokuField[i].length; j++) {
-					model.getCells()[i][j].setValue(0);
-					sudokuField[j][j].setText("");
-					sudokuField[j][i].setDisable(false);
+			for (int row = 0; row < sudokuField.length; row++) {
+				for (int col = 0; col < sudokuField[row].length; col++) {
+					model.getCells()[row][col].setValue(0);
+					sudokuField[col][row].setText("");
+					sudokuField[col][row].setDisable(false);
 				}
 			}
 			scene.getGameNotificationLabel().setText("Your game had conflicts");
@@ -140,17 +135,18 @@ public class GameController {
 	public boolean compareResult(SudokuField[][] sudokuField) {
 		boolean result = true;
 		numberCounter = 0;
-		if(model instanceof SamuraiLogic) numberCounter = 72;
+		if (model instanceof SamuraiLogic)
+			numberCounter = 72;
 
 		connectWithModel();
 
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
-			
+
 				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 					numberCounter++;
-					
-							// vielleicht unnötig
+
+					// vielleicht unnötig
 					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 					if (!model.getCells()[row][col].getIsReal()) {
 						// nochmal genauer drüberschaun zwecks verständnis
@@ -182,13 +178,13 @@ public class GameController {
 //			}
 //		}
 
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (model.getCells()[j][i].getValue() != 0) {
-					sudokuField[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				if (model.getCells()[col][row].getValue() != 0) {
+					sudokuField[row][col].setText(Integer.toString(model.getCells()[col][row].getValue()));
 				}
-				if (model.getCells()[j][i].getIsReal()) {
-					sudokuField[i][j].setDisable(true);
+				if (model.getCells()[col][row].getIsReal()) {
+					sudokuField[row][col].setDisable(true);
 				}
 			}
 		}
@@ -244,16 +240,16 @@ public class GameController {
 		boolean gameState = compareResult(sudokuField);
 		if (gameState) {
 			// wsl unnötig
-			for (int i = 0; i < sudokuField.length; i++) {
-				for (int j = 0; j < sudokuField[i].length; j++) {
-					sudokuField[j][i].setStyle("-fx-text-fill: black");
+			for (int row = 0; row < sudokuField.length; row++) {
+				for (int col = 0; col < sudokuField[row].length; col++) {
+					sudokuField[col][row].setStyle("-fx-text-fill: black");
 				}
 			}
 		}
 
 		if (gameState && numberCounter == sudokuField.length * sudokuField.length) {
 			model.calculateGameTime();
-			//scene.getTimer().stop();
+			// scene.getTimer().stop();
 
 			if (!model.getGameState().equals(Gamestate.AutoSolved)) {
 				model.setGameState(Gamestate.DONE);
@@ -267,7 +263,6 @@ public class GameController {
 		}
 
 	}
-	
 
 	/**
 	 * 
@@ -281,15 +276,14 @@ public class GameController {
 		model.difficulty();
 		model.setStartTime(System.currentTimeMillis());
 
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				String number = Integer.toString(model.getCells()[j][i].getValue());
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				String number = Integer.toString(model.getCells()[col][row].getValue());
 				// überprüfung: !sudokuField[i][j].getText().equals("") wird vl nicht benötigt
-				if ((!sudokuField[i][j].getText().equals("") || !sudokuField[i][j].getText().equals("-1"))
+				if ((!sudokuField[row][col].getText().equals("") || !sudokuField[row][col].getText().equals("-1"))
 						&& !number.equals("0")) {
-					sudokuField[i][j].setText(number);
-					sudokuField[i][j].setPlayable(false);
-
+					sudokuField[row][col].setText(number);
+					sudokuField[row][col].setPlayable(false);
 				}
 			}
 		}
@@ -302,24 +296,23 @@ public class GameController {
 		model.printCells();
 		setUpLiveTimer();
 	}
-	
-	
+
 	public void setUpLiveTimer() {
 		model.initializeTimer();
-        model.getLiveTimer().start();
-        scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
+		model.getLiveTimer().start();
+		scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 	}
 
 	/**
 	 * Leere Textfelder werden für den Benutzer freigegeben
 	 */
 	public void enableEdit() {
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (model.getCells()[j][i].getValue() == 0) {
-					sudokuField[i][j].setDisable(false);
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				if (model.getCells()[col][row].getValue() == 0) {
+					sudokuField[row][col].setDisable(false);
 				} else {
-					sudokuField[i][j].setDisable(true);
+					sudokuField[row][col].setDisable(true);
 				}
 			}
 		}
@@ -347,18 +340,18 @@ public class GameController {
 					model.setGamePoints(model.getgamePoints() - 1);
 				connectWithModel();
 				scene.getGameInfoLabel()
-				.setText("Points: " + model.getgamePoints() + " Difficulty: " + model.getDifficultyString());
+						.setText("Points: " + model.getgamePoints() + " Difficulty: " + model.getDifficultyString());
 				int[] coordinates = model.hint();
 				for (int row = 0; row < sudokuField.length; row++) {
 					for (int col = 0; col < sudokuField[row].length; col++) {
-						if(coordinates != null) {
+						if (coordinates != null) {
 							if (coordinates[0] == row && coordinates[1] == col
 									&& sudokuField[col][row].getText().equals("")) {
 								String number = Integer.toString(model.getCells()[row][col].getValue());
 								sudokuField[col][row].setText(number);
 								sudokuField[col][row].setStyle("-fx-text-fill: blue");
 								sudokuField[col][row].setFont(Font.font("Verdana", FontWeight.BOLD, 16));
-							}	
+							}
 						}
 					}
 				}
@@ -375,7 +368,7 @@ public class GameController {
 					}
 				}
 				model.setGameState(Gamestate.CONFLICT);
-				
+
 			}
 
 		} else {
@@ -414,45 +407,37 @@ public class GameController {
 
 	}
 
-	
-	
 	public void importGame(ActionEvent e) {
 		SudokuStorageModel storageModel = new SudokuStorageModel();
 
-		
 		storageModel.setImportedFile();
-		
+
 		if (storageModel.getGametype().equals("Sudoku")) {
 			storageModel.setLoadedLogic(new SudokuLogic(Gamestate.OPEN, 0, 0, false));
 			scene = new SudokuGameBuilder(storageModel.getLoadedLogic());
 		}
-		
+
 		if (storageModel.getGametype().equals("Samurai")) {
 			storageModel.setLoadedLogic(new SamuraiLogic(Gamestate.OPEN, 0, 0, false));
 			scene = new SamuraiGameBuilder(storageModel.getLoadedLogic());
 		}
-		
+
 		storageModel.setStoredInformations();
 		storageModel.loadIntoModel();
 		model = storageModel.getLoadedLogic();
-			
+
 		sudokuField = scene.getTextField();
 		scene.initializeGame();
-				
-		emptyArrays();	
-		
+
+		emptyArrays();
+
 		GUI.getStage().setHeight(scene.getHeight());
 		GUI.getStage().setWidth(scene.getWidth());
 		GUI.getStage().getScene().setRoot(scene.getPane());
-		
-		
+
 		connectArrays(sudokuField);
 	}
 
-	
-	
-	
-	
 	public void exportGame(ActionEvent e) {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
@@ -468,31 +453,23 @@ public class GameController {
 
 	public void switchToMainMenu(ActionEvent e) {
 		emptyArrays();
-		
+
 		MainMenu mainmenu = new MainMenu();
 		mainmenu.setUpMainMenu();
-		
+
 		GUI.getStage().setHeight(670);
 		GUI.getStage().setWidth(670);
 		GUI.getStage().getScene().setRoot(GUI.getMainMenu());
 
 	}
-	
-	
-	
+
 	public void emptyArrays() {
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				sudokuField[i][j].setText("");
-				sudokuField[i][j].setDisable(false);
-			
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				sudokuField[row][col].setText("");
+				sudokuField[row][col].setDisable(false);
+
 			}
 		}
 	}
-	
-	
-
-	
-
-
 }

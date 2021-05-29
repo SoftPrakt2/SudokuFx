@@ -4,17 +4,10 @@ import controller.GameController;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Line;
-import logic.BasicGameLogic;
-import logic.Gamestate;
-import logic.SamuraiLogic;
-import logic.SudokuLogic;
 import javafx.scene.Node;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
+import logic.BasicGameLogic;
 
 /**
  * 
@@ -25,15 +18,12 @@ import javafx.scene.Node;
 public class SamuraiGameBuilder extends BasicGameBuilder {
 
 	public SamuraiGameBuilder(BasicGameLogic model) {
-        super(model);
-       
-       textField = new SudokuField[21][21];
-       width = 1050;
-       height = 1050;
-    }
+		super(model);
 
-	
-
+		textField = new SudokuField[21][21];
+		width = 1050;
+		height = 1050;
+	}
 
 	/**
 	 * Zeichnet ein Samurai-Sudoku-Feld
@@ -48,8 +38,8 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		playBoard.setVgap(1);
 		playBoard.setHgap(1);
 
-		for (int i = 0; i < textField.length; i++) {
-			for (int j = 0; j < textField[i].length; j++) {
+		for (int row = 0; row < textField.length; row++) {
+			for (int col = 0; col < textField[row].length; col++) {
 				StackPane cell = new StackPane();
 				cell.getStyleClass().add("cell");
 
@@ -62,24 +52,24 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 				cellEmpty.getChildren().add(empty);
 				cellEmpty.setDisable(true);
-				textField[i][j] = empty;
+				textField[row][col] = empty;
 
-				if ((i == 9 || i == 10 || i == 11) && (j < 6 || j > 14)) {
-					textField[i][j].setPlayable(false);
+				if ((row == 9 || row == 10 || row == 11) && (col < 6 || col > 14)) {
+					textField[row][col].setPlayable(false);
 
-				} else if ((i < 6 || i > 14) && (j == 9 || j == 10 || j == 11)) {
-					textField[i][j].setPlayable(false);
+				} else if ((row < 6 || row > 14) && (col == 9 || col == 10 || col == 11)) {
+					textField[row][col].setPlayable(false);
 				} else {
 
-					textField[i][j] = new SudokuField("");
-					textField[i][j].setMaxSize(50, 50);
-					textField[i][j].setAlignment(Pos.CENTER);
-					textField[i][j].setPlayable(true);
-					textField[i][j].setDisable(true);
+					textField[row][col] = new SudokuField("");
+					textField[row][col].setMaxSize(50, 50);
+					textField[row][col].setAlignment(Pos.CENTER);
+					textField[row][col].setPlayable(true);
+					textField[row][col].setDisable(true);
 
-					cell.getChildren().add(textField[i][j]);
+					cell.getChildren().add(textField[row][col]);
 
-					playBoard.add(cell, i, j);
+					playBoard.add(cell, row, col);
 					drawLines();
 				}
 			}
@@ -97,27 +87,25 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		Node[][] nodeArray = new Node[21][21];
 
 		for (Node cell : playBoard.getChildren()) {
-			int j = GridPane.getRowIndex(cell);
-			int i = GridPane.getColumnIndex(cell);
-			nodeArray[i][j] = cell;
+			int row = GridPane.getRowIndex(cell);
+			int col = GridPane.getColumnIndex(cell);
+			nodeArray[col][row] = cell;
 
-			nodeArray[i][j].pseudoClassStateChanged(right, i == 2 || i == 5 || i == 11 || i == 17);
+			nodeArray[col][row].pseudoClassStateChanged(right, col == 2 || col == 5 || col == 11 || col == 17);
 
-			if (i == 8 && (j > 5 && j < 15))
-				nodeArray[i][j].pseudoClassStateChanged(right, i == 8);
-			if ((i == 14 || i ==17) && (j < 9 || j > 11))
-				nodeArray[i][j].pseudoClassStateChanged(right, i == 14 || i == 17);
+			if (col == 8 && (row > 5 && row < 15))
+				nodeArray[col][row].pseudoClassStateChanged(right, col == 8);
+			if ((col == 14 || col == 17) && (row < 9 || row > 11))
+				nodeArray[col][row].pseudoClassStateChanged(right, col == 14 || col == 17);
 
-			if ((j == 17 || j == 14) && (i < 9 || i > 11))
-				nodeArray[i][j].pseudoClassStateChanged(bottom, j == 14 || j == 17);
-			
-			
+			if ((row == 17 || row == 14) && (col < 9 || col > 11))
+				nodeArray[col][row].pseudoClassStateChanged(bottom, row == 14 || row == 17);
 
-			if (j == 5 || (j == 2 && (i < 9 || i > 11)))
-				nodeArray[i][j].pseudoClassStateChanged(bottom, j == 2 || j == 5);
+			if (row == 5 || (row == 2 && (col < 9 || col > 11)))
+				nodeArray[col][row].pseudoClassStateChanged(bottom, row == 2 || row == 5);
 
-			if (j == 11 || (j == 8 && (i > 5 && i < 15)))
-				nodeArray[i][j].pseudoClassStateChanged(bottom, j == 8 || j == 11);
+			if (row == 11 || (row == 8 && (col > 5 && col < 15)))
+				nodeArray[col][row].pseudoClassStateChanged(bottom, row == 8 || row == 11);
 		}
 
 	}
@@ -135,6 +123,5 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	/**
 	 * Getter und Setter für die Variablen dieser Klasse
 	 */
-	
 
 }

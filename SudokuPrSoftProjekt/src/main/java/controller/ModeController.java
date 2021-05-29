@@ -4,13 +4,10 @@ import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
 import application.GUI;
 import application.MainMenu;
-
 import application.SamuraiGameBuilder;
 import application.Storage;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
 import logic.BasicGameLogic;
 import logic.Gamestate;
 import logic.SamuraiLogic;
@@ -27,13 +24,13 @@ public class ModeController {
 
 	private MainMenu menu;
 	private BasicGameBuilder game;
-	private BasicGameLogic model;	
+	private BasicGameLogic model;
 
 //	private boolean initialized = false;
 //
 //	private int difficulty;
 
-	public <E extends MainMenu> ModeController( E menu) {
+	public <E extends MainMenu> ModeController(E menu) {
 		this.menu = menu;
 	}
 
@@ -43,24 +40,23 @@ public class ModeController {
 	 * SudokuScene
 	 */
 	public void handleToSudoku(ActionEvent e) {
-	model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
-	game = new SudokuGameBuilder(model);
-	game.initializeGame();
-		
-	}
-	
+		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+		game = new SudokuGameBuilder(model);
+		game.initializeGame();
 
-	
+	}
+
 	/**
 	 * 
 	 * Instanziiert den BasicGameBuilder als SamuraiGameBuilder und ladet die
 	 * SamuraiScene
 	 */
 	public void handleToSamurai(ActionEvent e) {
-	model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
-	game = new SamuraiGameBuilder(model);
-	game.initializeGame();
+		model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+		game = new SamuraiGameBuilder(model);
+		game.initializeGame();
 	}
+
 	/**
 	 * 
 	 * Instanziiert den BasicGameBuilder als FreeFormGameBuilder und ladet die
@@ -76,10 +72,8 @@ public class ModeController {
 	 * Instanziiert ein StorageObjekt und ruft die Scene des Storage-Objekts auf
 	 */
 	public void handleToLoad(ActionEvent e) {
-	
 		Storage overview = new Storage();
 		overview.createStage();
-
 	}
 
 	/**
@@ -95,28 +89,27 @@ public class ModeController {
 	 * Stellen die schwierigkeit des zuvor ausgewählten Sudoku-Spiels ein
 	 */
 	public void handleHard(ActionEvent e) {
-		
-		if(menu.getPlayModeToggle().getSelectedToggle().isSelected())
-		model.setDifficulty(3);
+		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
+			model.setDifficulty(3);
 //		game.createNumbers();
 	}
 
 	public void handleEasy(ActionEvent e) {
-		if(menu.getPlayModeToggle().getSelectedToggle().isSelected())
-		model.setDifficulty(7);
-	//	game.createNumbers();
+		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
+			model.setDifficulty(7);
+		// game.createNumbers();
 	}
 
 	public void handleMedium(ActionEvent e) {
-		if(menu.getPlayModeToggle().getSelectedToggle().isSelected())
-		model.setDifficulty(5);
-	//	game.createNumbers();
+		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
+			model.setDifficulty(5);
+		// game.createNumbers();
 	}
 
 	public void handleManual(ActionEvent e) {
-		if(menu.getPlayModeToggle().getSelectedToggle().isSelected())
-		model.setDifficulty(0);
-	//	game.createNumbers();
+		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
+			model.setDifficulty(0);
+		// game.createNumbers();
 		game.getDoneButton().setVisible(true);
 	}
 
@@ -128,9 +121,8 @@ public class ModeController {
 	 */
 	public void handleGameStart(ActionEvent e) {
 		game.createNumbers();
-	//	game.getTimer().start();
-		
-		
+		// game.getTimer().start();
+
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());
 		GUI.getStage().getScene().setRoot(game.getPane());

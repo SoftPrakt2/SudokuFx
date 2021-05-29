@@ -1,9 +1,6 @@
 package logic;
 
-import application.SudokuField;
-
 public class SudokuLogic extends BasicGameLogic {
-
 
 	static int counter = 0;
 
@@ -13,7 +10,7 @@ public class SudokuLogic extends BasicGameLogic {
 		gameType = "Sudoku";
 		hintCounter = 3;
 	}
-	
+
 	public Cell[][] getCells() {
 		return cells;
 	}
@@ -125,7 +122,7 @@ public class SudokuLogic extends BasicGameLogic {
 							if (solveSudoku()) {
 								return true;
 							} else {
-								this.cells[row][col].setValue(0);							
+								this.cells[row][col].setValue(0);
 							}
 						}
 					}
@@ -260,7 +257,7 @@ public class SudokuLogic extends BasicGameLogic {
 	@Override
 	public int[] hint() {
 		int randomGuess = (int) (Math.random() * 9) + 1;
-		int [] coordinates = new int [2];
+		int[] coordinates = new int[2];
 		int counter = 0;
 		int counter2 = 0;
 		int counter3 = 0;
@@ -311,34 +308,30 @@ public class SudokuLogic extends BasicGameLogic {
 	 */
 	@Override
 	public void setUpLogicArray() {
-		int box = 1;
-		int uid = 0;
-		for (int i = 0; i < this.cells.length; i++) {
-			for (int j = 0; j < this.cells[i].length; j++) {
-				if (i < 3 && j < 3) {
+		int box = 0;
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int col = 0; col < this.cells[row].length; col++) {
+				if (row < 3 && col < 3) {
 					box = 1;
-				}
-
-				else if (i < 3 && j < 6) {
+				} else if (row < 3 && col < 6) {
 					box = 2;
-				} else if (i < 3 && j < 9) {
+				} else if (row < 3 && col < 9) {
 					box = 3;
-				} else if (i < 6 && j < 3) {
+				} else if (row < 6 && col < 3) {
 					box = 4;
-				} else if (i < 6 && j < 6) {
+				} else if (row < 6 && col < 6) {
 					box = 5;
-				} else if (i < 6 && j < 9) {
+				} else if (row < 6 && col < 9) {
 					box = 6;
-				} else if (i < 9 && j < 3) {
+				} else if (row < 9 && col < 3) {
 					box = 7;
-				} else if (i < 9 && j < 6) {
+				} else if (row < 9 && col < 6) {
 					box = 8;
-				} else if (i < 9 && j < 9) {
+				} else if (row < 9 && col < 9) {
 					box = 9;
 				}
-				Cell cell = new Cell(i, j, box, 0);
-				cells[i][j] = cell;
-				uid++;
+				Cell cell = new Cell(row, col, box, 0);
+				cells[row][col] = cell;
 			}
 		}
 	}
@@ -349,20 +342,23 @@ public class SudokuLogic extends BasicGameLogic {
 	 */
 	public void difficulty() {
 		int counter = 81;
-		if(this.difficulty == 3) counter = 56;
-		if(this.difficulty == 5) counter = 46;
-		if(this.difficulty == 7) counter = 36;
-		
-		while(counter != 0) {
+		if (this.difficulty == 3)
+			counter = 56;
+		if (this.difficulty == 5)
+			counter = 46;
+		if (this.difficulty == 7)
+			counter = 36;
+
+		while (counter != 0) {
 			int randomCol = (int) (Math.floor(Math.random() * 8.9999));
 			int randomRow = (int) (Math.floor(Math.random() * 8.9999));
-			if(this.cells[randomRow][randomCol].getValue() != 0 && this.cells[randomRow][randomCol].getIsReal()) {
+			if (this.cells[randomRow][randomCol].getValue() != 0 && this.cells[randomRow][randomCol].getIsReal()) {
 				this.cells[randomRow][randomCol].setValue(0);
 				this.cells[randomRow][randomCol].setIsReal(false);
 				counter--;
 			}
 		}
-		
+
 //		for (int row = 0; row < this.cells.length; row++) {
 //			for (int col = 0; col < this.cells[row].length; col++) {
 //				if(this.cells[row][col].getValue() != 0) {
@@ -370,8 +366,7 @@ public class SudokuLogic extends BasicGameLogic {
 //				}
 //			}
 //		}
-			
-			
+
 //		int diff = this.difficulty;
 //		for (int row = 0; row < this.cells.length; row++) {
 //			for (int j = 0; j < this.cells[row].length; j++) {
@@ -420,9 +415,9 @@ public class SudokuLogic extends BasicGameLogic {
 
 	@Override
 	public boolean testIfSolved() {
-		for(int row = 0; row < this.cells.length; row++) {
-			for(int col = 0; col < this.cells[row].length; col++) {
-				if(this.cells[row][col].getValue() == 0) {
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int col = 0; col < this.cells[row].length; col++) {
+				if (this.cells[row][col].getValue() == 0) {
 					return false;
 				}
 			}

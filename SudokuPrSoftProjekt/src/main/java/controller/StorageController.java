@@ -86,13 +86,13 @@ public class StorageController {
 
 		SudokuField[][] s = game.getTextField();
 
-		for (int i = 0; i < s.length; i++) {
-			for (int j = 0; j < s[i].length; j++) {
-				if (model.getCells()[j][i].getValue() != 0) {
-					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
+		for (int row = 0; row < s.length; row++) {
+			for (int col = 0; col < s[row].length; col++) {
+				if (model.getCells()[col][row].getValue() != 0) {
+					s[row][col].setText(Integer.toString(model.getCells()[col][row].getValue()));
 				}
-				if (!model.getCells()[j][i].getIsReal()) {
-					s[i][j].setDisable(false);
+				if (!model.getCells()[col][row].getIsReal()) {
+					s[row][col].setDisable(false);
 				}
 			}
 		}

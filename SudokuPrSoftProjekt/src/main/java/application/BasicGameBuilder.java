@@ -4,25 +4,15 @@ import java.util.ArrayList;
 import java.util.stream.Stream;
 
 import org.controlsfx.control.PopOver;
-import org.controlsfx.control.PopOver.ArrowLocation;
 import org.controlsfx.control.StatusBar;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
 import controller.GameController;
-import controller.PopOverController;
 import javafx.animation.AnimationTimer;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -30,8 +20,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.SeparatorMenuItem;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -40,13 +28,10 @@ import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import logic.BasicGameLogic;
 
 public abstract class BasicGameBuilder {
-
 
 	protected BorderPane pane;
 	protected VBox playButtonMenu;
@@ -63,14 +48,14 @@ public abstract class BasicGameBuilder {
 	protected StatusBar statusbar;
 	protected Label gameInfoLabel;
 	protected Label playTimeLabel;
-	
+
 	protected Label liveTimeLabel;
-	
+
 	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
 	protected ToolBar toolbar;
-	
+
 	protected AnimationTimer timer;
-	
+
 	int width;
 	int height;
 
@@ -78,17 +63,15 @@ public abstract class BasicGameBuilder {
 
 	VBox toolbox = new VBox();
 	BasicGameLogic model;
-	
+
 	NewGamePopUp gamePopUp;
 	PopOver popover;
 
 	public BasicGameBuilder(BasicGameLogic model) {
 		pane = new BorderPane();
 		this.model = model;
-	
-	}
 
-	
+	}
 
 	protected SudokuField[][] textField;
 
@@ -102,9 +85,9 @@ public abstract class BasicGameBuilder {
 
 	public void initializeGame() {
 		controller = new GameController(this, model);
-		
-		gamePopUp = new NewGamePopUp(this,model);
-		
+
+		gamePopUp = new NewGamePopUp(this, model);
+
 		pane.setCenter(createBoard());
 		pane.setPadding(new Insets(50, 50, 50, 50));
 
@@ -132,7 +115,7 @@ public abstract class BasicGameBuilder {
 		Glyph g = fontAwesome.create(FontAwesome.Glyph.CHECK);
 		Glyph hint = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
 		Glyph autosolv = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
-		
+
 		hintButton = new Button("");
 		hintButton.setGraphic(hint);
 
@@ -151,10 +134,8 @@ public abstract class BasicGameBuilder {
 		done = new Button("done");
 
 		done.setVisible(false);
-		
-		
+
 		liveTimeLabel = new Label("");
-		
 
 		setButtonActions();
 
@@ -162,17 +143,11 @@ public abstract class BasicGameBuilder {
 
 		toolbox.getChildren().add(toolbar);
 
-		
 	}
-	
-	
+
 	public void defineShortCuts() {
-		
+
 	}
-	
-	
-	
-	
 
 	public void addListeners(SudokuField[][] sudokuField) {
 		for (int row = 0; row < sudokuField.length; row++) {
@@ -183,13 +158,10 @@ public abstract class BasicGameBuilder {
 							String newValue) {
 						// TODO Auto-generated method stub
 						controller.compareResult(sudokuField);
-
 					}
 				};
-
 				sudokuField[col][row].textProperty().addListener(changeListener);
 				listeners.add(changeListener);
-
 			}
 		}
 	}
@@ -197,9 +169,8 @@ public abstract class BasicGameBuilder {
 	public void removeListeners(SudokuField[][] sudokuField) {
 
 		for (ChangeListener l : listeners) {
-			for (SudokuField[] sss : sudokuField) {
-				for (SudokuField field : sss) {
-
+			for (SudokuField[] sf : sudokuField) {
+				for (SudokuField field : sf) {
 					field.textProperty().removeListener(l);
 				}
 			}
@@ -213,8 +184,6 @@ public abstract class BasicGameBuilder {
 	protected MenuItem save;
 	protected MenuItem load;
 	protected Menu file;
-	
-	
 
 	protected MenuItem reset;
 	protected Menu editMenu;
@@ -226,18 +195,17 @@ public abstract class BasicGameBuilder {
 	protected Menu mainMenu;
 	protected MenuItem mainMenuItem;
 	protected MenuItem createGameItem;
-	
+
 	protected Menu gameFunctions;
 	protected MenuItem hintMenuItem;
 	protected MenuItem autoSolveItem;
 	protected MenuItem checkItem;
-	
+
 	protected SeparatorMenuItem seperator;
 	protected MenuItem exitItem;
-	
+
 	protected MenuItem exportItem;
 	protected MenuItem importItem;
-	
 
 	RulesStage rule;
 
@@ -248,7 +216,6 @@ public abstract class BasicGameBuilder {
 	public void createMenuBar(BorderPane pane) {
 		// menuBar for the scene
 		menuBar = new MenuBar();
-	
 
 		// Help eintrag mit rules menu
 		helpMenu = new Menu("Help");
@@ -263,7 +230,7 @@ public abstract class BasicGameBuilder {
 		conflictItem = new RadioMenuItem("Show Conflicts");
 		conflictItem.setSelected(false);
 		moreHintsItem = new MenuItem("Add hints");
-		propertyMenu.getItems().addAll(conflictItem,moreHintsItem);
+		propertyMenu.getItems().addAll(conflictItem, moreHintsItem);
 
 		// savemenu mit save und load optionen
 		file = new Menu("File");
@@ -272,30 +239,26 @@ public abstract class BasicGameBuilder {
 		newGame = new MenuItem("New");
 		exportItem = new MenuItem("Export");
 		importItem = new MenuItem("Import");
-		
+
 		seperator = new SeparatorMenuItem();
 		exitItem = new MenuItem("Exit");
 
 		// load.setOnAction(e -> openFile());
-		
-		//SpielButton Funktionen für Menuü
+
+		// SpielButton Funktionen für Menuü
 		gameFunctions = new Menu("Game..");
-		
+
 		hintMenuItem = new MenuItem("Hint");
 		autoSolveItem = new MenuItem("AutoSolve");
 		checkItem = new MenuItem("Check");
-		gameFunctions.getItems().addAll(hintMenuItem,autoSolveItem,checkItem);
-		
+		gameFunctions.getItems().addAll(hintMenuItem, autoSolveItem, checkItem);
 
-		file.getItems().addAll(newGame, save, load,exportItem,importItem,seperator, exitItem);
-		
-		
-		
-		//menu Einträge für SpielFunktionen (Hint, Autosolve, check)
-		
+		file.getItems().addAll(newGame, save, load, exportItem, importItem, seperator, exitItem);
+
+		// menu Einträge für SpielFunktionen (Hint, Autosolve, check)
+
 		popover = gamePopUp.createPopUp();
-		//createPopUp();
-		
+		// createPopUp();
 
 		// newgame menu eintrag
 		editMenu = new Menu("Edit");
@@ -330,24 +293,23 @@ public abstract class BasicGameBuilder {
 		save.setOnAction(controller::saveGame);
 		reset.setOnAction(controller::resetHandler);
 		mainMenuItem.setOnAction(controller::switchToMainMenu);
-		
+
 		mainMenuItem.setOnAction(e -> {
 			controller.switchToMainMenu(e);
-		
-		} );
-		
-		
+
+		});
+
 		hintButton.setOnAction(controller::hintHandeler);
 		conflictItem.setOnAction(controller::switchOffConflicts);
 		moreHintsItem.setOnAction(controller::handleMoreHints);
-		//exitItem.setOnAction(e -> GUI.closeProgram());
+		// exitItem.setOnAction(e -> GUI.closeProgram());
 		exportItem.setOnAction(controller::exportGame);
 		importItem.setOnAction(controller::importGame);
-		
+
 		exitItem.setOnAction(e -> {
-			
-		 popover.show(hintButton,-30);
-	
+
+			popover.show(hintButton, -30);
+
 		});
 	}
 
@@ -410,28 +372,27 @@ public abstract class BasicGameBuilder {
 	public Label getGameNotificationLabel() {
 		return gameNotificationLabel;
 	}
-	
-	
+
 	public RadioMenuItem getConflictItem() {
 		return conflictItem;
 	}
-	
+
 	public BorderPane getPane() {
 		return pane;
 	}
-	
+
 	public int getWidth() {
 		return width;
 	}
-	
+
 	public int getHeight() {
 		return height;
 	}
-	
+
 	public AnimationTimer getTimer() {
 		return timer;
 	}
-	
+
 	public Label getLiveTimeLabel() {
 		return liveTimeLabel;
 	}
