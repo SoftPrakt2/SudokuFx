@@ -36,6 +36,7 @@ public abstract class BasicGameLogic {
 	private String difficultyString;
 
 	protected int hintCounter;
+	protected int countHintsPressed = 0;
 
 	protected int difficulty;
 
@@ -140,6 +141,14 @@ public abstract class BasicGameLogic {
 	public void setHintCounter(int hintCounter) {
 		this.hintCounter = hintCounter;
 	}
+	
+	public int getHintsPressed() {
+        return countHintsPressed;
+    }
+
+    public void setHintsPressed(int countHintsPressed) {
+        this.countHintsPressed = countHintsPressed;
+    }
 
 	public void setGameState(Gamestate gamestate) {
 		this.gamestate = gamestate;
@@ -214,38 +223,41 @@ public abstract class BasicGameLogic {
 
 	public void initializeTimer() {
 
-		liveTimePlayedString = new SimpleStringProperty("");
 
-		running = new SimpleBooleanProperty();
+        liveTimePlayedString = new SimpleStringProperty("");
 
-		timer = new AnimationTimer() {
+        running = new SimpleBooleanProperty();
 
-			private LocalTime startTime;
+        timer = new AnimationTimer() {
+            long helpmin = minutesPlayed;
+            long helpsec = secondsPlayed;
 
-			@Override
-			public void handle(long now) {
-				long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
-				minutesPlayed = elapsedSeconds / 60;
-				secondsPlayed = elapsedSeconds % 60;
+            private LocalTime startTime;
 
-				liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
-			}
+            @Override
+            public void handle(long now) {
+                long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
+                minutesPlayed =helpmin + elapsedSeconds / 60;
+                secondsPlayed = helpsec + elapsedSeconds % 60;
 
-			@Override
-			public void start() {
-				running.set(true);
-				startTime = LocalTime.now();
-				super.start();
-			}
+                liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
+            }
 
-			@Override
-			public void stop() {
-				running.set(false);
-				super.stop();
-			}
-		};
+            @Override
+            public void start() {
+                running.set(true);
+                startTime = LocalTime.now();
+                super.start();
+            }
 
-	}
+            @Override
+            public void stop() {
+                running.set(false);
+                super.stop();
+            }
+        };
+
+    }
 
 	public AnimationTimer getLiveTimer() {
 		return timer;

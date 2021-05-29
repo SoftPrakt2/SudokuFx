@@ -41,7 +41,7 @@ public class Storage {
 
 	// Objekte für die ListView und die HashMap welche benötigt wird um den Spieler
 	// auswählen lassen zu können welches Spiel er laden will
-	protected TableView<SudokuStorageModel> listView;
+	protected TableView<SudokuStorageModel> tableView;
 
 	// Right Click Menu Items
 	ContextMenu contextMenu = new ContextMenu();
@@ -51,13 +51,16 @@ public class Storage {
 	// Labels and ContainerBoxes for gamestats at the bottom of the screen
 	protected Label gameHeadLabel;
 	protected BorderPane storageContainerBox = new BorderPane();
-	protected VBox gameStatsBox = new VBox();
 
 	protected HBox gameHeaderBox = new HBox();
 
-	protected Label pointsLabel;
-	protected Label averagePointsLabel;
-	protected Label averageTimeLabel;
+	protected Label pointsHeaderLabel;
+	protected Label averagePointsHeaderLabel;
+	protected Label averageTimeHeaderLabel;
+	protected Label overallTimeHeaderLabel;
+	protected Label averagePointsResultLabel;
+	protected Label overallPointsResultLabel;
+	
 
 	protected VBox listviewBox;
 
@@ -65,11 +68,12 @@ public class Storage {
 	Glyph folderGraphic = fontAwesome.create(FontAwesome.Glyph.FOLDER);
 
 	protected Stage stage;
+	
 
 	protected Button directoryButton;
 
 	public Stage createStage() {
-		Scene storageScene = showStorageScene();
+		 storageScene = showStorageScene();
 		Stage currentStage = GUI.getStage();
 		double windowGap = 5;
 
@@ -79,50 +83,48 @@ public class Storage {
 		stage.setX(currentStage.getX() + currentStage.getWidth() + windowGap);
 		stage.setY(currentStage.getY());
 
-		stage.setResizable(false);
+	//	stage.setResizable(false);
 		stage.showAndWait();
 
 		return stage;
 	}
 
 	public Scene showStorageScene() {
-
-		listView = new TableView<>();
+		
+		tableView = new TableView<>();
 		controller.setUpTableView();
 		listviewBox = new VBox();
 
 		storagePane = new BorderPane();
-		storageScene = new Scene(storageContainerBox, 500, 500);
-
+		storageScene = new Scene(storageContainerBox, 500, 600);
+	//	storageScene.getStylesheets().add("css/sudoku.css");
+		
 		gameHeadLabel = new Label("Game Overview");
 		gameHeadLabel.setFont(new Font("Georgia", 20));
 
 		directoryButton = new Button("");
 		directoryButton.setGraphic(folderGraphic);
-		directoryButton.setAlignment(Pos.BASELINE_RIGHT);
+		//directoryButton.setAlignment(Pos.BASELINE_RIGHT);
 
 		directoryButton.setOnAction(controller::handleDirectorySwitch);
 
 		gameHeaderBox.getChildren().addAll(gameHeadLabel, directoryButton);
+		gameHeaderBox.setSpacing(285);
 		directoryButton.setAlignment(Pos.TOP_RIGHT);
 
 		contextMenu.getItems().addAll(deleteMenuItem, loadMenuItem);
 
-		pointsLabel = new Label("");
-		averagePointsLabel = new Label("");
-		averageTimeLabel = new Label("");
-		pointsLabel.setAlignment(Pos.BASELINE_LEFT);
-		gameStatsBox.getChildren().addAll(pointsLabel, averageTimeLabel, averagePointsLabel);
-		gameStatsBox.setAlignment(Pos.CENTER);
+		
 
-		storageContainerBox.setPadding(new Insets(100, 15, 15, 15));
+		storageContainerBox.setPadding(new Insets(15, 15, 15, 15));
 
-		listviewBox.getChildren().add(listView);
-		listviewBox.setPadding(new Insets(15, 15, 15, 15));
+		listviewBox.getChildren().add(tableView);
+		listviewBox.setPadding(new Insets(0, 15, 15, 0));
 
 		storageContainerBox.setTop(gameHeaderBox);
 		storageContainerBox.setCenter(listviewBox);
-
+		createGameStatBox();
+		
 		controller.fillListVew();
 
 		addContextMenuFunctionality();
@@ -133,18 +135,86 @@ public class Storage {
 		});
 		loadMenuItem.setOnAction(controller::handleLoadAction);
 
+		
+		directoryButton.getStyleClass().add("storageButton");
+		
 		return storageScene;
 	}
+	
+	
+	public void createGameStatBox() {
+	
+		VBox gameStatsBox = new VBox();
+		Label gameStatsLabel = new Label("Game Scores");
+		gameStatsLabel.setFont(new Font("Georgia",20));
+		
+		gameStatsLabel.setAlignment(Pos.CENTER);
+		
+		pointsHeaderLabel = new Label("Overall Points");
+		averagePointsHeaderLabel = new Label ("Average Points");
+		gameStatsBox.setPadding(new Insets(10,10,10,10));
+		gameStatsBox.getChildren().add(gameStatsLabel);
+		gameStatsBox.setAlignment(Pos.CENTER);
+		
+		HBox pointHeaderBox = new HBox();
+	//	pointsBox.setPadding(new Insets(5,5,5,5));
+		pointsHeaderLabel.setFont(new Font("Georgia",14));
+		averagePointsHeaderLabel.setFont(new Font("Georgia",14));
+		pointHeaderBox.setSpacing(230);
+		pointHeaderBox.getChildren().addAll(averagePointsHeaderLabel,pointsHeaderLabel);
+		
+		HBox pointResultBox = new HBox();
+		pointResultBox.setPadding(new Insets(0,10,0,35));
+		averagePointsResultLabel = new Label("0");
+		averagePointsResultLabel.setFont(new Font("Georgia",13));
+		pointResultBox.setSpacing(315);
+		
+		overallPointsResultLabel = new Label("0");
+		overallPointsResultLabel.setFont(new Font("Georgia",13));
+		pointResultBox.getChildren().addAll(averagePointsResultLabel,overallPointsResultLabel);
+		
+		
+		HBox timeBox = new HBox();
+
+		averageTimeHeaderLabel = new Label ("Average Time");
+		overallTimeHeaderLabel = new Label ("Overall Time");
+		averageTimeHeaderLabel.setFont(new Font("Georgia",14));
+		overallTimeHeaderLabel.setFont(new Font("Georgia",14));
+		timeBox.setSpacing(237);
+		timeBox.setPadding(new Insets(30,0,0,0));
+		timeBox.getChildren().addAll(averageTimeHeaderLabel, overallTimeHeaderLabel);
+		
+		gameStatsBox.getChildren().addAll(pointHeaderBox,pointResultBox,timeBox);
+		
+		
+		
+		
+		listviewBox.getChildren().add(gameStatsBox);
+
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	// Methoe welche Funktionalität für Rechtsklick Menü ermöglicht
 	public void addContextMenuFunctionality() {
-		listView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				// TODO Auto-generated method stub
 				if (event.getButton().equals(MouseButton.SECONDARY)) {
-					contextMenu.show(listView, event.getScreenX(), event.getScreenY());
+					contextMenu.show(tableView, event.getScreenX(), event.getScreenY());
 				}
 			}
 		});
@@ -152,20 +222,20 @@ public class Storage {
 	}
 
 	public TableView<SudokuStorageModel> getTableView() {
-		return listView;
+		return tableView;
 	}
 
-	public Label getPointsLabel() {
-		return pointsLabel;
+	public Label getOverallPointsLabel() {
+		return overallPointsResultLabel;
 	}
 
-	public Label getAverageTimeLabel() {
-		return averageTimeLabel;
-	}
-
-	public Label getAveragePointsLabel() {
-		return averagePointsLabel;
-	}
+//	public Label getAverageTimeLabel() {
+//		return averageTimeLabel;
+//	}
+//
+//	public Label getAveragePointsLabel() {
+//		return averagePointsLabel;
+//	}
 
 	public Stage getStage() {
 		return stage;

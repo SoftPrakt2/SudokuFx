@@ -164,7 +164,74 @@ public class SamuraiLogic extends BasicGameLogic {
 
 	@Override
 	public boolean checkBox(int row, int col, int guess) {
-		if (row < 9 && col < 9) {
+//		if (row < 9 && col < 9) {
+//			int r = row - row % 3;
+//			int c = col - col % 3;
+//
+//			for (row = r; row < r + 3; row++) {
+//				for (col = c; col < c + 3; col++) {
+//					if (this.cells[row][col].getValue() == guess) {
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//		// ---------------------topRight---------------------
+//		else if (row < 9 && col > 11) {
+//			int r = row - row % 3;
+//			int c = col - col % 3;
+//
+//			for (row = r; row < r + 3; row++) {
+//				for (col = c; col < c + 3; col++) {
+//					if (this.cells[row][col].getValue() == guess) {
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//
+//		// ---------------------bottomLeft---------------------
+//		else if (row > 11 && col < 9) {
+//			int r = row - row % 3;
+//			int c = col - col % 3;
+//
+//			for (row = r; row < r + 3; row++) {
+//				for (col = c; col < c + 3; col++) {
+//					if (this.cells[row][col].getValue() == guess) {
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//
+//		// ---------------------bottomRight---------------------
+//		else if (row > 11 && col > 11) {
+//			int r = row - row % 3;
+//			int c = col - col % 3;
+//
+//			for (row = r; row < r + 3; row++) {
+//				for (col = c; col < c + 3; col++) {
+//					if (this.cells[row][col].getValue() == guess) {
+//						return false;
+//					}
+//				}
+//			}
+//		}
+//
+//		else if (row > 5 && row < 15 && col > 5 && col < 15) {
+//			int r = row - row % 3;
+//			int c = col - col % 3;
+//
+//			for (row = r; row < r + 3; row++) {
+//				for (col = c; col < c + 3; col++) {
+//					if (this.cells[row][col].getValue() == guess) {
+//						return false;
+//					}
+//				}
+//			}
+//		}
+		
+		if(this.cells[row][col].getValue() != -1) {
 			int r = row - row % 3;
 			int c = col - col % 3;
 
@@ -176,63 +243,9 @@ public class SamuraiLogic extends BasicGameLogic {
 				}
 			}
 		}
-		// ---------------------topRight---------------------
-		else if (row < 9 && col > 11) {
-			int r = row - row % 3;
-			int c = col - col % 3;
-
-			for (row = r; row < r + 3; row++) {
-				for (col = c; col < c + 3; col++) {
-					if (this.cells[row][col].getValue() == guess) {
-						return false;
-					}
-				}
-			}
-		}
-
-		// ---------------------bottomLeft---------------------
-		else if (row > 11 && col < 9) {
-			int r = row - row % 3;
-			int c = col - col % 3;
-
-			for (row = r; row < r + 3; row++) {
-				for (col = c; col < c + 3; col++) {
-					if (this.cells[row][col].getValue() == guess) {
-						return false;
-					}
-				}
-			}
-		}
-
-		// ---------------------bottomRight---------------------
-		else if (row > 11 && col > 11) {
-			int r = row - row % 3;
-			int c = col - col % 3;
-
-			for (row = r; row < r + 3; row++) {
-				for (col = c; col < c + 3; col++) {
-					if (this.cells[row][col].getValue() == guess) {
-						return false;
-					}
-				}
-			}
-		}
-
-		else if (row > 5 && row < 15 && col > 5 && col < 15) {
-			int r = row - row % 3;
-			int c = col - col % 3;
-
-			for (row = r; row < r + 3; row++) {
-				for (col = c; col < c + 3; col++) {
-					if (this.cells[row][col].getValue() == guess) {
-						return false;
-					}
-				}
-			}
-		}
-
 		return true;
 	}
+	
 
 	@Override
 	public boolean valid(int row, int col, int guess) {

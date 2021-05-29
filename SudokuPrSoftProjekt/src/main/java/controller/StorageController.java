@@ -11,6 +11,9 @@ import application.Storage;
 import application.SudokuField;
 import application.SudokuGameBuilder;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.IntegerBinding;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,6 +49,10 @@ public class StorageController {
 	TableColumn<SudokuStorageModel, String> playtimecolumn = new TableColumn<>("PlayTime");
 	TableColumn<SudokuStorageModel, Gamestate> gamestatecolumn = new TableColumn<>("Gamestate");
 	TableColumn<SudokuStorageModel, Integer> gameidcolumn = new TableColumn<>("GameID");
+	
+	IntegerProperty overallPointsProperty;
+	
+	
 
 	SharedStoragePreferences sharedStorage = new SharedStoragePreferences();
 
@@ -86,13 +93,13 @@ public class StorageController {
 
 		SudokuField[][] s = game.getTextField();
 
-		for (int row = 0; row < s.length; row++) {
-			for (int col = 0; col < s[row].length; col++) {
-				if (model.getCells()[col][row].getValue() != 0) {
-					s[row][col].setText(Integer.toString(model.getCells()[col][row].getValue()));
+		for (int i = 0; i < s.length; i++) {
+			for (int j = 0; j < s[i].length; j++) {
+				if (model.getCells()[j][i].getValue() != 0) {
+					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
 				}
-				if (!model.getCells()[col][row].getIsReal()) {
-					s[row][col].setDisable(false);
+				if (!model.getCells()[j][i].getIsReal()) {
+					s[i][j].setDisable(false);
 				}
 			}
 		}
@@ -129,13 +136,14 @@ public class StorageController {
 
 		}
 		storage.getTableView().setItems(jsonObservableList);
+		calculateGameStats();
 	}
 
 	public void setGameStatInformations() {
-		storage.getPointsLabel().setText("Points: " + storageModel.getOverallGamePoints());
-		storage.getAverageTimeLabel().setText("Average Time played: " + storageModel.getPlayedMinutesOverall() + " min "
-				+ storageModel.getSecondsPlayedOverall() + " seconds ");
-		storage.getAveragePointsLabel().setText("Average Points: " + storageModel.getAveragePoints());
+//		storage.getPointsLabel().setText("Points: " + storageModel.getOverallGamePoints());
+//		storage.getAverageTimeLabel().setText("Average Time played: " + storageModel.getPlayedMinutesOverall() + " min "
+//				+ storageModel.getSecondsPlayedOverall() + " seconds ");
+//		storage.getAveragePointsLabel().setText("Average Points: " + storageModel.getAveragePoints());
 	}
 
 	public void deleteEntry(ActionEvent e) {
@@ -162,6 +170,26 @@ public class StorageController {
 
 		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
 		fillListVew();
+		
 	}
+	
+	public void calculateGameStats() {
+		overallPointsProperty = new SimpleIntegerProperty();
+		
+		IntegerBinding totalCost = Bindings.createIntegerBinding(() -> {
+		    int total = 0 ;
+		    for (SudokuStorageModel model : storage.getTableView().getItems()) {
+		        total = total + model.getGamepoints();
+		    }
+		    return total ;
+		
+		
+	}, storage.getTableView().getItems());
+	
+	storage.getOverallPointsLabel().textProperty().bind(totalCost.asString());
+	
+	
+	}
+	
 
 }

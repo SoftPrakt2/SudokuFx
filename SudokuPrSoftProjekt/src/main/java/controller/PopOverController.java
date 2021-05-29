@@ -1,7 +1,5 @@
 package controller;
 
-import org.controlsfx.control.PopOver;
-
 import application.BasicGameBuilder;
 import application.GUI;
 import application.SamuraiGameBuilder;
@@ -17,16 +15,13 @@ public class PopOverController {
 
 	private Scene playScene;
 
+	
 	private BasicGameLogic standardlogic;
 
 	private BasicGameBuilder standard;
-
-	private PopOver popover;
-
-	private boolean oldGame;
-
-	private int difficulty;
-
+	
+	
+	
 	public PopOverController(BasicGameBuilder standard, BasicGameLogic standardlogic) {
 		this.standard = standard;
 		this.standardlogic = standardlogic;
@@ -42,8 +37,8 @@ public class PopOverController {
 		standardlogic = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
 		standard = new SudokuGameBuilder(standardlogic);
 		standard.initializeGame();
-		// game2.getPane().setCenter(game.createBoard());
-
+	//	game2.getPane().setCenter(game.createBoard());
+		
 	}
 
 	/**
@@ -54,10 +49,10 @@ public class PopOverController {
 	public void handleToSamurai(ActionEvent e) {
 		standardlogic = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
 		standard = new SamuraiGameBuilder(standardlogic);
-		// standard.createBoard();
 		standard.initializeGame();
 
 	}
+	
 
 	/**
 	 * 
@@ -65,17 +60,15 @@ public class PopOverController {
 	 * FreeFormScene
 	 */
 	public void handleToFreeForm(ActionEvent e) {
-
+	
 	}
 
 	public void handleHard(ActionEvent e) {
-
+		
 		standardlogic.setDifficulty(5);
-
-		standard.getPane().setCenter(standard.createBoard());
-
+		
 		standard.createNumbers();
-
+		
 		GUI.getStage().setHeight(standard.getHeight());
 		GUI.getStage().setWidth(standard.getWidth());
 		GUI.getStage().getScene().setRoot(standard.getPane());
@@ -84,7 +77,9 @@ public class PopOverController {
 	public void handleEasy(ActionEvent e) {
 		standardlogic.setDifficulty(7);
 		standard.createNumbers();
-
+		
+		GUI.getStage().setHeight(standard.getHeight());
+		GUI.getStage().setWidth(standard.getWidth());
 		GUI.getStage().getScene().setRoot(standard.getPane());
 	}
 
@@ -104,4 +99,5 @@ public class PopOverController {
 		GUI.getStage().setWidth(standard.getWidth());
 		GUI.getStage().getScene().setRoot(standard.getPane());
 	}
+
 }

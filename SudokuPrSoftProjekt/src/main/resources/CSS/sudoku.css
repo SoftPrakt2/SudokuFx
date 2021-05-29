@@ -251,6 +251,12 @@
     -fx-border-width: 2.0;
 
 }
+
+.gameLabel {
+    -fx-font-family:Arial;
+    -fx-font-Size: 12px;
+    -fx-font-weight: bold;
+}
 	
 
 	

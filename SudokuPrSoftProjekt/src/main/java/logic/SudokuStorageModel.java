@@ -41,11 +41,6 @@ public class SudokuStorageModel {
 
 	FileChooser chooser;
 
-	int playedMinutesOverall;
-	int playedSecondsOverall;
-	double averagePoints;
-	double overAllPoints;
-
 	SharedStoragePreferences storagePref = new SharedStoragePreferences();
 
 	File[] saveDirectory = new File(storagePref.getPreferedDirectory()).listFiles();
@@ -196,67 +191,6 @@ public class SudokuStorageModel {
 		return jsonObject;
 	}
 
-	public double calculateGamePoints() {
-//		JSONObject helpObject = controller.convertToJSON(saveFile);
-//		double gamePoints = 0;
-//		JSONArray helpArray = (JSONArray) helpObject.get("games");
-//
-//		for (int i = 0; i < helpArray.size(); i++) {
-//			JSONObject obj = (JSONObject) helpArray.get(i);
-//			gamePoints += (double) (long) obj.get("points");
-//		}
-//		return gamePoints;
-		return 5;
-	}
-
-	public String calculateAverageTimePlayed() {
-//		JSONObject helpObject = controller.convertToJSON(saveFile);
-//		JSONArray helpArray = (JSONArray) helpObject.get("games");
-//		String averageGameTimeString = "";
-//		int minPlayed = 0;
-//		int secPlayed = 0;
-//		int counter = 0;
-//		int showMinutes;
-//		int showSeconds;
-//
-//		for (int i = 0; i < helpArray.size(); i++) {
-//			JSONObject obj = (JSONObject) helpArray.get(i);
-//			minPlayed += (int) (long) (obj.get("minutesPlayed")) * 60;
-//			secPlayed += (int) (long) (obj.get("secondsPlayed"));
-//			counter++;
-//		}
-//		if (counter > 0) {
-//			int playTime = (minPlayed + secPlayed) / counter;
-//			showMinutes = playTime / 60;
-//			showSeconds = playTime % 60;
-//			averageGameTimeString = showMinutes + " minutes " + showSeconds + " seconds ";
-//		}
-
-		return "";
-	}
-
-	public void calculateGameStats() {
-		JSONObject helpJSON;
-		int fileCounter = 0;
-
-		for (File file : saveDirectory) {
-			helpJSON = convertToJSON(file);
-			overAllPoints += (double) (long) helpJSON.get("points");
-
-			playedMinutesOverall += (int) (long) (helpJSON.get("minutesPlayed")) * 60;
-			playedSecondsOverall += (int) (long) (helpJSON.get("secondsPlayed"));
-
-			fileCounter++;
-		}
-		if (fileCounter == 0)
-			fileCounter = 1;
-		int helpCalculate = (playedMinutesOverall + playedSecondsOverall) / fileCounter;
-
-		playedMinutesOverall = helpCalculate / 60;
-		playedSecondsOverall = helpCalculate % 60;
-
-	}
-
 	public BasicGameLogic getLoadedLogic() {
 		return savedModel;
 	}
@@ -277,22 +211,8 @@ public class SudokuStorageModel {
 		return saveDirectory;
 	}
 
-	public double getOverallGamePoints() {
-		return overAllPoints;
-	}
 
-	public double getAveragePoints() {
-		return averagePoints;
-	}
-
-	public int getPlayedMinutesOverall() {
-		return playedMinutesOverall;
-	}
-
-	public int getSecondsPlayedOverall() {
-		return playedSecondsOverall;
-	}
-
+//	
 	public String getGametype() {
 		return this.gametype;
 	}

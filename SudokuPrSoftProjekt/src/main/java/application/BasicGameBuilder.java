@@ -28,6 +28,8 @@ import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import logic.BasicGameLogic;
 
@@ -47,7 +49,6 @@ public abstract class BasicGameBuilder {
 	protected HBox emptySpaceBox;
 	protected StatusBar statusbar;
 	protected Label gameInfoLabel;
-	protected Label playTimeLabel;
 
 	protected Label liveTimeLabel;
 
@@ -67,7 +68,7 @@ public abstract class BasicGameBuilder {
 	NewGamePopUp gamePopUp;
 	PopOver popover;
 
-	protected BasicGameBuilder(BasicGameLogic model) {
+	public BasicGameBuilder(BasicGameLogic model) {
 		pane = new BorderPane();
 		this.model = model;
 
@@ -115,10 +116,8 @@ public abstract class BasicGameBuilder {
 		Glyph g = fontAwesome.create(FontAwesome.Glyph.CHECK);
 		Glyph hint = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
 		Glyph autosolv = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
-
 		hintButton = new Button("");
 		hintButton.setGraphic(hint);
-
 		autosolve = new Button("_A");
 
 		autosolve.setGraphic(autosolv);
@@ -137,9 +136,13 @@ public abstract class BasicGameBuilder {
 
 		liveTimeLabel = new Label("");
 
+		// benötigt für Abstand zwischen Buttons und Timer
+		final Pane rightSpacer = new Pane();
+		HBox.setHgrow(rightSpacer, Priority.SOMETIMES);
+
 		setButtonActions();
 
-		toolbar.getItems().addAll(hintButton, autosolve, check, done, liveTimeLabel);
+		toolbar.getItems().addAll(hintButton, autosolve, check, done, rightSpacer, liveTimeLabel);
 
 		toolbox.getChildren().add(toolbar);
 
@@ -157,10 +160,13 @@ public abstract class BasicGameBuilder {
 					public void changed(ObservableValue<? extends String> observable, String oldValue,
 							String newValue) {
 						controller.compareResult(sudokuField);
+
 					}
 				};
+
 				sudokuField[col][row].textProperty().addListener(changeListener);
 				listeners.add(changeListener);
+
 			}
 		}
 	}
@@ -168,8 +174,9 @@ public abstract class BasicGameBuilder {
 	public void removeListeners(SudokuField[][] sudokuField) {
 
 		for (ChangeListener l : listeners) {
-			for (SudokuField[] sf : sudokuField) {
-				for (SudokuField field : sf) {
+			for (SudokuField[] sss : sudokuField) {
+				for (SudokuField field : sss) {
+
 					field.textProperty().removeListener(l);
 				}
 			}
@@ -190,6 +197,8 @@ public abstract class BasicGameBuilder {
 	protected Menu propertyMenu;
 	protected RadioMenuItem conflictItem;
 	protected MenuItem moreHintsItem;
+
+	protected Menu sourceMenu;
 
 	protected Menu mainMenu;
 	protected MenuItem mainMenuItem;
@@ -242,38 +251,35 @@ public abstract class BasicGameBuilder {
 		seperator = new SeparatorMenuItem();
 		exitItem = new MenuItem("Exit");
 
-		// load.setOnAction(e -> openFile());
-
 		// SpielButton Funktionen für Menuü
-		gameFunctions = new Menu("Game..");
 
-		hintMenuItem = new MenuItem("Hint");
-		autoSolveItem = new MenuItem("AutoSolve");
-		checkItem = new MenuItem("Check");
-		gameFunctions.getItems().addAll(hintMenuItem, autoSolveItem, checkItem);
-
-		file.getItems().addAll(newGame, save, load, exportItem, importItem, seperator, exitItem);
+		file.getItems().addAll(newGame, save, load, importItem, exportItem, seperator, exitItem);
 
 		// menu Einträge für SpielFunktionen (Hint, Autosolve, check)
 
 		popover = gamePopUp.createPopUp();
-		// createPopUp();
 
 		// newgame menu eintrag
 		editMenu = new Menu("Edit");
-//		clearFieldItem = new MenuItem("Clear Field");
-		createGameItem = new MenuItem("Create Game");
-		reset = new MenuItem("Reset");
-		editMenu.getItems().addAll(createGameItem, reset);
 
-		mainMenu = new Menu("Main Menu");
+		createGameItem = new MenuItem("New Round");
+		reset = new MenuItem("Reset");
+		editMenu.getItems().addAll(createGameItem, reset, propertyMenu);
+
+		mainMenu = new Menu("SudokuFX");
 
 		mainMenuItem = new MenuItem("Go to Main Menu");
 		mainMenu.getItems().addAll(mainMenuItem);
-		menuBar.getMenus().addAll(file, editMenu, mainMenu, helpMenu, propertyMenu);
-		menuBar.getStylesheets().add("menu-bar");
 
+		sourceMenu = new Menu("Source");
+		hintMenuItem = new MenuItem("Hint");
+		autoSolveItem = new MenuItem("AutoSolve");
+		checkItem = new MenuItem("Check");
+		sourceMenu.getItems().addAll(hintMenuItem, autoSolveItem, checkItem);
+
+		menuBar.getMenus().addAll(file, editMenu, sourceMenu, mainMenu, helpMenu);
 		toolbox.getChildren().addAll(menuBar);
+		menuBar.getStylesheets().add("menu-bar");
 		pane.setTop(toolbox);
 
 	}
@@ -287,7 +293,13 @@ public abstract class BasicGameBuilder {
 
 		check.setOnAction(controller::checkHandler);
 		autosolve.setOnAction(controller::autoSolveHandler);
+		hintButton.setOnAction(controller::hintHandeler);
+
 		done.setOnAction(controller::manuelDoneHandler);
+		checkItem.setOnAction(controller::checkHandler);
+		hintMenuItem.setOnAction(controller::hintHandeler);
+		autoSolveItem.setOnAction(controller::autoSolveHandler);
+
 		// load.setOnAction(controller::importGame);
 		save.setOnAction(controller::saveGame);
 		reset.setOnAction(controller::resetHandler);
@@ -298,14 +310,13 @@ public abstract class BasicGameBuilder {
 
 		});
 
-		hintButton.setOnAction(controller::hintHandeler);
 		conflictItem.setOnAction(controller::switchOffConflicts);
 		moreHintsItem.setOnAction(controller::handleMoreHints);
 		// exitItem.setOnAction(e -> GUI.closeProgram());
 		exportItem.setOnAction(controller::exportGame);
 		importItem.setOnAction(controller::importGame);
 
-		exitItem.setOnAction(e -> {
+		newGame.setOnAction(e -> {
 
 			popover.show(hintButton, -30);
 
@@ -314,19 +325,17 @@ public abstract class BasicGameBuilder {
 
 	public void createStatusBar(BorderPane pane) {
 		gameNotificationLabel = new Label();
-		playTimeLabel = new Label();
+
 		gameInfoLabel = new Label();
 
 		StatusBar statusBar = new StatusBar();
 		statusBar.setText("");
 
 		statusBar.getRightItems().add(gameInfoLabel);
-		statusBar.getRightItems().add(playTimeLabel);
 
 		statusBar.getLeftItems().add(gameNotificationLabel);
 
-		Stream.of(gameInfoLabel, playTimeLabel, gameNotificationLabel)
-				.forEach(label -> label.getStyleClass().add("gamelabel"));
+		Stream.of(gameInfoLabel, gameNotificationLabel,liveTimeLabel).forEach(label -> label.getStyleClass().add("gameLabel"));
 
 		pane.setBottom(statusBar);
 	}
@@ -349,10 +358,6 @@ public abstract class BasicGameBuilder {
 
 	public int getDifficulty() {
 		return difficulty;
-	}
-
-	public Label getPlayTimeLabel() {
-		return playTimeLabel;
 	}
 
 	public Button getCheckButton() {
