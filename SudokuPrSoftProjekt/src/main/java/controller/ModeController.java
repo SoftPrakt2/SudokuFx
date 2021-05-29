@@ -25,20 +25,13 @@ import logic.SudokuLogic;
 
 public class ModeController {
 
-	MainMenu menu;
-	Scene playScene;
+	private MainMenu menu;
+	private BasicGameBuilder game;
+	private BasicGameLogic model;	
 
-	BasicGameBuilder game;
-	BasicGameLogic model;
-
-	
-	private Scene storageScene;
-
-	
-
-	boolean initialized = false;
-
-	public int difficulty;
+//	private boolean initialized = false;
+//
+//	private int difficulty;
 
 	public <E extends MainMenu> ModeController( E menu) {
 		this.menu = menu;

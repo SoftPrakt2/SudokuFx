@@ -10,6 +10,7 @@ import application.SamuraiGameBuilder;
 import application.Storage;
 import application.SudokuField;
 import application.SudokuGameBuilder;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -37,19 +38,14 @@ public class StorageController {
 	Storage storage;
 	File[] dir;
 
-	
-	
 	protected ObservableList<SudokuStorageModel> jsonObservableList = FXCollections.observableArrayList();
-	
+
 	TableColumn<SudokuStorageModel, String> gameTypecolumn = new TableColumn<>("GameType");
 	TableColumn<SudokuStorageModel, String> difficultycolumn = new TableColumn<>("Difficulty");
 	TableColumn<SudokuStorageModel, Integer> pointscolumn = new TableColumn<>("Points");
 	TableColumn<SudokuStorageModel, String> playtimecolumn = new TableColumn<>("PlayTime");
 	TableColumn<SudokuStorageModel, Gamestate> gamestatecolumn = new TableColumn<>("Gamestate");
 	TableColumn<SudokuStorageModel, Integer> gameidcolumn = new TableColumn<>("GameID");
-	
-	
-	
 
 	SharedStoragePreferences sharedStorage = new SharedStoragePreferences();
 
@@ -75,9 +71,13 @@ public class StorageController {
 
 		storageModel.setLoadedLogic(model);
 		storageModel.loadIntoModel();
+
 		model = storageModel.getLoadedLogic();
 
 		game.initializeGame();
+		model.initializeTimer();
+		model.getLiveTimer().start();
+		game.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());
@@ -98,9 +98,9 @@ public class StorageController {
 		}
 	}
 
-	
 	public void setUpTableView() {
-		storage.getTableView().getColumns().addAll(gameidcolumn, gameTypecolumn, difficultycolumn, pointscolumn, playtimecolumn, gamestatecolumn);
+		storage.getTableView().getColumns().addAll(gameidcolumn, gameTypecolumn, difficultycolumn, pointscolumn,
+				playtimecolumn, gamestatecolumn);
 	}
 
 	public void fillListVew() {
@@ -126,10 +126,7 @@ public class StorageController {
 			playtimecolumn.setCellValueFactory(new PropertyValueFactory<>("playtimestring"));
 			gamestatecolumn.setCellValueFactory(new PropertyValueFactory<>("gamestate"));
 			gameidcolumn.setCellValueFactory(new PropertyValueFactory<>("gameid"));
-			
-//			storageModel.calculateGameStats();
-//			setGameStatInformations();
-//			System.out.println(dir.length + "llllllllllllllll" + storage.getObservableList().size());
+
 		}
 		storage.getTableView().setItems(jsonObservableList);
 	}
@@ -142,14 +139,14 @@ public class StorageController {
 	}
 
 	public void deleteEntry(ActionEvent e) {
-		
+
 		int deleteIndex = storage.getTableView().getSelectionModel().getSelectedIndex();
 
 		jsonObservableList.remove(deleteIndex);
-		
-		dir[deleteIndex].delete();
 
-		
+		if (dir[deleteIndex].delete()) {
+			System.out.println("erfolgreich gelöscht");
+		}
 
 		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
 

@@ -22,18 +22,18 @@ import logic.SudokuLogic;
 
 public class PopOverController {
 
-	Scene playScene;
+	private Scene playScene;
 
 	
-	BasicGameLogic standardlogic;
+	private BasicGameLogic standardlogic;
 
-	BasicGameBuilder standard;
+	private BasicGameBuilder standard;
 	
-	PopOver popover;
+	private PopOver popover;
 
-	boolean oldGame;
+	private boolean oldGame;
 
-	public int difficulty;
+	private int difficulty;
 	
 	public PopOverController(BasicGameBuilder standard, BasicGameLogic standardlogic) {
 		this.standard = standard;

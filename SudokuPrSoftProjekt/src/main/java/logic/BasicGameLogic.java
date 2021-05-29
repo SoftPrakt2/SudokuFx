@@ -1,28 +1,16 @@
 
 package logic;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.time.Duration;
+import java.time.LocalTime;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import application.Storage;
-import application.SudokuField;
-import controller.StorageController;
 import javafx.animation.AnimationTimer;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.geometry.Pos;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * 
@@ -33,36 +21,31 @@ import javafx.geometry.Pos;
  */
 public abstract class BasicGameLogic {
 
-
 	protected Gamestate gamestate;
 	private boolean isCorrect;
 	protected String gameType = "";
 	protected int gamePoints = 10;
 	protected long minutesPlayed;
 	protected long secondsPlayed;
-	protected long loadedMinutesPlayed;
-	protected long loadedSecondsPlayed;
+
 	protected long startTime;
 	protected int gameIDhelper;
 	public String gameText = "";
 	private int gameID = 0;
-	
+
 	protected Cell[][] cells;
-	
+
 	private String difficultyString;
-	
+
 	protected int hintCounter;
-	
+
 	protected int difficulty;
-	
-	
-	
-	//Variablen für Timer
+
+	protected StringProperty liveTimePlayedString;
+
+	// Variablen für Timer
 	AnimationTimer timer;
-	DoubleProperty seconds = new SimpleDoubleProperty();
-	DoubleProperty minutes = new SimpleDoubleProperty();
-    BooleanProperty running = new SimpleBooleanProperty();
-	
+	BooleanProperty running = new SimpleBooleanProperty();
 
 	public BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
@@ -93,11 +76,10 @@ public abstract class BasicGameLogic {
 	public abstract void printCells();
 
 	public abstract void setCell(int col, int row, int guess);
-	
+
 	public String getGameType() {
 		return gameType;
 	}
-	
 
 	public abstract boolean testIfSolved();
 
@@ -105,8 +87,7 @@ public abstract class BasicGameLogic {
 	 * Getter und Setter für Instanzvariablen
 	 * 
 	 */
-	
-	
+
 	public Cell[][] getCells() {
 		return cells;
 	}
@@ -135,30 +116,29 @@ public abstract class BasicGameLogic {
 		this.secondsPlayed = secondsPlayed;
 	}
 
-	public void setLoadedMinutes(long loadedMinutesPlayed) {
-		this.loadedMinutesPlayed = loadedMinutesPlayed;
-	}
+//	public void setLoadedMinutes(long loadedMinutesPlayed) {
+//		this.loadedMinutesPlayed = loadedMinutesPlayed;
+//	}
+//
+//	public void setLoadedSeconds(long loadedSecondsPlayed) {
+//		this.loadedSecondsPlayed = loadedSecondsPlayed;
+//	}
 
-	public void setLoadedSeconds(long loadedSecondsPlayed) {
-		this.loadedSecondsPlayed = loadedSecondsPlayed;
-	}
+//	public long getLoadedMinutes() {
+//		return loadedMinutesPlayed;
+//	}
+//
+//	public long getLoadedSeconds() {
+//		return loadedSecondsPlayed;
+//	}
 
-	public long getLoadedMinutes() {
-		return loadedMinutesPlayed;
-	}
-
-	public long getLoadedSeconds() {
-		return loadedSecondsPlayed;
-	}
-	
 	public int getDifficulty() {
 		return difficulty;
 	}
-	
+
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;
 	}
-	
 
 	public void setGamePoints(int gamePoints) {
 		this.gamePoints = gamePoints;
@@ -171,15 +151,15 @@ public abstract class BasicGameLogic {
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
-	
+
 	public int getHintCounter() {
 		return hintCounter;
 	}
-	
+
 	public void setHintCounter(int hintCounter) {
 		this.hintCounter = hintCounter;
 	}
-	
+
 	public void setGameState(Gamestate gamestate) {
 		this.gamestate = gamestate;
 	};
@@ -187,7 +167,6 @@ public abstract class BasicGameLogic {
 	public Gamestate getGameState() {
 		return this.gamestate;
 	}
-	
 
 	public String getGameText() {
 		if (this.getGameState() == Gamestate.OPEN) {
@@ -215,7 +194,7 @@ public abstract class BasicGameLogic {
 	public int getGameID() {
 		return gameID;
 	}
-	
+
 	public String getDifficultyString() {
 		return difficultyString;
 	}
@@ -227,23 +206,23 @@ public abstract class BasicGameLogic {
 	public void setDifficultyString() {
 		if (difficulty == 3) {
 			difficultyString = "Hard";
-			}
-		if(difficulty == 5) {
+		}
+		if (difficulty == 5) {
 			difficultyString = "Medium";
 		}
-		if(difficulty == 7) {
+		if (difficulty == 7) {
 			difficultyString = "Easy";
-		} if(difficulty == 0) {
+		}
+		if (difficulty == 0) {
 			difficultyString = "Manual";
 		}
 	}
-	
-	
+
 	public long calculateGameTime() {
 		long time;
 		long endTime = System.currentTimeMillis();
 		time = (endTime - getStartTime()) / 1000;
-		time += getLoadedMinutes() * 60 + getLoadedSeconds();
+		// time += getLoadedMinutes() * 60 + getLoadedSeconds();
 		setSecondsPlayed(time);
 		if (time > 60) {
 			setMinutesPlayed(time / 60);
@@ -251,86 +230,47 @@ public abstract class BasicGameLogic {
 		}
 		return time;
 	}
-	
-	
-	
-	 
-	public void startTimer() {
-	  seconds = new SimpleDoubleProperty();
-	  minutes = new SimpleDoubleProperty();
-	 IntegerProperty counter = new SimpleIntegerProperty();
-	 
-	 BooleanProperty test = new SimpleBooleanProperty();
-	 
-     running = new SimpleBooleanProperty();
 
-     timer = new AnimationTimer() {
+	public void initializeTimer() {
 
-        private long startTime ;
+		liveTimePlayedString = new SimpleStringProperty("");
 
-        @Override
-        public void start() {
-            startTime = System.currentTimeMillis();
-            running.set(true);
-            test.setValue(true);
-            super.start();
-        
-        }
+		running = new SimpleBooleanProperty();
 
-        @Override
-        public void stop() {
-            running.set(false);
-            super.stop();
-        }
+		timer = new AnimationTimer() {
 
-        @Override
-        public void handle(long timestamp) {
-        
-        
-            long now = System.currentTimeMillis() - ((long)seconds.getValue().shortValue());
-          
-            System.out.println(seconds.getValue());
-            
-            seconds.set((now - startTime) / 1000);
-        	
-          
-            
-            if(seconds.getValue().shortValue()%3 ==0 ) {
-            	minutes.set(seconds.getValue().shortValue()/3);
-            	seconds.set(0);
-            }
-            
-        }
-    };
-}
-	
-	
+			private LocalTime startTime;
+
+			@Override
+			public void handle(long now) {
+				long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
+				minutesPlayed = elapsedSeconds / 60;
+				secondsPlayed = elapsedSeconds % 60;
+
+				liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
+			}
+
+			@Override
+			public void start() {
+				running.set(true);
+				startTime = LocalTime.now();
+				super.start();
+			}
+
+			@Override
+			public void stop() {
+				running.set(false);
+				super.stop();
+			}
+		};
+
+	}
+
 	public AnimationTimer getLiveTimer() {
 		return timer;
 	}
-	
-	public DoubleProperty getSecondsProperty() {
-		return seconds;
+
+	public StringProperty getStringProp() {
+		return liveTimePlayedString;
 	}
-	
-	public DoubleProperty getMinutesProperty() {
-		return minutes;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }

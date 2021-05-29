@@ -209,6 +209,7 @@ public class GameController {
 			model.setGamePoints(0);
 			scene.getGameInfoLabel()
 					.setText("Points: " + model.getgamePoints() + " | Difficulty: " + model.getDifficultyString());
+			model.getLiveTimer().stop();
 			scene.getGameNotificationLabel().setText(model.getGameText());
 			if (!model.testIfSolved()) {
 				resetHandler(e);
@@ -257,12 +258,11 @@ public class GameController {
 			if (!model.getGameState().equals(Gamestate.AutoSolved)) {
 				model.setGameState(Gamestate.DONE);
 				scene.getGameNotificationLabel().setText(model.getGameText());
+				model.getLiveTimer().stop();
 			}
 			scene.getPlayTimeLabel().setText(
 					" | Playtime: " + model.getMinutesPlayed() + " minutes " + model.getSecondsPlayed() + " seconds ");
-
 		} else if (!gameState || numberCounter != sudokuField.length * sudokuField.length) {
-
 			scene.getGameNotificationLabel().setText(model.getGameText());
 		}
 
@@ -305,12 +305,9 @@ public class GameController {
 	
 	
 	public void setUpLiveTimer() {
-	
-		model.startTimer();
-		
-		
-	
-	
+		model.initializeTimer();
+        model.getLiveTimer().start();
+        scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 	}
 
 	/**
@@ -354,12 +351,14 @@ public class GameController {
 				int[] coordinates = model.hint();
 				for (int row = 0; row < sudokuField.length; row++) {
 					for (int col = 0; col < sudokuField[row].length; col++) {
-						if (coordinates[0] == row && coordinates[1] == col
-								&& sudokuField[col][row].getText().equals("")) {
-							String number = Integer.toString(model.getCells()[row][col].getValue());
-							sudokuField[col][row].setText(number);
-							sudokuField[col][row].setStyle("-fx-text-fill: blue");
-							sudokuField[col][row].setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+						if(coordinates != null) {
+							if (coordinates[0] == row && coordinates[1] == col
+									&& sudokuField[col][row].getText().equals("")) {
+								String number = Integer.toString(model.getCells()[row][col].getValue());
+								sudokuField[col][row].setText(number);
+								sudokuField[col][row].setStyle("-fx-text-fill: blue");
+								sudokuField[col][row].setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+							}	
 						}
 					}
 				}

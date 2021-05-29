@@ -40,10 +40,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	 * Zeichnet ein Sudoku-Feld
 	 */
 	public GridPane createBoard() {
-	
-	
-		
-		
+
 		playBoard = new GridPane();
 
 		playBoard.setPadding(new Insets(5, 5, 5, 5));

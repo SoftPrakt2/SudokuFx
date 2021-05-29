@@ -66,7 +66,6 @@ public abstract class BasicGameBuilder {
 	
 	protected Label liveTimeLabel;
 	
-	
 	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
 	protected ToolBar toolbar;
 	
@@ -112,7 +111,6 @@ public abstract class BasicGameBuilder {
 		createMenuBar(pane);
 		createPlayButtons(pane);
 		createStatusBar(pane);
-		//createTimer();
 	}
 
 	public abstract void createNumbers();
@@ -248,8 +246,6 @@ public abstract class BasicGameBuilder {
 	 * Erstellt die Menüleiste mit den jeweiligen MenüItems
 	 */
 	public void createMenuBar(BorderPane pane) {
-		VBox menuBox = new VBox();
-
 		// menuBar for the scene
 		menuBar = new MenuBar();
 	
@@ -373,67 +369,6 @@ public abstract class BasicGameBuilder {
 
 		pane.setBottom(statusBar);
 	}
-	
-	public void createTimer() {
-		Label timeLabel = new Label();
-		StackPane timePane = new StackPane();
-		 DoubleProperty seconds = new SimpleDoubleProperty();
-		 DoubleProperty minutes = new SimpleDoubleProperty();
-		 int helpcounter = 0;
-		 
-		timeLabel.textProperty().bind(Bindings.concat(minutes.asString("%.0f minutes"), ":",seconds.asString("%.0f seconds")));
-	//	timeLabel.textProperty().bind(seconds.asString("%.0f seconds"));
-
-        BooleanProperty running = new SimpleBooleanProperty();
-
-         timer = new AnimationTimer() {
-
-            private long startTime ;
-
-            @Override
-            public void start() {
-                startTime = System.currentTimeMillis();
-                running.set(true);
-                super.start();
-            }
-
-            @Override
-            public void stop() {
-                running.set(false);
-                super.stop();
-            }
-
-            @Override
-            public void handle(long timestamp) {
-            
-            
-                long now = System.currentTimeMillis();
-                seconds.set((now - startTime) / 1000);
-            	
-                System.out.println(seconds.getValue());
-                
-                if(seconds.getValue().shortValue()%60 ==0 ) {
-                
-                	double helper = seconds.getValue();
-                	minutes.set(seconds.getValue().shortValue()/60);
-                	seconds.set(helper%60);
-                }
-                
-            }
-        };
-        mainMenuItem.setOnAction(e -> timer.start());
-        timePane.getChildren().add(timeLabel);
-        timePane.setAlignment(Pos.TOP_RIGHT);
-        toolbar.getItems().add(timePane);
-        
-     
-        
-        
-	}
-	
-
-	
-	
 
 	/**
 	 * 
@@ -458,8 +393,6 @@ public abstract class BasicGameBuilder {
 	public Label getPlayTimeLabel() {
 		return playTimeLabel;
 	}
-
-	
 
 	public Button getCheckButton() {
 		return this.check;
@@ -502,18 +435,4 @@ public abstract class BasicGameBuilder {
 	public Label getLiveTimeLabel() {
 		return liveTimeLabel;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

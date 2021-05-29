@@ -12,10 +12,9 @@ import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-
+import com.google.gson.GsonBuilder;
 
 import application.GUI;
-import application.Storage;
 import javafx.stage.FileChooser;
 
 public class SudokuStorageModel {
@@ -59,8 +58,8 @@ public class SudokuStorageModel {
 
 	
 	public void prepareSave(BasicGameLogic save) {
-		//storagePref.getStoragePrefs().putInt("GameID",1);
 		
+
 		gameArray = save.getCells();
 		savedGameType = save.getGameType();
 		difficulty = save.getDifficulty();
@@ -82,7 +81,7 @@ public class SudokuStorageModel {
 		JSONObject jsonObject;
 	
 
-		Gson gson = new Gson();
+		Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 		String cellArray = gson.toJson(gameArray, Cell[][].class);
 		String gameTypeGson = gson.toJson(savedGameType, String.class);
@@ -171,8 +170,11 @@ public class SudokuStorageModel {
 	
 	public void setStoredInformations() {
 		Gson g = new Gson();
-		gametype = g.fromJson((String)importedJson.get("type"), String.class);
-		gamePoints = g.fromJson((String) importedJson.get("points"), Integer.class);
+	
+	
+		
+		gametype = g.fromJson(importedJson.get("type").toString(), String.class);
+		gamePoints = g.fromJson(importedJson.get("points").toString(), Integer.class);
 		difficulty = g.fromJson((String) importedJson.get("difficulty"), Integer.class);
 		difficultyString = g.fromJson((String) importedJson.get("difficultyString"), String.class);
 		minutesPlayed = g.fromJson((String) importedJson.get("minutesPlayed"), Integer.class);
@@ -195,9 +197,10 @@ public class SudokuStorageModel {
 		savedModel.setGamePoints(gamePoints);
 		savedModel.setDifficulty(difficulty);
 		savedModel.setStartTime(System.currentTimeMillis());
-		savedModel.setLoadedSeconds(secondsPlayed);
-		savedModel.setLoadedMinutes(minutesPlayed);
+		savedModel.setSecondsPlayed(secondsPlayed);
+		savedModel.setMinutesPlayed(minutesPlayed);
 		savedModel.setDifficultyString();
+		savedModel.initializeTimer();
 	}
 
 	
@@ -287,7 +290,7 @@ public class SudokuStorageModel {
 		playedMinutesOverall = helpCalculate/60;
 		playedSecondsOverall = helpCalculate %60;
 		
-		averagePoints = gamePoints/fileCounter;
+	
 		
 	}
 	

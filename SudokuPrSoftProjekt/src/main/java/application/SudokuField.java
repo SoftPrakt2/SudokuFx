@@ -6,8 +6,8 @@ import javafx.scene.input.KeyCode;
 
 public class SudokuField extends TextField{
 	
-	boolean playable = true;
-	String color;
+	private boolean playable = true;
+	private String color;
 	
 	public SudokuField(String txt) {
 		super(txt);

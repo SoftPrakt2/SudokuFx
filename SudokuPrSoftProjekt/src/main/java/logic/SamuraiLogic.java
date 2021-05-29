@@ -314,6 +314,7 @@ public class SamuraiLogic extends BasicGameLogic {
 		int randomCol = 0;
 		int randomNumber = 0;
 		int [] coordinates = new int[2];
+		int counter = 0;
 
 		int help[][] = new int[21][21];
 		for (int row = 0; row < this.cells.length; row++) {
@@ -328,11 +329,16 @@ public class SamuraiLogic extends BasicGameLogic {
 			randomRow = (int) (Math.random() * 20) + 0;
 			randomCol = (int) (Math.random() * 20) + 0;
 			randomNumber = (int) (Math.random() * 9) + 1;
-			if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0) {
+			if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0 && this.cells[randomRow][randomCol].getValue() != -1) {
 				help[randomRow][randomCol] = randomNumber;
 				coordinates[0] = randomRow;
 				coordinates[1] = randomCol; 
 				correctRandom = true;
+			}
+			counter++;
+			if(counter == 10000) {
+				coordinates = null;
+				break;
 			}
 		}
 

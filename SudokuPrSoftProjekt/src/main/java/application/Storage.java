@@ -60,8 +60,6 @@ public class Storage {
 	// auswählen lassen zu können welches Spiel er laden will
 	protected TableView<SudokuStorageModel> listView;
 
-	
-
 	// Right Click Menu Items
 	ContextMenu contextMenu = new ContextMenu();
 	MenuItem deleteMenuItem = new MenuItem("Delete");
@@ -113,7 +111,6 @@ public class Storage {
 
 		storagePane = new BorderPane();
 		storageScene = new Scene(storageContainerBox, 500, 500);
-		// storageScene.getStylesheets().add("css/sudoku.css");
 
 		gameHeadLabel = new Label("Game Overview");
 		gameHeadLabel.setFont(new Font("Georgia", 20));
@@ -129,17 +126,12 @@ public class Storage {
 
 		contextMenu.getItems().addAll(deleteMenuItem, loadMenuItem);
 
-		// storageContainerBox.setSpacing(10);
-
 		pointsLabel = new Label("");
-//		pointsLabel.setText("Overall Points: " + calculateGamePoints());
 		averagePointsLabel = new Label("");
 		averageTimeLabel = new Label("");
 		pointsLabel.setAlignment(Pos.BASELINE_LEFT);
 		gameStatsBox.getChildren().addAll(pointsLabel, averageTimeLabel, averagePointsLabel);
 		gameStatsBox.setAlignment(Pos.CENTER);
-
-		// listView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
 
 		storageContainerBox.setPadding(new Insets(100, 15, 15, 15));
 
@@ -148,7 +140,6 @@ public class Storage {
 
 		storageContainerBox.setTop(gameHeaderBox);
 		storageContainerBox.setCenter(listviewBox);
-		// storageContainerBox.getChildren().addAll(gameHeaderBox, listView);
 
 		controller.fillListVew();
 
@@ -159,10 +150,6 @@ public class Storage {
 
 		});
 		loadMenuItem.setOnAction(controller::handleLoadAction);
-		// loadMenuItem.setOnAction(e ->
-		// System.out.println(listView.getSelectionModel().getSelectedIndex()));
-
-		// GUI.getStage().setScene(storageScene);
 
 		return storageScene;
 	}
@@ -181,9 +168,6 @@ public class Storage {
 		});
 
 	}
-
-
-
 
 	public TableView<SudokuStorageModel> getTableView() {
 		return listView;
@@ -204,5 +188,4 @@ public class Storage {
 	public Stage getStage() {
 		return stage;
 	}
-
 }
