@@ -54,18 +54,20 @@ public class Storage {
 
 	protected HBox gameHeaderBox = new HBox();
 
-	protected Label pointsHeaderLabel;
+	protected Label overallPointsHeaderLabel;
 	protected Label averagePointsHeaderLabel;
 	protected Label averageTimeHeaderLabel;
 	protected Label overallTimeHeaderLabel;
 	protected Label averagePointsResultLabel;
 	protected Label overallPointsResultLabel;
-	
+	protected Label overallTimeResultLabel;
+	protected Label averageTimeResultLabel;
 
 	protected VBox listviewBox;
 
 	FontAwesome fontAwesome = new FontAwesome();
 	Glyph folderGraphic = fontAwesome.create(FontAwesome.Glyph.FOLDER);
+	
 
 	protected Stage stage;
 	
@@ -144,68 +146,117 @@ public class Storage {
 	
 	public void createGameStatBox() {
 	
-		VBox gameStatsBox = new VBox();
+		HBox gameStatsBox = new HBox();
 		Label gameStatsLabel = new Label("Game Scores");
 		gameStatsLabel.setFont(new Font("Georgia",20));
 		
 		gameStatsLabel.setAlignment(Pos.CENTER);
 		
-		pointsHeaderLabel = new Label("Overall Points");
+		
+		
 		averagePointsHeaderLabel = new Label ("Average Points");
 		gameStatsBox.setPadding(new Insets(10,10,10,10));
-		gameStatsBox.getChildren().add(gameStatsLabel);
-		gameStatsBox.setAlignment(Pos.CENTER);
+		gameStatsBox.setSpacing(70);
 		
-		HBox pointHeaderBox = new HBox();
-	//	pointsBox.setPadding(new Insets(5,5,5,5));
-		pointsHeaderLabel.setFont(new Font("Georgia",14));
-		averagePointsHeaderLabel.setFont(new Font("Georgia",14));
-		pointHeaderBox.setSpacing(230);
-		pointHeaderBox.getChildren().addAll(averagePointsHeaderLabel,pointsHeaderLabel);
+		//gameStatsBox.setAlignment(Pos.CENTER);
 		
-		HBox pointResultBox = new HBox();
-		pointResultBox.setPadding(new Insets(0,10,0,35));
+		VBox averageResultsBox = new VBox();
+		averageResultsBox.setPadding(new Insets(40,0,0,0));
+		
+		
+		
+		averagePointsHeaderLabel = new Label ("Average Points");
 		averagePointsResultLabel = new Label("0");
-		averagePointsResultLabel.setFont(new Font("Georgia",13));
-		pointResultBox.setSpacing(315);
+		averagePointsHeaderLabel.setFont(new Font("Georgia",14));
+		HBox averagepointsResultBox = new HBox();
+		averagepointsResultBox.getChildren().add(averagePointsResultLabel);
+		averagepointsResultBox.setAlignment(Pos.CENTER);
+		averagepointsResultBox.setPadding(new Insets(0,0,15,0));
+		averagePointsResultLabel.setFont(new Font("Georgia",20));
 		
-		overallPointsResultLabel = new Label("0");
-		overallPointsResultLabel.setFont(new Font("Georgia",13));
-		pointResultBox.getChildren().addAll(averagePointsResultLabel,overallPointsResultLabel);
 		
-		
-		HBox timeBox = new HBox();
-
 		averageTimeHeaderLabel = new Label ("Average Time");
-		overallTimeHeaderLabel = new Label ("Overall Time");
+		averageTimeResultLabel = new Label("0");
 		averageTimeHeaderLabel.setFont(new Font("Georgia",14));
+		HBox averageTimeResultBox = new HBox();
+		averageTimeResultBox.getChildren().add(averageTimeResultLabel);
+		averageTimeResultBox.setAlignment(Pos.CENTER);
+		averageTimeResultLabel.setFont(new Font("Georgia",20));
+		averageResultsBox.getChildren().addAll(averagePointsHeaderLabel,averagepointsResultBox,averageTimeHeaderLabel,averageTimeResultBox);
+		
+		
+		
+		
+		VBox overallResultsBox = new VBox();
+		overallResultsBox.setPadding(new Insets(40,0,0,0));
+		
+		overallPointsHeaderLabel = new Label("Overall Points");
+		overallPointsResultLabel = new Label("0");
+		overallPointsHeaderLabel.setFont(new Font("Georgia",14));
+		HBox overallpointsResultBox = new HBox();
+		overallpointsResultBox.getChildren().add(overallPointsResultLabel);
+		overallpointsResultBox.setAlignment(Pos.CENTER);
+		overallpointsResultBox.setPadding(new Insets(0,0,15,0));
+		overallPointsResultLabel.setFont(new Font("Georgia",20));
+		
+		
+		
+		overallTimeHeaderLabel = new Label ("Overall Time");
+		overallTimeResultLabel = new Label("0");
 		overallTimeHeaderLabel.setFont(new Font("Georgia",14));
-		timeBox.setSpacing(237);
-		timeBox.setPadding(new Insets(30,0,0,0));
-		timeBox.getChildren().addAll(averageTimeHeaderLabel, overallTimeHeaderLabel);
-		
-		gameStatsBox.getChildren().addAll(pointHeaderBox,pointResultBox,timeBox);
-		
-		
+		HBox overallTimeResultBox = new HBox();
+		overallTimeResultBox.getChildren().add(overallTimeResultLabel);
+		overallTimeResultBox.setAlignment(Pos.CENTER);
+		overallTimeResultLabel.setFont(new Font("Georgia",20));
+		overallResultsBox.getChildren().addAll(overallPointsHeaderLabel,overallpointsResultBox,overallTimeHeaderLabel, overallTimeResultBox);
 		
 		
+		//pointHeaderBox.setSpacing(230);
+		
+		
+//		HBox pointResultBox = new HBox();
+//		pointResultBox.setPadding(new Insets(0,10,0,35));
+//		
+//		
+//		pointResultBox.setSpacing(315);
+//		pointsHeaderLabel.setFont(new Font("Georgia",14));
+//		overallPointsResultLabel = new Label("0");
+//		overallPointsResultLabel.setFont(new Font("Georgia",20));
+//		pointResultBox.getChildren().addAll(averagePointsResultLabel,overallPointsResultLabel);
+//		
+//		
+//		HBox timeBox = new HBox();
+//
+//		
+//		overallTimeHeaderLabel = new Label ("Overall Time");
+//		
+//		overallTimeHeaderLabel.setFont(new Font("Georgia",14));
+//		
+//		
+//		
+//		HBox timeResultBox = new HBox();
+//		timeResultBox.setPadding(new Insets(0,10,0,35));
+//		overallTimeResultLabel = new Label("0");
+//		
+//		overallTimeResultLabel.setFont(new Font("Georgia",14));
+//		averageTimeResultLabel.setFont(new Font("Georgia",10));
+//		timeResultBox.setSpacing(315);
+//		timeResultBox.getChildren().addAll(averageTimeResultLabel,overallTimeResultLabel);
+//		
+//		timeBox.setSpacing(237);
+//		timeBox.setPadding(new Insets(30,0,0,0));
+//		timeBox.getChildren().addAll(averageTimeHeaderLabel, overallTimeHeaderLabel);
+//		
+		gameStatsBox.getChildren().addAll(averageResultsBox, gameStatsLabel, overallResultsBox);
+//		
+//		
+//		
+//		
 		listviewBox.getChildren().add(gameStatsBox);
 
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	// Methoe welche Funktionalität für Rechtsklick Menü ermöglicht
 	public void addContextMenuFunctionality() {
 		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -229,13 +280,18 @@ public class Storage {
 		return overallPointsResultLabel;
 	}
 
-//	public Label getAverageTimeLabel() {
-//		return averageTimeLabel;
-//	}
-//
-//	public Label getAveragePointsLabel() {
-//		return averagePointsLabel;
-//	}
+	public Label getAverageTimeResultLabel() {
+		return averageTimeResultLabel;
+	}
+
+	public Label getOverallTimeResultLabel() {
+		return overallTimeResultLabel;
+	}
+	
+	
+	public Label getAveragePointsResultLabel() {
+		return averagePointsResultLabel;
+	}
 
 	public Stage getStage() {
 		return stage;

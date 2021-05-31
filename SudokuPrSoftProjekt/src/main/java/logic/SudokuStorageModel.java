@@ -37,6 +37,7 @@ public class SudokuStorageModel {
 	int gameID;
 	int helper;
 
+	
 	JSONObject importedJson;
 
 	FileChooser chooser;
@@ -155,7 +156,7 @@ public class SudokuStorageModel {
 		playTimeString = minutesPlayed + " min " + secondsPlayed + " s ";
 		gameArray = g.fromJson((String) importedJson.get("gameNumbers"), Cell[][].class);
 		gameState = g.fromJson((String) importedJson.get("gameState"), Gamestate.class);
-		gameID = g.fromJson((String) importedJson.get("gameIDGson"), Integer.class);
+	//	gameID = g.fromJson((String) importedJson.get("gameIDGson"), Integer.class);
 	}
 
 	public void loadIntoModel() {
@@ -211,8 +212,6 @@ public class SudokuStorageModel {
 		return saveDirectory;
 	}
 
-
-//	
 	public String getGametype() {
 		return this.gametype;
 	}
@@ -232,6 +231,16 @@ public class SudokuStorageModel {
 	public Gamestate getGamestate() {
 		return gameState;
 	}
+	
+	public long getMinutesPlayed() {
+		return minutesPlayed;
+	}
+	
+	public long getSecondsPlayed() {
+		return secondsPlayed;
+	}
+	
+	
 
 	public int getGameid() {
 		return gameID;

@@ -15,15 +15,13 @@ public class NewGamePopUp extends MainMenu {
 	BasicGameBuilder game;
 	BasicGameLogic model;
 
-	public NewGamePopUp(BasicGameBuilder game, BasicGameLogic model) {
-		this.game = game;
-		this.model = model;
-	}
+	
 
 	PopOver popOver;
+	
 
 	public PopOver createPopUp() {
-		PopOverController popcontrol = new PopOverController(game, model);
+		PopOverController popcontrol = new PopOverController(this);
 
 		VBox popOverBox = new VBox();
 
@@ -31,16 +29,17 @@ public class NewGamePopUp extends MainMenu {
 
 		HBox gameModeButtons = new HBox();
 		gameModeButtons.setSpacing(2);
-		ToggleButton sudoku = new ToggleButton("Sudoku");
-		ToggleButton samurai = new ToggleButton("Samurai");
-		ToggleButton freeform = new ToggleButton("Freeform");
-		gameModeButtons.getChildren().addAll(sudoku, samurai, freeform);
-
+		
+		
+		super.createGameModeButtons();
+		gameModeButtons.getChildren().addAll(sudoku,samurai, freeform);
+		
+		
+		
+		super.createDifficultyButtons();
 		HBox difficultyButtons = new HBox();
 		difficultyButtons.setSpacing(2);
-		ToggleButton easy = new ToggleButton("Easy");
-		ToggleButton medium = new ToggleButton("Medium");
-		ToggleButton hard = new ToggleButton("Hard");
+
 		difficultyButtons.setSpacing(2);
 		difficultyButtons.getChildren().addAll(easy, medium, hard);
 
@@ -48,7 +47,7 @@ public class NewGamePopUp extends MainMenu {
 		samurai.setOnAction(popcontrol::handleToSamurai);
 		easy.setOnAction(popcontrol::handleEasy);
 		hard.setOnAction(popcontrol::handleHard);
-
+		
 		popOverBox.getChildren().addAll(newGameModeLabel, gameModeButtons, difficultyButtons);
 		popOverBox.setAlignment(Pos.CENTER);
 		gameModeButtons.setAlignment(Pos.CENTER);

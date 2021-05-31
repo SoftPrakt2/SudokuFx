@@ -21,6 +21,7 @@ public class GUI extends Application {
 
 	@Override
 	public void start(Stage scene) {
+		
 
 		// test commit
 		window = scene;
@@ -28,7 +29,8 @@ public class GUI extends Application {
 		scene.setMaxHeight(1500);
 		mainmenu.setUpMainMenu();
 		mainScene = mainmenu.getScene();
-
+		
+		
 		mainPane = mainmenu.getPane();
 		window.setScene(mainScene);
 		mainScene.getStylesheets().add("css/sudoku.css");

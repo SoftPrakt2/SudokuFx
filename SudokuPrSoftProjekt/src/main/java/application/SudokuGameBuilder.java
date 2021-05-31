@@ -24,6 +24,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		height = 700;
 	}
 
+	
 	/**
 	 * * Übergibt dieser Scene den jeweiligen Controller Erstellt die Scene mit den
 	 * Buttons, der MenuBar und dem Sudoku-Spielfeld

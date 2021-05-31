@@ -25,6 +25,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		super(model);
 		textField = new SudokuField[9][9];
 	}
+	
 
 	public GridPane createBoard() {
 		playBoard = new GridPane();

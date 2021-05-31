@@ -36,33 +36,30 @@ import logic.BasicGameLogic;
 public abstract class BasicGameBuilder {
 
 	protected BorderPane pane;
+
+	protected ToolBar toolbar;
+	VBox toolbox;
 	protected VBox playButtonMenu;
 	protected Button check;
 	protected Button owngame;
 	protected Button autosolve;
-	protected Button create;
-	protected Button empty;
 	protected Button hintButton;
+	
+	
 	protected Label gameNotificationLabel;
-	protected HBox buttonBox;
 	protected HBox gameLabelBox;
-	protected HBox emptySpaceBox;
 	protected StatusBar statusbar;
 	protected Label gameInfoLabel;
-
 	protected Label liveTimeLabel;
 
 	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
-	protected ToolBar toolbar;
 
-	protected AnimationTimer timer;
-
-	int width;
-	int height;
+	// Variablen welche für die Festlegung der Fenstergröße benötigt werden
+	protected int width;
+	protected int height;
 
 	protected Button done;
 
-	VBox toolbox = new VBox();
 	BasicGameLogic model;
 
 	NewGamePopUp gamePopUp;
@@ -87,14 +84,16 @@ public abstract class BasicGameBuilder {
 	public void initializeGame() {
 		controller = new GameController(this, model);
 
-		gamePopUp = new NewGamePopUp(this, model);
+		gamePopUp = new NewGamePopUp();
 
+		
 		pane.setCenter(createBoard());
 		pane.setPadding(new Insets(50, 50, 50, 50));
 
 		createMenuBar(pane);
 		createPlayButtons(pane);
 		createStatusBar(pane);
+		setButtonActions();
 	}
 
 	public abstract void createNumbers();
@@ -112,26 +111,23 @@ public abstract class BasicGameBuilder {
 
 	public void createPlayButtons(BorderPane pane) {
 		toolbar = new ToolBar();
+
+		// Graphiken für Buttons
 		FontAwesome fontAwesome = new FontAwesome();
-		Glyph g = fontAwesome.create(FontAwesome.Glyph.CHECK);
-		Glyph hint = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
-		Glyph autosolv = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
+		Glyph checkGraphic = fontAwesome.create(FontAwesome.Glyph.CHECK);
+		Glyph hintGraphic = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
+		Glyph autosolveGraphic = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
+
 		hintButton = new Button("");
-		hintButton.setGraphic(hint);
+		hintButton.setGraphic(hintGraphic);
+
 		autosolve = new Button("_A");
+		autosolve.setGraphic(autosolveGraphic);
 
-		autosolve.setGraphic(autosolv);
-		create = new Button("Create Game");
-		owngame = new Button("Custom Game");
 		check = new Button("");
-		check.setGraphic(g);
-
-		KeyCombination autoS = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
-		Mnemonic mn = new Mnemonic(autosolve, autoS);
-		GUI.getStage().getScene().addMnemonic(mn);
+		check.setGraphic(checkGraphic);
 
 		done = new Button("done");
-
 		done.setVisible(false);
 
 		liveTimeLabel = new Label("");
@@ -140,8 +136,6 @@ public abstract class BasicGameBuilder {
 		final Pane rightSpacer = new Pane();
 		HBox.setHgrow(rightSpacer, Priority.SOMETIMES);
 
-		setButtonActions();
-
 		toolbar.getItems().addAll(hintButton, autosolve, check, done, rightSpacer, liveTimeLabel);
 
 		toolbox.getChildren().add(toolbar);
@@ -149,7 +143,9 @@ public abstract class BasicGameBuilder {
 	}
 
 	public void defineShortCuts() {
-
+		KeyCombination autoS = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
+		Mnemonic mn = new Mnemonic(autosolve, autoS);
+		GUI.getStage().getScene().addMnemonic(mn);
 	}
 
 	public void addListeners(SudokuField[][] sudokuField) {
@@ -183,39 +179,40 @@ public abstract class BasicGameBuilder {
 		}
 	}
 
-	protected Menu helpMenu;
-	protected MenuItem rules;
 	protected MenuBar menuBar;
+
+	// MenüObjekte für File Menü
+	protected Menu file;
 	protected MenuItem newGame;
 	protected MenuItem save;
 	protected MenuItem load;
-	protected Menu file;
+	protected MenuItem importItem;
+	protected MenuItem exportItem;
+	protected SeparatorMenuItem seperator;
+	protected MenuItem exitItem;
 
-	protected MenuItem reset;
+	// MenüObjekte für Edit Menü
 	protected Menu editMenu;
-
+	protected MenuItem reset;
+	protected MenuItem newRoundItem;
 	protected Menu propertyMenu;
 	protected RadioMenuItem conflictItem;
 	protected MenuItem moreHintsItem;
 
+	// MenüObjekte für Edit Menü
 	protected Menu sourceMenu;
-
-	protected Menu mainMenu;
-	protected MenuItem mainMenuItem;
-	protected MenuItem createGameItem;
-
-	protected Menu gameFunctions;
 	protected MenuItem hintMenuItem;
 	protected MenuItem autoSolveItem;
 	protected MenuItem checkItem;
 
-	protected SeparatorMenuItem seperator;
-	protected MenuItem exitItem;
+	// MenüObjekte für SudokuFx Menü
+	protected Menu mainMenu;
+	protected MenuItem mainMenuItem;
 
-	protected MenuItem exportItem;
-	protected MenuItem importItem;
-
-	RulesStage rule;
+	// MenüObjekte für Help Menü
+	protected Menu helpMenu;
+	protected MenuItem rules;
+	protected RulesStage rule;
 
 	/**
 	 * 
@@ -224,6 +221,45 @@ public abstract class BasicGameBuilder {
 	public void createMenuBar(BorderPane pane) {
 		// menuBar for the scene
 		menuBar = new MenuBar();
+		toolbox = new VBox();
+
+		//File Menü initialisierungen
+		file = new Menu("File");
+		save = new MenuItem("Save");
+		load = new MenuItem("Load");
+		newGame = new MenuItem("New");
+		exportItem = new MenuItem("Export");
+		importItem = new MenuItem("Import");
+		seperator = new SeparatorMenuItem();
+		exitItem = new MenuItem("Exit");
+		popover = gamePopUp.createPopUp();
+		file.getItems().addAll(newGame, save, load, importItem, exportItem, seperator, exitItem);
+		
+		//Edit Menü initialisierungen
+		editMenu = new Menu("Edit");
+		newRoundItem = new MenuItem("New Round");
+		reset = new MenuItem("Reset");
+		propertyMenu = new Menu("Properties");
+		editMenu.getItems().addAll(newRoundItem, reset, propertyMenu);
+		
+		conflictItem = new RadioMenuItem("Show Conflicts");
+		conflictItem.setSelected(false);
+		moreHintsItem = new MenuItem("Add hints");
+		propertyMenu.getItems().addAll(conflictItem, moreHintsItem);
+		
+		//Source Menü initialisierungen
+		sourceMenu = new Menu("Source");
+		hintMenuItem = new MenuItem("Hint");
+		autoSolveItem = new MenuItem("AutoSolve");
+		checkItem = new MenuItem("Check");
+		sourceMenu.getItems().addAll(hintMenuItem, autoSolveItem, checkItem);
+		
+		//SudokuFx Menü initialisierungen
+		mainMenu = new Menu("SudokuFX");
+		mainMenuItem = new MenuItem("Go to Main Menu");
+		mainMenu.getItems().addAll(mainMenuItem);
+		
+		
 
 		// Help eintrag mit rules menu
 		helpMenu = new Menu("Help");
@@ -234,49 +270,7 @@ public abstract class BasicGameBuilder {
 		});
 		helpMenu.getItems().add(rules);
 
-		propertyMenu = new Menu("Properties");
-		conflictItem = new RadioMenuItem("Show Conflicts");
-		conflictItem.setSelected(false);
-		moreHintsItem = new MenuItem("Add hints");
-		propertyMenu.getItems().addAll(conflictItem, moreHintsItem);
-
-		// savemenu mit save und load optionen
-		file = new Menu("File");
-		save = new MenuItem("Save");
-		load = new MenuItem("Load");
-		newGame = new MenuItem("New");
-		exportItem = new MenuItem("Export");
-		importItem = new MenuItem("Import");
-
-		seperator = new SeparatorMenuItem();
-		exitItem = new MenuItem("Exit");
-
-		// SpielButton Funktionen für Menuü
-
-		file.getItems().addAll(newGame, save, load, importItem, exportItem, seperator, exitItem);
-
-		// menu Einträge für SpielFunktionen (Hint, Autosolve, check)
-
-		popover = gamePopUp.createPopUp();
-
-		// newgame menu eintrag
-		editMenu = new Menu("Edit");
-
-		createGameItem = new MenuItem("New Round");
-		reset = new MenuItem("Reset");
-		editMenu.getItems().addAll(createGameItem, reset, propertyMenu);
-
-		mainMenu = new Menu("SudokuFX");
-
-		mainMenuItem = new MenuItem("Go to Main Menu");
-		mainMenu.getItems().addAll(mainMenuItem);
-
-		sourceMenu = new Menu("Source");
-		hintMenuItem = new MenuItem("Hint");
-		autoSolveItem = new MenuItem("AutoSolve");
-		checkItem = new MenuItem("Check");
-		sourceMenu.getItems().addAll(hintMenuItem, autoSolveItem, checkItem);
-
+		
 		menuBar.getMenus().addAll(file, editMenu, sourceMenu, mainMenu, helpMenu);
 		toolbox.getChildren().addAll(menuBar);
 		menuBar.getStylesheets().add("menu-bar");
@@ -288,7 +282,7 @@ public abstract class BasicGameBuilder {
 	 * Weist den Buttons und MenüItems Actions zu
 	 */
 	public void setButtonActions() {
-		createGameItem.setOnAction(controller::newGameHandler);
+		newRoundItem.setOnAction(controller::newGameHandler);
 		autosolve.setOnAction(controller::checkHandler);
 
 		check.setOnAction(controller::checkHandler);
@@ -335,7 +329,8 @@ public abstract class BasicGameBuilder {
 
 		statusBar.getLeftItems().add(gameNotificationLabel);
 
-		Stream.of(gameInfoLabel, gameNotificationLabel,liveTimeLabel).forEach(label -> label.getStyleClass().add("gameLabel"));
+		Stream.of(gameInfoLabel, gameNotificationLabel, liveTimeLabel)
+				.forEach(label -> label.getStyleClass().add("gameLabel"));
 
 		pane.setBottom(statusBar);
 	}
@@ -391,10 +386,6 @@ public abstract class BasicGameBuilder {
 
 	public int getHeight() {
 		return height;
-	}
-
-	public AnimationTimer getTimer() {
-		return timer;
 	}
 
 	public Label getLiveTimeLabel() {

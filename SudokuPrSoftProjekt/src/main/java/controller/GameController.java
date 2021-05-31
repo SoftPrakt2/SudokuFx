@@ -32,7 +32,7 @@ public class GameController {
 
 	// Storage storage = new Storage();
 
-	int gameID = 1;
+
 	IntegerProperty helper = new SimpleIntegerProperty();
 
 	public GameController(BasicGameBuilder scene, BasicGameLogic model) {
@@ -40,6 +40,7 @@ public class GameController {
 		this.model = model;
 		sudokuField = scene.getTextField();
 	}
+	
 
 	/**
 	 * 
@@ -478,7 +479,6 @@ public class GameController {
 	}
 	
 	
-	
 	public void emptyArrays() {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
@@ -488,6 +488,7 @@ public class GameController {
 			}
 		}
 	}
+	
 	
 	
 

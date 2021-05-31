@@ -242,6 +242,7 @@ public abstract class BasicGameLogic {
 
                 liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
             }
+            
 
             @Override
             public void start() {
