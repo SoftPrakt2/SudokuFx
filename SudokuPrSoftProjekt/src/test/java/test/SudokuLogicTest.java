@@ -246,6 +246,7 @@ public class SudokuLogicTest {
 		assertEquals(Gamestate.DONE, model.getGamestate());
 	}	
 	
+	
 	@Test
 	public void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);

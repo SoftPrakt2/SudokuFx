@@ -85,14 +85,13 @@ public abstract class BasicGameBuilder {
 
 		gamePopUp = new NewGamePopUp();
 
-		
-		pane.setCenter(createBoard());
 		pane.setPadding(new Insets(50, 50, 50, 50));
 
 		createMenuBar();
 		createPlayButtons();
 		createStatusBar();
 		setButtonActions();
+		pane.setCenter(createBoard());
 	}
 
 	public abstract void createNumbers();

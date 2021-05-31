@@ -1,5 +1,7 @@
 package controller;
 
+import java.io.IOException;
+
 import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
 import application.GUI;
@@ -69,8 +71,9 @@ public class ModeController {
 	/**
 	 * 
 	 * Instanziiert ein StorageObjekt und ruft die Scene des Storage-Objekts auf
+	 * @throws IOException 
 	 */
-	public void handleToLoad(ActionEvent e) {
+	public void handleToLoad(ActionEvent e) throws IOException {
 		Storage overview = new Storage();
 		overview.createStage();
 	}

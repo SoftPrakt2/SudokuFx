@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.util.stream.Stream;
 
 import controller.ModeController;
@@ -52,6 +53,7 @@ public class MainMenu {
 
 	BorderPane pane;
 
+	
 	public void setUpMainMenu() {
 
 		pane = new BorderPane();
@@ -152,7 +154,14 @@ public class MainMenu {
 		manual.setOnAction(controllerMainMenu::handleManual);
 		samurai.setOnAction(controllerMainMenu::handleToSamurai);
 		freeform.setOnAction(controllerMainMenu::handleToFreeForm);
-		load.setOnAction(controllerMainMenu::handleToLoad);
+		load.setOnAction(event -> {
+			try {
+				controllerMainMenu.handleToLoad(event);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 		createButton.setOnAction(controllerMainMenu::handleGameStart);
 		exit.setOnAction(controllerMainMenu::handleExit);
 	}

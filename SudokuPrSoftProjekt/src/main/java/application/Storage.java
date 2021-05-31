@@ -1,5 +1,7 @@
 package application;
 
+import java.io.IOException;
+
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
@@ -26,7 +28,7 @@ import logic.SudokuStorageModel;
 
 public class Storage {
 
-	Button back;
+	
 
 	// variablen für Anzeige der Spiele in der Liste
 	protected String gameIdentifier;
@@ -54,6 +56,7 @@ public class Storage {
 	protected BorderPane storageContainerBox = new BorderPane();
 
 	protected HBox gameHeaderBox = new HBox();
+	
 
 	protected Label overallPointsHeaderLabel;
 	protected Label averagePointsHeaderLabel;
@@ -73,9 +76,9 @@ public class Storage {
 	protected Stage stage;
 	
 
-	protected Button directoryButton;
+	
 
-	public Stage createStage() {
+	public Stage createStage() throws IOException {
 		 storageScene = showStorageScene();
 		Stage currentStage = GUI.getStage();
 		double windowGap = 5;
@@ -92,7 +95,7 @@ public class Storage {
 		return stage;
 	}
 
-	public Scene showStorageScene() {
+	public Scene showStorageScene() throws IOException {
 		
 		tableView = new TableView<>();
 		controller.setUpTableView();
@@ -105,15 +108,15 @@ public class Storage {
 		gameHeadLabel = new Label("Game Overview");
 		gameHeadLabel.setFont(new Font("Georgia", 20));
 
-		directoryButton = new Button("");
-		directoryButton.setGraphic(folderGraphic);
+//		directoryButton = new Button("");
+//		directoryButton.setGraphic(folderGraphic);
 		//directoryButton.setAlignment(Pos.BASELINE_RIGHT);
 
-		directoryButton.setOnAction(controller::handleDirectorySwitch);
+//		directoryButton.setOnAction(controller::handleDirectorySwitch);
 
-		gameHeaderBox.getChildren().addAll(gameHeadLabel, directoryButton);
+		gameHeaderBox.getChildren().addAll(gameHeadLabel);
 		gameHeaderBox.setSpacing(285);
-		directoryButton.setAlignment(Pos.TOP_RIGHT);
+		
 
 		contextMenu.getItems().addAll(deleteMenuItem, loadMenuItem);
 
@@ -139,7 +142,7 @@ public class Storage {
 		loadMenuItem.setOnAction(controller::handleLoadAction);
 
 		
-		directoryButton.getStyleClass().add("storageButton");
+		
 		
 		return storageScene;
 	}
@@ -151,7 +154,10 @@ public class Storage {
 		Label gameStatsLabel = new Label("Game Scores");
 		gameStatsLabel.setFont(new Font("Georgia",20));
 		
-		gameStatsLabel.setAlignment(Pos.CENTER);
+		
+		HBox gameStatsLabelBox = new HBox();
+		gameStatsLabelBox.getChildren().add(gameStatsLabel);
+		gameStatsLabelBox.setAlignment(Pos.BASELINE_LEFT);
 		
 		
 		
@@ -213,7 +219,7 @@ public class Storage {
 		
 		
 
-		gameStatsBox.getChildren().addAll(averageResultsBox, gameStatsLabel, overallResultsBox);
+		gameStatsBox.getChildren().addAll(averageResultsBox, gameStatsLabelBox, overallResultsBox);
 
 		listviewBox.getChildren().add(gameStatsBox);
 

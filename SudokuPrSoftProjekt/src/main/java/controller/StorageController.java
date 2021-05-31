@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.json.simple.JSONObject;
 
@@ -108,7 +109,7 @@ public class StorageController {
 	}
 
 	
-	public void fillListVew() {
+	public void fillListVew() throws IOException {
 
 		JSONObject readedObject;
 	
@@ -147,11 +148,11 @@ public class StorageController {
 			System.out.println("erfolgreich gelöscht");
 		}
 
-		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
+
 
 	}
 
-	public void handleDirectorySwitch(ActionEvent e) {
+	public void handleDirectorySwitch(ActionEvent e) throws IOException {
 		DirectoryChooser directoryChooser = new DirectoryChooser();
 
 		String path = directoryChooser.showDialog(GUI.getStage()).getAbsolutePath();
