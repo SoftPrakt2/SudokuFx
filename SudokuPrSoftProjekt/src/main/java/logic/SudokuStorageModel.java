@@ -21,6 +21,7 @@ public class SudokuStorageModel {
 
 	private BasicGameLogic savedModel;
 	private int saveCounter;
+	
 
 	private Cell[][] gameArray;
 
@@ -111,7 +112,7 @@ public class SudokuStorageModel {
 		storeIntoJSON();
 
 		String fileName = savedGameType + "_" + difficultyString + "_" + "ID_" + gameId + ".json";
-		File saveFile = new File(storagePref.getPreferedDirectory(), fileName);
+		File saveFile = new File("SaveFiles", fileName);
 		storeIntoFile(saveFile);
 	}
 
