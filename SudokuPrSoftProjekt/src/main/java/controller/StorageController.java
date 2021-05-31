@@ -42,14 +42,14 @@ public class StorageController {
 	Storage storage;
 	File[] dir;
 
-	protected ObservableList<SudokuStorageModel> jsonObservableList = FXCollections.observableArrayList();
+	protected ObservableList<BasicGameLogic> jsonObservableList = FXCollections.observableArrayList();
 
-	TableColumn<SudokuStorageModel, String> gameTypecolumn = new TableColumn<>("GameType");
-	TableColumn<SudokuStorageModel, String> difficultycolumn = new TableColumn<>("Difficulty");
-	TableColumn<SudokuStorageModel, Integer> pointscolumn = new TableColumn<>("Points");
-	TableColumn<SudokuStorageModel, String> playtimecolumn = new TableColumn<>("PlayTime");
-	TableColumn<SudokuStorageModel, Gamestate> gamestatecolumn = new TableColumn<>("Gamestate");
-	TableColumn<SudokuStorageModel, Integer> gameidcolumn = new TableColumn<>("GameID");
+	TableColumn<BasicGameLogic, String> gameTypecolumn = new TableColumn<>("GameType");
+	TableColumn<BasicGameLogic, String> difficultycolumn = new TableColumn<>("Difficulty");
+	TableColumn<BasicGameLogic, Integer> pointscolumn = new TableColumn<>("Points");
+	TableColumn<BasicGameLogic, String> playtimecolumn = new TableColumn<>("PlayTime");
+	TableColumn<BasicGameLogic, Gamestate> gamestatecolumn = new TableColumn<>("Gamestate");
+	TableColumn<BasicGameLogic, Integer> gameidcolumn = new TableColumn<>("GameID");
 
 	IntegerProperty overallPointsProperty;
 
@@ -61,24 +61,19 @@ public class StorageController {
 		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
 	}
 
+	
 	// test
 	public void handleLoadAction(ActionEvent e) {
+		
 
-		storageModel = storage.getTableView().getSelectionModel().getSelectedItem();
+		model = storage.getTableView().getSelectionModel().getSelectedItem();
 
-		if (storageModel.getGametype().equals("Sudoku")) {
-			model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+		if (model.getGametype().equals("Sudoku")) {
 			game = new SudokuGameBuilder(model);
 		}
-		if (storageModel.getGametype().equals("Samurai")) {
-			model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+		if (model.getGametype().equals("Samurai")) {
 			game = new SamuraiGameBuilder(model);
 		}
-
-		storageModel.setLoadedLogic(model);
-		storageModel.loadIntoModel();
-
-		model = storageModel.getLoadedLogic();
 
 		game.initializeGame();
 		model.initializeTimer();
@@ -90,8 +85,9 @@ public class StorageController {
 		GUI.getStage().getScene().setRoot(game.getPane());
 		storage.getStage().close();
 
+		
+		
 		SudokuField[][] s = game.getTextField();
-
 		for (int i = 0; i < s.length; i++) {
 			for (int j = 0; j < s[i].length; j++) {
 				if (model.getCells()[j][i].getValue() != 0) {
@@ -109,6 +105,7 @@ public class StorageController {
 				playtimecolumn, gamestatecolumn);
 	}
 
+	
 	public void fillListVew() {
 
 		JSONObject readedObject;
@@ -119,12 +116,11 @@ public class StorageController {
 				if (child.getName().endsWith(".json")) {
 					readedObject = storageModel.convertToJSON(child.getAbsoluteFile());
 
-					storageModel.setJSONObject(readedObject);
-					storageModel.setStoredInformations();
-					jsonObservableList.add(storageModel);
-
+					storageModel.setStoredInformations(readedObject);
+					model = storageModel.loadIntoModel(model);
+					jsonObservableList.add(model);
 				}
-				storageModel = new SudokuStorageModel();
+				
 			}
 			gameTypecolumn.setCellValueFactory(new PropertyValueFactory<>("gametype"));
 			difficultycolumn.setCellValueFactory(new PropertyValueFactory<>("difficultystring"));
@@ -169,64 +165,64 @@ public class StorageController {
 
 	public void calculateGameStats() {
 		
-		IntegerBinding totalCost = Bindings.createIntegerBinding(() -> {
-			int total = 0;
-			for (SudokuStorageModel model : storage.getTableView().getItems()) {
-				total = total + model.getGamepoints();
-			}
-			return total;
-		}, storage.getTableView().getItems());
-		
-		
-
-		IntegerBinding averagePoints = Bindings.createIntegerBinding(() -> {
-			int total = 0;
-			int counter = 0;
-			for (SudokuStorageModel model : storage.getTableView().getItems()) {
-				total = total + model.getGamepoints();
-				counter++;
-			}
-			if (counter == 0)
-				counter = 1;
-			return total / counter;
-		}, storage.getTableView().getItems());
-		
-		StringBinding overAllPlayTime = Bindings.createStringBinding(() -> {
-			long playTime = 0;
-			String time;
-			for (SudokuStorageModel model : storage.getTableView().getItems()) {
-				playTime += model.getMinutesPlayed()*60 + model.getSecondsPlayed();
-			}
-			long minPlayed = playTime/60;
-			long secPlayed = playTime%60;
-			
-			time =	String.format("%02d:%02d", minPlayed, secPlayed);
-			return time;
-		}, storage.getTableView().getItems());
-		
-		
-		StringBinding averagePlayTime = Bindings.createStringBinding(() -> {
-			long playTime = 0;
-			String time;
-			int counter = 0;
-			for (SudokuStorageModel model : storage.getTableView().getItems()) {
-				playTime += model.getMinutesPlayed()*60 + model.getSecondsPlayed();
-				counter++;
-			}
-			if(counter ==0) counter = 1;
-			playTime = playTime/counter;
-			long minPlayed = playTime/60;
-			long secPlayed = playTime%60;
-			
-			
-			time =	String.format("%02d:%02d", minPlayed, secPlayed);
-			return time;
-		}, storage.getTableView().getItems());
-		
-		storage.getOverallPointsLabel().textProperty().bind(totalCost.asString());
-		storage.getAveragePointsResultLabel().textProperty().bind(averagePoints.asString());
-		storage.getOverallTimeResultLabel().textProperty().bind(overAllPlayTime);
-		storage.getAverageTimeResultLabel().textProperty().bind(averagePlayTime);
+//		IntegerBinding totalCost = Bindings.createIntegerBinding(() -> {
+//			int total = 0;
+//			for (BasicGameLogic model : storage.getTableView().getItems()) {
+//				total = total + model.getGamepoints();
+//			}
+//			return total;
+//		}, storage.getTableView().getItems());
+//		
+//		
+//
+//		IntegerBinding averagePoints = Bindings.createIntegerBinding(() -> {
+//			int total = 0;
+//			int counter = 0;
+//			for (BasicGameLogic model : storage.getTableView().getItems()) {
+//				total = total + model.getGamepoints();
+//				counter++;
+//			}
+//			if (counter == 0)
+//				counter = 1;
+//			return total / counter;
+//		}, storage.getTableView().getItems());
+//		
+//		StringBinding overAllPlayTime = Bindings.createStringBinding(() -> {
+//			long playTime = 0;
+//			String time;
+//			for (BasicGameLogic model : storage.getTableView().getItems()) {
+//				playTime += model.getMinutesplayed()*60 + model.getSecondsplayed();
+//			}
+//			long minPlayed = playTime/60;
+//			long secPlayed = playTime%60;
+//			
+//			time =	String.format("%02d:%02d", minPlayed, secPlayed);
+//			return time;
+//		}, storage.getTableView().getItems());
+//		
+//		
+//		StringBinding averagePlayTime = Bindings.createStringBinding(() -> {
+//			long playTime = 0;
+//			String time;
+//			int counter = 0;
+//			for (BasicGameLogic model : storage.getTableView().getItems()) {
+//				playTime += model.getMinutesplayed()*60 + model.getSecondsplayed();
+//				counter++;
+//			}
+//			if(counter ==0) counter = 1;
+//			playTime = playTime/counter;
+//			long minPlayed = playTime/60;
+//			long secPlayed = playTime%60;
+//			
+//			
+//			time =	String.format("%02d:%02d", minPlayed, secPlayed);
+//			return time;
+//		}, storage.getTableView().getItems());
+//		
+//		storage.getOverallPointsLabel().textProperty().bind(totalCost.asString());
+//		storage.getAveragePointsResultLabel().textProperty().bind(averagePoints.asString());
+//		storage.getOverallTimeResultLabel().textProperty().bind(overAllPlayTime);
+//		storage.getAverageTimeResultLabel().textProperty().bind(averagePlayTime);
 	}
 
 }

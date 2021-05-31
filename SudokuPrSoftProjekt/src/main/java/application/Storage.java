@@ -21,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import logic.BasicGameLogic;
 import logic.SudokuStorageModel;
 
 public class Storage {
@@ -41,7 +42,7 @@ public class Storage {
 
 	// Objekte für die ListView und die HashMap welche benötigt wird um den Spieler
 	// auswählen lassen zu können welches Spiel er laden will
-	protected TableView<SudokuStorageModel> tableView;
+	protected TableView<BasicGameLogic> tableView;
 
 	// Right Click Menu Items
 	ContextMenu contextMenu = new ContextMenu();
@@ -85,7 +86,7 @@ public class Storage {
 		stage.setX(currentStage.getX() + currentStage.getWidth() + windowGap);
 		stage.setY(currentStage.getY());
 
-	//	stage.setResizable(false);
+	
 		stage.showAndWait();
 
 		return stage;
@@ -211,47 +212,9 @@ public class Storage {
 		overallResultsBox.getChildren().addAll(overallPointsHeaderLabel,overallpointsResultBox,overallTimeHeaderLabel, overallTimeResultBox);
 		
 		
-		//pointHeaderBox.setSpacing(230);
-		
-		
-//		HBox pointResultBox = new HBox();
-//		pointResultBox.setPadding(new Insets(0,10,0,35));
-//		
-//		
-//		pointResultBox.setSpacing(315);
-//		pointsHeaderLabel.setFont(new Font("Georgia",14));
-//		overallPointsResultLabel = new Label("0");
-//		overallPointsResultLabel.setFont(new Font("Georgia",20));
-//		pointResultBox.getChildren().addAll(averagePointsResultLabel,overallPointsResultLabel);
-//		
-//		
-//		HBox timeBox = new HBox();
-//
-//		
-//		overallTimeHeaderLabel = new Label ("Overall Time");
-//		
-//		overallTimeHeaderLabel.setFont(new Font("Georgia",14));
-//		
-//		
-//		
-//		HBox timeResultBox = new HBox();
-//		timeResultBox.setPadding(new Insets(0,10,0,35));
-//		overallTimeResultLabel = new Label("0");
-//		
-//		overallTimeResultLabel.setFont(new Font("Georgia",14));
-//		averageTimeResultLabel.setFont(new Font("Georgia",10));
-//		timeResultBox.setSpacing(315);
-//		timeResultBox.getChildren().addAll(averageTimeResultLabel,overallTimeResultLabel);
-//		
-//		timeBox.setSpacing(237);
-//		timeBox.setPadding(new Insets(30,0,0,0));
-//		timeBox.getChildren().addAll(averageTimeHeaderLabel, overallTimeHeaderLabel);
-//		
+
 		gameStatsBox.getChildren().addAll(averageResultsBox, gameStatsLabel, overallResultsBox);
-//		
-//		
-//		
-//		
+
 		listviewBox.getChildren().add(gameStatsBox);
 
 	}
@@ -272,7 +235,7 @@ public class Storage {
 
 	}
 
-	public TableView<SudokuStorageModel> getTableView() {
+	public TableView<BasicGameLogic> getTableView() {
 		return tableView;
 	}
 

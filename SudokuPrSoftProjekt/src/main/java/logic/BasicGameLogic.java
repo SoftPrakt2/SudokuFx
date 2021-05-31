@@ -21,7 +21,7 @@ public abstract class BasicGameLogic {
 
 	protected Gamestate gamestate;
 	protected boolean isCorrect;
-	protected String gameType = "";
+	protected String gametype = "";
 	protected int gamePoints = 10;
 	protected long minutesPlayed;
 	protected long secondsPlayed;
@@ -34,6 +34,9 @@ public abstract class BasicGameLogic {
 	protected Cell[][] cells;
 
 	private String difficultyString;
+	
+	public String playtimeString;
+	
 
 	protected int hintCounter;
 	protected int countHintsPressed = 0;
@@ -76,10 +79,24 @@ public abstract class BasicGameLogic {
 
 	public abstract void setCell(int col, int row, int guess);
 
-	public String getGameType() {
-		return gameType;
+	public String getGametype() {
+		return this.gametype;
 	}
+	
+	public void setGametype(String gametype) {
+		this.gametype = gametype;
+	}
+	
+	public String getPlaytimestring() {
+		return playtimeString;
+	}
+	
+	public void setPlaytimestring(String playtimeString) {
+		this.playtimeString = playtimeString;
+	}
+	
 
+	
 	public abstract boolean testIfSolved();
 
 	/**
@@ -94,15 +111,15 @@ public abstract class BasicGameLogic {
 		this.cells = cells;
 	}
 
-	public int getgamePoints() {
+	public int getGamepoints() {
 		return gamePoints;
 	}
 
-	public long getMinutesPlayed() {
+	public long getMinutesplayed() {
 		return minutesPlayed;
 	}
 
-	public long getSecondsPlayed() {
+	public long getSecondsplayed() {
 		return secondsPlayed;
 	}
 
@@ -154,38 +171,38 @@ public abstract class BasicGameLogic {
 		this.gamestate = gamestate;
 	}
 
-	public Gamestate getGameState() {
+	public Gamestate getGamestate() {
 		return this.gamestate;
 	}
 
 	public String getGameText() {
-		if (this.getGameState() == Gamestate.OPEN) {
+		if (this.getGamestate() == Gamestate.OPEN) {
 			gameText = "Game ongoing!";
 		}
-		if (this.getGameState() == Gamestate.DONE) {
+		if (this.getGamestate() == Gamestate.DONE) {
 			gameText = "Congratulations you won!";
 		}
-		if (this.getGameState() == Gamestate.INCORRECT) {
+		if (this.getGamestate() == Gamestate.INCORRECT) {
 			gameText = "Sorry your Sudoku is not correct yet";
 		}
-		if (this.getGameState() == Gamestate.AUTOSOLVED) {
+		if (this.getGamestate() == Gamestate.AUTOSOLVED) {
 			gameText = "Autosolved";
 		}
-		if (this.getGameState() == Gamestate.CONFLICT) {
+		if (this.getGamestate() == Gamestate.CONFLICT) {
 			gameText = "Please remove the conflicts before autosolving";
 		}
-		if (this.getGameState() == Gamestate.UNSOLVABLE) {
+		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
 			gameText = "Unsolvable Sudoku! New Solution generated";
 		}
 
 		return gameText;
 	}
 
-	public int getGameID() {
+	public int getGameid() {
 		return gameID;
 	}
 
-	public String getDifficultyString() {
+	public String getDifficultystring() {
 		return difficultyString;
 	}
 

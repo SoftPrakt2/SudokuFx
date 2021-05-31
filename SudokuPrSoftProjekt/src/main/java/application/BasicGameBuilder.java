@@ -9,7 +9,6 @@ import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
 import controller.GameController;
-import javafx.animation.AnimationTimer;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -38,7 +37,7 @@ public abstract class BasicGameBuilder {
 	protected BorderPane pane;
 
 	protected ToolBar toolbar;
-	VBox toolbox;
+	protected VBox toolbox;
 	protected VBox playButtonMenu;
 	protected Button check;
 	protected Button owngame;
@@ -90,9 +89,9 @@ public abstract class BasicGameBuilder {
 		pane.setCenter(createBoard());
 		pane.setPadding(new Insets(50, 50, 50, 50));
 
-		createMenuBar(pane);
-		createPlayButtons(pane);
-		createStatusBar(pane);
+		createMenuBar();
+		createPlayButtons();
+		createStatusBar();
 		setButtonActions();
 	}
 
@@ -109,7 +108,7 @@ public abstract class BasicGameBuilder {
 	 * BorderPane
 	 */
 
-	public void createPlayButtons(BorderPane pane) {
+	public void createPlayButtons() {
 		toolbar = new ToolBar();
 
 		// Graphiken für Buttons
@@ -218,7 +217,7 @@ public abstract class BasicGameBuilder {
 	 * 
 	 * Erstellt die Menüleiste mit den jeweiligen MenüItems
 	 */
-	public void createMenuBar(BorderPane pane) {
+	public void createMenuBar() {
 		// menuBar for the scene
 		menuBar = new MenuBar();
 		toolbox = new VBox();
@@ -294,30 +293,23 @@ public abstract class BasicGameBuilder {
 		hintMenuItem.setOnAction(controller::hintHandeler);
 		autoSolveItem.setOnAction(controller::autoSolveHandler);
 
-		// load.setOnAction(controller::importGame);
+		
 		save.setOnAction(controller::saveGame);
 		reset.setOnAction(controller::resetHandler);
 		mainMenuItem.setOnAction(controller::switchToMainMenu);
 
-		mainMenuItem.setOnAction(e -> {
-			controller.switchToMainMenu(e);
-
-		});
+		mainMenuItem.setOnAction(e -> controller.switchToMainMenu(e));
 
 		conflictItem.setOnAction(controller::switchOffConflicts);
 		moreHintsItem.setOnAction(controller::handleMoreHints);
-		// exitItem.setOnAction(e -> GUI.closeProgram());
+		 exitItem.setOnAction(e -> GUI.closeProgram());
 		exportItem.setOnAction(controller::exportGame);
 		importItem.setOnAction(controller::importGame);
 
-		newGame.setOnAction(e -> {
-
-			popover.show(hintButton, -30);
-
-		});
+		newGame.setOnAction(e -> popover.show(hintButton, -30));
 	}
 
-	public void createStatusBar(BorderPane pane) {
+	public void createStatusBar() {
 		gameNotificationLabel = new Label();
 
 		gameInfoLabel = new Label();

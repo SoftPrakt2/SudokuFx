@@ -5,7 +5,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		cells = new Cell[21][21];
-		gameType = "Samurai";
+		gametype = "Samurai";
 		hintCounter = 10;
 	}
 
@@ -573,7 +573,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public Gamestate getGameState() {
+	public Gamestate getGamestate() {
 		return this.gamestate;
 	}
 

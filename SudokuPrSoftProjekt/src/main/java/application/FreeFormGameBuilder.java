@@ -70,13 +70,14 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 	@Override
 	public SudokuField[][] getTextField() {
-		// TODO Auto-generated method stub
+		
 		return textField;
 	}
+	
 
 	@Override
 	public void createNumbers() {
-		// TODO Auto-generated method stub
+		// wird implementiert sobald freiform logik fertig ist
 
 	}
 

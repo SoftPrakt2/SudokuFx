@@ -22,6 +22,7 @@ public class GUI extends Application {
 	@Override
 	public void start(Stage scene) {
 		
+		
 
 		// test commit
 		window = scene;

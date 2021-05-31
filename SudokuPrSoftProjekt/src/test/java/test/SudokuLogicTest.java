@@ -243,14 +243,14 @@ public class SudokuLogicTest {
 	@Test
 	public void testSetGamestate() {		
 		model.setGameState(Gamestate.DONE);
-		assertEquals(Gamestate.DONE, model.getGameState());
+		assertEquals(Gamestate.DONE, model.getGamestate());
 	}	
 	
 	@Test
 	public void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);
-		model.getGameState();
-		assertEquals(Gamestate.DONE, model.getGameState());
+		model.getGamestate();
+		assertEquals(Gamestate.DONE, model.getGamestate());
 	}	
 	
 	

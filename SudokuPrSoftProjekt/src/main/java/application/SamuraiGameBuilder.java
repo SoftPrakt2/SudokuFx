@@ -7,6 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import logic.BasicGameLogic;
 
 /**
@@ -50,6 +52,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				SudokuField empty = new SudokuField("-1");
 				empty.setStyle("-fx-pref-width: 2em;");
 
+				
 				cellEmpty.getChildren().add(empty);
 				cellEmpty.setDisable(true);
 				textField[row][col] = empty;
@@ -62,6 +65,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				} else {
 
 					textField[row][col] = new SudokuField("");
+					textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 16));
 					textField[row][col].setMaxSize(50, 50);
 					textField[row][col].setAlignment(Pos.CENTER);
 					textField[row][col].setPlayable(true);

@@ -46,6 +46,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 			for (int col = 0; col < 9; col++) {
 				StackPane cell = new StackPane();
 				cell.getStyleClass().add("cell");
+				
 
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(10));
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));

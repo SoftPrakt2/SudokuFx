@@ -19,26 +19,23 @@ import javafx.stage.FileChooser;
 
 public class SudokuStorageModel {
 
-	BasicGameLogic savedModel;
-	int saveCounter;
+	private BasicGameLogic savedModel;
+	private int saveCounter;
 
-	Cell[][] gameArray;
+	private Cell[][] gameArray;
 
-	String gametype;
-	String savedGameType;
-	int difficulty;
-	int gamePoints;
-	Gamestate gameState;
-	long minutesPlayed;
-	long secondsPlayed;
-	String difficultyString;
-	String playTimeString;
+	private String gametype;
+	private String savedGameType;
+	private int difficulty;
+	private int gamePoints;
+	private Gamestate gameState;
+	private long minutesPlayed;
+	private long secondsPlayed;
+	private String difficultyString;
+	private String playTimeString;
 
-	int gameID;
-	int helper;
-
-	
-	JSONObject importedJson;
+	private int gameId;
+	private	int helper;
 
 	FileChooser chooser;
 
@@ -49,14 +46,14 @@ public class SudokuStorageModel {
 	public void prepareSave(BasicGameLogic save) {
 
 		gameArray = save.getCells();
-		savedGameType = save.getGameType();
+		savedGameType = save.getGametype();
 		difficulty = save.getDifficulty();
-		difficultyString = save.getDifficultyString();
-		gamePoints = save.getgamePoints();
-		gameState = save.getGameState();
-		minutesPlayed = save.getMinutesPlayed();
-		secondsPlayed = save.getSecondsPlayed();
-		gameID = storagePref.getStoragePrefs().getInt("GameID", 1);
+		difficultyString = save.getDifficultystring();
+		gamePoints = save.getGamepoints();
+		gameState = save.getGamestate();
+		minutesPlayed = save.getMinutesplayed();
+		secondsPlayed = save.getSecondsplayed();
+		gameId = storagePref.getStoragePrefs().getInt("GameID", 1);
 
 		helper = storagePref.getStoragePrefs().getInt("GameID", 0) + 1;
 
@@ -79,7 +76,7 @@ public class SudokuStorageModel {
 		String minutesPlayedGson = gson.toJson(minutesPlayed, Integer.class);
 		String secondsPlayedGson = gson.toJson(secondsPlayed, Integer.class);
 
-		String gameIDGson = gson.toJson(gameID, Integer.class);
+		String gameIDGson = gson.toJson(gameId, Integer.class);
 
 		jsonObject = new JSONObject();
 		jsonObject.put("type", gameTypeGson);
@@ -113,7 +110,7 @@ public class SudokuStorageModel {
 
 		storeIntoJSON();
 
-		String fileName = savedGameType + "_" + difficultyString + "_" + "ID_" + gameID + ".json";
+		String fileName = savedGameType + "_" + difficultyString + "_" + "ID_" + gameId + ".json";
 		File saveFile = new File(storagePref.getPreferedDirectory(), fileName);
 		storeIntoFile(saveFile);
 	}
@@ -130,8 +127,9 @@ public class SudokuStorageModel {
 		storeIntoFile(file);
 	}
 
+	
 	// filechooser anders machn is nicht so gut
-	public void setImportedFile() {
+	public JSONObject setImportedFile() {
 
 		Gson g = new Gson();
 
@@ -139,35 +137,45 @@ public class SudokuStorageModel {
 		chooser.setTitle("Import your Game");
 		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON", "*.json"));
 		File file = chooser.showOpenDialog(GUI.getStage());
-		importedJson = convertToJSON(file);
-		gametype = g.fromJson((String) importedJson.get("type"), String.class);
-
+		JSONObject importedJson = convertToJSON(file);
+		return importedJson;
 	}
+	
 
-	public void setStoredInformations() {
+	public void setStoredInformations(JSONObject obj) {
+
 		Gson g = new Gson();
-
-		gametype = g.fromJson(importedJson.get("type").toString(), String.class);
-		gamePoints = g.fromJson(importedJson.get("points").toString(), Integer.class);
-		difficulty = g.fromJson((String) importedJson.get("difficulty"), Integer.class);
-		difficultyString = g.fromJson((String) importedJson.get("difficultyString"), String.class);
-		minutesPlayed = g.fromJson((String) importedJson.get("minutesPlayed"), Integer.class);
-		secondsPlayed = g.fromJson((String) importedJson.get("secondsPlayed"), Integer.class);
+		
+		gametype = g.fromJson(obj.get("type").toString(), String.class);
+		
+		gamePoints = g.fromJson(obj.get("points").toString(), Integer.class);
+		difficulty = g.fromJson((String) obj.get("difficulty"), Integer.class);
+		difficultyString = g.fromJson((String) obj.get("difficultyString"), String.class);
+		minutesPlayed = g.fromJson((String) obj.get("minutesPlayed"), Integer.class);
+		secondsPlayed = g.fromJson((String) obj.get("secondsPlayed"), Integer.class);
 		playTimeString = minutesPlayed + " min " + secondsPlayed + " s ";
-		gameArray = g.fromJson((String) importedJson.get("gameNumbers"), Cell[][].class);
-		gameState = g.fromJson((String) importedJson.get("gameState"), Gamestate.class);
-	//	gameID = g.fromJson((String) importedJson.get("gameIDGson"), Integer.class);
+		gameArray = g.fromJson((String) obj.get("gameNumbers"), Cell[][].class);
+		gameState = g.fromJson((String) obj.get("gameState"), Gamestate.class);
+		gameId = g.fromJson((String) obj.get("gameIDGson"), Integer.class);
+		
 	}
 
-	public void loadIntoModel() {
-		savedModel.setCells(gameArray);
-		savedModel.setGamePoints(gamePoints);
-		savedModel.setDifficulty(difficulty);
-		savedModel.setStartTime(System.currentTimeMillis());
-		savedModel.setSecondsPlayed(secondsPlayed);
-		savedModel.setMinutesPlayed(minutesPlayed);
-		savedModel.setDifficultyString();
-		savedModel.initializeTimer();
+	
+	public BasicGameLogic loadIntoModel(BasicGameLogic model) {
+		if(gametype.equals("Sudoku")) model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+		if (gametype.equals("Samurai")) model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+		model.setGametype(gametype);
+		model.setCells(gameArray);
+		model.setGamePoints(gamePoints);
+		model.setDifficulty(difficulty);
+		model.setStartTime(System.currentTimeMillis());
+		model.setSecondsPlayed(secondsPlayed);
+		model.setMinutesPlayed(minutesPlayed);
+		model.setDifficultyString();
+		model.initializeTimer();
+		model.setGameID(gameId);
+		model.setPlaytimestring(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
+		return model;
 	}
 
 	public JSONObject convertToJSON(File file) {
@@ -192,58 +200,6 @@ public class SudokuStorageModel {
 		return jsonObject;
 	}
 
-	public BasicGameLogic getLoadedLogic() {
-		return savedModel;
-	}
-
-	public void setLoadedLogic(BasicGameLogic savedModel) {
-		this.savedModel = savedModel;
-	}
-
-	public void setJSONObject(JSONObject importedJson) {
-		this.importedJson = importedJson;
-	}
-
-	public String getLoadedGameType() {
-		return gametype;
-	}
-
-	public File[] getSaveDirectory() {
-		return saveDirectory;
-	}
-
-	public String getGametype() {
-		return this.gametype;
-	}
-
-	public int getGamepoints() {
-		return gamePoints;
-	}
-
-	public String getDifficultystring() {
-		return this.difficultyString;
-	}
-
-	public String getPlaytimestring() {
-		return playTimeString;
-	}
-
-	public Gamestate getGamestate() {
-		return gameState;
-	}
 	
-	public long getMinutesPlayed() {
-		return minutesPlayed;
-	}
-	
-	public long getSecondsPlayed() {
-		return secondsPlayed;
-	}
-	
-	
-
-	public int getGameid() {
-		return gameID;
-	}
 
 }

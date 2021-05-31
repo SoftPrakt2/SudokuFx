@@ -5,7 +5,7 @@ public class SudokuLogic extends BasicGameLogic {
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[9][9];
-		gameType = "Sudoku";
+		gametype = "Sudoku";
 		hintCounter = 3;
 	}
 
@@ -311,7 +311,7 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public Gamestate getGameState() {
+	public Gamestate getGamestate() {
 		return this.gamestate;
 	}
 

@@ -30,7 +30,7 @@ public class GameController {
 	static int numberCounter = 0;
 	
 
-	// Storage storage = new Storage();
+	
 
 
 	IntegerProperty helper = new SimpleIntegerProperty();
@@ -68,6 +68,11 @@ public class GameController {
 		model.setGamePoints(10);
 		scene.getGameLabel().setText("");
 		model.setGameState(Gamestate.OPEN);
+		
+		model.setMinutesPlayed(0);
+		model.setSecondsPlayed(0);
+		model.getLiveTimer().start();
+		scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 		scene.getCheckButton().setDisable(false);
 		numberCounter = 0;
 		
@@ -186,6 +191,7 @@ public class GameController {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (model.getCells()[j][i].getValue() != 0) {
+				
 					sudokuField[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
 				}
 				if (model.getCells()[j][i].getIsReal()) {
@@ -211,7 +217,7 @@ public class GameController {
 			
 			model.setGamePoints(0);
 			scene.getGameInfoLabel()
-					.setText("Points: " + model.getgamePoints() + " | Difficulty: " + model.getDifficultyString());
+					.setText("Points: " + model.getGamepoints() + " | Difficulty: " + model.getDifficultystring());
 			model.getLiveTimer().stop();
 			scene.getGameNotificationLabel().setText(model.getGameText());
 			if (!model.testIfSolved()) {
@@ -255,7 +261,7 @@ public class GameController {
 		}
 
 		if (gameState && numberCounter == sudokuField.length * sudokuField.length) {
-			if (!model.getGameState().equals(Gamestate.AUTOSOLVED)) {
+			if (!model.getGamestate().equals(Gamestate.AUTOSOLVED)) {
 				model.setGameState(Gamestate.DONE);
 				scene.getGameNotificationLabel().setText(model.getGameText());
 				model.getLiveTimer().stop();
@@ -295,7 +301,7 @@ public class GameController {
 		// scene.addListeners(sudokuField);
 		model.setGamePoints(10);
 		scene.getGameInfoLabel()
-				.setText("Points: " + model.getgamePoints() + " Difficulty: " + model.getDifficultyString());
+				.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 		model.setGameState(Gamestate.OPEN);
 		enableEdit();
 		model.printCells();
@@ -343,11 +349,11 @@ public class GameController {
 		if (model.getHintsPressed() < model.getHintCounter()) {
 
 			if (compareResult(sudokuField)) {
-				if (model.getgamePoints() > 0)
-					model.setGamePoints(model.getgamePoints() - 1);
+				if (model.getGamepoints() > 0)
+					model.setGamePoints(model.getGamepoints() - 1);
 				connectWithModel();
 				scene.getGameInfoLabel()
-				.setText("Points: " + model.getgamePoints() + " Difficulty: " + model.getDifficultyString());
+				.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 				int[] coordinates = model.hint();
 				for (int row = 0; row < sudokuField.length; row++) {
 					for (int col = 0; col < sudokuField[row].length; col++) {
@@ -357,15 +363,15 @@ public class GameController {
 								String number = Integer.toString(model.getCells()[row][col].getValue());
 								sudokuField[col][row].setText(number);
 								sudokuField[col][row].setStyle("-fx-text-fill: blue");
-								sudokuField[col][row].setFont(Font.font("Verdana", FontWeight.BOLD, 16));
+								
 							}	
 						}
 					}
 				}
 				model.setHintsPressed(model.getHintsPressed()+1);
 			} else {
-				if (model.getgamePoints() > 0)
-					model.setGamePoints(model.getgamePoints() - 1);
+				if (model.getGamepoints() > 0)
+					model.setGamePoints(model.getGamepoints() - 1);
 				for (int row = 0; row < sudokuField.length; row++) {
 					for (int col = 0; col < sudokuField[row].length; col++) {
 						if (!sudokuField[col][row].getText().equals("")
@@ -416,30 +422,42 @@ public class GameController {
 
 	
 	
+	
 	public void importGame(ActionEvent e) {
 		SudokuStorageModel storageModel = new SudokuStorageModel();
+		
 
+		storageModel.setStoredInformations(storageModel.setImportedFile());
+		model = storageModel.loadIntoModel(model);
 		
-		storageModel.setImportedFile();
 		
-		if (storageModel.getGametype().equals("Sudoku")) {
-			storageModel.setLoadedLogic(new SudokuLogic(Gamestate.OPEN, 0, 0, false));
-			scene = new SudokuGameBuilder(storageModel.getLoadedLogic());
+		if (model.getGametype().equals("Sudoku")) {
+			scene = new SudokuGameBuilder(model);
 		}
 		
-		if (storageModel.getGametype().equals("Samurai")) {
-			storageModel.setLoadedLogic(new SamuraiLogic(Gamestate.OPEN, 0, 0, false));
-			scene = new SamuraiGameBuilder(storageModel.getLoadedLogic());
+		if (model.getGametype().equals("Samurai")) {
+			scene = new SamuraiGameBuilder(model);
 		}
-		
-		storageModel.setStoredInformations();
-		storageModel.loadIntoModel();
-		model = storageModel.getLoadedLogic();
 			
-		sudokuField = scene.getTextField();
 		scene.initializeGame();
-				
-		emptyArrays();	
+		model.initializeTimer();
+		model.getLiveTimer().start();
+		scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
+		
+		SudokuField [][] s = scene.getTextField();	
+		
+		emptyArrays();
+		for (int i = 0; i < s.length; i++) {
+			for (int j = 0; j < s[i].length; j++) {
+				if (model.getCells()[j][i].getValue() != 0) {
+					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
+				}
+				if (!model.getCells()[j][i].getIsReal()) {
+					s[i][j].setDisable(false);
+				}
+			}
+		}
+		
 		
 		GUI.getStage().setHeight(scene.getHeight());
 		GUI.getStage().setWidth(scene.getWidth());
