@@ -64,7 +64,8 @@ public class ModeController {
 	 * FreeFormScene
 	 */
 	public void handleToFreeForm(ActionEvent e) {
-		game = new FreeFormGameBuilder(new SudokuLogic(Gamestate.OPEN, 0, 0, false));
+		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+		game = new FreeFormGameBuilder(model);
 		game.initializeGame();
 	}
 

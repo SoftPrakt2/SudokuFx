@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.Labeled;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ToggleButton;
@@ -23,16 +24,15 @@ import logic.BasicGameLogic;
 
 public class FreeFormGameBuilder extends BasicGameBuilder {
 
-	ColorPicker picker = new ColorPicker(Color.AQUA);
 
-	ToggleButton colorButton;
+	ComboBox<Color> cmb;
 
 	protected ArrayList<ChangeListener> colorListeners = new ArrayList<>();
 
 	public FreeFormGameBuilder(BasicGameLogic model) {
 		super(model);
 		textField = new SudokuField[9][9];
-		createColorBox();
+		
 	}
 	
 
@@ -58,12 +58,12 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 				s.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
 					if (isNowFocused) {
-						s.setStyle("-fx-background-color: #" + picker.getValue().toString().substring(2));
-						System.out.println(picker.getValue().toString().substring(2));
+						s.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
+					
 					}
 				});
 
-				s.setColor(picker.getValue().toString().substring(2));
+				
 
 				cell.getChildren().add(textField[row][col]);
 
@@ -74,49 +74,55 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		}
 
 		playBoard.setAlignment(Pos.CENTER);
-
+		createColorBox();
 		return playBoard;
 	}
 	
 	
+	
+	
+	
+	
+	
+	
 	public void createColorBox() {
-		ComboBox<Color> colorBox = new ComboBox<>();
-		colorBox.getItems().addAll(Color.GREEN, Color.RED, Color.ORANGE, Color.CADETBLUE);
+		 cmb = new ComboBox<Color>();
+		 cmb.getItems().addAll(
+		     Color.RED,
+		     Color.GREEN,
+		     Color.BLUE);
+		 
+		 
 		
-		colorBox.setCellFactory(new Callback<ListView<Color>, ListCell<Color>>() {
-		     @Override public ListCell<Color> call(ListView<Color> p) {
-		         return new ListCell<Color>() {
-		             private final Rectangle rectangle;
-		             { 
-		                 setContentDisplay(ContentDisplay.GRAPHIC_ONLY); 
-		                 rectangle = new Rectangle(10, 10);
-		             }
-		             
-		             @Override protected void updateItem(Color item, boolean empty) {
-		                 super.updateItem(item, empty);
-		                 
-		                 if (item == null || empty) {
-		                     setGraphic(null);
-		                 } else {
-		                     rectangle.setFill(item);
-		                     setGraphic(rectangle);
-		                 }
-		            }
-		       };
-		   }
-		});
+		 ComboBox<Color> cmb = new ComboBox<Color>();
+	        cmb.getItems().addAll(Color.RED,Color.GREEN,Color.BLUE);
+
+	        cmb.setCellFactory(new Callback<ListView<Color>, ListCell<Color>>() {
+	            @Override public ListCell<Color> call(ListView<Color> p) {
+	                return new ListCell<Color>() {
+	                    private final Rectangle rectangle;
+	                    { 
+	                        setContentDisplay(ContentDisplay.GRAPHIC_ONLY); 
+	                        rectangle = new Rectangle(10, 10);
+	                    }
+	                    
+	                    @Override protected void updateItem(Color item, boolean empty) {
+	                        super.updateItem(item, empty);
+	                        
+	                        if (item == null || empty) {
+	                            setGraphic(null);
+	                        } else {
+	                            rectangle.setFill(item);
+	                            setGraphic(rectangle);
+	                           
+	                        }
+	                   }
+	              };
+	          }
+	       });
 		
-	//	statusbar.getItems().add(colorBox);
-		
+		 toolbar.getItems().add(cmb);
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 
 	@Override
@@ -132,8 +138,8 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 	}
 
-	public ToggleButton getColorButton() {
-		return colorButton;
-	}
+//	public ToggleButton getColorButton() {
+//		return colorButton;
+//	}
 
 }

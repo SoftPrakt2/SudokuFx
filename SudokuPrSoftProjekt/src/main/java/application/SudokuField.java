@@ -14,6 +14,7 @@ public class SudokuField extends TextField {
 		onlyOneNumber();
 		enterPressed();
 		updateColor();
+		this.getStyleClass().add("textfieldBasic");
 	}
 
 	private void addListener() {
@@ -31,6 +32,7 @@ public class SudokuField extends TextField {
 		});
 	}
 
+	
 	public void enterPressed() {
 		this.setOnKeyReleased(e -> {
 			if (e.getCode() == KeyCode.ENTER) {
@@ -45,7 +47,7 @@ public class SudokuField extends TextField {
 	};
 
 	public void updateColor() {
-		this.textProperty().addListener((observable, oldV, newV) -> this.setStyle("-fx-font-color: black"));
+		this.textProperty().addListener((observable, oldV, newV) -> this.getStyleClass().add("-fx-font-color: black"));
 
 	};
 

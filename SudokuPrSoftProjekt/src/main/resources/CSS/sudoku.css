@@ -36,6 +36,11 @@
     
 }
 
+.textfieldBasic {
+	-fx-font-color: black;
+}
+
+
 .list-view .list-cell:even {
 	
 }
