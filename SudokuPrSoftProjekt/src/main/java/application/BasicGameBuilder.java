@@ -306,7 +306,7 @@ public abstract class BasicGameBuilder {
 
 		conflictItem.setOnAction(controller::switchOffConflicts);
 		moreHintsItem.setOnAction(controller::handleMoreHints);
-		 exitItem.setOnAction(e -> GUI.closeProgram());
+		exitItem.setOnAction(e -> GUI.closeProgram());
 		exportItem.setOnAction(controller::exportGame);
 		importItem.setOnAction(controller::importGame);
 

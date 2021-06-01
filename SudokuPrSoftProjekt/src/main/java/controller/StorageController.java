@@ -88,9 +88,9 @@ public class StorageController {
 		game.initializeGame();
 		model.initializeTimer();
 		game.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
-		System.out.println(model.getSecondsplayed()+"sekunden");
-		model.getLiveTimer().start();
 		game.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
+		model.getLiveTimer().start();
+		
 
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());

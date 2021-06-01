@@ -39,8 +39,6 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 		pane.setPadding(new Insets(5, 5, 5, 5));
 
-//		playBoard.setVgap(0);
-//		playBoard.setHgap(0);
 
 		for (int row = 0; row < textField.length; row++) {
 			for (int col = 0; col < textField[row].length; col++) {
@@ -51,26 +49,27 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(22));
 
 				StackPane cellEmpty = new StackPane();
-				SudokuField empty = new SudokuField("-1");
-				empty.setStyle("-fx-pref-width: 2em;");
+				SudokuField emptyField = new SudokuField("-1");
+				
 
 				
-				cellEmpty.getChildren().add(empty);
+				cellEmpty.getChildren().add(emptyField);
 				cellEmpty.setDisable(true);
-				textField[row][col] = empty;
+				textField[row][col] = emptyField;
 
 				if ((row == 9 || row == 10 || row == 11) && (col < 6 || col > 14)) {
-					textField[row][col].setPlayable(false);
-
+					emptyField.getStyleClass().add("emptySamuraiCell");
 				} else if ((row < 6 || row > 14) && (col == 9 || col == 10 || col == 11)) {
-					textField[row][col].setPlayable(false);
+					emptyField.getStyleClass().add("emptySamuraiCell");
 				} else {
 
 					textField[row][col] = new SudokuField("");
-					textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 16));
+				//	textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 16));
+					textField[row][col].getStyleClass().add("samuraiFont");
+					
 					textField[row][col].setMaxSize(100, 100);
 					textField[row][col].setAlignment(Pos.CENTER);
-					textField[row][col].setPlayable(true);
+//					textField[row][col].setPlayable(true);
 					textField[row][col].setDisable(true);
 
 					cell.getChildren().add(textField[row][col]);

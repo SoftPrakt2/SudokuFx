@@ -48,18 +48,15 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 				textField[row][col] = new SudokuField("");
 				textField[row][col].setPlayable(true);
-			//	textField[row][col].getStylesheets().add("textfieldBasic");
 
 				textField[row][col].setMaxSize(200, 200);
 				textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 15));
 				textField[row][col].setAlignment(Pos.CENTER);
 
-				textField[row][col].addFreeFormColorListener(cmb);
+			//	textField[row][col].addFreeFormColorListener(cmb);
 
 				
-
 				
-
 				cell.getChildren().add(textField[row][col]);
 
 				playBoard.add(cell, row, col);
@@ -73,7 +70,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		return playBoard;
 	}
 	
-	
+
 	
 	
 	

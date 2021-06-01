@@ -108,11 +108,7 @@ public class Storage {
 		gameHeadLabel = new Label("Game Overview");
 		gameHeadLabel.setFont(new Font("Georgia", 20));
 
-//		directoryButton = new Button("");
-//		directoryButton.setGraphic(folderGraphic);
-		//directoryButton.setAlignment(Pos.BASELINE_RIGHT);
 
-//		directoryButton.setOnAction(controller::handleDirectorySwitch);
 
 		gameHeaderBox.getChildren().addAll(gameHeadLabel);
 		gameHeaderBox.setSpacing(285);
@@ -165,7 +161,7 @@ public class Storage {
 		gameStatsBox.setPadding(new Insets(10,10,10,10));
 		gameStatsBox.setSpacing(70);
 		
-		//gameStatsBox.setAlignment(Pos.CENTER);
+		
 		
 		VBox averageResultsBox = new VBox();
 		averageResultsBox.setPadding(new Insets(40,0,0,0));

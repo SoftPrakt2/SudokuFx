@@ -1,5 +1,6 @@
 package application;
 
+import javafx.beans.value.ChangeListener;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -9,6 +10,10 @@ public class SudokuField extends TextField {
 
 	private boolean playable = true;
 	private String color;
+	
+	ChangeListener<Boolean> freeFormColorListener;
+	
+	
 
 	public SudokuField(String txt) {
 		super(txt);
@@ -50,18 +55,36 @@ public class SudokuField extends TextField {
 	public void updateColor() {
 		this.textProperty().addListener((observable, oldV, newV) ->
 		this.getStyleClass().remove("textfieldWrong"));
+		this.getStyleClass().remove("textfieldHint");
 	};
 	
+
+//	public void addFreeFormColorListener(ComboBox<Color> cmb) {
+//		this.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+//			if (isNowFocused) {
+//				this.setColor(cmb.getValue().toString().substring(2));
+//				this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
+//				System.out.println(this.getColor());
+//			}
+//		});
+//	}
 	
 	public void addFreeFormColorListener(ComboBox<Color> cmb) {
-		this.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+		freeFormColorListener = (obs, wasFocused, isNowFocused) -> {
 			if (isNowFocused) {
-				this.setColor(cmb.getValue().toString().substring(2));
-				this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
-				System.out.println(this.getColor());
+			this.setColor(cmb.getValue().toString().substring(2));
+			this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
+			System.out.println(this.getColor());
 			}
-		});
+		};
+		this.focusedProperty().addListener(freeFormColorListener);
 	}
+	
+	
+	public void removeFreeFormColorListener() {
+		this.focusedProperty().removeListener(freeFormColorListener);
+	}
+	
 	
 	
 

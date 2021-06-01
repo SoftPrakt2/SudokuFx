@@ -14,7 +14,7 @@
 
     -fx-background-insets: 0, 0 ;
 
-    -fx-padding: 5px;
+    -fx-padding: 2px;
 }
 
 .samuraicell {
@@ -48,12 +48,31 @@
 	 -fx-pref-width: 3em ;
     -fx-pref-height: 3em ;
 	-fx-text-fill: black;
+	
+	-fx-font-family:"Arial";
+	-fx-font-weight:bold;
+	-fx-font-size: 23px;
+	
 }
 
 .textfieldWrong {
 	-fx-pref-width: 3em ;
     -fx-pref-height: 3em ;
 	-fx-text-fill: red;
+	-fx-font-family:"Arial";
+	-fx-font-weight:bold;
+	-fx-font-size: 23px;
+}
+
+.textfieldHint {
+	 -fx-pref-width: 3em ;
+    -fx-pref-height: 3em ;
+	-fx-text-fill: blue;
+	
+	-fx-font-family:"Arial";
+	-fx-font-weight:bold;
+	-fx-font-size: 23px;
+	
 }
 
 
@@ -127,6 +146,17 @@
 .coloredSamuraiCell2 {
 	-fx-background-color: #556B2F;
 }
+
+.emptySamuraiCell {
+	-fx-pref-width: 2em;
+}
+
+.samuraiFont {
+	-fx-font-family:"Arial";
+	-fx-font-weight:bold;
+	-fx-font-size: 20px;
+}	
+
 
 .button2 {
 	-fx-background-color:
