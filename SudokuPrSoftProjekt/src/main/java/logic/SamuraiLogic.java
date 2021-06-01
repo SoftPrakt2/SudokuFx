@@ -524,7 +524,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	public void difficulty() {
 		int counter = 369;
 		if (this.difficulty == 3)
-			counter = 230;
+			counter = 200;
 		if (this.difficulty == 5)
 			counter = 200;
 		if (this.difficulty == 7)
@@ -587,6 +587,12 @@ public class SamuraiLogic extends BasicGameLogic {
 			}
 		}
 		return true;
+	}
+
+	@Override
+	public void shuffle() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -27,9 +27,11 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		height = 1050;
 	}
 
+	
 	/**
 	 * Zeichnet ein Samurai-Sudoku-Feld
 	 */
+	
 	@Override
 	public GridPane createBoard() {
 		controller = new GameController(this, model);
@@ -37,13 +39,13 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 		pane.setPadding(new Insets(5, 5, 5, 5));
 
-		playBoard.setVgap(1);
-		playBoard.setHgap(1);
+//		playBoard.setVgap(0);
+//		playBoard.setHgap(0);
 
 		for (int row = 0; row < textField.length; row++) {
 			for (int col = 0; col < textField[row].length; col++) {
 				StackPane cell = new StackPane();
-				cell.getStyleClass().add("cell");
+				cell.getStyleClass().add("samuraicell");
 
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(22));
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(22));
@@ -66,7 +68,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 					textField[row][col] = new SudokuField("");
 					textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 16));
-					textField[row][col].setMaxSize(50, 50);
+					textField[row][col].setMaxSize(100, 100);
 					textField[row][col].setAlignment(Pos.CENTER);
 					textField[row][col].setPlayable(true);
 					textField[row][col].setDisable(true);
@@ -74,45 +76,47 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 					cell.getChildren().add(textField[row][col]);
 
 					playBoard.add(cell, row, col);
-					drawLines();
+					
 				}
 			}
 
 		}
-
+	
+		drawColors();
 		playBoard.setAlignment(Pos.CENTER);
 		return playBoard;
 	}
 
 	// draws the Line for the Samurai PlayField, PseudoClass is used for the lines
-	public void drawLines() {
-		PseudoClass right = PseudoClass.getPseudoClass("right");
-		PseudoClass bottom = PseudoClass.getPseudoClass("bottom");
-		Node[][] nodeArray = new Node[21][21];
-
-		for (Node cell : playBoard.getChildren()) {
-			int row = GridPane.getRowIndex(cell);
-			int col = GridPane.getColumnIndex(cell);
-			nodeArray[col][row] = cell;
-
-			nodeArray[col][row].pseudoClassStateChanged(right, col == 2 || col == 5 || col == 11 || col == 17);
-
-			if (col == 8 && (row > 5 && row < 15))
-				nodeArray[col][row].pseudoClassStateChanged(right, col == 8);
-			if ((col == 14 || col == 17) && (row < 9 || row > 11))
-				nodeArray[col][row].pseudoClassStateChanged(right, col == 14 || col == 17);
-
-			if ((row == 17 || row == 14) && (col < 9 || col > 11))
-				nodeArray[col][row].pseudoClassStateChanged(bottom, row == 14 || row == 17);
-
-			if (row == 5 || (row == 2 && (col < 9 || col > 11)))
-				nodeArray[col][row].pseudoClassStateChanged(bottom, row == 2 || row == 5);
-
-			if (row == 11 || (row == 8 && (col > 5 && col < 15)))
-				nodeArray[col][row].pseudoClassStateChanged(bottom, row == 8 || row == 11);
+	
+	
+	public void drawColors() {
+		for(int i = 0; i < textField.length; i++) {
+			for(int j = 0; j < textField[i].length; j++) {
+				if((j < 3 ||(j> 5 && j <9) || (j>11 && j<15) || j>17 && j<21) &&(i != 3&& i!=4 && i !=5 && i!=15 && i!=16 && i!=17)) {
+					if(((j > 5 && j<9) || (j >11 && j < 18))  && ((i > 8 && i <12))) {
+				
+					} else {
+						textField[i][j].getStyleClass().add("coloredSamuraiCell");
+					}
+			}
+			}
 		}
-
+		for(int i = 0; i < textField.length; i++) {
+			for(int j = 0; j < textField[i].length; j++) {
+				if( ((j > 2 && j< 6) || (j > 14 && j <18))
+						&& ( ((i > 2 && i < 6) || (i > 14 && i <18))))	{
+					textField[i][j].getStyleClass().add("coloredSamuraiCell");
+				}
+				if((j > 8 && j < 12) && (i > 8 && i < 12)) {
+					textField[i][j].getStyleClass().add("coloredSamuraiCell");
+				}
+			}
+		}
+		
+		
 	}
+	
 
 	/**
 	 * Befüllt das Spielfeld beim ersten Start mit Zahlen abhängig von der im

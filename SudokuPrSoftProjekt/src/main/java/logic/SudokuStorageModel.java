@@ -163,18 +163,20 @@ public class SudokuStorageModel {
 
 	
 	public BasicGameLogic loadIntoModel(BasicGameLogic model) {
-		if(gametype.equals("Sudoku")) model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
-		if (gametype.equals("Samurai")) model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+		if(gametype.equals("Sudoku")) model = new SudokuLogic(gameState, minutesPlayed, secondsPlayed, false);
+		if (gametype.equals("Samurai")) model = new SamuraiLogic(gameState, minutesPlayed, secondsPlayed, false);
+		if(gametype.equals("FreeForm")) model = new FreeFormLogic(gameState, minutesPlayed, secondsPlayed, false);
 		model.setGametype(gametype);
 		model.setCells(gameArray);
 		model.setGamePoints(gamePoints);
 		model.setDifficulty(difficulty);
 		model.setStartTime(System.currentTimeMillis());
-		model.setSecondsPlayed(secondsPlayed);
-		model.setMinutesPlayed(minutesPlayed);
+//		model.setSecondsPlayed(secondsPlayed);
+//		model.setMinutesPlayed(minutesPlayed);
 		model.setDifficultyString();
 		model.initializeTimer();
 		model.setGameID(gameId);
+		model.setGameState(gameState);
 		model.setPlaytimestring(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
 		return model;
 	}

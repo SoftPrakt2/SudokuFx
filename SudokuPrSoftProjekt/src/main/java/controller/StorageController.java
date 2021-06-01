@@ -6,6 +6,7 @@ import java.io.IOException;
 import org.json.simple.JSONObject;
 
 import application.BasicGameBuilder;
+import application.FreeFormGameBuilder;
 import application.GUI;
 import application.SamuraiGameBuilder;
 import application.Storage;
@@ -24,6 +25,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.DirectoryChooser;
 import logic.BasicGameLogic;
+import logic.FreeFormLogic;
 import logic.Gamestate;
 import logic.SamuraiLogic;
 import logic.SharedStoragePreferences;
@@ -66,6 +68,7 @@ public class StorageController {
 
 	
 	
+	
 	// test
 	public void handleLoadAction(ActionEvent e) {
 		
@@ -77,9 +80,15 @@ public class StorageController {
 		if (model.getGametype().equals("Samurai")) {
 			game = new SamuraiGameBuilder(model);
 		}
+		if (model.getGametype().equals("FreeForm")) {
+			game = new FreeFormGameBuilder(model);
+		}
+		
 
 		game.initializeGame();
 		model.initializeTimer();
+		game.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
+		System.out.println(model.getSecondsplayed()+"sekunden");
 		model.getLiveTimer().start();
 		game.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 
@@ -93,6 +102,9 @@ public class StorageController {
 		SudokuField[][] s = game.getTextField();
 		for (int i = 0; i < s.length; i++) {
 			for (int j = 0; j < s[i].length; j++) {
+				if(model instanceof FreeFormLogic) {
+					s[i][j].setStyle("-fx-background-color: #"+model.getCells()[i][j].getBoxcolor()+";");
+				}
 				if (model.getCells()[j][i].getValue() != 0) {
 					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
 				}
@@ -148,7 +160,7 @@ public class StorageController {
 			System.out.println("erfolgreich gelöscht");
 		}
 
-
+		dir =  new File("SaveFiles").listFiles();
 
 	}
 

@@ -18,6 +18,7 @@ public class PopOverController extends ModeController {
 		super(popup);
 
 	}
+	
 
 
 	public void handleHard(ActionEvent e) {

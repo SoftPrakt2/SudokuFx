@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.IOException;
+import java.util.stream.Stream;
 
 import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
@@ -11,6 +12,7 @@ import application.Storage;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import logic.BasicGameLogic;
+import logic.FreeFormLogic;
 import logic.Gamestate;
 import logic.SamuraiLogic;
 import logic.SudokuLogic;
@@ -28,11 +30,10 @@ public class ModeController {
 	protected BasicGameBuilder game;
 	protected BasicGameLogic model;
 
-
-
 	public <E extends MainMenu> ModeController(E menu) {
 		this.menu = menu;
 	}
+	
 	
 
 	/**
@@ -44,7 +45,7 @@ public class ModeController {
 		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
 		game = new SudokuGameBuilder(model);
 		game.initializeGame();
-
+		
 	}
 
 	/**
@@ -64,7 +65,7 @@ public class ModeController {
 	 * FreeFormScene
 	 */
 	public void handleToFreeForm(ActionEvent e) {
-		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+		model = new FreeFormLogic(Gamestate.OPEN, 0, 0, false);
 		game = new FreeFormGameBuilder(model);
 		game.initializeGame();
 	}
@@ -111,6 +112,8 @@ public class ModeController {
 		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
 			model.setDifficulty(0);
 			game.getDoneButton().setVisible(true);
+			model.setGameState(Gamestate.CREATING);
+			game.getGameNotificationLabel().setText(model.getGameText());
 	}
 
 	/**

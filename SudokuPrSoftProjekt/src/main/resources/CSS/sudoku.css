@@ -10,14 +10,21 @@
 
 .cell {
 
- 
     -fx-background-color:  black,  	#D3D3D3;
 
-  
     -fx-background-insets: 0, 0 ;
 
     -fx-padding: 5px;
 }
+
+.samuraicell {
+	-fx-background-color:  black,  	#D3D3D3;
+
+    -fx-background-insets: 0, 0 ;
+
+    -fx-padding: 1px;
+}
+
 
 
 .dark-blue {
@@ -36,8 +43,28 @@
     
 }
 
+
 .textfieldBasic {
-	-fx-font-color: black;
+	 -fx-pref-width: 3em ;
+    -fx-pref-height: 3em ;
+	-fx-text-fill: black;
+}
+
+.textfieldWrong {
+	-fx-pref-width: 3em ;
+    -fx-pref-height: 3em ;
+	-fx-text-fill: red;
+}
+
+
+.cell .texxt-field {
+    -fx-pref-width: 3em ;
+    -fx-pref-height: 3em ;
+}
+
+
+.text-field:disabled, .text-field:disabled > * {
+	-fx-opacity: 1.0;
 }
 
 
@@ -90,6 +117,15 @@
     -fx-font-family: "Arial";
     -fx-text-fill: linear-gradient(white, #d0d0d0);
     -fx-font-size: 12px;
+}
+
+
+.coloredSamuraiCell {
+	-fx-background-color:  #97c1a9;
+}
+
+.coloredSamuraiCell2 {
+	-fx-background-color: #556B2F;
 }
 
 .button2 {
@@ -169,18 +205,27 @@
     -fx-background-insets: 0, 0 1 1 0 ;
 }
 
-.cell .text-field {
-    -fx-pref-width: 3em ;
-    -fx-pref-height: 3em ;
+
+
+.hidden:right {
+	-fx-background-insets: 0, 0 1 0 0 ;
 }
 
-
-.text-field:disabled, .text-field:disabled > * {
-	-fx-opacity: 1.0;
+.samuraicell:left {
+	-fx-background-insets: 0, 0 0 1 1 ;
 }
 
+.samuraicell:right {
+    -fx-background-insets: 0, 0 1 0 0 ;
+}
 
+.samuraicell:bottom {
+    -fx-background-insets: 0, 0 0 1 0 ;
+}
 
+.samuraicell:right:bottom {
+    -fx-background-insets: 0, 0 1 1 0 ;
+}
 
 
 .round-red {

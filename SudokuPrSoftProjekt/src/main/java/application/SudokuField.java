@@ -1,7 +1,9 @@
 package application;
 
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 public class SudokuField extends TextField {
 
@@ -32,7 +34,6 @@ public class SudokuField extends TextField {
 		});
 	}
 
-	
 	public void enterPressed() {
 		this.setOnKeyReleased(e -> {
 			if (e.getCode() == KeyCode.ENTER) {
@@ -47,9 +48,22 @@ public class SudokuField extends TextField {
 	};
 
 	public void updateColor() {
-		this.textProperty().addListener((observable, oldV, newV) -> this.getStyleClass().add("-fx-font-color: black"));
-
+		this.textProperty().addListener((observable, oldV, newV) ->
+		this.getStyleClass().remove("textfieldWrong"));
 	};
+	
+	
+	public void addFreeFormColorListener(ComboBox<Color> cmb) {
+		this.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
+			if (isNowFocused) {
+				this.setColor(cmb.getValue().toString().substring(2));
+				this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
+				System.out.println(this.getColor());
+			}
+		});
+	}
+	
+	
 
 	public void setPlayable(boolean playable) {
 		this.playable = playable;

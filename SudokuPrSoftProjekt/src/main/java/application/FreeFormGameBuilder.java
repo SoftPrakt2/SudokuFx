@@ -34,11 +34,10 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		textField = new SudokuField[9][9];
 		
 	}
-	
 
 	public GridPane createBoard() {
 		playBoard = new GridPane();
-
+		createColorBox();
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				StackPane cell = new StackPane();
@@ -49,19 +48,15 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 				textField[row][col] = new SudokuField("");
 				textField[row][col].setPlayable(true);
+			//	textField[row][col].getStylesheets().add("textfieldBasic");
 
-				textField[row][col].setMaxSize(100, 100);
+				textField[row][col].setMaxSize(200, 200);
 				textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 15));
 				textField[row][col].setAlignment(Pos.CENTER);
 
-				SudokuField s = textField[row][col];
+				textField[row][col].addFreeFormColorListener(cmb);
 
-				s.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-					if (isNowFocused) {
-						s.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
-					
-					}
-				});
+				
 
 				
 
@@ -74,7 +69,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		}
 
 		playBoard.setAlignment(Pos.CENTER);
-		createColorBox();
+		
 		return playBoard;
 	}
 	
@@ -86,15 +81,9 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	
 	public void createColorBox() {
+	
+		 
 		 cmb = new ComboBox<Color>();
-		 cmb.getItems().addAll(
-		     Color.RED,
-		     Color.GREEN,
-		     Color.BLUE);
-		 
-		 
-		
-		 ComboBox<Color> cmb = new ComboBox<Color>();
 	        cmb.getItems().addAll(Color.RED,Color.GREEN,Color.BLUE);
 
 	        cmb.setCellFactory(new Callback<ListView<Color>, ListCell<Color>>() {
@@ -121,7 +110,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	          }
 	       });
 		
-		 toolbar.getItems().add(cmb);
+		 toolbar.getItems().add(4, cmb);
 	}
 	
 
@@ -134,7 +123,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 	@Override
 	public void createNumbers() {
-		// wird implementiert sobald freiform logik fertig ist
+		controller.createGame();
 
 	}
 

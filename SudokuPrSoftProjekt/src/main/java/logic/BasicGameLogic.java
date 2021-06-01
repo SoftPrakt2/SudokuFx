@@ -38,6 +38,7 @@ public abstract class BasicGameLogic {
 	public String playtimeString;
 	
 
+	
 	protected int hintCounter;
 	protected int countHintsPressed = 0;
 
@@ -176,9 +177,7 @@ public abstract class BasicGameLogic {
 	}
 
 	public String getGameText() {
-		if (this.getGamestate() == Gamestate.OPEN) {
-			gameText = "Game ongoing!";
-		}
+		
 		if (this.getGamestate() == Gamestate.DONE) {
 			gameText = "Congratulations you won!";
 		}
@@ -193,6 +192,9 @@ public abstract class BasicGameLogic {
 		}
 		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
 			gameText = "Unsolvable Sudoku! New Solution generated";
+		}
+		if(this.getGamestate() == Gamestate.CREATING) {
+			gameText = "Create your own game!";
 		}
 
 		return gameText;
@@ -226,15 +228,15 @@ public abstract class BasicGameLogic {
 	}
 
 	public long calculateGameTime() {
-		long time;
-		long endTime = System.currentTimeMillis();
-		time = (endTime - getStartTime()) / 1000;
-		// time += getLoadedMinutes() * 60 + getLoadedSeconds();
-		setSecondsPlayed(time);
-		if (time > 60) {
-			setMinutesPlayed(time / 60);
-			setSecondsPlayed(time % 60);
-		}
+		long time = 0;
+//		long endTime = System.currentTimeMillis();
+//		time = (endTime - getStartTime()) / 1000;
+//		// time += getLoadedMinutes() * 60 + getLoadedSeconds();
+//		setSecondsPlayed(time);
+//		if (time > 60) {
+//			setMinutesPlayed(time / 60);
+//			setSecondsPlayed(time % 60);
+//		}
 		return time;
 	}
 
@@ -254,9 +256,9 @@ public abstract class BasicGameLogic {
             @Override
             public void handle(long now) {
                 long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
-                minutesPlayed =helpmin + elapsedSeconds / 60;
-                secondsPlayed = helpsec + elapsedSeconds % 60;
-
+                minutesPlayed = ((helpmin*60 + helpsec + elapsedSeconds)/60);
+                secondsPlayed = (helpsec +  helpmin*60 + elapsedSeconds) % 60;
+                
                 liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
             }
             
@@ -280,6 +282,10 @@ public abstract class BasicGameLogic {
 	public AnimationTimer getLiveTimer() {
 		return timer;
 	}
+	
+	
+	public abstract void shuffle();
+	
 
 	public StringProperty getStringProp() {
 		return liveTimePlayedString;

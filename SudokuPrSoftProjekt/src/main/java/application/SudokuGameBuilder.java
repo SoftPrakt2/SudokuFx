@@ -26,6 +26,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 
 	
 	
+	
 	/**
 	 * * Übergibt dieser Scene den jeweiligen Controller Erstellt die Scene mit den
 	 * Buttons, der MenuBar und dem Sudoku-Spielfeld
@@ -34,6 +35,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	/**
 	 * Zeichnet ein Sudoku-Feld
 	 */
+	
 	public GridPane createBoard() {
 
 		playBoard = new GridPane();
@@ -48,16 +50,17 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 				StackPane cell = new StackPane();
 				cell.getStyleClass().add("cell");
 				
-
+				
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(10));
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));
 
 				textField[row][col] = new SudokuField("");
-
+				
 				textField[row][col].setMaxSize(100, 100);
 				textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 23));
+				textField[row][col].getStyleClass().add("textfieldBasic");
 				textField[row][col].setAlignment(Pos.CENTER);
-
+				
 				cell.pseudoClassStateChanged(right, row == 2 || row == 5);
 
 				cell.pseudoClassStateChanged(bottom, col == 2 || col == 5);

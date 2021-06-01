@@ -64,12 +64,13 @@ public abstract class BasicGameBuilder {
 	NewGamePopUp gamePopUp;
 	PopOver popover;
 
-	public BasicGameBuilder(BasicGameLogic model) {
+	public <T extends BasicGameBuilder> BasicGameBuilder(BasicGameLogic model) {
 		pane = new BorderPane();
 		this.model = model;
 
 	}
 
+	
 	protected SudokuField[][] textField;
 
 	// schwierigkeit welche vom hauptmenü mit den gettern und settern unten
@@ -81,6 +82,7 @@ public abstract class BasicGameBuilder {
 	protected GridPane playBoard;
 
 	public void initializeGame() {
+		
 		controller = new GameController(this, model);
 
 		gamePopUp = new NewGamePopUp();
@@ -95,7 +97,7 @@ public abstract class BasicGameBuilder {
 	}
 
 	public abstract void createNumbers();
-
+	
 	// vielleicht besser in den gamebuilderklassen direkt die boards zu zeichnen?
 	public abstract GridPane createBoard();
 
@@ -145,7 +147,8 @@ public abstract class BasicGameBuilder {
 		Mnemonic mn = new Mnemonic(autosolve, autoS);
 		GUI.getStage().getScene().addMnemonic(mn);
 	}
-
+	
+	
 	public void addListeners(SudokuField[][] sudokuField) {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
@@ -164,10 +167,11 @@ public abstract class BasicGameBuilder {
 			}
 		}
 	}
-
+	
+	
 	public void removeListeners(SudokuField[][] sudokuField) {
 
-		for (ChangeListener l : listeners) {
+		for (ChangeListener<String> l : listeners) {
 			for (SudokuField[] sss : sudokuField) {
 				for (SudokuField field : sss) {
 
@@ -176,7 +180,8 @@ public abstract class BasicGameBuilder {
 			}
 		}
 	}
-
+	
+	
 	protected MenuBar menuBar;
 
 	// MenüObjekte für File Menü
@@ -231,7 +236,7 @@ public abstract class BasicGameBuilder {
 		seperator = new SeparatorMenuItem();
 		exitItem = new MenuItem("Exit");
 		popover = gamePopUp.createPopUp();
-		file.getItems().addAll(newGame, save, load, importItem, exportItem, seperator, exitItem);
+		file.getItems().addAll(newGame, save, importItem, exportItem, seperator, exitItem);
 		
 		//Edit Menü initialisierungen
 		editMenu = new Menu("Edit");
@@ -382,4 +387,11 @@ public abstract class BasicGameBuilder {
 	public Label getLiveTimeLabel() {
 		return liveTimeLabel;
 	}
+	
+	
+	
+	
+	
+	
+	
 }

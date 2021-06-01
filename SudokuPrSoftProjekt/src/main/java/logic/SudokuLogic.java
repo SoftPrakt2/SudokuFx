@@ -327,6 +327,12 @@ public class SudokuLogic extends BasicGameLogic {
 		return true;
 	}
 
+	@Override
+	public void shuffle() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	// muss noch besprochen werden in welche klasse die methoden gehören
 
 	// updatet den stand des sudoku arrays auf den stand des logik arrays, nach
