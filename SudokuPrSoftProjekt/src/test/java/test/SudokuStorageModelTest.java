@@ -29,8 +29,8 @@ public class SudokuStorageModelTest {
 
 	@Test
 	public void testPrep() {		
-		ssmt.prepareSave(model);
-		ssmt.storeIntoJSON();
+//		ssmt.prepareSave(model);
+//		ssmt.storeIntoJSON();
 //		ssmt.storeIntoFile(new File));
 //		ssmt.saveGame(model);
 //		ssmt.exportGame(model);
