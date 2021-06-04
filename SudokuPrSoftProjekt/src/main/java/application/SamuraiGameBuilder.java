@@ -1,10 +1,14 @@
 package application;
 
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
+
 import controller.GameController;
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -64,13 +68,12 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				} else {
 
 					textField[row][col] = new SudokuField("");
-				//	textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 16));
+			
 					textField[row][col].getStyleClass().add("samuraiFont");
 					
 					textField[row][col].setMaxSize(100, 100);
 					textField[row][col].setAlignment(Pos.CENTER);
-//					textField[row][col].setPlayable(true);
-					textField[row][col].setDisable(true);
+
 
 					cell.getChildren().add(textField[row][col]);
 
@@ -115,17 +118,20 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		
 		
 	}
+
+
+	@Override
+	public void createManualControls() {
+		// TODO Auto-generated method stub
+		Glyph doneGraphic = fontAwesome.create(FontAwesome.Glyph.LOCK);
+		customNumbersDone = new Button("");
+		customNumbersDone.setGraphic(doneGraphic);
+		customNumbersDone.setVisible(false);
+		toolBar.getItems().add(3,customNumbersDone);
+	}
 	
 
-	/**
-	 * Befüllt das Spielfeld beim ersten Start mit Zahlen abhängig von der im
-	 * Hauptmenü eingestellten Schwierigkeit
-	 */
-	@Override
-	public void createNumbers() {
-		// TODO Auto-generated method stub
-		controller.createGame();
-	}
+	
 
 	/**
 	 * Getter und Setter für die Variablen dieser Klasse

@@ -320,7 +320,11 @@
 	-fx-border-radius:28px;
 	-fx-padding:10px 35px;
 	-fx-font-weight: bold;
-}	
+}
+
+.myButton2:disabled {
+	-fx-opacity: 0.8;
+}
 	
 
 	

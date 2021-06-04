@@ -13,6 +13,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -36,12 +37,16 @@ public abstract class BasicGameBuilder {
 
 	protected BorderPane pane;
 
-	protected ToolBar toolbar;
+	//behälter und buttons für Spielbuttons
+	protected ToolBar toolBar;
 	protected VBox toolbox;
 	protected VBox playButtonMenu;
 	protected Button check;
 	protected Button owngame;
 	protected Button autosolve;
+	protected Button customNumbersDone;
+	protected Button customColorsDone;
+
 	protected Button hintButton;
 	
 	
@@ -52,24 +57,37 @@ public abstract class BasicGameBuilder {
 	protected Label liveTimeLabel;
 
 	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
+	
+	protected ComboBox<String> cmb;
 
 	// Variablen welche für die Festlegung der Fenstergröße benötigt werden
 	protected int width;
 	protected int height;
 
-	protected Button done;
+	
+	protected BasicGameLogic model;
 
-	BasicGameLogic model;
-
-	NewGamePopUp gamePopUp;
-	PopOver popover;
+	protected NewGamePopUp gamePopUp;
+	protected PopOver popover;
+	
+	
+	protected Label manuelInstructionLabel;
+	
+	FontAwesome fontAwesome = new FontAwesome();
 
 	public <T extends BasicGameBuilder> BasicGameBuilder(BasicGameLogic model) {
 		pane = new BorderPane();
 		this.model = model;
-
+		}
+	
+	public Button getCheck() {
+		return check;
 	}
 
+	public void setCheck(Button check) {
+		this.check = check;
+	}
+	
 	
 	protected SudokuField[][] textField;
 
@@ -91,12 +109,13 @@ public abstract class BasicGameBuilder {
 
 		createMenuBar();
 		createPlayButtons();
+		createManualControls();
 		createStatusBar();
 		setButtonActions();
 		pane.setCenter(createBoard());
 	}
 
-	public abstract void createNumbers();
+//	public abstract void createNumbers();
 	
 	// vielleicht besser in den gamebuilderklassen direkt die boards zu zeichnen?
 	public abstract GridPane createBoard();
@@ -110,14 +129,15 @@ public abstract class BasicGameBuilder {
 	 */
 
 	public void createPlayButtons() {
-		toolbar = new ToolBar();
+		toolBar = new ToolBar();
 
 		// Graphiken für Buttons
-		FontAwesome fontAwesome = new FontAwesome();
+		
 		Glyph checkGraphic = fontAwesome.create(FontAwesome.Glyph.CHECK);
 		Glyph hintGraphic = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
 		Glyph autosolveGraphic = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
-
+		
+		
 		hintButton = new Button("");
 		hintButton.setGraphic(hintGraphic);
 
@@ -127,21 +147,33 @@ public abstract class BasicGameBuilder {
 		check = new Button("");
 		check.setGraphic(checkGraphic);
 
-		done = new Button("done");
-		done.setVisible(false);
+		
 
 		liveTimeLabel = new Label("");
 
 		// benötigt für Abstand zwischen Buttons und Timer
 		final Pane rightSpacer = new Pane();
 		HBox.setHgrow(rightSpacer, Priority.SOMETIMES);
+		
+		final Pane rightSpacer2 = new Pane();
+		HBox.setHgrow(rightSpacer2, Priority.SOMETIMES);
 
-		toolbar.getItems().addAll(hintButton, autosolve, check, done, rightSpacer, liveTimeLabel);
+		toolBar.getItems().addAll(hintButton, autosolve, check, rightSpacer, liveTimeLabel);
 
-		toolbox.getChildren().add(toolbar);
+		toolbox.getChildren().add(toolBar);
 
 	}
+	
+	
+	public abstract void createManualControls();
+	
+	
+	
+	
 
+	/*
+	 * definiert Shortcuts für Spielfunktionen
+	 */
 	public void defineShortCuts() {
 		KeyCombination autoS = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
 		Mnemonic mn = new Mnemonic(autosolve, autoS);
@@ -181,7 +213,7 @@ public abstract class BasicGameBuilder {
 		}
 	}
 	
-	
+	//Hauptmenü Leiste für die Spielscenes
 	protected MenuBar menuBar;
 
 	// MenüObjekte für File Menü
@@ -212,7 +244,7 @@ public abstract class BasicGameBuilder {
 	protected Menu mainMenu;
 	protected MenuItem mainMenuItem;
 
-	// MenüObjekte für Help Menü
+	//MenüObjekte für Help Menü
 	protected Menu helpMenu;
 	protected MenuItem rules;
 	protected RulesStage rule;
@@ -292,7 +324,13 @@ public abstract class BasicGameBuilder {
 		autosolve.setOnAction(controller::autoSolveHandler);
 		hintButton.setOnAction(controller::hintHandeler);
 
-		done.setOnAction(controller::manuelDoneHandler);
+		customNumbersDone.setOnAction(controller::manuelDoneHandler);
+		
+		if(this instanceof FreeFormGameBuilder) {
+			System.out.println("freiformtest");
+			customColorsDone.setOnAction(controller::customColorsDoneHandler);
+		}
+		
 		checkItem.setOnAction(controller::checkHandler);
 		hintMenuItem.setOnAction(controller::hintHandeler);
 		autoSolveItem.setOnAction(controller::autoSolveHandler);
@@ -331,6 +369,17 @@ public abstract class BasicGameBuilder {
 		pane.setBottom(statusBar);
 	}
 
+	
+	public void createNumbers() {
+		controller.createGame();
+	}
+	
+	public void disablePlayButtons() {
+		Stream.of(check,autosolve,hintButton).forEach(button -> button.setDisable(true));
+	}
+	
+	
+	
 	/**
 	 * 
 	 * Getter und Setter für die Variablen dieser Klasse
@@ -354,9 +403,21 @@ public abstract class BasicGameBuilder {
 	public Button getCheckButton() {
 		return this.check;
 	}
+	
+	public Button getAutoSolveButton() {
+		return this.autosolve;
+	}
+	
+	public Button getHintButton() {
+		return this.hintButton;
+	}
+	
+	public Button getColorsDoneButton() {
+		return this.customColorsDone;
+	}
 
 	public Button getDoneButton() {
-		return this.done;
+		return this.customNumbersDone;
 	}
 
 	// hat infos über punkte, schwierigkeit, und spielzeit
@@ -388,10 +449,13 @@ public abstract class BasicGameBuilder {
 		return liveTimeLabel;
 	}
 	
+	public ComboBox<String> getColorBox() {
+		return cmb;
+	}
 	
-	
-	
-	
+	public ToolBar getToolBar() {
+	return toolBar;
+	}
 	
 	
 }

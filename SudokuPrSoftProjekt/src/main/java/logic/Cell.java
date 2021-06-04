@@ -1,26 +1,28 @@
 package logic;
 
+import com.google.gson.annotations.Expose;
+
 import javafx.scene.paint.Color;
 
 public class Cell {
 
 	// Spalte 1 - 9
-	int col;
+	@Expose int col;
 
 	// Reihe 1 - 9
-	int row;
+	@Expose int row;
 
 	// Box 1 - 9
-	int box;
+	@Expose int box;
 
 	// Wert 1 - 9
-	int value;
+	@Expose int value;
 
 	// Manuelle Eingabe
-	boolean isReal;
+	@Expose boolean isReal;
 
 	// Color color
-	String boxcolor;
+	@Expose String boxcolor;
 
 	 public Cell(int row, int col, int box, int value) {
 	        super();
@@ -29,7 +31,7 @@ public class Cell {
 	        this.box = box;
 	        this.value = value;
 	        this.isReal = true;
-	        this.boxcolor = "fff";
+	        this.boxcolor = "";
 	    }
 
 	    public boolean getIsReal() {

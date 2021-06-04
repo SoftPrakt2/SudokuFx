@@ -10,7 +10,9 @@ import application.MainMenu;
 import application.SamuraiGameBuilder;
 import application.Storage;
 import application.SudokuGameBuilder;
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
@@ -29,6 +31,8 @@ public class ModeController {
 	private MainMenu menu;
 	protected BasicGameBuilder game;
 	protected BasicGameLogic model;
+	
+	protected int difficulty;
 
 	public <E extends MainMenu> ModeController(E menu) {
 		this.menu = menu;
@@ -45,7 +49,7 @@ public class ModeController {
 		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
 		game = new SudokuGameBuilder(model);
 		game.initializeGame();
-		
+		enableDifficultyButtons();
 	}
 
 	/**
@@ -57,6 +61,7 @@ public class ModeController {
 		model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
 		game = new SamuraiGameBuilder(model);
 		game.initializeGame();
+		enableDifficultyButtons();
 	}
 
 	/**
@@ -68,6 +73,7 @@ public class ModeController {
 		model = new FreeFormLogic(Gamestate.OPEN, 0, 0, false);
 		game = new FreeFormGameBuilder(model);
 		game.initializeGame();
+		enableDifficultyButtons();
 	}
 
 	/**
@@ -93,28 +99,56 @@ public class ModeController {
 	 * Stellen die schwierigkeit des zuvor ausgewählten Sudoku-Spiels ein
 	 */
 	public void handleHard(ActionEvent e) {
-		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
-			model.setDifficulty(3);
-
+	//	if (menu.getPlayModeToggle().getSelectedToggle().isSelected()) {
+			difficulty = 3;
+			enablePlayButton();
+	//	}
 	}
 
 	public void handleEasy(ActionEvent e) {
-		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
-			model.setDifficulty(7);
+	//	if (menu.getPlayModeToggle().getSelectedToggle().isSelected()) {
+			difficulty = 7;
+			enablePlayButton();
+//		}
+			
+		
 	}
 
 	public void handleMedium(ActionEvent e) {
-		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
-			model.setDifficulty(5);
+	//	if (menu.getPlayModeToggle().getSelectedToggle().isSelected()) {
+			difficulty = 5;
+			enablePlayButton();
+//		}
 	}
 
 	public void handleManual(ActionEvent e) {
-		if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
-			model.setDifficulty(0);
+	//	if (menu.getPlayModeToggle().getSelectedToggle().isSelected())
+			difficulty = 0;
+			if(model instanceof FreeFormLogic) {
+			//	game.getColorBox().setVisible(true);
+				model.setGameState(Gamestate.DRAWING);
+				System.out.println("hala");
+				game.getColorsDoneButton().setVisible(true);
+				game.getColorBox().setVisible(true);
+				
+			} else {
+				model.setGameState(Gamestate.CREATING);
+			}
+			
+			
 			game.getDoneButton().setVisible(true);
-			model.setGameState(Gamestate.CREATING);
+		
 			game.getGameNotificationLabel().setText(model.getGameText());
+			
+			Stream.of(game.getHintButton(), game.getAutoSolveButton(), game.getCheckButton()).forEach(
+					button -> button.setDisable(true));
+			
+			enablePlayButton();
 	}
+	
+	
+	
+	
 
 	/**
 	 * 
@@ -123,15 +157,70 @@ public class ModeController {
 	 * des Spiels auf 0
 	 */
 	public void handleGameStart(ActionEvent e) {
+		
+		model.setDifficulty(difficulty);
+		if(difficulty == 0) {
+			model.initializeCustomGame();
+			
+		} else {
+			
+
 		game.createNumbers();
+		game.getDoneButton().setDisable(true);
+		}
+		
+		
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());
 		GUI.getStage().getScene().setRoot(game.getPane());
+		
+		if(menu.getPlayModeToggle().getSelectedToggle()!=null) {
 		menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
+		}
+		
+		if(menu.getDifficultyToggle().getSelectedToggle()!=null) {
 		menu.getDifficultyToggle().getSelectedToggle().setSelected(false);
-
-		if (game.getDifficulty() > 0)
-			game.getDoneButton().setDisable(true);
+		}
+		
+		
+		
+		disableDifficultyButtons();
+		disablePlayButton();
+			
+		}
+	
+	
+	
+	
+	public void enableDifficultyButtons() {
+		menu.getDifficultyToggle().getToggles().forEach(toggle -> {
+			Node button = (Node) toggle;
+			button.setDisable(false);
+		});
 	}
+	
+	public void disableDifficultyButtons() {
+		menu.getDifficultyToggle().getToggles().forEach(toggle -> {
+			Node button = (Node) toggle;
+			button.setDisable(true);
+		});
+	}
+	
+	public void enablePlayButton() {
+		menu.getPlayButton().setDisable(false);
+	}
+	
+	public void disablePlayButton() {
+		menu.getPlayButton().setDisable(true);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

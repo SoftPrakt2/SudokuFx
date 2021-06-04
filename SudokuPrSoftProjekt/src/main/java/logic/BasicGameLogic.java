@@ -4,7 +4,10 @@ package logic;
 import java.time.Duration;
 import java.time.LocalTime;
 
+import com.google.gson.annotations.Expose;
+
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,6 +21,7 @@ import javafx.beans.property.StringProperty;
  *
  */
 public abstract class BasicGameLogic {
+
 
 	protected Gamestate gamestate;
 	protected boolean isCorrect;
@@ -48,7 +52,7 @@ public abstract class BasicGameLogic {
 
 	// Variablen für Timer
 	AnimationTimer timer;
-	BooleanProperty running = new SimpleBooleanProperty();
+	BooleanProperty timerIsRunning = new SimpleBooleanProperty();
 
 	protected BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
@@ -56,6 +60,7 @@ public abstract class BasicGameLogic {
 		this.minutesPlayed = minutesPlayed;
 		this.secondsPlayed = secondsPlayed;
 		this.isCorrect = isCorrect;
+		liveTimePlayedString = new SimpleStringProperty();
 	}
 
 	public abstract boolean checkRow(int row, int col, int guess);
@@ -79,6 +84,38 @@ public abstract class BasicGameLogic {
 	public abstract void printCells();
 
 	public abstract void setCell(int col, int row, int guess);
+	
+	public abstract boolean isConnected();
+	
+
+	
+	
+	public void initializeCustomGame() {
+		setUpLogicArray();
+	//	createSudoku();
+		setDifficulty(0);
+		setDifficultyString();
+		difficulty();
+		if(this instanceof FreeFormLogic) {
+		setGameState(Gamestate.DRAWING);
+		} else setGameState(Gamestate.CREATING);
+	}
+	
+	
+	
+	public void setUpGameInformations() {
+		setStartTime(System.currentTimeMillis());
+		setGamePoints(10);
+		setGameState(Gamestate.OPEN);
+		setDifficultyString();
+		setHintsPressed(0);
+		setMinutesPlayed(0);
+		setSecondsPlayed(0);
+		initializeTimer();
+		getLiveTimer().start();
+	}
+	
+	
 
 	public String getGametype() {
 		return this.gametype;
@@ -188,7 +225,7 @@ public abstract class BasicGameLogic {
 			gameText = "Autosolved";
 		}
 		if (this.getGamestate() == Gamestate.CONFLICT) {
-			gameText = "Please remove the conflicts before autosolving";
+			gameText = "Please remove the conflicts";
 		}
 		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
 			gameText = "Unsolvable Sudoku! New Solution generated";
@@ -196,6 +233,14 @@ public abstract class BasicGameLogic {
 		if(this.getGamestate() == Gamestate.CREATING) {
 			gameText = "Create your own game!";
 		}
+		
+		if(this.getGamestate() == Gamestate.OPEN) {
+			gameText = "Game ongoing!";
+		}
+		if(this.getGamestate() == Gamestate.DRAWING) {
+			gameText = "Draw your own forms!";
+		}
+		
 
 		return gameText;
 	}
@@ -227,25 +272,14 @@ public abstract class BasicGameLogic {
 		}
 	}
 
-	public long calculateGameTime() {
-		long time = 0;
-//		long endTime = System.currentTimeMillis();
-//		time = (endTime - getStartTime()) / 1000;
-//		// time += getLoadedMinutes() * 60 + getLoadedSeconds();
-//		setSecondsPlayed(time);
-//		if (time > 60) {
-//			setMinutesPlayed(time / 60);
-//			setSecondsPlayed(time % 60);
-//		}
-		return time;
-	}
+
 
 	public void initializeTimer() {
 
 
         liveTimePlayedString = new SimpleStringProperty("");
 
-        running = new SimpleBooleanProperty();
+        timerIsRunning = new SimpleBooleanProperty();
 
         timer = new AnimationTimer() {
             long helpmin = minutesPlayed;
@@ -265,14 +299,14 @@ public abstract class BasicGameLogic {
 
             @Override
             public void start() {
-                running.set(true);
+            	timerIsRunning.set(true);
                 startTime = LocalTime.now();
                 super.start();
             }
 
             @Override
             public void stop() {
-                running.set(false);
+            	timerIsRunning.set(false);
                 super.stop();
             }
         };
@@ -281,6 +315,10 @@ public abstract class BasicGameLogic {
 
 	public AnimationTimer getLiveTimer() {
 		return timer;
+	}
+	
+	public boolean timerIsRunning() {
+		return timerIsRunning.get();
 	}
 	
 	

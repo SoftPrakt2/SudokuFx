@@ -9,7 +9,8 @@ import javafx.scene.paint.Color;
 public class SudokuField extends TextField {
 
 	private boolean playable = true;
-	private String color;
+	private String color = "";
+	private boolean listeningToColors;
 	
 	ChangeListener<Boolean> freeFormColorListener;
 	
@@ -21,6 +22,7 @@ public class SudokuField extends TextField {
 		onlyOneNumber();
 		enterPressed();
 		updateColor();
+		listeningToColors = false;
 		this.getStyleClass().add("textfieldBasic");
 	}
 
@@ -69,20 +71,23 @@ public class SudokuField extends TextField {
 //		});
 //	}
 	
-	public void addFreeFormColorListener(ComboBox<Color> cmb) {
+	public void addFreeFormColorListener(ComboBox<String> cmb) {
 		freeFormColorListener = (obs, wasFocused, isNowFocused) -> {
-			if (isNowFocused) {
-			this.setColor(cmb.getValue().toString().substring(2));
-			this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
-			System.out.println(this.getColor());
+			if (isNowFocused && cmb != null && cmb.getValue()!=null) {
+			this.setColor(cmb.getValue().substring(2));
+		//	this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
+			
 			}
 		};
+		
 		this.focusedProperty().addListener(freeFormColorListener);
+		listeningToColors = true;
 	}
 	
 	
 	public void removeFreeFormColorListener() {
 		this.focusedProperty().removeListener(freeFormColorListener);
+		listeningToColors = false;
 	}
 	
 	
@@ -94,6 +99,7 @@ public class SudokuField extends TextField {
 
 	public void setColor(String color) {
 		this.color = color;
+		this.setStyle("-fx-background-color: #" + color);
 	}
 
 	public String getColor() {
@@ -102,6 +108,10 @@ public class SudokuField extends TextField {
 
 	public boolean getPlayable() {
 		return playable;
+	}
+	
+	public boolean isListeningToColors() {
+		return listeningToColors;
 	}
 
 }

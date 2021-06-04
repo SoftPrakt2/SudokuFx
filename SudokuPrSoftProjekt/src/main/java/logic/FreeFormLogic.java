@@ -1,5 +1,18 @@
 package logic;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import application.SudokuField;
 
 public class FreeFormLogic extends BasicGameLogic {
@@ -38,11 +51,11 @@ public class FreeFormLogic extends BasicGameLogic {
 	 */
 	@Override
 	public boolean checkRow(int row, int col, int guess) {
-//		for (col = 0; col < this.cells.length; col++) {
-//			if (this.cells[row][col].getValue() == guess) {
-//				return false;
-//			}
-//		}
+		for (col = 0; col < this.cells.length; col++) {
+			if (this.cells[row][col].getValue() == guess) {
+				return false;
+			}
+		}
 		return true;
 	}
 
@@ -51,12 +64,12 @@ public class FreeFormLogic extends BasicGameLogic {
 	 */
 	@Override
 	public boolean checkCol(int row, int col, int guess) {
-//		for (row = 0; row < this.cells.length; row++) {
-//			if (this.cells[row][col].getValue() == guess) {
-//				return false;
-//			}
-//		}
-	return true;
+		for (row = 0; row < this.cells.length; row++) {
+			if (this.cells[row][col].getValue() == guess) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -64,66 +77,134 @@ public class FreeFormLogic extends BasicGameLogic {
 	 * vorhanden ist.
 	 */
 	@Override
-    public boolean checkBox(int row, int col, int guess) {
+	public boolean checkBox(int row, int col, int guess) {
 //        int toCheckBox = cells[row][col].getBox();
-        for (int i = 0; i < this.cells.length; i++) {
-            for (int j = 0; j < this.cells[i].length; j++) {
-                if (cells[i][j].getBox() == cells[row][col].getBox()) {
-                    if (this.cells[i][j].getValue() == guess) {
-                        return false;
-                    }
-                }
-            }
-        }
-        return true;
-    }
+		for (int i = 0; i < this.cells.length; i++) {
+			for (int j = 0; j < this.cells[i].length; j++) {
+				if (cells[i][j].getBox() == cells[row][col].getBox()) {
+					if (this.cells[i][j].getValue() == guess) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Autogenerator für ein neues Sudoku Befüllt rekursiv das im Hintergrund
 	 * liegene Sudoku-Array.
 	 */
-	public boolean createSudoku() {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				if (this.cells[row][col].getValue() == 0) {
-					for (int y = 0; y < this.cells.length; y++) {
-						counter++;
-						int a = (int) (Math.random() * 9) + 1;
-						if (valid(row, col, a)) {
-							this.cells[row][col].setValue(a);
-							if (createSudoku()) {
-								return true;
-							} else {
-								this.cells[row][col].setValue(0);
-							}
-						}
+	
+	static int globalCounter = 0;
+	public boolean createSudoku() {		
+		int counter = 0;
+		deleteNumbers();
+		for(int i = 0; i < 4; i++) {
+			for(int j = 0; j < 9; j++) {
+				boolean correctNumber = false;
+				while(!correctNumber) {
+					counter++;
+					globalCounter++;
+					int randomNumber = (int) (Math.random() * 9) + 1;
+					if(this.cells[i][j].getValue() == 0 && this.valid(i, j, randomNumber)) {
+						this.cells[i][j].setValue(randomNumber);
+						correctNumber = true;
 					}
-					return false;
+					
+					if(counter == 20000) {
+						counter = 0;
+						deleteNumbers();
+						i = 0;
+						j = 0;
+						System.out.println("yeet");
+
+					}
+					
+					if(globalCounter > 1000000) {
+						globalCounter = 0;
+						this.cells = loadPreMadeFreeForm();
+						System.out.println("preloadgamemydudeyeeet");
+						return true;
+					}
+					
 				}
 			}
 		}
-		System.out.println(counter);
+		
+		if(!solveSudoku()) {
+			createSudoku();
+		}
+		
+		printCells();
 		return true;
 	}
 	
-	public void printBoxId() {
+	public void resetCells() {
+		this.cells = new Cell[9][9];
+	}
+	
+	
+	public Cell[][] loadPreMadeFreeForm() {
+		
+		SaveModel data = new SaveModel();
+		Gson gson = new GsonBuilder().create();
+		
+		File[] freeFormDirectory =  new File("FreeFormGames").listFiles();
+		
+		
+		int rand = (int) (Math.floor(Math.random() * 13.9999));
+	
+				try {
+					BufferedReader br = new BufferedReader(new FileReader(freeFormDirectory[rand].getAbsoluteFile()));
+					data = gson.fromJson(br, SaveModel.class);
+					System.out.println("warum du hängen");
+					this.setCells(data.getGameArray());
+					
+					try {
+						br.close();
+					} catch (IOException e) {
+
+						e.printStackTrace();
+					}
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				
+				this.printCells();
+				return data.getGameArray();
+			}
+		
+	
+		
+
+	
+
+	public void deleteNumbers() {
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				System.out.print(this.cells[row][col].getBox());
+				this.cells[row][col].setValue(0);
 			}
-			System.out.println();
 		}
 	}
 
 	/*
 	 * Löst ein Sudoku rekursiv
 	 */
+	static int counter2 = 0;
 	@Override
 	public boolean solveSudoku() {
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				if (this.cells[row][col].getValue() == 0) {
 					for (int y = 0; y < this.cells.length; y++) {
+						counter2++;
+						globalCounter++;
+						if(counter2 == 1000000) {
+							System.out.println("Could not Solve!!");
+							counter2 = 0;
+							return false;
+						}
 						if (valid(row, col, y + 1)) {
 							this.cells[row][col].setValue(y + 1);
 							if (solveSudoku()) {
@@ -150,46 +231,39 @@ public class FreeFormLogic extends BasicGameLogic {
 	 */
 	@Override
 	public int[] hint() {
-		int randomGuess = (int) (Math.random() * 9) + 1;
+		boolean correctRandom = false;
 		int[] coordinates = new int[2];
 		int counter = 0;
-		int counter2 = 0;
-		int counter3 = 0;
 
-		int help[][] = new int[this.cells.length][this.cells.length];
+		int help[][] = new int[9][9];
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				help[row][col] = this.cells[row][col].getValue();
 			}
 		}
+
 		this.solveSudoku();
 
-		for (int row = 0; row < this.cells.length; row++) {
-			counter2++;
-			counter3++;
-			for (int col = 0; col < this.cells[row].length; col++) {
-				if (help[row][col] == 0 && this.cells[row][col].getValue() == randomGuess) {
-					help[row][col] = randomGuess;
-					coordinates[0] = row;
-					coordinates[1] = col;
-					counter++;
-					break;
-				}
+		while (!correctRandom) {
+			int randomCol = (int) (Math.floor(Math.random() * 8.9999));
+			int randomRow = (int) (Math.floor(Math.random() * 8.9999));
+			int randomNumber = (int) (Math.random() * 9) + 1;
+			if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0
+					&& this.cells[randomRow][randomCol].getValue() != -1) {
+				help[randomRow][randomCol] = randomNumber;
+				coordinates[0] = randomRow;
+				coordinates[1] = randomCol;
+				correctRandom = true;
 			}
-			if (counter3 == 500) {
-				break;
-			}
-			if (counter2 == 8) {
-				row = 0;
-				counter2 = 0;
-				randomGuess = (int) (Math.random() * 9) + 1;
-			}
-			if (counter == 1) {
+			counter++;
+			if (counter == 10000) {
+				coordinates = null;
 				break;
 			}
 		}
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
+
+		for (int row = 0; row < 9; row++) {
+			for (int col = 0; col < 9; col++) {
 				this.cells[row][col].setValue(help[row][col]);
 			}
 		}
@@ -202,13 +276,11 @@ public class FreeFormLogic extends BasicGameLogic {
 	@Override
 	public void setUpLogicArray() {
 		int box = 1;
-		int uid = 0;
 		for (int i = 0; i < this.cells.length; i++) {
 			for (int j = 0; j < this.cells[i].length; j++) {
 				if (i < 3 && j < 3) {
 					box = 1;
 				}
-
 				else if (i < 3 && j < 6) {
 					box = 2;
 				} else if (i < 3 && j < 9) {
@@ -228,26 +300,42 @@ public class FreeFormLogic extends BasicGameLogic {
 				}
 				Cell cell = new Cell(i, j, box, 0);
 				cells[i][j] = cell;
-				uid++;
 			}
 		}
 	}
-	
+
 	/**
 	 * Abhängig von der Übergebenen Zahl werden zufällige Zahl des Arrays auf 0
 	 * gesetzt
 	 */
-	public void difficulty(int diff) {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int j = 0; j < this.cells[row].length; j++) {
-				int random = (int) (Math.random() * 10) + 1;
-				if (random <= diff) {
-					this.cells[row][j].setIsReal(true);
-				} else {
-					this.cells[row][j].setValue(0);
-				}
-			}
-		}
+	@Override
+	public void difficulty() {
+		int counter = 81;
+        if (this.difficulty == 3)
+            counter = 56;
+        if (this.difficulty == 5)
+            counter = 46;
+        if (this.difficulty == 7)
+            counter = 36;
+
+        if(counter == 81) {
+            for (int row = 0; row < this.cells.length; row++) {
+                for (int col = 0; col < this.cells[row].length; col++) {
+                    this.cells[row][col].setIsReal(false);
+                }
+            }
+        }
+        else {
+            while (counter != 0) {
+                int randomCol = (int) (Math.floor(Math.random() * 8.9999));
+                int randomRow = (int) (Math.floor(Math.random() * 8.9999));
+                if (this.cells[randomRow][randomCol].getValue() != 0 && this.cells[randomRow][randomCol].getIsReal()) {
+                    this.cells[randomRow][randomCol].setValue(0);
+                    this.cells[randomRow][randomCol].setIsReal(false);
+                    counter--;
+                }
+            }
+        }
 	}
 
 	public void setCell(int col, int row, int guess) {
@@ -306,7 +394,7 @@ public class FreeFormLogic extends BasicGameLogic {
 		int localcount = 0;
 
 		// erste 21 Durchläfufe
-		for (int z = 0; z < 4000; z++) {
+		for (int z = 0; z < 100; z++) {
 			Cell[][] rollbackCells = new Cell[9][9];
 			for (int i = 0; i < this.cells.length; i++) {
 				for (int j = 0; j < this.cells[i].length; j++) {
@@ -361,27 +449,38 @@ public class FreeFormLogic extends BasicGameLogic {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
 				if (cells[i][j].getBox() == 1) {
-					cells[i][j].setBoxcolor("B8860B");
+					cells[i][j].setBoxcolor("97c1a9");
 				} else if (cells[i][j].getBox() == 2) {
-					cells[i][j].setBoxcolor("7B68EE");
+					cells[i][j].setBoxcolor("cab08b");
+				
 				} else if (cells[i][j].getBox() == 3) {
-					cells[i][j].setBoxcolor("7FFF00");
+					cells[i][j].setBoxcolor("dfd8ab");
+				
+				
 				} else if (cells[i][j].getBox() == 4) {
-					cells[i][j].setBoxcolor("8FBC8F");
+					cells[i][j].setBoxcolor("d5a1a3");
+				
 				} else if (cells[i][j].getBox() == 5) {
-					cells[i][j].setBoxcolor("8B008B");
+					cells[i][j].setBoxcolor("80adbc");
+				
 				} else if (cells[i][j].getBox() == 6) {
-					cells[i][j].setBoxcolor("B22222");
+					cells[i][j].setBoxcolor("adb5be");
+				
 				} else if (cells[i][j].getBox() == 7) {
-					cells[i][j].setBoxcolor("E6E6FA");
+					cells[i][j].setBoxcolor("eaeee0");
+				
 				} else if (cells[i][j].getBox() == 8) {
-					cells[i][j].setBoxcolor("20B2AA");
+					cells[i][j].setBoxcolor("957DAD");
+				
 				} else if (cells[i][j].getBox() == 9) {
-					cells[i][j].setBoxcolor("FFE4C4");
+					cells[i][j].setBoxcolor("FFDFD3");
 				}
 			}
+		
 		}
 	}
+		
+	
 
 	public boolean proofNrCells() {
 		int[] cells1to9 = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -499,8 +598,8 @@ public class FreeFormLogic extends BasicGameLogic {
 		}
 		return 0;
 	}
-
-	private boolean isConnected() {
+	@Override
+	public boolean isConnected() {
 
 		int[][] cellsmr = new int[9][9];
 		for (int m = 0; m < cellsmr.length; m++) {
@@ -522,13 +621,13 @@ public class FreeFormLogic extends BasicGameLogic {
 						return false;
 					}
 				}
-
 			}
 		}
 
 		return true;
 	}
 
+	
 	private int isInternalConnected(int i, int j, int toNine, int[][] cellsmr) {
 		if (i < 8) {
 			if (cellsmr[i + 1][j] == 0) {
@@ -574,20 +673,4 @@ public class FreeFormLogic extends BasicGameLogic {
 //				System.out.print(val+" ");
 //		}
 	}
-
-	@Override
-	public void difficulty() {
-		int diff = this.difficulty;
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int j = 0; j < this.cells[row].length; j++) {
-				int random = (int) (Math.random() * 10) + 1;
-				if (random <= diff) {
-					this.cells[row][j].setIsReal(true);
-				} else {
-					this.cells[row][j].setValue(0);
-				}
-			}
-		}
-	}
-
 }

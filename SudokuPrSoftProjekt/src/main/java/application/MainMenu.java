@@ -7,6 +7,7 @@ import controller.ModeController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -17,6 +18,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
+
+/**
+ * This class is used for creating the main menu of our programm, several UI Objects like Buttons or Labels are generated and aligned within several JavaFx containers
+ * @author gruber 
+ */
 public class MainMenu {
 
 	
@@ -24,11 +30,11 @@ public class MainMenu {
 	protected ToggleButton samurai;
 	protected ToggleButton freeform;
 	private ToggleGroup toggleGroupGameMode;
-	private HBox gameModeButtons;
+	
 	private Label selectModeLabel;
 	
 	private VBox gameDifficultyBox;
-	private HBox difficultyButtons;
+	
 	private ToggleGroup toggleGroupDifficulty;
 	private Label selectDifficultyLabel;
 	protected ToggleButton easy;
@@ -43,19 +49,22 @@ public class MainMenu {
 	
 	private Button load;
 	private Button exit;
-	private SimpleDoubleProperty fontSizeButtons = new SimpleDoubleProperty(10);
-	private SimpleDoubleProperty fontSizeLabel = new SimpleDoubleProperty(40);
+	private final SimpleDoubleProperty fontSizeButtons = new SimpleDoubleProperty(10);
+	private final SimpleDoubleProperty fontSizeLabel = new SimpleDoubleProperty(40);
 
-	Label welcomeLabel;
-	ModeController controllerMainMenu = new ModeController(this);
+	private Label welcomeLabel;
+	private ModeController controllerMainMenu;
 
-	Scene mainScene;
+	private Scene mainScene;
 
-	BorderPane pane;
+	private BorderPane pane;
 
+	
+	
 	
 	public void setUpMainMenu() {
 
+		controllerMainMenu = new ModeController(this);
 		pane = new BorderPane();
 		mainScene = new Scene(pane, 670, 670);
 
@@ -64,9 +73,8 @@ public class MainMenu {
 		welcomeLabel = new Label("SudokuFx");
 		createGameModeButtons();
 		createDifficultyButtons();
-		createCreateButton();
+		createMainMenuPlayButton();
 		
-		System.out.println("yeeeeeet");
 		
 		load = new Button("Load");
 		exit = new Button("Exit");
@@ -81,13 +89,17 @@ public class MainMenu {
 		container.setAlignment(Pos.CENTER);
 		pane.setCenter(container);
 
-		// stylesheets für scene
-
 	}
 
+	
+	/**
+	 * This method creates the togglebuttons which are responsible for selecting a gamemode and a information label describing the use of the specific togglebuttons in the mainmenu 
+	 * for better alignment the buttons are put into a HBox 
+	 * To ensure that only one button is pressed at a time the togglebuttons in this method are put into a ToggleGroup
+	 */
 	public void createGameModeButtons() {
 		gameModeBox = new VBox();
-		gameModeButtons = new HBox();
+		HBox gameModeButtons = new HBox();
 		selectModeLabel = new Label("Step 1: Choose a GameMode");
 		
 
@@ -111,8 +123,14 @@ public class MainMenu {
 		gameModeBox.setAlignment(Pos.CENTER);
 	}
 
+	/**
+	 * This method creates the buttons which are responsible for selecting the difficulty of a game and a information label describing the use of the specific buttons in the mainmenu 
+	 * For better alignment the buttons are put into a HBox 
+	 * To ensure that only one button is pressed at a time the togglebuttons in this method are put into a ToggleGroup
+	 */
 	public void createDifficultyButtons() {
 		gameDifficultyBox = new VBox();
+		HBox difficultyButtons;
 		difficultyButtons = new HBox();
 		selectDifficultyLabel = new Label("Step 2: Choose the difficulty of the game");
 		
@@ -132,20 +150,30 @@ public class MainMenu {
 		difficultyButtons.getChildren().addAll(easy, medium, hard, manual);
 		gameDifficultyBox.getChildren().addAll(selectDifficultyLabel, difficultyButtons);
 		gameDifficultyBox.setAlignment(Pos.CENTER);
+		toggleGroupDifficulty.getToggles().forEach(toggle -> {
+			Node button = (Node) toggle;
+			button.setDisable(true);
+		});
 	}
 	
-	
-	public void createCreateButton() {
+	/**
+	 * This method creates the layout and the play button as well as a label describing the use of the button
+	 * For better alignment the button and the label are put into a VBox
+	 */
+	public void createMainMenuPlayButton() {
 		createGameBox = new VBox();
 		createLabel = new Label("Step 3: Play");
 		createButton = new Button("Play");
 		createGameBox.getChildren().addAll(createLabel, createButton);
 		createGameBox.setAlignment(Pos.CENTER);
+		createButton.setDisable(true);
 	}
 	
 	
 	
-
+	/**
+	 * This method is used to connect the buttons of this view with methods which are defined in the @see SudokuFx.SudokuFx.application.ModeController class
+	 */
 	public void setButtonActions() {
 		sudoku.setOnAction(controllerMainMenu::handleToSudoku);
 		hard.setOnAction(controllerMainMenu::handleHard);
@@ -165,10 +193,16 @@ public class MainMenu {
 		createButton.setOnAction(controllerMainMenu::handleGameStart);
 		exit.setOnAction(controllerMainMenu::handleExit);
 	}
-
+	
+	
+	
+	/**
+	 * This method is responsible for defining the look of the UI objects of this class
+	 * The definition of the UI objects look is handled in the projects css style class 
+	 * To ensure all UI objects scale with the windows size the UI objects size properties are bind to the size and height of the mainscene
+	 */
 	public void styleGUIObjects() {
-		// design sachen für buttons
-		// binds font text of buttons to window size
+		
 		fontSizeButtons.bind(mainScene.widthProperty().add(mainScene.heightProperty()).divide(100));
 		fontSizeLabel.bind(mainScene.widthProperty().add(mainScene.heightProperty()).divide(30));
 
@@ -200,25 +234,48 @@ public class MainMenu {
 		Stream.of(selectModeLabel, selectDifficultyLabel, createLabel)
 				.forEach(label -> label.getStyleClass().add("mainMenuLabelsSmall"));
 
-	
 	}
-
+	
+	
+	/**
+	 * Gets the ToggleGroup of the playMode (Sudoku, Samurai, Freeform) buttons
+	 * @return toggleGroupGameMode
+	 */
 	public ToggleGroup getPlayModeToggle() {
 		return toggleGroupGameMode;
 	}
 
+	/**
+	 * Gets the ToggleGroup of the difficulty (Easy,Medium,Hard, Manual) buttons
+	 * @return toggleGroupGameMode
+	 */
 	public ToggleGroup getDifficultyToggle() {
 		return toggleGroupDifficulty;
 	}
-
+	
+	/**
+	 * Gets this class main UI container 
+	 * @return pane
+	 */
 	public Pane getPane() {
 		return pane;
 	}
-
+	
+	/**
+	 * Gets this class scene bbject 
+	 * @return mainScene
+	 */
 	public Scene getScene() {
 		return mainScene;
 	}
 	
+	/**
+	 * Gets the createButton
+	 * @return createButton
+	 */
+	public Button getPlayButton() {
+		return createButton;
+	}
 	
 
 }

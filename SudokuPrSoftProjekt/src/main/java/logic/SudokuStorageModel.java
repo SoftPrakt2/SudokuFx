@@ -1,208 +1,160 @@
 package logic;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
-
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 
 import application.GUI;
 import javafx.stage.FileChooser;
 
 public class SudokuStorageModel {
 
-	private BasicGameLogic savedModel;
-	private int saveCounter;
+	private SaveModel saveModel;
+
+	private boolean fileExists = true;
+
+	private FileChooser chooser;
 	
-
-	private Cell[][] gameArray;
-
-	private String gametype;
-	private String savedGameType;
-	private int difficulty;
-	private int gamePoints;
-	private Gamestate gameState;
-	private long minutesPlayed;
-	private long secondsPlayed;
-	private String difficultyString;
-	private String playTimeString;
-
-	private int gameId;
-	private	int helper;
-
-	FileChooser chooser;
+	static int counter = 9;
 
 	SharedStoragePreferences storagePref = new SharedStoragePreferences();
 
-	File[] saveDirectory = new File(storagePref.getPreferedDirectory()).listFiles();
-
-	public void prepareSave(BasicGameLogic save) {
-
-		gameArray = save.getCells();
-		savedGameType = save.getGametype();
-		difficulty = save.getDifficulty();
-		difficultyString = save.getDifficultystring();
-		gamePoints = save.getGamepoints();
-		gameState = save.getGamestate();
-		minutesPlayed = save.getMinutesplayed();
-		secondsPlayed = save.getSecondsplayed();
-		gameId = storagePref.getStoragePrefs().getInt("GameID", 1);
-
+	public void setInformationsToStore(BasicGameLogic gameToSave) {
+		int helper;
+		saveModel.setGameArray(gameToSave.getCells());
+		saveModel.setGametype(gameToSave.getGametype());
+		saveModel.setDifficulty(gameToSave.getDifficulty());
+		saveModel.setDifficultyString(gameToSave.getDifficultystring());
+		saveModel.setGamePoints(gameToSave.getGamepoints());
+		saveModel.setGameState(gameToSave.getGamestate());
+		saveModel.setMinutesPlayed(gameToSave.getMinutesplayed());
+		saveModel.setSecondsPlayed(gameToSave.getSecondsplayed());
+		saveModel.setGameId(storagePref.getStoragePrefs().getInt("GameID", 1));
+		counter++;
 		helper = storagePref.getStoragePrefs().getInt("GameID", 0) + 1;
-
 		storagePref.getStoragePrefs().putInt("GameID", helper);
 	}
 
-	@SuppressWarnings("unchecked")
-	public JSONObject storeIntoJSON() {
+	
+	
+	public void saveGame(BasicGameLogic gameToSave) {
+		
+		Gson gson = new GsonBuilder().create();
+		saveModel = new SaveModel();
+		setInformationsToStore(gameToSave);
 
-		JSONObject jsonObject;
-
-		Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-		String cellArray = gson.toJson(gameArray, Cell[][].class);
-		String gameTypeGson = gson.toJson(savedGameType, String.class);
-		String difficultyNumberGson = gson.toJson(difficulty, Integer.class);
-		String difficutlyStringGson = gson.toJson(difficultyString, String.class);
-		String gamePointsGson = gson.toJson(gamePoints, Integer.class);
-		String gameStateGson = gson.toJson(gameState, Gamestate.class);
-		String minutesPlayedGson = gson.toJson(minutesPlayed, Integer.class);
-		String secondsPlayedGson = gson.toJson(secondsPlayed, Integer.class);
-
-		String gameIDGson = gson.toJson(gameId, Integer.class);
-
-		jsonObject = new JSONObject();
-		jsonObject.put("type", gameTypeGson);
-		jsonObject.put("gameNumbers", cellArray);
-		jsonObject.put("difficulty", difficultyNumberGson);
-		jsonObject.put("difficultyString", difficutlyStringGson);
-		jsonObject.put("points", gamePointsGson);
-		jsonObject.put("gameState", gameStateGson);
-		jsonObject.put("minutesPlayed", minutesPlayedGson);
-		jsonObject.put("secondsPlayed", secondsPlayedGson);
-		jsonObject.put("gameIDGson", gameIDGson);
-
-		return jsonObject;
-	}
-
-	public void storeIntoFile(File saveFile) {
-
+		String fileName = saveModel.getGametype() + "_" + saveModel.getDifficultyString() + "_" + "ID_"
+				+ saveModel.getGameId() + ".json";
+		
+		File saveFile = new File("SaveFiles", fileName);
+	
+		
+		JsonWriter writer;
+		FileWriter fw;
 		try {
-			ObjectMapper mapper = new ObjectMapper();
-
-			mapper.writeValue(saveFile, storeIntoJSON());
-
-		} catch (IOException ie) {
-			ie.printStackTrace();
+			fw = new FileWriter(saveFile);
+			writer = new JsonWriter(fw);
+			gson.toJson(saveModel, SaveModel.class, writer);
+			fw.close();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
-
-	public void saveGame(BasicGameLogic save) {
-
-		prepareSave(save);
-
-		storeIntoJSON();
-
-		String fileName = savedGameType + "_" + difficultyString + "_" + "ID_" + gameId + ".json";
-		File saveFile = new File("SaveFiles", fileName);
-		storeIntoFile(saveFile);
-	}
+	
 
 	public void exportGame(BasicGameLogic save) {
-		prepareSave(save);
-		storeIntoJSON();
+		Gson gson = new GsonBuilder().create();
+		saveModel = new SaveModel();
+		setInformationsToStore(save);
 		chooser = new FileChooser();
 
 		chooser.setTitle("Export your Game");
 		chooser.setInitialFileName("mygame");
 		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON", "*.json"));
 		File file = chooser.showSaveDialog(GUI.getStage());
-		storeIntoFile(file);
+		JsonWriter writer;
+		try {
+			writer = new JsonWriter(new FileWriter(file));
+			gson.toJson(saveModel, SaveModel.class, writer);
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
-	
 	// filechooser anders machn is nicht so gut
-	public JSONObject setImportedFile() {
-
-		Gson g = new Gson();
-
+	public SaveModel getImportedFile() {
+		// JSONObject importedJson = new JSONObject();
+		SaveModel importedGame = new SaveModel();
 		chooser = new FileChooser();
 		chooser.setTitle("Import your Game");
 		chooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("JSON", "*.json"));
 		File file = chooser.showOpenDialog(GUI.getStage());
-		JSONObject importedJson = convertToJSON(file);
-		return importedJson;
-	}
-	
-
-	public void setStoredInformations(JSONObject obj) {
-
-		Gson g = new Gson();
-		
-		gametype = g.fromJson(obj.get("type").toString(), String.class);
-		
-		gamePoints = g.fromJson(obj.get("points").toString(), Integer.class);
-		difficulty = g.fromJson((String) obj.get("difficulty"), Integer.class);
-		difficultyString = g.fromJson((String) obj.get("difficultyString"), String.class);
-		minutesPlayed = g.fromJson((String) obj.get("minutesPlayed"), Integer.class);
-		secondsPlayed = g.fromJson((String) obj.get("secondsPlayed"), Integer.class);
-		playTimeString = minutesPlayed + " min " + secondsPlayed + " s ";
-		gameArray = g.fromJson((String) obj.get("gameNumbers"), Cell[][].class);
-		gameState = g.fromJson((String) obj.get("gameState"), Gamestate.class);
-		gameId = g.fromJson((String) obj.get("gameIDGson"), Integer.class);
-		
+		if (file != null) {
+			importedGame = convertFileToSaveModel(file);
+		} else {
+			fileExists = false;
+		}
+		return importedGame;
 	}
 
 	
-	public BasicGameLogic loadIntoModel(BasicGameLogic model) {
-		if(gametype.equals("Sudoku")) model = new SudokuLogic(gameState, minutesPlayed, secondsPlayed, false);
-		if (gametype.equals("Samurai")) model = new SamuraiLogic(gameState, minutesPlayed, secondsPlayed, false);
-		if(gametype.equals("FreeForm")) model = new FreeFormLogic(gameState, minutesPlayed, secondsPlayed, false);
-		model.setGametype(gametype);
-		model.setCells(gameArray);
-		model.setGamePoints(gamePoints);
-		model.setDifficulty(difficulty);
-		model.setStartTime(System.currentTimeMillis());
-//		model.setSecondsPlayed(secondsPlayed);
-//		model.setMinutesPlayed(minutesPlayed);
+	
+	
+	public BasicGameLogic loadIntoModel(BasicGameLogic model, SaveModel savedGame) {
+		if (savedGame.getGametype().equals("Sudoku"))
+			model = new SudokuLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
+					savedGame.getSecondsPlayed(), false);
+		if (savedGame.getGametype().equals("Samurai"))
+			model = new SamuraiLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
+					savedGame.getSecondsPlayed(), false);
+		if (savedGame.getGametype().equals("FreeForm"))
+			model = new FreeFormLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
+					savedGame.getSecondsPlayed(), false);
+		model.setGametype(savedGame.getGametype());
+		model.setCells(savedGame.getGameArray());
+		model.setGamePoints(savedGame.getGamePoints());
+		model.setDifficulty(savedGame.getDifficulty());
 		model.setDifficultyString();
-		model.initializeTimer();
-		model.setGameID(gameId);
-		model.setGameState(gameState);
-		model.setPlaytimestring(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
+		model.setGameID(savedGame.getGameId());
+		model.setPlaytimestring(String.format("%02d:%02d", model.getMinutesplayed(), model.getSecondsplayed()));
 		return model;
 	}
 
-	public JSONObject convertToJSON(File file) {
+	
+	
+	
+	public SaveModel convertFileToSaveModel(File file) {
+		SaveModel data = new SaveModel();
+		Gson gson = new GsonBuilder().create();
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(file));
+			data = gson.fromJson(br, SaveModel.class);
+			try {
+				br.close();
+			} catch (IOException e) {
 
-		JSONObject jsonObject = new JSONObject();
-
-		JSONParser parser = new JSONParser();
-
-		try (Reader reader = new FileReader(file)) {
-			Object obj = parser.parse(reader);
-			jsonObject = (JSONObject) obj;
-			parser.reset();
-		} catch (FileNotFoundException ex) {
-			ex.printStackTrace();
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} catch (ParseException ex) {
-			ex.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+				e.printStackTrace();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		}
-		return jsonObject;
+		return data;
 	}
 
-	
+	public boolean fileExists() {
+		return fileExists;
+	}
 
 }

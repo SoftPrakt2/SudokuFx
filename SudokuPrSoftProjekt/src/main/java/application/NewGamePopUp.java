@@ -5,7 +5,6 @@ import org.controlsfx.control.PopOver;
 import controller.PopOverController;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import logic.BasicGameLogic;
@@ -34,8 +33,7 @@ public class NewGamePopUp extends MainMenu {
 		super.createGameModeButtons();
 		gameModeButtons.getChildren().addAll(sudoku,samurai, freeform);
 		
-		
-		
+
 		super.createDifficultyButtons();
 		HBox difficultyButtons = new HBox();
 		difficultyButtons.setSpacing(2);
@@ -45,7 +43,9 @@ public class NewGamePopUp extends MainMenu {
 
 		sudoku.setOnAction(popcontrol::handleToSudoku);
 		samurai.setOnAction(popcontrol::handleToSamurai);
+		freeform.setOnAction(popcontrol::handleToFreeForm);
 		easy.setOnAction(popcontrol::handleEasy);
+		medium.setOnAction(popcontrol::handleMedium);
 		hard.setOnAction(popcontrol::handleHard);
 		
 		popOverBox.getChildren().addAll(newGameModeLabel, gameModeButtons, difficultyButtons);

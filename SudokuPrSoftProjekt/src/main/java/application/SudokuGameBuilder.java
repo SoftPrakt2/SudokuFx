@@ -1,8 +1,12 @@
 package application;
 
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.Glyph;
+
 import javafx.css.PseudoClass;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
@@ -23,9 +27,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		width = 700;
 		height = 700;
 	}
-
-	
-	
 	
 	/**
 	 * * Übergibt dieser Scene den jeweiligen Controller Erstellt die Scene mit den
@@ -57,7 +58,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 				textField[row][col] = new SudokuField("");
 				
 				textField[row][col].setMaxSize(200, 200);
-			//	textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 23));
 				textField[row][col].getStyleClass().add("textfieldBasic");
 				textField[row][col].setAlignment(Pos.CENTER);
 				
@@ -65,7 +65,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 
 				cell.pseudoClassStateChanged(bottom, col == 2 || col == 5);
 
-				textField[row][col].setDisable(true);
+				textField[row][col].setDisable(false);
 
 				cell.getChildren().add(textField[row][col]);
 
@@ -83,9 +83,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	 * Befüllt das Spielfeld beim ersten Start mit Zahlen abhängig von der im
 	 * Hauptmenü eingestellten Schwierigkeit
 	 */
-	public void createNumbers() {
-		controller.createGame();
-	}
+	
 
 	/**
 	 * Getter und Setter für die Variablen dieser Klasse
@@ -93,6 +91,17 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 
 	public SudokuField[][] getTextField() {
 		return textField;
+	}
+
+	
+	@Override
+	public void createManualControls() {
+		// TODO Auto-generated method stub
+		Glyph doneGraphic = fontAwesome.create(FontAwesome.Glyph.LOCK);
+		customNumbersDone = new Button("");
+		customNumbersDone.setGraphic(doneGraphic);
+		customNumbersDone.setVisible(false);
+		toolBar.getItems().add(3,customNumbersDone);
 	}
 
 }

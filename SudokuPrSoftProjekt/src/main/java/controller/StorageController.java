@@ -16,7 +16,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.StringBinding;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -27,25 +26,18 @@ import javafx.stage.DirectoryChooser;
 import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
-import logic.SamuraiLogic;
+import logic.SaveModel;
 import logic.SharedStoragePreferences;
-import logic.SudokuLogic;
 import logic.SudokuStorageModel;
 
 public class StorageController {
 
-	Scene playScene;
-	BasicGameBuilder game;
-	BasicGameLogic model;
 
-	String gameIdentifier;
-	SudokuStorageModel storageModel;
-
-	Scene gameScene;
-	Storage storage;
-	String path;
-	
-	File[] dir; 
+	private BasicGameBuilder game;
+	private BasicGameLogic model;
+	private SudokuStorageModel storageModel;
+	private Storage storage;
+	private File[] dir =  new File("SaveFiles").listFiles();
 
 	protected ObservableList<BasicGameLogic> jsonObservableList = FXCollections.observableArrayList();
 
@@ -63,12 +55,9 @@ public class StorageController {
 	public StorageController(Storage storage) {
 		this.storage = storage;
 		storageModel = new SudokuStorageModel();
-		dir =  new File("SaveFiles").listFiles();
+		
 	}
 
-	
-	
-	
 	// test
 	public void handleLoadAction(ActionEvent e) {
 		
@@ -86,12 +75,29 @@ public class StorageController {
 		
 
 		game.initializeGame();
+		
+		if(!model.getGamestate().equals(Gamestate.CREATING) && !model.getGamestate().equals(Gamestate.DRAWING)) {
 		model.initializeTimer();
+		model.getLiveTimer().start();
+		}
+		
+		if(model.getGamestate().equals(Gamestate.CREATING)) {
+		//	game.getToolBar().getItems().add(3,game.getDoneButton());
+			game.getDoneButton().setVisible(true);
+			game.disablePlayButtons();
+		}
+		
+		if(model.getGamestate().equals(Gamestate.DRAWING)) {
+			game.getColorBox().setVisible(true);
+			game.getColorsDoneButton().setVisible(true);
+			game.disablePlayButtons();
+			game.getDoneButton().setVisible(true);
+		}
+		
+		
 		game.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 		game.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
-		model.getLiveTimer().start();
 		
-
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());
 		GUI.getStage().getScene().setRoot(game.getPane());
@@ -102,36 +108,38 @@ public class StorageController {
 		SudokuField[][] s = game.getTextField();
 		for (int i = 0; i < s.length; i++) {
 			for (int j = 0; j < s[i].length; j++) {
-				if(model instanceof FreeFormLogic) {
-					s[i][j].setStyle("-fx-background-color: #"+model.getCells()[i][j].getBoxcolor()+";");
+				if(model instanceof FreeFormLogic && !model.getCells()[j][i].getBoxcolor().equals("")) {
+					s[i][j].setColor(model.getCells()[j][i].getBoxcolor());
 				}
 				if (model.getCells()[j][i].getValue() != 0) {
 					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
 				}
-				if (!model.getCells()[j][i].getIsReal()) {
-					s[i][j].setDisable(false);
+				
+				if (model.getCells()[j][i].getIsReal() && model.getCells()[j][i].getValue() != 0) {
+					System.out.println(model.getCells()[j][i].getIsReal());
+					s[i][j].setDisable(true);
 				}
 			}
 		}
 	}
 
+	
+	@SuppressWarnings("unchecked")
 	public void setUpTableView() {
 		storage.getTableView().getColumns().addAll(gameidcolumn, gameTypecolumn, difficultycolumn, pointscolumn,
 				playtimecolumn, gamestatecolumn);
 	}
 
 	
-	public void fillListVew() throws IOException {
+	public void fillListVew()  {
 
-		JSONObject readedObject;
+		SaveModel readedObject;
 	
 		if (dir != null) {
 			for (File child : dir) {
 				if (child.getName().endsWith(".json")) {
-					readedObject = storageModel.convertToJSON(child.getAbsoluteFile());
-
-					storageModel.setStoredInformations(readedObject);
-					model = storageModel.loadIntoModel(model);
+					readedObject = storageModel.convertFileToSaveModel(child.getAbsoluteFile());
+					model = storageModel.loadIntoModel(model, readedObject);
 					jsonObservableList.add(model);
 				}
 				
@@ -153,29 +161,21 @@ public class StorageController {
 	public void deleteEntry(ActionEvent e) {
 
 		int deleteIndex = storage.getTableView().getSelectionModel().getSelectedIndex();
-
+		System.out.println(deleteIndex);
 		jsonObservableList.remove(deleteIndex);
 
 		if (dir[deleteIndex].delete()) {
 			System.out.println("erfolgreich gelöscht");
 		}
+		else {
+			System.out.println("weh");
+		}
 
 		dir =  new File("SaveFiles").listFiles();
-
+		
 	}
 
-	public void handleDirectorySwitch(ActionEvent e) throws IOException {
-		DirectoryChooser directoryChooser = new DirectoryChooser();
-
-		String path = directoryChooser.showDialog(GUI.getStage()).getAbsolutePath();
-
-		sharedStorage.getStoragePrefs().put("DirectoryPath", path);
-		jsonObservableList.clear();
-
-		dir = new File(sharedStorage.getPreferedDirectory()).listFiles();
-		fillListVew();
-
-	}
+	
 
 	public void calculateGameStats() {
 		
@@ -192,20 +192,22 @@ public class StorageController {
 		IntegerBinding averagePoints = Bindings.createIntegerBinding(() -> {
 			int total = 0;
 			int counter = 0;
-			for (BasicGameLogic model : storage.getTableView().getItems()) {
-				total = total + model.getGamepoints();
+			for (BasicGameLogic savedModel : storage.getTableView().getItems()) {
+				total = total + savedModel.getGamepoints();
 				counter++;
 			}
-			if (counter == 0)
+			if (counter == 0) {
 				counter = 1;
+			}
 			return total / counter;
 		}, storage.getTableView().getItems());
+		
 		
 		StringBinding overAllPlayTime = Bindings.createStringBinding(() -> {
 			long playTime = 0;
 			String time;
-			for (BasicGameLogic model : storage.getTableView().getItems()) {
-				playTime += model.getMinutesplayed()*60 + model.getSecondsplayed();
+			for (BasicGameLogic savedModel : storage.getTableView().getItems()) {
+				playTime += savedModel.getMinutesplayed()*60 + model.getSecondsplayed();
 			}
 			long minPlayed = playTime/60;
 			long secPlayed = playTime%60;
@@ -219,8 +221,8 @@ public class StorageController {
 			long playTime = 0;
 			String time;
 			int counter = 0;
-			for (BasicGameLogic model : storage.getTableView().getItems()) {
-				playTime += model.getMinutesplayed()*60 + model.getSecondsplayed();
+			for (BasicGameLogic savedModel : storage.getTableView().getItems()) {
+				playTime += savedModel.getMinutesplayed()*60 + savedModel.getSecondsplayed();
 				counter++;
 			}
 			if(counter ==0) counter = 1;

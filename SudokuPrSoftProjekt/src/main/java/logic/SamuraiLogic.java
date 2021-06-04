@@ -309,45 +309,42 @@ public class SamuraiLogic extends BasicGameLogic {
 	public int[] hint() {
 		// TODO Auto-generated method stub
 		boolean correctRandom = false;
-		int randomRow = 0;
-		int randomCol = 0;
-		int randomNumber = 0;
-		int[] coordinates = new int[2];
-		int counter = 0;
+        int[] coordinates = new int[2];
+        int counter = 0;
 
-		int help[][] = new int[21][21];
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				help[row][col] = this.cells[row][col].getValue();
-			}
-		}
+        int help[][] = new int[21][21];
+        for (int row = 0; row < this.cells.length; row++) {
+            for (int col = 0; col < this.cells[row].length; col++) {
+                help[row][col] = this.cells[row][col].getValue();
+            }
+        }
 
-		this.solveSudoku();
+        this.solveSudoku();
 
-		while (!correctRandom) {
-			randomRow = (int) (Math.random() * 20) + 0;
-			randomCol = (int) (Math.random() * 20) + 0;
-			randomNumber = (int) (Math.random() * 9) + 1;
-			if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0
-					&& this.cells[randomRow][randomCol].getValue() != -1) {
-				help[randomRow][randomCol] = randomNumber;
-				coordinates[0] = randomRow;
-				coordinates[1] = randomCol;
-				correctRandom = true;
-			}
-			counter++;
-			if (counter == 10000) {
-				coordinates = null;
-				break;
-			}
-		}
+        while (!correctRandom) {
+            int randomCol = (int) (Math.floor(Math.random() * 20.9999));
+            int randomRow = (int) (Math.floor(Math.random() * 20.9999));
+            int randomNumber = (int) (Math.random() * 9) + 1;
+            if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0
+                    && this.cells[randomRow][randomCol].getValue() != -1) {
+                help[randomRow][randomCol] = randomNumber;
+                coordinates[0] = randomRow;
+                coordinates[1] = randomCol;
+                correctRandom = true;
+            }
+            counter++;
+            if (counter == 10000) {
+                coordinates = null;
+                break;
+            }
+        }
 
-		for (int row = 0; row < 21; row++) {
-			for (int col = 0; col < 21; col++) {
-				this.cells[row][col].setValue(help[row][col]);
-			}
-		}
-		return coordinates;
+        for (int row = 0; row < 21; row++) {
+            for (int col = 0; col < 21; col++) {
+                this.cells[row][col].setValue(help[row][col]);
+            }
+        }
+        return coordinates;
 	}
 
 //	@Override
@@ -523,23 +520,34 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public void difficulty() {
 		int counter = 369;
-		if (this.difficulty == 3)
-			counter = 230;
-		if (this.difficulty == 5)
-			counter = 200;
-		if (this.difficulty == 7)
-			counter = 180;
+        if (this.difficulty == 3)
+            counter = 230;
+        if (this.difficulty == 5)
+            counter = 200;
+        if (this.difficulty == 7)
+            counter = 180;
 
-		while (counter != 0) {
-			int randomCol = (int) (Math.floor(Math.random() * 20.9999));
-			int randomRow = (int) (Math.floor(Math.random() * 20.9999));
-			if (this.cells[randomRow][randomCol].getValue() != 0 && this.cells[randomRow][randomCol].getIsReal()
-					&& this.cells[randomRow][randomCol].getValue() != -1) {
-				this.cells[randomRow][randomCol].setValue(0);
-				this.cells[randomRow][randomCol].setIsReal(false);
-				counter--;
-			}
-		}
+        if(counter == 369) {
+            for (int row = 0; row < this.cells.length; row++) {
+                for (int col = 0; col < this.cells[row].length; col++) {
+                    if(this.cells[row][col].getValue() != -1) {
+                        this.cells[row][col].setIsReal(false);
+                    }
+                }
+            }
+            counter = 0;
+        }
+
+        while (counter != 0) {
+            int randomCol = (int) (Math.floor(Math.random() * 20.9999));
+            int randomRow = (int) (Math.floor(Math.random() * 20.9999));
+            if (this.cells[randomRow][randomCol].getValue() != 0 && this.cells[randomRow][randomCol].getIsReal()
+                    && this.cells[randomRow][randomCol].getValue() != -1) {
+                this.cells[randomRow][randomCol].setValue(0);
+                this.cells[randomRow][randomCol].setIsReal(false);
+                counter--;
+            }
+        }
 	}
 
 	@Override
@@ -593,6 +601,12 @@ public class SamuraiLogic extends BasicGameLogic {
 	public void shuffle() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public boolean isConnected() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

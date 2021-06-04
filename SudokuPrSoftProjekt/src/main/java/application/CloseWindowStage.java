@@ -8,11 +8,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+//PopUP Fenster für Nachfrage ob Spiel geschlossen werden soll
 public class CloseWindowStage {
 
 	//speichert antwort je nach dem welcher knopf gedrückt wird
-	 boolean answer;
+	private boolean answer;
 		
+	//
 	 public boolean showPopUp(String title, String message) {
 			Stage window = new Stage();
 			
