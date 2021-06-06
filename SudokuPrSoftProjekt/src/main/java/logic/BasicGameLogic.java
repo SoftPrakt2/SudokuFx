@@ -142,6 +142,7 @@ public abstract class BasicGameLogic {
 		return true;
 	}
 	
+	
 	/*
 	 * Löst ein Sudoku rekursiv
 	 */

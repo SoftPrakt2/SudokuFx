@@ -79,7 +79,7 @@ public class Storage {
 	
 
 	public Stage createStage() throws IOException {
-		 storageScene = showStorageScene();
+		storageScene = showStorageScene();
 		Stage currentStage = GUI.getStage();
 		double windowGap = 5;
 
@@ -95,7 +95,7 @@ public class Storage {
 		return stage;
 	}
 
-	public Scene showStorageScene() throws IOException {
+	public Scene showStorageScene() {
 		
 		tableView = new TableView<>();
 		controller.setUpTableView();
@@ -103,7 +103,7 @@ public class Storage {
 
 		storagePane = new BorderPane();
 		storageScene = new Scene(storageContainerBox, 500, 600);
-	//	storageScene.getStylesheets().add("css/sudoku.css");
+	
 		
 		gameHeadLabel = new Label("Game Overview");
 		gameHeadLabel.setFont(new Font("Georgia", 20));
@@ -115,6 +115,7 @@ public class Storage {
 		
 
 		contextMenu.getItems().addAll(deleteMenuItem, loadMenuItem);
+		
 
 		
 

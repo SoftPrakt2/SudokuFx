@@ -45,7 +45,6 @@ public class SudokuStorageModel {
 	}
 
 	
-	
 	public void saveGame(BasicGameLogic gameToSave) {
 		
 		Gson gson = new GsonBuilder().create();

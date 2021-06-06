@@ -62,6 +62,7 @@ public class MainMenu {
 	
 	
 	
+	
 	public void setUpMainMenu() {
 
 		controllerMainMenu = new ModeController(this);
@@ -219,15 +220,17 @@ public class MainMenu {
 		Stream.of(sudoku, samurai, freeform, load, exit, createButton, easy, medium, hard, manual)
 				.forEach(button -> button.getStyleClass().add("myButton2"));
 
+		
+		welcomeLabel.getStyleClass().add("welcomeLabel");
 		welcomeLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSizeLabel.asString()));
 		
 		
-		Stream.of(sudoku, samurai, freeform, easy, medium, hard, load, exit, manual, createButton)
-		.forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(4.75)));
+//		Stream.of(sudoku, samurai, freeform, easy, medium, hard, load, exit, manual, createButton)
+//		.forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(4.75)));
 		
 		
 
-		welcomeLabel.getStyleClass().add("welcomeLabel");
+		
 		
 
 		// größe der Buttons

@@ -46,7 +46,10 @@ public abstract class BasicGameBuilder {
 	protected Button autosolve;
 	protected Button customNumbersDone;
 	protected Button customColorsDone;
-
+	
+	
+	
+	
 	protected Button hintButton;
 	
 	
@@ -114,6 +117,7 @@ public abstract class BasicGameBuilder {
 		setButtonActions();
 		pane.setCenter(createBoard());
 	}
+	
 
 //	public abstract void createNumbers();
 	
@@ -378,6 +382,10 @@ public abstract class BasicGameBuilder {
 		Stream.of(check,autosolve,hintButton).forEach(button -> button.setDisable(true));
 	}
 	
+	
+	public GameController getController() {
+		return controller;
+	}
 	
 	
 	/**

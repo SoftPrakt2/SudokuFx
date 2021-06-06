@@ -44,14 +44,14 @@ public class GameController {
 	 * 
 	 * Erstellt ein Spiel anhand der eingestellten Schwierigkeit
 	 */
+	
 	public void createGame() {
 		model.setUpLogicArray();
 		model.setShuffleCounter(0);
 		model.createSudoku();
 		model.difficulty();
 		model.setUpGameInformations();
-		scene.getGameInfoLabel()
-				.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
+		scene.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 		scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 
 		for (int i = 0; i < sudokuField.length; i++) {

@@ -24,6 +24,7 @@ public class FreeFormLogic extends SudokuLogic {
 		gametype = "FreeForm";
 		hintCounter = 3;
 	}
+	
 
 	/**
 	 * Überprüft in der Box der übergebenen Reihe und Zeile eine idente Zahl

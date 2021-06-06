@@ -23,6 +23,7 @@ public class BasicGameLogicTest {
 		model = new SamuraiLogic(Gamestate.OPEN, 0 , 0 , false);
 		model.setUpLogicArray();
 	}
+	
 
 	@Test
 	public void testSetCells() {

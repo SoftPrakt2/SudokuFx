@@ -103,5 +103,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		customNumbersDone.setVisible(false);
 		toolBar.getItems().add(3,customNumbersDone);
 	}
+	
 
 }

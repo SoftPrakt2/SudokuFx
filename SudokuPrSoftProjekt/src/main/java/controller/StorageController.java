@@ -77,22 +77,22 @@ public class StorageController {
 		game.initializeGame();
 		
 		if(!model.getGamestate().equals(Gamestate.CREATING) && !model.getGamestate().equals(Gamestate.DRAWING)) {
-		model.initializeTimer();
-		model.getLiveTimer().start();
-		}
-		
-		if(model.getGamestate().equals(Gamestate.CREATING)) {
-		//	game.getToolBar().getItems().add(3,game.getDoneButton());
-			game.getDoneButton().setVisible(true);
-			game.disablePlayButtons();
-		}
-		
-		if(model.getGamestate().equals(Gamestate.DRAWING)) {
-			game.getColorBox().setVisible(true);
-			game.getColorsDoneButton().setVisible(true);
-			game.disablePlayButtons();
-			game.getDoneButton().setVisible(true);
-		}
+			model.initializeTimer();
+			model.getLiveTimer().start();
+			}
+			
+			if(model.getGamestate().equals(Gamestate.CREATING)) {
+			//	game.getToolBar().getItems().add(3,game.getDoneButton());
+				game.getDoneButton().setVisible(true);
+				game.disablePlayButtons();
+			}
+			
+			if(model.getGamestate().equals(Gamestate.DRAWING)) {
+				game.getColorBox().setVisible(true);
+				game.getColorsDoneButton().setVisible(true);
+				game.disablePlayButtons();
+				game.getDoneButton().setVisible(true);
+			}
 		
 		
 		game.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());

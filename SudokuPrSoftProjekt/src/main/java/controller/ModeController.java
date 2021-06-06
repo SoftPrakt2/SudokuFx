@@ -51,6 +51,7 @@ public class ModeController {
 		game.initializeGame();
 		enableDifficultyButtons();
 	}
+	
 
 	/**
 	 * 

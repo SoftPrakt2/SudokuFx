@@ -33,7 +33,6 @@ public class NewGamePopUp extends MainMenu {
 		super.createGameModeButtons();
 		gameModeButtons.getChildren().addAll(sudoku,samurai, freeform);
 		
-
 		super.createDifficultyButtons();
 		HBox difficultyButtons = new HBox();
 		difficultyButtons.setSpacing(2);
