@@ -22,7 +22,7 @@ import javafx.beans.property.StringProperty;
  */
 public abstract class BasicGameLogic {
 
-
+//test
 	protected Gamestate gamestate;
 	protected boolean isCorrect;
 	protected String gametype = "";
