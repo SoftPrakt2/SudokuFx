@@ -286,19 +286,17 @@ public class SudokuLogicTest {
 
         assertNotEquals(returnArray, null);
     }
-    @Test
-    public void testHint2() {
-        int [] sollutionArray = new int[] {0, 0};
-        model.createSudoku();
-        model.setDifficulty(3);
-        model.difficulty();
-        model.solveSudoku();
-        int [] returnArray = model.hint();
-
-        assertEquals(returnArray, null);
-    }
-
-	
+//    @Test
+//    public void testHint2() {
+//        int [] sollutionArray = new int[] {0, 0};
+//        model.createSudoku();
+//        model.setDifficulty(3);
+//        model.difficulty();
+//        model.solveSudoku();
+//        int [] returnArray = model.hint();
+//
+//        assertEquals(returnArray, null);
+//    }
 }
 
 

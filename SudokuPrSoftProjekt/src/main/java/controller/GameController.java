@@ -18,7 +18,6 @@ import logic.SamuraiLogic;
 import logic.SaveModel;
 import logic.SudokuStorageModel;
 
-
 public class GameController {
 
 	BasicGameBuilder scene;
@@ -40,27 +39,24 @@ public class GameController {
 	public void createGameHandler(ActionEvent event) {
 		createGame();
 	}
-	
-	
+
 	/**
 	 * 
 	 * Erstellt ein Spiel anhand der eingestellten Schwierigkeit
 	 */
-
-	
 	public void createGame() {
 		model.setUpLogicArray();
 		model.setShuffleCounter(0);
-		model.createSudoku();	
+		model.createSudoku();
 		model.difficulty();
 		model.setUpGameInformations();
-		scene.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
+		scene.getGameInfoLabel()
+				.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 		scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
-	
+
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 
-				
 				if (model instanceof FreeFormLogic) {
 					sudokuField[i][j].setStyle("-fx-background-color: #" + model.getCells()[j][i].getBoxcolor() + ";");
 				}
@@ -76,9 +72,8 @@ public class GameController {
 		}
 		enableEdit();
 		model.printCells();
-		
+
 	}
-	
 
 	/**
 	 * 
@@ -92,37 +87,28 @@ public class GameController {
 				sudokuField[i][j].getStyleClass().remove("textfieldHint");
 			}
 		}
-	
+
 		numberCounter = 0;
 
-		
+		if (model.timerIsRunning()) {
+			model.getLiveTimer().stop();
+		}
+		scene.getLiveTimeLabel().textProperty().unbind();
+		scene.getLiveTimeLabel().setText("");
+
 		if (model.getDifficulty() == 0) {
 			scene.getDoneButton().setVisible(true);
 			scene.disablePlayButtons();
 			model.initializeCustomGame();
 			enableEdit();
-			if(model.timerIsRunning()) {
-				model.getLiveTimer().stop();
-			}
-			scene.getLiveTimeLabel().textProperty().unbind();
-			scene.getLiveTimeLabel().setText("");
+
 		} else {
-			model.setUpGameInformations();
+			// model.setUpGameInformations();
 			scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 			scene.getGameNotificationLabel().setText(model.getGameText());
 			createGame();
 		}
 	}
-	
-	
-	public void newCustomGameHandler() {
-		scene.getCheckButton().setDisable(true);
-		scene.disablePlayButtons();
-		enableEdit();
-		
-	}
-	
-	
 
 	/**
 	 * 
@@ -138,32 +124,28 @@ public class GameController {
 			}
 		}
 	}
-	
-	
-	
-	
+
 	public void customColorsDoneHandler(ActionEvent e) {
 		scene.getToolBar().getItems().remove(3);
 		scene.getToolBar().getItems().remove(3);
-		scene.getToolBar().getItems().add(3,scene.getDoneButton());
-		
+		scene.getToolBar().getItems().add(3, scene.getDoneButton());
+
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
-				if(sudokuField[i][j].isListeningToColors()) {
-				sudokuField[i][j].removeFreeFormColorListener();
+				if (sudokuField[i][j].isListeningToColors()) {
+					sudokuField[i][j].removeFreeFormColorListener();
 				}
 				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
-				if(model.isConnected()) {
+				if (model.isConnected()) {
 					System.out.println("isyeet");
 				}
 			}
 		}
-		
+
 		scene.getDoneButton().setVisible(true);
 		System.out.println("Drawing completed");
 		model.setGameState(Gamestate.CREATING);
 	}
-	
 
 	/**
 	 * 
@@ -172,35 +154,35 @@ public class GameController {
 	 */
 	public void manuelDoneHandler(ActionEvent e) {
 
-		if(compareResult(sudokuField)) {
-            for (int i = 0; i < sudokuField.length; i++) {
-                for (int j = 0; j < sudokuField[i].length; j++) {
-                	if (model instanceof FreeFormLogic) sudokuField[i][j].removeFreeFormColorListener();
-                	if (!sudokuField[i][j].getText().equals("")) {
-                    model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
-              
-                    sudokuField[i][j].setDisable(true);
-                	}
-                }
-            }
-            model.setUpGameInformations();
+		if (compareResult(sudokuField)) {
+			for (int i = 0; i < sudokuField.length; i++) {
+				for (int j = 0; j < sudokuField[i].length; j++) {
+					if (model instanceof FreeFormLogic)
+						sudokuField[i][j].removeFreeFormColorListener();
+					if (!sudokuField[i][j].getText().equals("")) {
+						model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
+
+						sudokuField[i][j].setDisable(true);
+					}
+				}
+			}
+			model.setUpGameInformations();
 			scene.getGameNotificationLabel().setText(model.getGameText());
 			scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 			scene.getDoneButton().setVisible(false);
-			Stream.of(scene.getHintButton(), scene.getAutoSolveButton(), scene.getCheckButton()).forEach(
-					button -> button.setDisable(false));
-        }
-        else {
-            for (int i = 0; i < sudokuField.length; i++) {
-                for (int j = 0; j < sudokuField[i].length; j++) {
-                    model.getCells()[i][j].setValue(0);
-                    sudokuField[j][j].setText("");
-                
-                }
-            }
-            model.setGameState(Gamestate.CONFLICT);
-            scene.getGameNotificationLabel().setText(model.getGameText());
-        }
+			Stream.of(scene.getHintButton(), scene.getAutoSolveButton(), scene.getCheckButton())
+					.forEach(button -> button.setDisable(false));
+		} else {
+			for (int i = 0; i < sudokuField.length; i++) {
+				for (int j = 0; j < sudokuField[i].length; j++) {
+					model.getCells()[i][j].setValue(0);
+					sudokuField[j][j].setText("");
+
+				}
+			}
+			model.setGameState(Gamestate.CONFLICT);
+			scene.getGameNotificationLabel().setText(model.getGameText());
+		}
 	}
 
 	/**
@@ -254,12 +236,6 @@ public class GameController {
 	 * Hilfsmethode für die Befüllung der TextFields mit den Zahlen aus dem model
 	 */
 	public void connectArrays(SudokuField[][] sudokuField) {
-//		for (int row = 0; row < sudokuField.length; row++) {
-//			for (int col = 0; col < sudokuField[row].length; col++) {
-//				sudokuField[row][col].setText(Integer.toString(model.getCells()[col][row].getValue()));
-//			}
-//		}
-
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (model.getCells()[j][i].getValue() != 0) {
@@ -268,7 +244,7 @@ public class GameController {
 				}
 				if (model.getCells()[j][i].getIsReal()) {
 					sudokuField[i][j].setDisable(true);
-				} 
+				}
 			}
 		}
 	}
@@ -287,7 +263,8 @@ public class GameController {
 			model.setGameState(Gamestate.AUTOSOLVED);
 
 			model.setGamePoints(0);
-			scene.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " | Difficulty: " + model.getDifficultystring());
+			scene.getGameInfoLabel()
+					.setText("Points: " + model.getGamepoints() + " | Difficulty: " + model.getDifficultystring());
 			model.getLiveTimer().stop();
 
 			scene.getGameNotificationLabel().setText(model.getGameText());
@@ -303,10 +280,6 @@ public class GameController {
 					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 					}
-					// nochmal drüber schaun
-//					else {
-//						model.getCells()[row][col].setValue(0);
-//					}
 				}
 			}
 			model.setGameState(Gamestate.CONFLICT);
@@ -339,16 +312,11 @@ public class GameController {
 
 			}
 
-		} else if (!gameState ) {
+		} else if (!gameState) {
 			model.setGameState(Gamestate.INCORRECT);
 			scene.getGameNotificationLabel().setText(model.getGameText());
 		}
-
 	}
-
-	
-	
-	
 
 	public void setUpLiveTimer() {
 		model.initializeTimer();
@@ -447,74 +415,89 @@ public class GameController {
 		scene.getGameNotificationLabel().setText("Extra supplies yo");
 	}
 
-	
 	public void saveGame(ActionEvent e) {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
 				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 				}
-					if(!sudokuField[col][row].getColor().equals(""))
+				if (!sudokuField[col][row].getColor().equals(""))
 					model.getCells()[row][col].setBoxcolor(sudokuField[col][row].getColor());
-				}
 			}
-		
+		}
 
-		if(model.timerIsRunning()) {
-		model.getLiveTimer().stop();
+		if (model.timerIsRunning()) {
+			model.getLiveTimer().stop();
 		}
 		SudokuStorageModel storageModel = new SudokuStorageModel();
 		storageModel.saveGame(model);
 
 	}
-	
 
 	public void importGame(ActionEvent e) {
 		SudokuStorageModel storageModel = new SudokuStorageModel();
 
 		SaveModel saveModel = storageModel.getImportedFile();
-		
-	
-		if(storageModel.fileExists()) {
+
+		if (storageModel.fileExists()) {
 			model = storageModel.loadIntoModel(model, saveModel);
 
-		
-		if (model.getGametype().equals("Sudoku")) {
-			scene = new SudokuGameBuilder(model);
-		}
+			if (model.getGametype().equals("Sudoku")) {
+				scene = new SudokuGameBuilder(model);
+			}
 
-		if (model.getGametype().equals("Samurai")) {
-			scene = new SamuraiGameBuilder(model);
-		}
-		if (model.getGametype().equals("FreeForm")) {
-			scene = new FreeFormGameBuilder(model);
-		}
+			if (model.getGametype().equals("Samurai")) {
+				scene = new SamuraiGameBuilder(model);
+			}
+			if (model.getGametype().equals("FreeForm")) {
+				scene = new FreeFormGameBuilder(model);
+			}
 
-		scene.initializeGame();
-		setUpLiveTimer();
+			scene.initializeGame();
 
-		SudokuField[][] s = scene.getTextField();
+			if (!model.getGamestate().equals(Gamestate.CREATING) && !model.getGamestate().equals(Gamestate.DRAWING)) {
+				model.initializeTimer();
+				model.getLiveTimer().start();
+				scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
+			}
 
-		emptyArrays();
-		for (int i = 0; i < s.length; i++) {
-			for (int j = 0; j < s[i].length; j++) {
-				if (model instanceof FreeFormLogic) {
-					s[i][j].setStyle("-fx-background-color: #" + model.getCells()[j][i].getBoxcolor() + ";");
-				}
-				if (model.getCells()[j][i].getValue() != 0) {
-					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
-				}
-				if (model.getCells()[j][i].getIsReal()) {
-					s[i][j].setDisable(true);
+			if (model.getGamestate().equals(Gamestate.CREATING)) {
+				scene.getDoneButton().setVisible(true);
+				scene.disablePlayButtons();
+			}
+
+			if (model.getGamestate().equals(Gamestate.DRAWING)) {
+				scene.getColorBox().setVisible(true);
+				scene.getColorsDoneButton().setVisible(true);
+				scene.disablePlayButtons();
+				scene.getDoneButton().setVisible(true);
+			}
+
+			scene.getGameInfoLabel()
+					.setText("Points: " + model.getGamepoints() + " | Difficulty: " + model.getDifficultystring());
+
+			SudokuField[][] s = scene.getTextField();
+
+			emptyArrays();
+			for (int i = 0; i < s.length; i++) {
+				for (int j = 0; j < s[i].length; j++) {
+					if (model instanceof FreeFormLogic) {
+						s[i][j].setStyle("-fx-background-color: #" + model.getCells()[j][i].getBoxcolor() + ";");
+					}
+					if (model.getCells()[j][i].getValue() != 0) {
+						s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
+					}
+					if (model.getCells()[j][i].getIsReal()) {
+						s[i][j].setDisable(true);
+					}
 				}
 			}
+
+			GUI.getStage().setHeight(scene.getHeight());
+			GUI.getStage().setWidth(scene.getWidth());
+			GUI.getStage().getScene().setRoot(scene.getPane());
 		}
 
-		GUI.getStage().setHeight(scene.getHeight());
-		GUI.getStage().setWidth(scene.getWidth());
-		GUI.getStage().getScene().setRoot(scene.getPane());
-		}
-//		connectArrays(sudokuField);
 	}
 
 	public void exportGame(ActionEvent e) {
