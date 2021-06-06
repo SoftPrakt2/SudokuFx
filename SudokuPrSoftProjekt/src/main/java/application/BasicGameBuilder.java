@@ -118,6 +118,7 @@ public abstract class BasicGameBuilder {
 		pane.setCenter(createBoard());
 	}
 	
+	
 
 //	public abstract void createNumbers();
 	
@@ -271,7 +272,7 @@ public abstract class BasicGameBuilder {
 		importItem = new MenuItem("Import");
 		seperator = new SeparatorMenuItem();
 		exitItem = new MenuItem("Exit");
-		popover = gamePopUp.createPopUp();
+	//	popover = gamePopUp.createPopUp();
 		file.getItems().addAll(newGame, save, importItem, exportItem, seperator, exitItem);
 		
 		//Edit Menü initialisierungen
