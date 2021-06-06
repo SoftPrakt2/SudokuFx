@@ -46,88 +46,69 @@ public class SudokuLogic extends BasicGameLogic {
 		return true;
 	}
 
-	/**
-	 * Überprüft in der Box der übergebenen Reihe und Zeile eine idente Zahl
-	 * vorhanden ist.
-	 */
-	@Override
-	public boolean checkBox(int row, int col, int guess) {
-		int r = row - row % 3;
-		int c = col - col % 3;
+//	/**
+//	 * Autogenerator für ein neues Sudoku Befüllt rekursiv das im Hintergrund
+//	 * liegene Sudoku-Array.
+//	 */
+//	public boolean createSudoku() {
+//		//Iteration durch Array
+//		for (int row = 0; row < this.cells.length; row++) {
+//			for (int col = 0; col < this.cells[row].length; col++) {
+//				//Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
+//				if (this.cells[row][col].getValue() == 0) {
+//					//Anzahl von Versuchen (in diesem Falle 9) die durchlaufen werden sollen
+//					//bis eine Lösung gefunden wird
+//					for (int y = 0; y < 9; y++) {
+//						//es wird eine zufällige Zahl generiert
+//						int a = (int) (Math.random() * 9) + 1;
+//						//Überprüfung ob generierte Zahl den Sudokuregeln entspricht
+//						if (valid(row, col, a)) {
+//							//Zahl ist OK und wird in die Array eingefügt
+//							this.cells[row][col].setValue(a);
+//							if (createSudoku()) {//rekursiever Aufruf für Backtracking
+//								return true;
+//							} else {//Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
+//								this.cells[row][col].setValue(0);
+//							}
+//						}
+//					}
+//					return false;
+//				}
+//			}
+//		}
+//		return true;
+//	}
 
-		for (int i = r; i < r + 3; i++) {
-			for (int j = c; j < c + 3; j++) {
-				if (this.cells[i][j].getValue() == guess) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	/**
-	 * Autogenerator für ein neues Sudoku Befüllt rekursiv das im Hintergrund
-	 * liegene Sudoku-Array.
-	 */
-	public boolean createSudoku() {
-		//Iteration durch Array
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				//Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
-				if (this.cells[row][col].getValue() == 0) {
-					//Anzahl von Versuchen (in diesem Falle 9) die durchlaufen werden sollen
-					//bis eine Lösung gefunden wird
-					for (int y = 0; y < 9; y++) {
-						//es wird eine zufällige Zahl generiert
-						int a = (int) (Math.random() * 9) + 1;
-						//Überprüfung ob generierte Zahl den Sudokuregeln entspricht
-						if (valid(row, col, a)) {
-							//Zahl ist OK und wird in die Array eingefügt
-							this.cells[row][col].setValue(a);
-							if (createSudoku()) {//rekursiever Aufruf für Backtracking
-								return true;
-							} else {//Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
-								this.cells[row][col].setValue(0);
-							}
-						}
-					}
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	/*
-	 * Löst ein Sudoku rekursiv
-	 */
-	@Override
-	public boolean solveSudoku() {
-		//Iteration durch Array
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				//Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
-				if (this.cells[row][col].getValue() == 0) {
-					//Alle möglichen Zahlen werden durchprobiert (1-9)
-					for (int y = 1; y <= 9; y++) {
-						//Überprüfung ob Zahl den Sudokuregeln entspricht
-						if (valid(row, col, y)) {
-							//Zahl ist OK und wird in die Array eingefügt
-							this.cells[row][col].setValue(y);
-							if (solveSudoku()) {//rekursiever Aufruf für Backtracking
-								return true;
-							} else {//Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
-								this.cells[row][col].setValue(0);
-							}
-						}
-					}
-					return false;
-				}
-			}
-		}
-		//Sudoku wurde gelöst
-		return true;
-	}
+//	/*
+//	 * Löst ein Sudoku rekursiv
+//	 */
+//	@Override
+//	public boolean solveSudoku() {
+//		//Iteration durch Array
+//		for (int row = 0; row < this.cells.length; row++) {
+//			for (int col = 0; col < this.cells[row].length; col++) {
+//				//Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
+//				if (this.cells[row][col].getValue() == 0) {
+//					//Alle möglichen Zahlen werden durchprobiert (1-9)
+//					for (int y = 1; y <= 9; y++) {
+//						//Überprüfung ob Zahl den Sudokuregeln entspricht
+//						if (valid(row, col, y)) {
+//							//Zahl ist OK und wird in die Array eingefügt
+//							this.cells[row][col].setValue(y);
+//							if (solveSudoku()) {//rekursiever Aufruf für Backtracking
+//								return true;
+//							} else {//Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
+//								this.cells[row][col].setValue(0);
+//							}
+//						}
+//					}
+//					return false;
+//				}
+//			}
+//		}
+//		//Sudoku wurde gelöst
+//		return true;
+//	}
 
 //  https://www.geeksforgeeks.org/sudoku-backtracking-7/
 //	@Override
@@ -182,53 +163,53 @@ public class SudokuLogic extends BasicGameLogic {
 //		return false;
 //	}
 
-	/**
-	 * Generiert automatische eine zufällig Zahl Hilfsarray mit den derzeitigen
-	 * Werten des Sudokus wird erstellt Generiert daraufhin eine Lösung des
-	 * derzeitigen Sudokustandes Überprüft ob generiert Zahl laut Lösung in die
-	 * Zelle passt und fügt diese in Hilfsarray ein derzeitige Sudoku nimmt Werte
-	 * des Hilfsarray an
-	 */
-	@Override
-	public int[] hint() {
-		boolean correctRandom = false;
-        int[] coordinates = new int[2];
-        int counter = 0;
-
-        int help[][] = new int[9][9];
-        for (int row = 0; row < this.cells.length; row++) {
-            for (int col = 0; col < this.cells[row].length; col++) {
-                help[row][col] = this.cells[row][col].getValue();
-            }
-        }
-
-        this.solveSudoku();
-
-        while (!correctRandom) {
-            int randomCol = (int) (Math.floor(Math.random() * 8.9999));
-            int randomRow = (int) (Math.floor(Math.random() * 8.9999));
-            int randomNumber = (int) (Math.random() * 9) + 1;
-            if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0
-                    && this.cells[randomRow][randomCol].getValue() != -1) {
-                help[randomRow][randomCol] = randomNumber;
-                coordinates[0] = randomRow;
-                coordinates[1] = randomCol;
-                correctRandom = true;
-            }
-            counter++;
-            if (counter == 10000) {
-                coordinates = null;
-                break;
-            }
-        }
-
-        for (int row = 0; row < 9; row++) {
-            for (int col = 0; col < 9; col++) {
-                this.cells[row][col].setValue(help[row][col]);
-            }
-        }
-        return coordinates;
-	}
+//	/**
+//	 * Generiert automatische eine zufällig Zahl Hilfsarray mit den derzeitigen
+//	 * Werten des Sudokus wird erstellt Generiert daraufhin eine Lösung des
+//	 * derzeitigen Sudokustandes Überprüft ob generiert Zahl laut Lösung in die
+//	 * Zelle passt und fügt diese in Hilfsarray ein derzeitige Sudoku nimmt Werte
+//	 * des Hilfsarray an
+//	 */
+//	@Override
+//	public int[] hint() {
+//		boolean correctRandom = false;
+//        int[] coordinates = new int[2];
+//        int counter = 0;
+//
+//        int help[][] = new int[9][9];
+//        for (int row = 0; row < this.cells.length; row++) {
+//            for (int col = 0; col < this.cells[row].length; col++) {
+//                help[row][col] = this.cells[row][col].getValue();
+//            }
+//        }
+//
+//        this.solveSudoku();
+//
+//        while (!correctRandom) {
+//            int randomCol = (int) (Math.floor(Math.random() * 8.9999));
+//            int randomRow = (int) (Math.floor(Math.random() * 8.9999));
+//            int randomNumber = (int) (Math.random() * 9) + 1;
+//            if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0
+//                    && this.cells[randomRow][randomCol].getValue() != -1) {
+//                help[randomRow][randomCol] = randomNumber;
+//                coordinates[0] = randomRow;
+//                coordinates[1] = randomCol;
+//                correctRandom = true;
+//            }
+//            counter++;
+//            if (counter == 10000) {
+//                coordinates = null;
+//                break;
+//            }
+//        }
+//
+//        for (int row = 0; row < 9; row++) {
+//            for (int col = 0; col < 9; col++) {
+//                this.cells[row][col].setValue(help[row][col]);
+//            }
+//        }
+//        return coordinates;
+//	}
 	/**
 	 * Befüllt Sudokuarray mit mit dem Wert 0
 	 */

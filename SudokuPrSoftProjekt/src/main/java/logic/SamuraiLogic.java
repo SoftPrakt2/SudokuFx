@@ -283,29 +283,6 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public boolean createSudoku() {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				if (this.cells[row][col].getValue() == 0) {
-					for (int y = 0; y < 9; y++) {
-						int a = (int) (Math.random() * 9) + 1;
-						if (valid(row, col, a)) {
-							this.cells[row][col].setValue(a);
-							if (createSudoku()) {
-								return true;
-							} else {
-								this.cells[row][col].setValue(0);
-							}
-						}
-					}
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	@Override
 	public int[] hint() {
 		// TODO Auto-generated method stub
 		boolean correctRandom = false;

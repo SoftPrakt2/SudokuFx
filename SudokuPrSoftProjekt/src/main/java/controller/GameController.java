@@ -50,7 +50,7 @@ public class GameController {
 	
 	public void createGame() {
 		model.setUpLogicArray();
-		model.shuffle();
+		model.setShuffleCounter(0);
 		model.createSudoku();	
 		model.difficulty();
 		model.setUpGameInformations();
