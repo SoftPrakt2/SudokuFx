@@ -225,14 +225,6 @@ public class MainMenu {
 		welcomeLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSizeLabel.asString()));
 		
 		
-//		Stream.of(sudoku, samurai, freeform, easy, medium, hard, load, exit, manual, createButton)
-//		.forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(4.75)));
-		
-		
-
-		
-		
-
 		// größe der Buttons
 		Stream.of(selectModeLabel, selectDifficultyLabel, createLabel)
 				.forEach(label -> label.getStyleClass().add("mainMenuLabelsSmall"));

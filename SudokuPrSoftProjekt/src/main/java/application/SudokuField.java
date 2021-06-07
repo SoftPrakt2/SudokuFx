@@ -1,9 +1,12 @@
 package application;
 
 import javafx.beans.value.ChangeListener;
+import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
 public class SudokuField extends TextField {
@@ -22,17 +25,26 @@ public class SudokuField extends TextField {
 		onlyOneNumber();
 		enterPressed();
 		updateColor();
+	//	shortCutFriendlyTextField();
 		listeningToColors = false;
 		this.getStyleClass().add("textfieldBasic");
 	}
 
 	private void addListener() {
+		
+		
 		this.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				this.setText(newValue.replaceAll("[^\\d]", ""));
 			}
+			if(newValue.equals("0")) {
+				this.setText(newValue.replace("0", ""));
+			}
 		});
 	}
+	
+
+	
 
 	public void onlyOneNumber() {
 		this.textProperty().addListener((observable, oldV, newV) -> {

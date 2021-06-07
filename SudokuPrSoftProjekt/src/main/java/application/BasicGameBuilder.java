@@ -11,6 +11,7 @@ import org.controlsfx.glyphfont.Glyph;
 import controller.GameController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -24,6 +25,7 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -46,9 +48,6 @@ public abstract class BasicGameBuilder {
 	protected Button autosolve;
 	protected Button customNumbersDone;
 	protected Button customColorsDone;
-	
-	
-	
 	
 	protected Button hintButton;
 	
@@ -109,7 +108,6 @@ public abstract class BasicGameBuilder {
 		gamePopUp = new NewGamePopUp();
 
 		pane.setPadding(new Insets(50, 50, 50, 50));
-
 		createMenuBar();
 		createPlayButtons();
 		createManualControls();
@@ -146,7 +144,8 @@ public abstract class BasicGameBuilder {
 		hintButton = new Button("");
 		hintButton.setGraphic(hintGraphic);
 
-		autosolve = new Button("_A");
+		autosolve = new Button("");
+	
 		autosolve.setGraphic(autosolveGraphic);
 
 		check = new Button("");
@@ -175,16 +174,46 @@ public abstract class BasicGameBuilder {
 	
 	
 	
+	
 
 	/*
 	 * definiert Shortcuts für Spielfunktionen
 	 */
 	public void defineShortCuts() {
-		KeyCombination autoS = new KeyCodeCombination(KeyCode.A, KeyCombination.ALT_DOWN);
-		Mnemonic mn = new Mnemonic(autosolve, autoS);
-		GUI.getStage().getScene().addMnemonic(mn);
-	}
+
+		KeyCombination hintKc = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
+		KeyCombination autoSolveKc = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
+		KeyCombination checkKc = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+		
+		hintMenuItem.setAccelerator(hintKc);
+		autoSolveItem.setAccelerator(autoSolveKc);
+		checkItem.setAccelerator(checkKc);
+		
+		GUI.getStage().getScene().getAccelerators().put(
+	            new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
+	            new Runnable() {
+	                public void run() {
+	                	hintMenuItem.fire();
+	                }
+	            }
+	    );
+    }
+
 	
+	
+	
+	
+	public void keyPressed (KeyEvent event) {
+		for (MenuItem mi :editMenu.getItems())
+	     {
+	        if (mi.getAccelerator()!=null && mi.getAccelerator().match(event))
+	        {
+	            mi.getOnAction().handle(null);
+	            event.consume();
+	            return;
+	        }
+	    }
+	}
 	
 	public void addListeners(SudokuField[][] sudokuField) {
 		for (int row = 0; row < sudokuField.length; row++) {
@@ -193,7 +222,7 @@ public abstract class BasicGameBuilder {
 					@Override
 					public void changed(ObservableValue<? extends String> observable, String oldValue,
 							String newValue) {
-						controller.compareResult(sudokuField);
+						controller.compareResult();
 
 					}
 				};
@@ -272,7 +301,7 @@ public abstract class BasicGameBuilder {
 		importItem = new MenuItem("Import");
 		seperator = new SeparatorMenuItem();
 		exitItem = new MenuItem("Exit");
-	//	popover = gamePopUp.createPopUp();
+		popover = gamePopUp.createPopUp();
 		file.getItems().addAll(newGame, save, importItem, exportItem, seperator, exitItem);
 		
 		//Edit Menü initialisierungen
@@ -315,7 +344,9 @@ public abstract class BasicGameBuilder {
 		toolbox.getChildren().addAll(menuBar);
 		menuBar.getStylesheets().add("menu-bar");
 		pane.setTop(toolbox);
-
+		
+		
+		defineShortCuts();
 	}
 
 	/**
@@ -354,6 +385,16 @@ public abstract class BasicGameBuilder {
 		importItem.setOnAction(controller::importGame);
 
 		newGame.setOnAction(e -> popover.show(hintButton, -30));
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	}
 
 	public void createStatusBar() {

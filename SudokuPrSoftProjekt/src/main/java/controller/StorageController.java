@@ -97,6 +97,7 @@ public class StorageController {
 		
 		game.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 		game.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
+		game.getGameNotificationLabel().setText(model.getGameText());
 		
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());
@@ -167,9 +168,7 @@ public class StorageController {
 		if (dir[deleteIndex].delete()) {
 			System.out.println("erfolgreich gelöscht");
 		}
-		else {
-			System.out.println("weh");
-		}
+		
 
 		dir =  new File("SaveFiles").listFiles();
 		
@@ -241,4 +240,5 @@ public class StorageController {
 		storage.getAverageTimeResultLabel().textProperty().bind(averagePlayTime);
 	}
 
+	
 }

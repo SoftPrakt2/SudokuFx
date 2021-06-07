@@ -216,7 +216,6 @@ public abstract class BasicGameLogic {
 	
 	public void initializeCustomGame() {
 		setUpLogicArray();
-	//	createSudoku();
 		setDifficulty(0);
 		setDifficultyString();
 		difficulty();
@@ -237,6 +236,13 @@ public abstract class BasicGameLogic {
 		setSecondsPlayed(0);
 		initializeTimer();
 		getLiveTimer().start();
+	}
+	
+	public void setUpGameField() {
+		setUpLogicArray();
+		setShuffleCounter(0);
+		createSudoku();
+		difficulty();
 	}
 	
 	
