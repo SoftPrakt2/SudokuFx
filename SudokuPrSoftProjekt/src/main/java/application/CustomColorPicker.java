@@ -22,7 +22,7 @@ public class CustomColorPicker {
 	cmb = new ComboBox<>();
 	
      ObservableList<String> data = FXCollections.observableArrayList(
-           "B8860B");
+           "97c1a9","cab08b","dfd8ab","d5a1a3","80adbc","adb5be","eaeee0","957DAD","FFDFD3");
 
      cmb.setItems(data);
 
@@ -32,6 +32,7 @@ public class CustomColorPicker {
              return new ColorRectCell();
          }
      };
+     
      cmb.setCellFactory(factory);
 
      Callback<ListView<String>, ListCell<String>> factoryTooltip = new Callback<ListView<String>, ListCell<String>>() {

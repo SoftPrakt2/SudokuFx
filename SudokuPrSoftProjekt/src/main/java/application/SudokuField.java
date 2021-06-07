@@ -86,7 +86,8 @@ public class SudokuField extends TextField {
 	public void addFreeFormColorListener(ComboBox<String> cmb) {
 		freeFormColorListener = (obs, wasFocused, isNowFocused) -> {
 			if (isNowFocused && cmb != null && cmb.getValue()!=null) {
-			this.setColor(cmb.getValue().substring(2));
+			this.setColor(cmb.getValue());
+			System.out.println(cmb.getValue());
 		//	this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
 			
 			}

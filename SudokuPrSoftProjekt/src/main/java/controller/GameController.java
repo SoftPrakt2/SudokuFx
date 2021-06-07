@@ -142,12 +142,16 @@ public class GameController {
 					sudokuField[i][j].removeFreeFormColorListener();
 				}
 				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
-				if (model.isConnected()) {
-					System.out.println("isyeet");
-				}
+				System.out.println(model.getCells()[j][i].getBox());
+				
 			}
 		}
-
+		if (model.isConnected()) {
+			System.out.println("isyeet");
+		} else {
+			System.out.println("notyeet");
+		}
+		
 		scene.getDoneButton().setVisible(true);
 		System.out.println("Drawing completed");
 		model.setGameState(Gamestate.CREATING);
@@ -182,7 +186,7 @@ public class GameController {
 			for (int i = 0; i < sudokuField.length; i++) {
 				for (int j = 0; j < sudokuField[i].length; j++) {
 					model.getCells()[i][j].setValue(0);
-					sudokuField[j][j].setText("");
+					//sudokuField[j][j].setText("");
 
 				}
 			}

@@ -36,6 +36,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 	
 
+	
 	public GridPane createBoard() {
 		playBoard = new GridPane();
 		createColorBox();

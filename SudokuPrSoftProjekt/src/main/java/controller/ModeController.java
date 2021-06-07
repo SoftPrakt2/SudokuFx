@@ -164,7 +164,7 @@ public class ModeController {
 	 * des Spiels auf 0
 	 */
 	public void handleGameStart(ActionEvent e) {
-		if(menu.getPlayModeToggle().getSelectedToggle() != null && menu.getPlayModeToggle().getSelectedToggle() != null) {
+		if(menu.getPlayModeToggle().getSelectedToggle() != null) {
 		
 		
 		model.setDifficulty(difficulty);

@@ -80,7 +80,40 @@ public class Cell {
 
 	    public void setBoxcolor(String boxcolor) {
 	        this.boxcolor = boxcolor;
+	        
+	        
+	        if(boxcolor.equals("97c1a9")) {
+	        	this.setBox(1);
+	        }
+	        if(boxcolor.equals("cab08b")) {
+	        	this.setBox(2);
+	        }
+	        if(boxcolor.equals("dfd8ab")) {
+	        	this.setBox(3);
+	        }
+	        if(boxcolor.equals("d5a1a3")) {
+	        	this.setBox(4);
+	        }
+	        if(boxcolor.equals("80adbc")) {
+	        	this.setBox(5);
+	        }
+	        if(boxcolor.equals("adb5be")) {
+	        	this.setBox(6);
+	        }
+	        if(boxcolor.equals("eaeee0")) {
+	        	this.setBox(7);
+	        }
+	        if(boxcolor.equals("957DAD")) {
+	        	this.setBox(8);
+	        }
+	        if(boxcolor.equals("957DAD")) {
+	        	this.setBox(9);
+	        }
+	        else {
+	        	System.out.println("notddddddddddddddddddddddddddddddddddddddddddddddok");
+	        }
 	    }
+	    
 
 	    @Override
 	    public String toString() {
