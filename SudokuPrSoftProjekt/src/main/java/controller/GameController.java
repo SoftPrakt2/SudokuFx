@@ -238,7 +238,7 @@ public class GameController {
 				}
 			}
 		}
-		if(result) {
+		if(result && model.getGamestate() != Gamestate.AUTOSOLVED && model.getGamestate() != Gamestate.UNSOLVABLE) {
 			model.setGameState(Gamestate.OPEN);
 		}
 		
@@ -249,7 +249,7 @@ public class GameController {
 	 * 
 	 * Hilfsmethode für die Befüllung der TextFields mit den Zahlen aus dem model
 	 */
-	public void connectArrays(SudokuField[][] sudokuField) {
+	public void connectArrays() {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (model.getCells()[j][i].getValue() != 0) {
@@ -274,21 +274,21 @@ public class GameController {
 		if (compareResult()) {
 			connectWithModel();
 			model.solveSudoku();
-			model.setGameState(Gamestate.AUTOSOLVED);
-			
-			
+			if(model.getGamestate() != Gamestate.UNSOLVABLE) {
+				model.setGameState(Gamestate.AUTOSOLVED);
+			}
 			model.setGamePoints(0);
 			scene.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " | Difficulty: " + model.getDifficultystring());
 			model.getLiveTimer().stop();
 			scene.getGameNotificationLabel().setText(model.getGameText());
 			
-			
 			if (!model.testIfSolved()) {
 				resetHandler(e);
-				model.solveSudoku();
 				model.setGameState(Gamestate.UNSOLVABLE);
+				model.solveSudoku();
+				
 			}
-			connectArrays(scene.getTextField());
+			connectArrays();
 		} else {
 			for (int row = 0; row < sudokuField.length; row++) {
 				for (int col = 0; col < sudokuField[row].length; col++) {
@@ -544,5 +544,10 @@ public class GameController {
 			}
 		}
 	}
-
+	public BasicGameLogic getModel() {
+        return this.model;
+    }
+    public SudokuField[][] getsudokuField() {
+        return this.sudokuField;
+    }
 }

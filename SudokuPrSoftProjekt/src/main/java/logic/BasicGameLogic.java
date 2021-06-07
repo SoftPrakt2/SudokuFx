@@ -456,8 +456,6 @@ public abstract class BasicGameLogic {
 		this.shuffleCounter = counter;
 	}	
 	
-	public abstract void shuffle();
-	
 
 	public StringProperty getStringProp() {
 		return liveTimePlayedString;

@@ -181,22 +181,22 @@ public abstract class BasicGameBuilder {
 	 */
 	public void defineShortCuts() {
 
-		KeyCombination hintKc = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
-		KeyCombination autoSolveKc = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
-		KeyCombination checkKc = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-		
-		hintMenuItem.setAccelerator(hintKc);
-		autoSolveItem.setAccelerator(autoSolveKc);
-		checkItem.setAccelerator(checkKc);
-		
-		GUI.getStage().getScene().getAccelerators().put(
-	            new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
-	            new Runnable() {
-	                public void run() {
-	                	hintMenuItem.fire();
-	                }
-	            }
-	    );
+//		KeyCombination hintKc = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
+//		KeyCombination autoSolveKc = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
+//		KeyCombination checkKc = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+//		
+//		hintMenuItem.setAccelerator(hintKc);
+//		autoSolveItem.setAccelerator(autoSolveKc);
+//		checkItem.setAccelerator(checkKc);
+//		
+//		GUI.getStage().getScene().getAccelerators().put(
+//	            new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
+//	            new Runnable() {
+//	                public void run() {
+//	                	hintMenuItem.fire();
+//	                }
+//	            }
+//	    );
     }
 
 	

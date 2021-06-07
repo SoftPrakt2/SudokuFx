@@ -163,74 +163,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public boolean checkBox(int row, int col, int guess) {
-//		if (row < 9 && col < 9) {
-//			int r = row - row % 3;
-//			int c = col - col % 3;
-//
-//			for (row = r; row < r + 3; row++) {
-//				for (col = c; col < c + 3; col++) {
-//					if (this.cells[row][col].getValue() == guess) {
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//		// ---------------------topRight---------------------
-//		else if (row < 9 && col > 11) {
-//			int r = row - row % 3;
-//			int c = col - col % 3;
-//
-//			for (row = r; row < r + 3; row++) {
-//				for (col = c; col < c + 3; col++) {
-//					if (this.cells[row][col].getValue() == guess) {
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//
-//		// ---------------------bottomLeft---------------------
-//		else if (row > 11 && col < 9) {
-//			int r = row - row % 3;
-//			int c = col - col % 3;
-//
-//			for (row = r; row < r + 3; row++) {
-//				for (col = c; col < c + 3; col++) {
-//					if (this.cells[row][col].getValue() == guess) {
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//
-//		// ---------------------bottomRight---------------------
-//		else if (row > 11 && col > 11) {
-//			int r = row - row % 3;
-//			int c = col - col % 3;
-//
-//			for (row = r; row < r + 3; row++) {
-//				for (col = c; col < c + 3; col++) {
-//					if (this.cells[row][col].getValue() == guess) {
-//						return false;
-//					}
-//				}
-//			}
-//		}
-//
-//		else if (row > 5 && row < 15 && col > 5 && col < 15) {
-//			int r = row - row % 3;
-//			int c = col - col % 3;
-//
-//			for (row = r; row < r + 3; row++) {
-//				for (col = c; col < c + 3; col++) {
-//					if (this.cells[row][col].getValue() == guess) {
-//						return false;
-//					}
-//				}
-//			}
-//		}
-		
+	public boolean checkBox(int row, int col, int guess) {		
 		if(this.cells[row][col].getValue() != -1) {
 			int r = row - row % 3;
 			int c = col - col % 3;
@@ -324,176 +257,6 @@ public class SamuraiLogic extends BasicGameLogic {
         return coordinates;
 	}
 
-//	@Override
-//	public boolean solveSudoku(Cell [][] cells) {
-//		
-//		int row = 0;
-//		   int  col = 0;
-//		    boolean checkBlankSpaces = false;
-//
-//		    /* verify if sudoku is already solved and if not solved,
-//		    get next "blank" space position */ 
-//		    for (row = 0; row < this.cells.length; row++) {
-//		        for (col = 0; col < this.cells[row].length; col++) {
-//		            if (this.cells[row][col].getValue() == 0) {
-//		                checkBlankSpaces = true;
-//		                break;
-//		            }
-//		        }
-//		        if (checkBlankSpaces == true) {
-//		            break;
-//		        }
-//		    }
-//		    // no more "blank" spaces means the puzzle is solved
-//		    if (checkBlankSpaces == false) {
-//		        return true;
-//		    }
-//
-//		    // try to fill "blank" space with correct num
-//		    for (int num = 1; num <= 9; num++) {
-//		        /* isSafe checks that num isn't already present 
-//		        in the row, column, or 3x3 box (see below) */ 
-//		        if (this.valid(row, col, num)) {
-//		            cells[row][col].setValue(num);
-//
-//		            if (solveSudoku(cells)) {
-//		                return true;
-//		            }
-//
-//		            /* if num is placed in incorrect position, 
-//		            mark as "blank" again then backtrack with 
-//		            a different num */ 
-//		            cells[row][col].setValue(0);;
-//		        }
-//		    }
-//		    return false;
-//
-//		/*
-//		 * if we have reached the 8th row and 9th column (0 indexed matrix) , we are
-//		 * returning true to avoid further backtracking
-//		 */
-//		if (row == N - 1 && col == N)
-//			return true;
-//
-//			// Check if column value  becomes 9 ,
-//			// we move to next row
-//			// and column start from 0
-//		if (col == N) {
-//			row++;
-//			col = 0;
-//		}
-//
-//			// Check if the current position
-//			// of the grid already
-//			// contains value >0, we iterate
-//			// for next column
-//		if (this.cells[row][col].getValue() != 0)
-//			return solveSudoku(row, col + 1);
-//
-//		for (int num = 1; num < 10; num++) {
-//
-//			// Check if it is safe to place
-//			// the num (1-9)  in the
-//			// given row ,col ->we move to next column
-//			if (this.valid(row, col, num)) {
-//
-//				/*
-//				 * assigning the num in the current (row,col) position of the grid and assuming
-//				 * our assined num in the position is correct
-//				 */
-//				this.cells[row][col].setValue(num);
-//
-//// Checking for next
-//// possibility with next column
-//				if (solveSudoku(row, col + 1))
-//					return true;
-//			}
-//			/*
-//			 * removing the assigned num , since our assumption was wrong , and we go for
-//			 * next assumption with diff num value
-//			 */
-//			this.cells[row][col].setValue(0);
-//		}
-//		return false;
-//	}
-//	@Override
-//	public boolean solveSudoku() {
-//		for (int row = 0; row < this.cells.length; row++) {
-//			for (int col = 0; col < this.cells[row].length; col++) {
-//				if (this.cells[row][col].getValue() == 0) {
-//					for (int y = 0; y < 9; y++) {
-//						counter++;
-////						if(counter == 10000000) {
-////							return true;
-////						}
-//					
-//						if (valid(row, col, y + 1)) {
-//							this.cells[row][col].setValue(y + 1);
-//							if (solveSudoku()) {
-//								return true;
-//							} else {
-//								this.cells[row][col].setValue(0);
-//							}
-//						}
-//					}
-//					return false;
-//				}
-//			}
-//		}
-//		System.out.println(counter);
-//		return true;
-//	}
-
-	public boolean solveSudoku() {
-		int row = 0;
-		int col = 0;
-		boolean checkBlankSpaces = false;
-
-		/*
-		 * verify if sudoku is already solved and if not solved, get next "blank" space
-		 * position
-		 */
-		for (row = 0; row < this.cells.length; row++) {
-			for (col = 0; col < this.cells[row].length; col++) {
-				if (this.cells[row][col].getValue() == 0) {
-					checkBlankSpaces = true;
-					break;
-				}
-			}
-			if (checkBlankSpaces == true) {
-				break;
-			}
-		}
-		// no more "blank" spaces means the puzzle is solved
-		if (checkBlankSpaces == false) {
-			return true;
-		}
-
-		// try to fill "blank" space with correct num
-		for (int num = 1; num <= 9; num++) {
-			/*
-			 * isSafe checks that num isn't already present in the row, column, or 3x3 box
-			 * (see below)
-			 */
-			if (this.valid(row, col, num)) {
-				this.cells[row][col].setValue(num);
-
-				if (solveSudoku()) {
-					return true;
-				}
-
-				/*
-				 * if num is placed in incorrect position, mark as "blank" again then backtrack
-				 * with a different num
-				 */
-				this.cells[row][col].setValue(0);
-				;
-			}
-		}
-//		System.out.println(counter);
-		return false;
-	}
-
 	@Override
 	public void difficulty() {
 		int counter = 369;
@@ -509,6 +272,7 @@ public class SamuraiLogic extends BasicGameLogic {
                 for (int col = 0; col < this.cells[row].length; col++) {
                     if(this.cells[row][col].getValue() != -1) {
                         this.cells[row][col].setIsReal(false);
+                        this.cells[row][col].setValue(0);
                     }
                 }
             }
@@ -553,16 +317,6 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public void setGameState(Gamestate gamestate) {
-		this.gamestate = gamestate;
-	}
-
-	@Override
-	public Gamestate getGamestate() {
-		return this.gamestate;
-	}
-
-	@Override
 	public boolean testIfSolved() {
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
@@ -575,15 +329,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public void shuffle() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public boolean isConnected() {
-		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

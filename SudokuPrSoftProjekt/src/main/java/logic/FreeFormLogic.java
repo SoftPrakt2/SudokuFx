@@ -78,10 +78,9 @@ public class FreeFormLogic extends SudokuLogic {
 						i = 0;
 						j = 0;
 						System.out.println("yeet");
-
 					}
 
-					if (globalCounter > 100000) {
+					if (globalCounter > 1000000) {
 						globalCounter = 0;
 						this.cells = loadPreMadeFreeForm();
 						System.out.println("preloadgamemydudeyeeet");
@@ -138,7 +137,6 @@ public class FreeFormLogic extends SudokuLogic {
 	}
 
 	// shuffle(): eine Zelle zufällig einer neuen Box zuweisen
-	@Override
 	public void shuffle() {
 		int localcount = 0;
 
