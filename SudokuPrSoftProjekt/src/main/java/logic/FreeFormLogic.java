@@ -44,8 +44,6 @@ public class FreeFormLogic extends SudokuLogic {
 		return true;
 	}
 
-	
-
 	/**
 	 * Autogenerator für ein neues Sudoku Befüllt rekursiv das im Hintergrund
 	 * liegene Sudoku-Array.
