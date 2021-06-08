@@ -11,46 +11,27 @@ import logic.BasicGameLogic;
 
 public class NewGamePopUp extends MainMenu {
 
-	BasicGameBuilder game;
-	BasicGameLogic model;
-
-	
-
 	PopOver popOver;
+	HBox gameModeButtons;
+	HBox difficultyButtons;
+	Label newGameModeLabel;
+	VBox popOverBox;
+	PopOverController popcontrol;
+
 	
 
 	public PopOver createPopUp() {
-		PopOverController popcontrol = new PopOverController(this);
+		popcontrol = new PopOverController(this);
 
-		VBox popOverBox = new VBox();
+		popOverBox = new VBox();
+		createGameModeButtons();
+		createDifficultyButtons();
+		setButtonActions();
 
-		Label newGameModeLabel = new Label("Choose new game settings");
+		newGameModeLabel = new Label("Choose new game settings");
 
-		HBox gameModeButtons = new HBox();
-		gameModeButtons.setSpacing(2);
-		
-		
-		super.createGameModeButtons();
-		gameModeButtons.getChildren().addAll(sudoku,samurai, freeform);
-		
-		super.createDifficultyButtons();
-		HBox difficultyButtons = new HBox();
-		difficultyButtons.setSpacing(2);
-
-		difficultyButtons.setSpacing(2);
-		difficultyButtons.getChildren().addAll(easy, medium, hard);
-
-		sudoku.setOnAction(popcontrol::handleToSudoku);
-		samurai.setOnAction(popcontrol::handleToSamurai);
-		freeform.setOnAction(popcontrol::handleToFreeForm);
-		easy.setOnAction(popcontrol::handleEasy);
-		medium.setOnAction(popcontrol::handleMedium);
-		hard.setOnAction(popcontrol::handleHard);
-		
 		popOverBox.getChildren().addAll(newGameModeLabel, gameModeButtons, difficultyButtons);
 		popOverBox.setAlignment(Pos.CENTER);
-		gameModeButtons.setAlignment(Pos.CENTER);
-		difficultyButtons.setAlignment(Pos.CENTER);
 
 		popOverBox.setPrefSize(250, 150);
 
@@ -59,6 +40,34 @@ public class NewGamePopUp extends MainMenu {
 		popOver.setArrowLocation(PopOver.ArrowLocation.RIGHT_TOP);
 
 		return popOver;
+	}
+
+	@Override
+	public void createGameModeButtons() {
+		gameModeButtons = new HBox();
+		gameModeButtons.setSpacing(2);
+		super.createGameModeButtons();
+		gameModeButtons.getChildren().addAll(sudoku, samurai, freeform);
+		gameModeButtons.setAlignment(Pos.CENTER);
+	}
+
+	@Override
+	public void createDifficultyButtons() {
+		difficultyButtons = new HBox();
+		difficultyButtons.setSpacing(2);
+		super.createDifficultyButtons();
+		difficultyButtons.setAlignment(Pos.CENTER);
+		difficultyButtons.getChildren().addAll(easy, medium, hard);
+	}
+
+	@Override
+	public void setButtonActions() {
+		sudoku.setOnAction(popcontrol::handleToSudoku);
+		samurai.setOnAction(popcontrol::handleToSamurai);
+		freeform.setOnAction(popcontrol::handleToFreeForm);
+		easy.setOnAction(popcontrol::handleEasy);
+		medium.setOnAction(popcontrol::handleMedium);
+		hard.setOnAction(popcontrol::handleHard);
 	}
 
 }

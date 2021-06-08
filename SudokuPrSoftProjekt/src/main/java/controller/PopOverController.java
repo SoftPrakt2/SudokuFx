@@ -25,16 +25,17 @@ public class PopOverController extends ModeController {
 	@Override
 	public void handleToSudoku(ActionEvent e) {
 		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
-		game = new SudokuGameBuilder(model);
-		game.initializeGame();
+		gameScene = new SudokuGameBuilder(model);
+		gameScene.initializeGame();
 		enableDifficultyButtons();
 	}
+	
 	
 	@Override
 	public void handleToSamurai(ActionEvent e) {
 		model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
-		game = new SamuraiGameBuilder(model);
-		game.initializeGame();
+		gameScene = new SamuraiGameBuilder(model);
+		gameScene.initializeGame();
 		enableDifficultyButtons();
 	}
 	
@@ -42,39 +43,39 @@ public class PopOverController extends ModeController {
 	@Override
 	public void handleToFreeForm(ActionEvent e) {
 		model = new FreeFormLogic(Gamestate.OPEN, 0, 0, false);
-		game = new FreeFormGameBuilder(model);
-		game.initializeGame();
+		gameScene = new FreeFormGameBuilder(model);
+		gameScene.initializeGame();
 		enableDifficultyButtons();
 	}
 
 	public void handleHard(ActionEvent e) {
 		model.setDifficulty(3);
-		game.createNumbers();
+		gameScene.createNumbers();
 		alignStage();
 	}
 
 	public void handleEasy(ActionEvent e) {
 		model.setDifficulty(7);
-		game.createNumbers();
+		gameScene.createNumbers();
 		alignStage();
 	}
 
 	public void handleMedium(ActionEvent e) {
 		model.setDifficulty(5);
-		game.createNumbers();
+		gameScene.createNumbers();
 		alignStage();
 	}
 
 	public void handleManual(ActionEvent e) {
 		model.setDifficulty(0);
-		game.createNumbers();
+		gameScene.createNumbers();
 		alignStage();
 	}
 
 	public void alignStage() {
-		GUI.getStage().setHeight(game.getHeight());
-		GUI.getStage().setWidth(game.getWidth());
-		GUI.getStage().getScene().setRoot(game.getPane());
+		GUI.getStage().setHeight(gameScene.getHeight());
+		GUI.getStage().setWidth(gameScene.getWidth());
+		GUI.getStage().getScene().setRoot(gameScene.getPane());
 		
 	}
 

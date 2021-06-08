@@ -46,6 +46,10 @@ public abstract class BasicGameLogic {
 	protected int difficulty;
 
 	protected StringProperty liveTimePlayedString;
+	
+	protected int numbersToBeSolvable;
+	protected int manualNumbersInserted;
+	
 
 	// Variablen für Timer
 	AnimationTimer timer;
@@ -60,6 +64,9 @@ public abstract class BasicGameLogic {
 		liveTimePlayedString = new SimpleStringProperty();
 		shuffleCounter = 0;
 	}
+	
+	
+	
 
 	/**
 	 * Abstrakte Methoden welche von Unterklassen implementiert werden müssen.
@@ -263,7 +270,6 @@ public abstract class BasicGameLogic {
 		setGamePoints(10);
 		setGameState(Gamestate.OPEN);
 		setDifficultyString();
-		setHintsPressed(0);
 		setMinutesPlayed(0);
 		setSecondsPlayed(0);
 		initializeTimer();
@@ -345,21 +351,8 @@ public abstract class BasicGameLogic {
 		this.startTime = startTime;
 	}
 
-	public int getHintCounter() {
-		return hintCounter;
-	}
 
-	public void setHintCounter(int hintCounter) {
-		this.hintCounter = hintCounter;
-	}
 
-	public int getHintsPressed() {
-		return countHintsPressed;
-	}
-
-	public void setHintsPressed(int countHintsPressed) {
-		this.countHintsPressed = countHintsPressed;
-	}
 
 	public void setGameState(Gamestate gamestate) {
 		this.gamestate = gamestate;
@@ -440,6 +433,14 @@ public abstract class BasicGameLogic {
 
 	public StringProperty getStringProp() {
 		return liveTimePlayedString;
+	}
+	
+	public int getNumbersToBeSolvable() {
+		return numbersToBeSolvable;
+	}
+	
+	public void setManualNumbersInserted(int manualNumbersInserted) {
+		this.manualNumbersInserted = manualNumbersInserted;
 	}
 
 	public void initializeTimer() {

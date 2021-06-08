@@ -1,343 +1,343 @@
-//package test;
-//
-//import static org.junit.Assert.assertEquals;
-//import static org.junit.Assert.assertFalse;
-//import static org.junit.Assert.assertTrue;
-//import static org.junit.jupiter.api.Assertions.assertNotEquals;
-//
-//import org.junit.jupiter.api.BeforeEach;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.testfx.framework.junit5.ApplicationExtension;
-//
-//import application.FreeFormGameBuilder;
-//import application.SamuraiGameBuilder;
-//import application.SudokuGameBuilder;
-//import controller.GameController;
-//import javafx.event.ActionEvent;
-//import logic.FreeFormLogic;
-//import logic.Gamestate;
-//import logic.SamuraiLogic;
-//import logic.SudokuLogic;
-//
-//@ExtendWith(ApplicationExtension.class)
-//public class GameControllerTest {
-//
-//	private GameController controller;
-//	private ActionEvent action = new ActionEvent();
-//
-//	@BeforeEach
-//	public void setUp() {
-//		FreeFormLogic model = new FreeFormLogic(Gamestate.OPEN, 0, 0, false);
-//		FreeFormGameBuilder scene = new FreeFormGameBuilder(model);
-//		scene.initializeGame();
-//		controller = new GameController(scene, model);
-//	}
-//	
-//	@Test
-//	public void testConstructorWithDifferentGameTypes() {
-//		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
-//		SamuraiGameBuilder scene = new SamuraiGameBuilder(model);
-//		scene.initializeGame();
-//		controller = new GameController(scene, model);
-//		
-//		SudokuLogic modelSudoku = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
-//		SudokuGameBuilder sceneSudoku = new SudokuGameBuilder(modelSudoku);
-//		sceneSudoku.initializeGame();
-//		controller = new GameController(sceneSudoku, modelSudoku);
-//	}
-//
-//	@Test
-//	public void testCreateGameHandler() {
-//		controller.getModel().setDifficulty(3);
-//		controller.createGameHandler(action);
-//		boolean testIfModleCreated = false;
-//		int counter = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getModel().getCells()[row][col] != null) {
-//					testIfModleCreated = true;
-//				}
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counter++;
-//				}
-//			}
-//		}
-//		assertTrue(testIfModleCreated);
-//		assertNotEquals(counter, 81);
-//	}
-//
-//	@Test
-//	public void testCreate() {
-//		controller.getModel().setDifficulty(3);
-//		controller.createGame();
-//		boolean testIfModleCreated = false;
-//		int counter = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getModel().getCells()[row][col] != null) {
-//					testIfModleCreated = true;
-//				}
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counter++;
-//				}
-//			}
-//		}
-//		assertTrue(testIfModleCreated);
-//		assertNotEquals(81, counter);
-//	}
-//
-//	@Test
-//	public void testNewGameHandlerWithoutConflict() {
-//		controller.getModel().setDifficulty(3);
-//		controller.createGameHandler(action);
-//		int counter = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counter++;
-//				}
-//			}
-//		}
-//		assertNotEquals(counter, 81);
-//		controller.newGameHandler(action);
-//		counter = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counter++;
-//				}
-//			}
-//		}
-//		assertNotEquals(counter, 81);
-//		controller.getModel().setDifficulty(0);		
-//		controller.newGameHandler(action);
-//		counter = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counter++;
-//				}
-//			}
-//		}
-//		assertEquals(81, counter);
-//	}
-//	
-//	
-//	@Test
-//	public void testHintHandlerWithoutConflict() {
-//		controller.getModel().setDifficulty(3);
-//		controller.createGame();
-//		int counter = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counter++;
-//				}
-//			}
-//		}
-//		controller.hintHandeler(action);
-//		int counterAfterHint = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counterAfterHint++;
-//				}
-//			}
-//		}
-//		assertNotEquals(counter, counterAfterHint);
-//	}
-//	
-//	@Test
-//	public void testHintHandlerWithConflict() {
-//		controller.getModel().setDifficulty(0);
-//		controller.createGame();
-//		controller.getsudokuField()[1][1].setText("1");
-//		controller.getsudokuField()[1][2].setText("1");
-//		int counter = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counter++;
-//				}
-//			}
-//		}
-//		controller.hintHandeler(action);
-//		int counterAfterHint = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counterAfterHint++;
-//				}
-//			}
-//		}
-//		assertEquals(Gamestate.CONFLICT, controller.getModel().getGamestate());
-//		assertEquals(counter, counterAfterHint);
-//	}
-//	
-//	@Test
-//	public void testHintHandlerWithoutMoreHints() {
-//		controller.getModel().setDifficulty(3);
-//		controller.getModel().setHintCounter(3);
-//		controller.getModel().setHintsPressed(3);
-//		controller.createGame();
-//		int counter = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counter++;
-//				}
-//			}
-//		}
-//		controller.hintHandeler(action);
-//		int counterAfterHint = 0;
-//		for (int row = 0; row < controller.getModel().getCells().length; row++) {
-//			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].getText().equals("")) {
-//					counterAfterHint++;
-//				}
-//			}
-//		}
-//		System.out.println("NormalCounter: " + counter);
-//		System.out.println("CounterAfterHint: " + counterAfterHint);
-//		assertEquals(counter, counterAfterHint);
-//	}
-//	
-//	@Test
-//	public void testEnableEdit() {
-//		controller.getModel().setDifficulty(3);
-//		controller.createGame();
-//		controller.enableEdit();
-//		int counterDisabled = 0;
-//		int counterNotDisabled = 0;
-//		for (int row = 0; row < controller.getsudokuField().length; row++) {
-//			for (int col = 0; col < controller.getsudokuField()[row].length; col++) {
-//				if (controller.getsudokuField()[row][col].isDisabled() == true) {
-//					counterDisabled++;
-//				}
-//				if (controller.getsudokuField()[row][col].isDisabled() == false) {
-//					counterNotDisabled++;
-//				}
-//			}
-//		}
-//		assertEquals(25, counterDisabled);
-//		assertEquals(56, counterNotDisabled);
-//	}
-//	
-//	@Test
-//	public void testResetHandler() {
-//		controller.createGame();
-//		controller.getModel().getCells()[1][1].setValue(1);
-//		controller.connectArrays();
-//		assertEquals(1, controller.getModel().getCells()[1][1].getValue());
-//		assertTrue(controller.getsudokuField()[1][1].getText().equals("1"));
-//		controller.resetHandler(action);
-//		assertEquals(0, controller.getModel().getCells()[1][1].getValue());
+package test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.testfx.framework.junit5.ApplicationExtension;
+
+import application.FreeFormGameBuilder;
+import application.SamuraiGameBuilder;
+import application.SudokuGameBuilder;
+import controller.GameController;
+import javafx.event.ActionEvent;
+import logic.FreeFormLogic;
+import logic.Gamestate;
+import logic.SamuraiLogic;
+import logic.SudokuLogic;
+
+@ExtendWith(ApplicationExtension.class)
+public class GameControllerTest {
+
+	private GameController controller;
+	private ActionEvent action = new ActionEvent();
+
+	@BeforeEach
+	public void setUp() {
+		FreeFormLogic model = new FreeFormLogic(Gamestate.OPEN, 0, 0, false);
+		FreeFormGameBuilder scene = new FreeFormGameBuilder(model);
+		scene.initializeGame();
+		controller = new GameController(scene, model);
+	}
+	
+	@Test
+	public void testConstructorWithDifferentGameTypes() {
+		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+		SamuraiGameBuilder scene = new SamuraiGameBuilder(model);
+		scene.initializeGame();
+		controller = new GameController(scene, model);
+		
+		SudokuLogic modelSudoku = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+		SudokuGameBuilder sceneSudoku = new SudokuGameBuilder(modelSudoku);
+		sceneSudoku.initializeGame();
+		controller = new GameController(sceneSudoku, modelSudoku);
+	}
+
+	@Test
+	public void testCreateGameHandler() {
+		controller.getModel().setDifficulty(3);
+		controller.createGameHandler(action);
+		boolean testIfModleCreated = false;
+		int counter = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getModel().getCells()[row][col] != null) {
+					testIfModleCreated = true;
+				}
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counter++;
+				}
+			}
+		}
+		assertTrue(testIfModleCreated);
+		assertNotEquals(counter, 81);
+	}
+
+	@Test
+	public void testCreate() {
+		controller.getModel().setDifficulty(3);
+		controller.createGame();
+		boolean testIfModleCreated = false;
+		int counter = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getModel().getCells()[row][col] != null) {
+					testIfModleCreated = true;
+				}
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counter++;
+				}
+			}
+		}
+		assertTrue(testIfModleCreated);
+		assertNotEquals(81, counter);
+	}
+
+	@Test
+	public void testNewGameHandlerWithoutConflict() {
+		controller.getModel().setDifficulty(3);
+		controller.createGameHandler(action);
+		int counter = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counter++;
+				}
+			}
+		}
+		assertNotEquals(counter, 81);
+		controller.newGameHandler(action);
+		counter = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counter++;
+				}
+			}
+		}
+		assertNotEquals(counter, 81);
+		controller.getModel().setDifficulty(0);		
+		controller.newGameHandler(action);
+		counter = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counter++;
+				}
+			}
+		}
+		assertEquals(81, counter);
+	}
+	
+	
+	@Test
+	public void testHintHandlerWithoutConflict() {
+		controller.getModel().setDifficulty(3);
+		controller.createGame();
+		int counter = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counter++;
+				}
+			}
+		}
+		controller.hintHandeler(action);
+		int counterAfterHint = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counterAfterHint++;
+				}
+			}
+		}
+		assertNotEquals(counter, counterAfterHint);
+	}
+	
+	@Test
+	public void testHintHandlerWithConflict() {
+		controller.getModel().setDifficulty(0);
+		controller.createGame();
+		controller.getsudokuField()[1][1].setText("1");
+		controller.getsudokuField()[1][2].setText("1");
+		int counter = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counter++;
+				}
+			}
+		}
+		controller.hintHandeler(action);
+		int counterAfterHint = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counterAfterHint++;
+				}
+			}
+		}
+		assertEquals(Gamestate.CONFLICT, controller.getModel().getGamestate());
+		assertEquals(counter, counterAfterHint);
+	}
+	
+	@Test
+	public void testHintHandlerWithoutMoreHints() {
+		controller.getModel().setDifficulty(3);
+		controller.getModel().setHintCounter(3);
+		controller.getModel().setHintsPressed(3);
+		controller.createGame();
+		int counter = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counter++;
+				}
+			}
+		}
+		controller.hintHandeler(action);
+		int counterAfterHint = 0;
+		for (int row = 0; row < controller.getModel().getCells().length; row++) {
+			for (int col = 0; col < controller.getModel().getCells()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].getText().equals("")) {
+					counterAfterHint++;
+				}
+			}
+		}
+		System.out.println("NormalCounter: " + counter);
+		System.out.println("CounterAfterHint: " + counterAfterHint);
+		assertEquals(counter, counterAfterHint);
+	}
+	
+	@Test
+	public void testEnableEdit() {
+		controller.getModel().setDifficulty(3);
+		controller.createGame();
+		controller.enableEdit();
+		int counterDisabled = 0;
+		int counterNotDisabled = 0;
+		for (int row = 0; row < controller.getsudokuField().length; row++) {
+			for (int col = 0; col < controller.getsudokuField()[row].length; col++) {
+				if (controller.getsudokuField()[row][col].isDisabled() == true) {
+					counterDisabled++;
+				}
+				if (controller.getsudokuField()[row][col].isDisabled() == false) {
+					counterNotDisabled++;
+				}
+			}
+		}
+		assertEquals(25, counterDisabled);
+		assertEquals(56, counterNotDisabled);
+	}
+	
+	@Test
+	public void testResetHandler() {
+		controller.createGame();
+		controller.getModel().getCells()[1][1].setValue(1);
+		controller.connectArrays();
+		assertEquals(1, controller.getModel().getCells()[1][1].getValue());
+		assertTrue(controller.getsudokuField()[1][1].getText().equals("1"));
+		controller.resetHandler(action);
+		assertEquals(0, controller.getModel().getCells()[1][1].getValue());
+		assertTrue(controller.getsudokuField()[1][1].getText().equals(""));
+	}
+	
+	@Test
+	public void testConnectWithModel() {
+		controller.createGame();
+		controller.getsudokuField()[1][1].setText("1");
+		System.out.println(controller.getModel().getCells()[1][1].getValue());
 //		assertTrue(controller.getsudokuField()[1][1].getText().equals(""));
-//	}
-//	
-//	@Test
-//	public void testConnectWithModel() {
-//		controller.createGame();
-//		controller.getsudokuField()[1][1].setText("1");
-//		System.out.println(controller.getModel().getCells()[1][1].getValue());
-////		assertTrue(controller.getsudokuField()[1][1].getText().equals(""));
-//	}
-//	
-//	@Test
-//	public void testCompareResultTrue() {
-//		controller.createGame();
-//		assertTrue(controller.compareResult());
-//		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
-//	}
-//	
-//	@Test
-//	public void testCompareResultFalse() {
-//		controller.createGame();
-//		controller.getsudokuField()[1][1].setText("1");
-//		controller.getsudokuField()[1][2].setText("1");
-//		assertFalse(controller.compareResult());
-//		assertEquals(Gamestate.INCORRECT, controller.getModel().getGamestate());
-//		controller.getsudokuField()[1][2].clear();
-//		controller.getsudokuField()[1][2].setText("2");
-//		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
-//	}
-//	
-//	@Test
-//	public void testAutoSolveWithoutConflicts() {
-//		controller.getModel().setDifficulty(0);
-//		controller.createGame();
-//		int modelcounter = 0;
-//		int scenecounter = 0;
-//		for (int row = 0; row < controller.getsudokuField().length; row++) {
-//			for (int col = 0; col < controller.getsudokuField()[row].length; col++) {
-//				if(controller.getModel().getCells()[row][col].getValue() == 0) {
-//					modelcounter++;
-//				}
-//				if(controller.getsudokuField()[row][col].getText().equals("")) {
-//					scenecounter++;
-//				}
-//			}
-//		}
-//		System.out.println("=================================================");
-//		controller.getModel().printCells();
-//		System.out.println("ModelCounter: " + modelcounter);
-//		System.out.println("SceneCounter: " + scenecounter);
-//		System.out.println("=================================================");
-//		assertEquals(81, modelcounter);
-//		assertEquals(81, scenecounter);
-//		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
-//	
-//		controller.autoSolveHandler(action);
-//		modelcounter = 0;
-//		scenecounter = 0;
-//		for (int row = 0; row < controller.getsudokuField().length; row++) {
-//			for (int col = 0; col < controller.getsudokuField()[row].length; col++) {
-//				if(controller.getModel().getCells()[row][col].getValue() != 0) {
-//					modelcounter++;
-//				}
-//				if(!controller.getsudokuField()[row][col].getText().equals("")) {
-//					scenecounter++;
-//				}
-//			}
-//		}
-//		assertEquals(Gamestate.AUTOSOLVED, controller.getModel().getGamestate());
-//		assertNotEquals(0, modelcounter);
-//		assertNotEquals(0, scenecounter);
-//	}
-//
-//	@Test
-//	public void testAutoSolveWithConflicts() {
-//		controller.createGame();
-//		controller.getsudokuField()[1][1].setText("1");
-//		controller.getsudokuField()[1][2].setText("1");
-//		controller.autoSolveHandler(action);
-//		assertEquals(Gamestate.CONFLICT, controller.getModel().getGamestate());
-//	}
-//	
-//	@Test
-//	public void testAutoSolveWithUnsolvable() {
-//		controller.createGame();
-//		controller.getsudokuField()[0][0].setText("1");
-//		controller.getsudokuField()[0][1].setText("2");
-//		controller.getsudokuField()[0][2].setText("3");
-//		controller.getsudokuField()[1][0].setText("4");
-//		controller.getsudokuField()[1][1].setText("5");
-//		controller.getsudokuField()[1][2].setText("6");
-//		controller.getsudokuField()[2][0].setText("7");
-//		controller.getsudokuField()[2][1].setText("8");
-//		controller.getsudokuField()[5][2].setText("9");
-//		controller.autoSolveHandler(action);
-//		assertEquals(Gamestate.UNSOLVABLE, controller.getModel().getGamestate());
-//	}
-//	
-//	@Test
-//	public void testConnectArrays() {
-//		controller.createGame();
-//		controller.connectArrays();
-//		assertTrue(!controller.getsudokuField()[1][1].isDisabled());
-//		controller.getModel().setCell(1, 1, 1);
-//		controller.connectArrays();
-//		assertTrue(controller.getsudokuField()[1][1].isDisabled());
-//	}
-//}
+	}
+	
+	@Test
+	public void testCompareResultTrue() {
+		controller.createGame();
+		assertTrue(controller.compareResult());
+		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
+	}
+	
+	@Test
+	public void testCompareResultFalse() {
+		controller.createGame();
+		controller.getsudokuField()[1][1].setText("1");
+		controller.getsudokuField()[1][2].setText("1");
+		assertFalse(controller.compareResult());
+		assertEquals(Gamestate.INCORRECT, controller.getModel().getGamestate());
+		controller.getsudokuField()[1][2].clear();
+		controller.getsudokuField()[1][2].setText("2");
+		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
+	}
+	
+	@Test
+	public void testAutoSolveWithoutConflicts() {
+		controller.getModel().setDifficulty(0);
+		controller.createGame();
+		int modelcounter = 0;
+		int scenecounter = 0;
+		for (int row = 0; row < controller.getsudokuField().length; row++) {
+			for (int col = 0; col < controller.getsudokuField()[row].length; col++) {
+				if(controller.getModel().getCells()[row][col].getValue() == 0) {
+					modelcounter++;
+				}
+				if(controller.getsudokuField()[row][col].getText().equals("")) {
+					scenecounter++;
+				}
+			}
+		}
+		System.out.println("=================================================");
+		controller.getModel().printCells();
+		System.out.println("ModelCounter: " + modelcounter);
+		System.out.println("SceneCounter: " + scenecounter);
+		System.out.println("=================================================");
+		assertEquals(81, modelcounter);
+		assertEquals(81, scenecounter);
+		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
+	
+		controller.autoSolveHandler(action);
+		modelcounter = 0;
+		scenecounter = 0;
+		for (int row = 0; row < controller.getsudokuField().length; row++) {
+			for (int col = 0; col < controller.getsudokuField()[row].length; col++) {
+				if(controller.getModel().getCells()[row][col].getValue() != 0) {
+					modelcounter++;
+				}
+				if(!controller.getsudokuField()[row][col].getText().equals("")) {
+					scenecounter++;
+				}
+			}
+		}
+		assertEquals(Gamestate.AUTOSOLVED, controller.getModel().getGamestate());
+		assertNotEquals(0, modelcounter);
+		assertNotEquals(0, scenecounter);
+	}
+
+	@Test
+	public void testAutoSolveWithConflicts() {
+		controller.createGame();
+		controller.getsudokuField()[1][1].setText("1");
+		controller.getsudokuField()[1][2].setText("1");
+		controller.autoSolveHandler(action);
+		assertEquals(Gamestate.CONFLICT, controller.getModel().getGamestate());
+	}
+	
+	@Test
+	public void testAutoSolveWithUnsolvable() {
+		controller.createGame();
+		controller.getsudokuField()[0][0].setText("1");
+		controller.getsudokuField()[0][1].setText("2");
+		controller.getsudokuField()[0][2].setText("3");
+		controller.getsudokuField()[1][0].setText("4");
+		controller.getsudokuField()[1][1].setText("5");
+		controller.getsudokuField()[1][2].setText("6");
+		controller.getsudokuField()[2][0].setText("7");
+		controller.getsudokuField()[2][1].setText("8");
+		controller.getsudokuField()[5][2].setText("9");
+		controller.autoSolveHandler(action);
+		assertEquals(Gamestate.UNSOLVABLE, controller.getModel().getGamestate());
+	}
+	
+	@Test
+	public void testConnectArrays() {
+		controller.createGame();
+		controller.connectArrays();
+		assertTrue(!controller.getsudokuField()[1][1].isDisabled());
+		controller.getModel().setCell(1, 1, 1);
+		controller.connectArrays();
+		assertTrue(controller.getsudokuField()[1][1].isDisabled());
+	}
+}

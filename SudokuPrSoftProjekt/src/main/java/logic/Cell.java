@@ -79,9 +79,10 @@ public class Cell {
 	    }
 
 	    public void setBoxcolor(String boxcolor) {
-	        this.boxcolor = boxcolor;
+	       
 	        
 	        
+	     
 	        if(boxcolor.equals("97c1a9")) {
 	        	this.setBox(1);
 	        }
@@ -106,12 +107,11 @@ public class Cell {
 	        if(boxcolor.equals("957DAD")) {
 	        	this.setBox(8);
 	        }
-	        if(boxcolor.equals("957DAD")) {
+	        if(boxcolor.equals("FFDFD3")) {
 	        	this.setBox(9);
 	        }
-	        else {
-	        	System.out.println("notddddddddddddddddddddddddddddddddddddddddddddddok");
-	        }
+	       
+	        this.boxcolor = boxcolor;
 	    }
 	    
 

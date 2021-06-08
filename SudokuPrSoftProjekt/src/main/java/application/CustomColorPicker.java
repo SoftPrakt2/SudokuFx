@@ -23,6 +23,7 @@ public class CustomColorPicker {
 	
      ObservableList<String> data = FXCollections.observableArrayList(
            "97c1a9","cab08b","dfd8ab","d5a1a3","80adbc","adb5be","eaeee0","957DAD","FFDFD3");
+     
 
      cmb.setItems(data);
 

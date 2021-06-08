@@ -1,11 +1,16 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Consumer;
+
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 
@@ -25,7 +30,7 @@ public class SudokuField extends TextField {
 		onlyOneNumber();
 		enterPressed();
 		updateColor();
-	//	shortCutFriendlyTextField();
+		ShortcutFriendlyTextField();
 		listeningToColors = false;
 		this.getStyleClass().add("textfieldBasic");
 	}
@@ -72,6 +77,36 @@ public class SudokuField extends TextField {
 		this.getStyleClass().remove("textfieldHint");
 	};
 	
+	
+
+	public void ShortcutFriendlyTextField() {
+        
+        this.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>() {
+
+        	 @Override
+	            public void handle(KeyEvent event) {
+	                //handle shortcuts if defined
+	            	if (!event.getCode().isModifierKey()) {
+	            	    Consumer<KeyCombination.Modifier[]> runAccelerator = (modifiers) -> {
+	            	        Runnable r = getScene().getAccelerators().get(new KeyCodeCombination(event.getCode(), modifiers));
+	            	        if (r != null) {
+	            	            r.run();
+	            	        }
+	            	    };
+
+	            	    List<KeyCombination.Modifier> modifiers = new ArrayList<>();
+	            	    if (event.isControlDown()) modifiers.add(KeyCodeCombination.SHORTCUT_DOWN);
+	            	    if (event.isShiftDown()) modifiers.add(KeyCodeCombination.SHIFT_DOWN);
+	            	    if (event.isAltDown()) modifiers.add(KeyCodeCombination.ALT_DOWN);
+	          
+	            	    runAccelerator.accept(modifiers.toArray(new KeyCombination.Modifier[modifiers.size()]));
+	            	}
+	            }
+        });
+    }
+	      
+	        
+	
 
 //	public void addFreeFormColorListener(ComboBox<Color> cmb) {
 //		this.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
@@ -87,7 +122,8 @@ public class SudokuField extends TextField {
 		freeFormColorListener = (obs, wasFocused, isNowFocused) -> {
 			if (isNowFocused && cmb != null && cmb.getValue()!=null) {
 			this.setColor(cmb.getValue());
-			System.out.println(cmb.getValue());
+			System.out.println(cmb.getValue() + "gui");
+			
 		//	this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
 			
 			}

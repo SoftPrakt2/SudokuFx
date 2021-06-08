@@ -35,9 +35,17 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import logic.BasicGameLogic;
 
+
+/**
+ * Diese abstrakte Klasse stellt die Grundlage für eine Spiel UI dar. 
+ * In dieser Klasse werden verschiedenste UI Komponenten wie Buttons oder das Menü erstellt. 
+ * @author grube
+ *
+ */
 public abstract class BasicGameBuilder {
 
 	protected BorderPane pane;
+	protected BasicGameLogic model;
 
 	//behälter und buttons für Spielbuttons
 	protected ToolBar toolBar;
@@ -48,47 +56,41 @@ public abstract class BasicGameBuilder {
 	protected Button autosolve;
 	protected Button customNumbersDone;
 	protected Button customColorsDone;
-	
 	protected Button hintButton;
+	protected ComboBox<String> comboColorBox;
 	
-	
-	protected Label gameNotificationLabel;
 	protected HBox gameLabelBox;
-	protected StatusBar statusbar;
+	protected Label gameNotificationLabel;
 	protected Label gameInfoLabel;
 	protected Label liveTimeLabel;
-
-	protected ArrayList<ChangeListener> listeners = new ArrayList<>();
+	protected StatusBar statusbar;
 	
-	protected ComboBox<String> cmb;
+
+	protected FontAwesome fontAwesome;
+	
+	protected ArrayList<ChangeListener> conflictListener;
+	
+
 
 	// Variablen welche für die Festlegung der Fenstergröße benötigt werden
-	protected int width;
-	protected int height;
-
-	
-	protected BasicGameLogic model;
+	protected int sceneWidth;
+	protected int sceneHeight;
 
 	protected NewGamePopUp gamePopUp;
 	protected PopOver popover;
 	
 	
-	protected Label manuelInstructionLabel;
 	
-	FontAwesome fontAwesome = new FontAwesome();
-
-	public <T extends BasicGameBuilder> BasicGameBuilder(BasicGameLogic model) {
+	/**
+	 * Konstruktor der Klasse 
+	 * @param model Spiellogik welche dem GameBuilder übergeben wird
+	 */
+	protected BasicGameBuilder(BasicGameLogic model) {
 		pane = new BorderPane();
 		this.model = model;
 		}
 	
-	public Button getCheck() {
-		return check;
-	}
-
-	public void setCheck(Button check) {
-		this.check = check;
-	}
+	
 	
 	
 	protected SudokuField[][] textField;
@@ -104,23 +106,22 @@ public abstract class BasicGameBuilder {
 	public void initializeGame() {
 		
 		controller = new GameController(this, model);
-
 		gamePopUp = new NewGamePopUp();
-
 		pane.setPadding(new Insets(50, 50, 50, 50));
 		createMenuBar();
-		createPlayButtons();
+		initializeToolBar();
 		createManualControls();
 		createStatusBar();
 		setButtonActions();
 		pane.setCenter(createBoard());
+		conflictListener = new ArrayList<>();
 	}
 	
 	
-
-//	public abstract void createNumbers();
-	
-	// vielleicht besser in den gamebuilderklassen direkt die boards zu zeichnen?
+	/**
+	 * Zeichnet ein Spielfeld für das jeweilige Spiel
+	 * @return das gezeichnete Spielfeld
+	 */
 	public abstract GridPane createBoard();
 
 	/**
@@ -130,12 +131,18 @@ public abstract class BasicGameBuilder {
 	 * setButtonActions auf Fügt die Buttons anschließend in das übegergeben
 	 * BorderPane
 	 */
-
-	public void createPlayButtons() {
+	
+	
+	/**
+	 * Inizialisiert eine ToolBar welche als Behälter für die ebenfalls initialisierten Buttons und ein Zeitlabel dient
+	 * Die initialisierten Buttons werden mithilfe von Glyph Grafiken grafisch gestaltet
+	 * Um benötigte Abstände zwischen den Buttons und dem Zeiteintrag zu gewährleisten werden weiters leere Panes eingefügt
+	 */
+	public void initializeToolBar() {
 		toolBar = new ToolBar();
 
 		// Graphiken für Buttons
-		
+		fontAwesome = new FontAwesome();
 		Glyph checkGraphic = fontAwesome.create(FontAwesome.Glyph.CHECK);
 		Glyph hintGraphic = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
 		Glyph autosolveGraphic = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
@@ -145,27 +152,19 @@ public abstract class BasicGameBuilder {
 		hintButton.setGraphic(hintGraphic);
 
 		autosolve = new Button("");
-	
 		autosolve.setGraphic(autosolveGraphic);
 
 		check = new Button("");
 		check.setGraphic(checkGraphic);
-
-		
-
 		liveTimeLabel = new Label("");
 
-		// benötigt für Abstand zwischen Buttons und Timer
+		
 		final Pane rightSpacer = new Pane();
 		HBox.setHgrow(rightSpacer, Priority.SOMETIMES);
-		
 		final Pane rightSpacer2 = new Pane();
 		HBox.setHgrow(rightSpacer2, Priority.SOMETIMES);
-
 		toolBar.getItems().addAll(hintButton, autosolve, check, rightSpacer, liveTimeLabel);
-
 		toolbox.getChildren().add(toolBar);
-
 	}
 	
 	
@@ -173,51 +172,9 @@ public abstract class BasicGameBuilder {
 	
 	
 	
-	
-	
-
-	/*
-	 * definiert Shortcuts für Spielfunktionen
-	 */
-	public void defineShortCuts() {
-
-//		KeyCombination hintKc = new KeyCodeCombination(KeyCode.H, KeyCombination.CONTROL_DOWN);
-//		KeyCombination autoSolveKc = new KeyCodeCombination(KeyCode.A, KeyCombination.CONTROL_DOWN);
-//		KeyCombination checkKc = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
-//		
-//		hintMenuItem.setAccelerator(hintKc);
-//		autoSolveItem.setAccelerator(autoSolveKc);
-//		checkItem.setAccelerator(checkKc);
-//		
-//		GUI.getStage().getScene().getAccelerators().put(
-//	            new KeyCodeCombination(KeyCode.S, KeyCombination.SHORTCUT_DOWN),
-//	            new Runnable() {
-//	                public void run() {
-//	                	hintMenuItem.fire();
-//	                }
-//	            }
-//	    );
-    }
-
-	
-	
-	
-	
-	public void keyPressed (KeyEvent event) {
-		for (MenuItem mi :editMenu.getItems())
-	     {
-	        if (mi.getAccelerator()!=null && mi.getAccelerator().match(event))
-	        {
-	            mi.getOnAction().handle(null);
-	            event.consume();
-	            return;
-	        }
-	    }
-	}
-	
-	public void addListeners(SudokuField[][] sudokuField) {
-		for (int row = 0; row < sudokuField.length; row++) {
-			for (int col = 0; col < sudokuField[row].length; col++) {
+	public void addConflictListeners() {
+		for (int row = 0; row < textField.length; row++) {
+			for (int col = 0; col < textField[row].length; col++) {
 				ChangeListener<String> changeListener = new ChangeListener<>() {
 					@Override
 					public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -227,19 +184,18 @@ public abstract class BasicGameBuilder {
 					}
 				};
 
-				sudokuField[col][row].textProperty().addListener(changeListener);
-				listeners.add(changeListener);
+				textField[col][row].textProperty().addListener(changeListener);
+				conflictListener.add(changeListener);
 
 			}
 		}
 	}
 	
 	
-	public void removeListeners(SudokuField[][] sudokuField) {
-
-		for (ChangeListener<String> l : listeners) {
-			for (SudokuField[] sss : sudokuField) {
-				for (SudokuField field : sss) {
+	public void removeConflictListeners() {
+		for (ChangeListener<String> l : conflictListener) {
+			for (SudokuField[] sudokuFieldArray : textField) {
+				for (SudokuField field : sudokuFieldArray) {
 
 					field.textProperty().removeListener(l);
 				}
@@ -266,7 +222,8 @@ public abstract class BasicGameBuilder {
 	protected MenuItem newRoundItem;
 	protected Menu propertyMenu;
 	protected RadioMenuItem conflictItem;
-	protected MenuItem moreHintsItem;
+
+	
 
 	// MenüObjekte für Edit Menü
 	protected Menu sourceMenu;
@@ -313,8 +270,7 @@ public abstract class BasicGameBuilder {
 		
 		conflictItem = new RadioMenuItem("Show Conflicts");
 		conflictItem.setSelected(false);
-		moreHintsItem = new MenuItem("Add hints");
-		propertyMenu.getItems().addAll(conflictItem, moreHintsItem);
+		propertyMenu.getItems().addAll(conflictItem);
 		
 		//Source Menü initialisierungen
 		sourceMenu = new Menu("Source");
@@ -342,12 +298,47 @@ public abstract class BasicGameBuilder {
 		
 		menuBar.getMenus().addAll(file, editMenu, sourceMenu, mainMenu, helpMenu);
 		toolbox.getChildren().addAll(menuBar);
-		menuBar.getStylesheets().add("menu-bar");
+	
 		pane.setTop(toolbox);
 		
 		
 		defineShortCuts();
 	}
+	
+	
+	
+	/*
+	 * definiert Shortcuts für Spielfunktionen
+	 */
+	public void defineShortCuts() {
+
+		KeyCombination hintKc = new KeyCodeCombination(KeyCode.H, KeyCombination.SHORTCUT_DOWN);
+		KeyCombination autoSolveKc = new KeyCodeCombination(KeyCode.A, KeyCombination.SHORTCUT_DOWN);
+		KeyCombination checkKc = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+		KeyCombination resetKc = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
+		KeyCombination autoConflictsKc = new KeyCodeCombination(KeyCode.K, KeyCombination.CONTROL_DOWN);
+		KeyCombination newRoundKc =  new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+		KeyCombination importKc = new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN);
+		KeyCombination exportKc = new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN);
+		KeyCombination saveKc = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
+		KeyCombination mainMenuKc = new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN);
+		
+		hintMenuItem.setAccelerator(hintKc);
+		autoSolveItem.setAccelerator(autoSolveKc);
+		checkItem.setAccelerator(checkKc);
+		reset.setAccelerator(resetKc);
+		conflictItem.setAccelerator(autoConflictsKc);
+		newRoundItem.setAccelerator(newRoundKc);
+		importItem.setAccelerator(importKc);
+		exportItem.setAccelerator(exportKc);
+		save.setAccelerator(saveKc);
+		mainMenuItem.setAccelerator(mainMenuKc);
+    }
+	
+	
+	
+
+	
 
 	/**
 	 * Weist den Buttons und MenüItems Actions zu
@@ -363,7 +354,6 @@ public abstract class BasicGameBuilder {
 		customNumbersDone.setOnAction(controller::manuelDoneHandler);
 		
 		if(this instanceof FreeFormGameBuilder) {
-			System.out.println("freiformtest");
 			customColorsDone.setOnAction(controller::customColorsDoneHandler);
 		}
 		
@@ -379,20 +369,11 @@ public abstract class BasicGameBuilder {
 		mainMenuItem.setOnAction(e -> controller.switchToMainMenu(e));
 
 		conflictItem.setOnAction(controller::switchOffConflicts);
-		moreHintsItem.setOnAction(controller::handleMoreHints);
 		exitItem.setOnAction(e -> GUI.closeProgram());
 		exportItem.setOnAction(controller::exportGame);
 		importItem.setOnAction(controller::importGame);
 
 		newGame.setOnAction(e -> popover.show(hintButton, -30));
-		
-		
-		
-		
-		
-		
-		
-		
 		
 		
 	}
@@ -488,11 +469,11 @@ public abstract class BasicGameBuilder {
 	}
 
 	public int getWidth() {
-		return width;
+		return sceneWidth;
 	}
 
 	public int getHeight() {
-		return height;
+		return sceneHeight;
 	}
 
 	public Label getLiveTimeLabel() {
@@ -500,7 +481,7 @@ public abstract class BasicGameBuilder {
 	}
 	
 	public ComboBox<String> getColorBox() {
-		return cmb;
+		return comboColorBox;
 	}
 	
 	public ToolBar getToolBar() {

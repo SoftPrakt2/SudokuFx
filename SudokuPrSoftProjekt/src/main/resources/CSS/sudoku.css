@@ -8,23 +8,17 @@
 	
 .customBackgroundColor {
     -fx-padding: 5px ;
-  	-fx-background-color:  	#D3D3D3;
+  	-fx-background-color:  -fx-background;
   	 
 	}
 
 	
 .grid-pane {
-	 -fx-background-color: #D3D3D3
+	 -fx-background-color: #D3D3D3;
 }
 
-.cell {
 
-    -fx-background-color:  black,  	#D3D3D3;
 
-    -fx-background-insets: 0, 0 ;
-
-    -fx-padding: 2px;
-}
 
 .samuraicell {
 	-fx-background-color:  black,  	#D3D3D3;
@@ -33,6 +27,8 @@
 
     -fx-padding: 1px;
 }
+
+
 
 
 
@@ -79,31 +75,7 @@
 }
 
 
-.list-view .list-cell:even {
-	
-}
-.list-view .list-cell:odd {
 
-}
-
-.list {
--fx-border-color: #006400;	
-}
-.list-cell:filled:selected:focused, .list-cell:filled:selected {
-    
-}
-
-.list-cell:odd {
- 
-}
-
-.list-cell:even {
-	
-}
-
-.list-cell:filled:hover {
-  
-}
 
 
 .popover > .border {
@@ -183,6 +155,13 @@
 }
 
 
+
+.storageHeaderLabel {
+	-fx-font-family: 'Georgia';
+	-fx-font-size: 14px;
+}
+
+
 .buttonmainmenu2 {
   -fx-background-color: 
         #090a0c,
@@ -211,19 +190,28 @@
 	-fx-background-insets: 0, 0 1 0 0 ;
 }
 
-.cell:left {
+
+.sudokucell {
+   
+	-fx-background-color:  black, #D3D3D3;
+    -fx-background-insets: 0, 0 ;
+
+    -fx-padding: 2px;
+}
+
+.sudokucell:left {
 	-fx-background-insets: 0, 0 0 1 1 ;
 }
 
-.cell:right {
+.sudokucell:right {
     -fx-background-insets: 0, 0 1 0 0 ;
 }
 
-.cell:bottom {
+.sudokucell:bottom {
     -fx-background-insets: 0, 0 0 1 0 ;
 }
 
-.cell:right:bottom {
+.sudokucell:right:bottom {
     -fx-background-insets: 0, 0 1 1 0 ;
 }
 
@@ -292,6 +280,11 @@
 .standardLabel {
 	-fx-font-family:Georgia;
 	-fx-font-size: 14px;
+}
+
+.storageResultLabel {
+	-fx-font-family:Georgia;
+	-fx-font-size: 20px;
 }
 
 

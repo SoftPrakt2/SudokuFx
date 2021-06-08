@@ -24,8 +24,8 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	public FreeFormGameBuilder(BasicGameLogic model) {
 		super(model);
 		textField = new SudokuField[9][9];
-		width = 670;
-		height = 670;
+		sceneWidth = 670;
+		sceneHeight = 670;
 	}
 
 	CustomColorPicker colorPicker;
@@ -39,7 +39,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	public GridPane createBoard() {
 		playBoard = new GridPane();
-		createColorBox();
+	
 		
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
@@ -57,12 +57,13 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 				textField[row][col].setAlignment(Pos.CENTER);
 
 				
-				textField[row][col].addFreeFormColorListener(cmb);
+				textField[row][col].addFreeFormColorListener(comboColorBox);
 
 				cell.getChildren().add(textField[row][col]);
 
 				playBoard.add(cell, row, col);
 			}
+			
 			
 
 		}
@@ -73,10 +74,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	}
 	
 
-	public void createColorBox() {
-//		  colorPicker = new CustomColorPicker();
-//	      cmb = colorPicker.createColorPicker();
-	}
+
 	
 	
 		@Override
@@ -88,8 +86,8 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		@Override
 		public void createManualControls() {
 			// TODO Auto-generated method stub
-		colorPicker = new CustomColorPicker();
-		cmb = colorPicker.createColorPicker();
+			colorPicker = new CustomColorPicker();
+			comboColorBox = colorPicker.createColorPicker();
 			
 			Glyph doneGraphic = fontAwesome.create(FontAwesome.Glyph.LOCK);
 			Glyph colorDoneGraphic = fontAwesome.create(FontAwesome.Glyph.PAINT_BRUSH);
@@ -104,15 +102,11 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 			customColorsDone = new Button("");
 			customColorsDone.setGraphic(colorDoneGraphic);
 			
-			
-			
-		//	colorInstructions.getChildren().addAll(customColorsDone, cmb);
 			customColorsDone.setVisible(false);
-			cmb.setVisible(false);
+			comboColorBox.setVisible(false);
 			
-		//	toolBar.getItems().add(3,customNumbersDone);
 			toolBar.getItems().add(3,customColorsDone);
-			toolBar.getItems().add(4,cmb);
+			toolBar.getItems().add(4,comboColorBox);
 		}
 		
 }

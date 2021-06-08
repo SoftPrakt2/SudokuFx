@@ -60,9 +60,6 @@ public class MainMenu {
 	private BorderPane pane;
 
 	
-	
-	
-	
 	public void setUpMainMenu() {
 
 		controllerMainMenu = new ModeController(this);
@@ -89,7 +86,6 @@ public class MainMenu {
 		container.getChildren().addAll(welcomeLabel, gameModeBox, gameDifficultyBox, createGameBox, load, exit);
 		container.setAlignment(Pos.CENTER);
 		pane.setCenter(container);
-
 	}
 
 	
@@ -184,18 +180,14 @@ public class MainMenu {
 		samurai.setOnAction(controllerMainMenu::handleToSamurai);
 		freeform.setOnAction(controllerMainMenu::handleToFreeForm);
 		load.setOnAction(event -> {
-			try {
-				controllerMainMenu.handleToLoad(event);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			controllerMainMenu.handleToLoad(event);
 		});
 		createButton.setOnAction(controllerMainMenu::handleGameStart);
 		exit.setOnAction(controllerMainMenu::handleExit);
 	}
 	
 	
+
 	
 	/**
 	 * This method is responsible for defining the look of the UI objects of this class
@@ -228,7 +220,6 @@ public class MainMenu {
 		// größe der Buttons
 		Stream.of(selectModeLabel, selectDifficultyLabel, createLabel)
 				.forEach(label -> label.getStyleClass().add("mainMenuLabelsSmall"));
-
 	}
 	
 	

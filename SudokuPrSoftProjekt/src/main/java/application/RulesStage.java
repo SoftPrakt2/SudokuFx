@@ -82,6 +82,7 @@ public class RulesStage {
 	}
 	
 	
+	
 	public VBox createGameModeExplanationBox() {
 		VBox gameModeExplanationBox = new VBox();
 		
@@ -129,7 +130,6 @@ public class RulesStage {
 		
 		
 		HBox buttonExplanationHeaderBox = new HBox();
-		
 		buttonExplanationHeader = new Label("Button Functionalities");
 		buttonExplanationHeader.getStyleClass().add("ruleHeaderLabel");
 		buttonExplanationHeaderBox.setPadding(new Insets(0,0,5,0));
@@ -137,7 +137,6 @@ public class RulesStage {
 		
 		
 		HBox checkButtonExplanationBox = new HBox();
-		
 		checkButtonExplanationBox.setSpacing(5);
 		Button checkButtonrepresentation = new Button();
 		checkButtonrepresentation.setMinSize(5,5);
@@ -220,10 +219,6 @@ public class RulesStage {
 		 
 		 Stream.of(rulesHeader,buttonExplanationHeader,difficultyExplanationHeader).forEach(
 					label -> label.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSizeLabelHeader.asString())));
-		 
-		 
-		
-		 
 		 
 	}
 	

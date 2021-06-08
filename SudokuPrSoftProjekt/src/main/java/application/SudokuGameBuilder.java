@@ -24,19 +24,15 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	public SudokuGameBuilder(BasicGameLogic model) {
 		super(model);
 		textField = new SudokuField[9][9];
-		width = 700;
-		height = 700;
+		sceneWidth = 700;
+		sceneHeight = 700;
 	}
 	
-	/**
-	 * * Übergibt dieser Scene den jeweiligen Controller Erstellt die Scene mit den
-	 * Buttons, der MenuBar und dem Sudoku-Spielfeld
-	 */
+	
 
 	/**
 	 * Zeichnet ein Sudoku-Feld
 	 */
-	
 	public GridPane createBoard() {
 
 		playBoard = new GridPane();
@@ -49,7 +45,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				StackPane cell = new StackPane();
-				cell.getStyleClass().add("cell");
+				cell.getStyleClass().add("sudokucell");
 				
 				
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(10));
@@ -78,21 +74,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 
 		return playBoard;
 	}
-
-	/**
-	 * Befüllt das Spielfeld beim ersten Start mit Zahlen abhängig von der im
-	 * Hauptmenü eingestellten Schwierigkeit
-	 */
-	
-
-	/**
-	 * Getter und Setter für die Variablen dieser Klasse
-	 */
-
-	public SudokuField[][] getTextField() {
-		return textField;
-	}
-
 	
 	@Override
 	public void createManualControls() {

@@ -1,6 +1,7 @@
 package application;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -22,7 +23,7 @@ public class GUI extends Application {
 	@Override
 	public void start(Stage scene) {
 		
-		
+
 
 		// test commit
 		window = scene;
@@ -43,6 +44,7 @@ public class GUI extends Application {
 			// geschlossen nur wenn yes gedrückt wird
 			e.consume();
 			closeProgram();
+			
 		});
 
 	}
@@ -50,8 +52,10 @@ public class GUI extends Application {
 	public static void closeProgram() {
 		CloseWindowStage c = new CloseWindowStage();
 		Boolean answer = c.showPopUp("Closing", "Are you sure that you want to close the program?");
-		if (answer)
+		if (answer) {
 			window.close();
+			Platform.exit();
+		}
 	}
 
 	public static Stage getStage() {

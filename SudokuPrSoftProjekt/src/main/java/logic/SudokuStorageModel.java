@@ -23,7 +23,7 @@ public class SudokuStorageModel {
 	private boolean fileExists = true;
 
 	private FileChooser chooser;
-	
+
 	static int counter = 9;
 
 	SharedStoragePreferences storagePref = new SharedStoragePreferences();
@@ -39,24 +39,22 @@ public class SudokuStorageModel {
 		saveModel.setMinutesPlayed(gameToSave.getMinutesplayed());
 		saveModel.setSecondsPlayed(gameToSave.getSecondsplayed());
 		saveModel.setGameId(storagePref.getStoragePrefs().getInt("GameID", 1));
-		counter++;
+
 		helper = storagePref.getStoragePrefs().getInt("GameID", 0) + 1;
 		storagePref.getStoragePrefs().putInt("GameID", helper);
 	}
 
-	
 	public void saveGame(BasicGameLogic gameToSave) {
-		
+
 		Gson gson = new GsonBuilder().create();
 		saveModel = new SaveModel();
 		setInformationsToStore(gameToSave);
 
-		String fileName = saveModel.getGametype() + "_" + saveModel.getDifficultyString() + "_" + "ID_"
-				+ saveModel.getGameId() + ".json";
-		
+		String fileName = "ID_" + saveModel.getGameId() + "_" + saveModel.getGametype() + "_"
+				+ saveModel.getDifficultyString() + ".json";
+
 		File saveFile = new File("SaveFiles", fileName);
-	
-		
+
 		JsonWriter writer;
 		FileWriter fw;
 		try {
@@ -69,7 +67,6 @@ public class SudokuStorageModel {
 			e.printStackTrace();
 		}
 	}
-	
 
 	public void exportGame(BasicGameLogic save) {
 		Gson gson = new GsonBuilder().create();
@@ -83,18 +80,19 @@ public class SudokuStorageModel {
 		File file = chooser.showSaveDialog(GUI.getStage());
 		JsonWriter writer;
 		try {
-			writer = new JsonWriter(new FileWriter(file));
-			gson.toJson(saveModel, SaveModel.class, writer);
-			writer.close();
+			if (file != null) {
+				writer = new JsonWriter(new FileWriter(file));
+				gson.toJson(saveModel, SaveModel.class, writer);
+				writer.close();
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	// filechooser anders machn is nicht so gut
 	public SaveModel getImportedFile() {
-		// JSONObject importedJson = new JSONObject();
+		
 		SaveModel importedGame = new SaveModel();
 		chooser = new FileChooser();
 		chooser.setTitle("Import your Game");
@@ -108,9 +106,6 @@ public class SudokuStorageModel {
 		return importedGame;
 	}
 
-	
-	
-	
 	public BasicGameLogic loadIntoModel(BasicGameLogic model, SaveModel savedGame) {
 		if (savedGame.getGametype().equals("Sudoku"))
 			model = new SudokuLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
@@ -131,9 +126,6 @@ public class SudokuStorageModel {
 		return model;
 	}
 
-	
-	
-	
 	public SaveModel convertFileToSaveModel(File file) {
 		SaveModel data = new SaveModel();
 		Gson gson = new GsonBuilder().create();

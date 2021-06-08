@@ -6,7 +6,6 @@ public class SaveModel  {
 
 	private Cell[][] gameArray;
 	private String gametype;
-	private String savedGameType;
 	private int difficulty;
 	private int gamePoints;
 	private Gamestate gameState;
@@ -17,6 +16,7 @@ public class SaveModel  {
 
 	private int gameId;
 
+	
 	
 	public Cell[][] getGameArray() {
 		return gameArray;
