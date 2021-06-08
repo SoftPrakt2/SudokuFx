@@ -4,10 +4,7 @@ package logic;
 import java.time.Duration;
 import java.time.LocalTime;
 
-import com.google.gson.annotations.Expose;
-
 import javafx.animation.AnimationTimer;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -38,11 +35,11 @@ public abstract class BasicGameLogic {
 	protected Cell[][] cells;
 
 	private String difficultyString;
-	
+
 	public String playtimeString;
-	
+
 	protected int shuffleCounter;
-	
+
 	protected int hintCounter;
 	protected int countHintsPressed = 0;
 
@@ -64,13 +61,33 @@ public abstract class BasicGameLogic {
 		shuffleCounter = 0;
 	}
 
+	/**
+	 * Abstrakte Methoden welche von Unterklassen implementiert werden müssen.
+	 */
+	public abstract void setUpLogicArray();
+
+	public abstract void difficulty();
+
+	public abstract void printCells();
+
+	public abstract void setCell(int col, int row, int guess);
+
+	public abstract boolean testIfSolved();
+
+	public abstract boolean isConnected();
+
 	public abstract boolean checkRow(int row, int col, int guess);
 
 	public abstract boolean checkCol(int row, int col, int guess);
 
 	/**
-	 * Überprüft in der Box der übergebenen Reihe und Zeile eine idente Zahl
-	 * vorhanden ist.
+	 * Überprüft in der Box der übergebenen Reihe und Zeile eine idente Zahl vorhanden ist
+	 * Gibt true zurück falls keine idente Zahl vorhanden ist
+	 * Gibt false zurück falls eine idente Zahl vorhanden ist
+	 * @param row
+	 * @param col
+	 * @param guess
+	 * @return
 	 */
 	public boolean checkBox(int row, int col, int guess) {
 		int r = row - row % 3;
@@ -86,6 +103,13 @@ public abstract class BasicGameLogic {
 		return true;
 	}
 
+	/**
+	 * Überprüft ob CheckRow, CheckCol und CheckBox true zurück geben.
+	 * @param row
+	 * @param col
+	 * @param guess
+	 * @return
+	 */
 	public boolean valid(int row, int col, int guess) {
 		if (checkRow(row, col, guess) && checkCol(row, col, guess) && checkBox(row, col, guess)) {
 			return true;
@@ -93,91 +117,93 @@ public abstract class BasicGameLogic {
 		return false;
 	}
 
-	public abstract void setUpLogicArray();
-
-//	public abstract boolean createSudoku();
-
-//	public abstract int[] hint();
-
-//	public abstract boolean solveSudoku();
-
-	public abstract void difficulty();
-
-	public abstract void printCells();
-
-	public abstract void setCell(int col, int row, int guess);
-	
-	public abstract boolean isConnected();
-	
 	/**
 	 * Autogenerator für ein neues Sudoku Befüllt rekursiv das im Hintergrund
-	 * liegene Sudoku-Array.
+	 * liegende Sudoku-Array.
+	 * 
+	 * @return
 	 */
 	public boolean createSudoku() {
-		//Iteration durch Array
+		// Iteration durch Array
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				//Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
+				// Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
 				if (this.cells[row][col].getValue() == 0) {
-					//Anzahl von Versuchen (in diesem Falle 9) die durchlaufen werden sollen
-					//bis eine Lösung gefunden wird
+					// Anzahl von Versuchen (in diesem Falle 9) die durchlaufen werden sollen
+					// bis eine Lösung gefunden wird
 					for (int y = 0; y < 9; y++) {
-						//es wird eine zufällige Zahl generiert
+						// es wird eine zufällige Zahl generiert
 						int a = (int) (Math.random() * 9) + 1;
-						//Überprüfung ob generierte Zahl den Sudokuregeln entspricht
+						// Überprüfung ob generierte Zahl den Sudokuregeln entspricht
 						if (valid(row, col, a)) {
-							//Zahl ist OK und wird in die Array eingefügt
+							// Zahl ist OK und wird in die Array eingefügt
 							this.cells[row][col].setValue(a);
-							if (createSudoku()) {//rekursiever Aufruf für Backtracking
+							if (createSudoku()) {// rekursiever Aufruf für Backtracking
 								return true;
-							} else {//Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
+							} else {// Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
 								this.cells[row][col].setValue(0);
 							}
 						}
 					}
+					// Gibt false zurück wenn in den vorgegebenen Versuchen keine passende Zahl
+					// gefunden wird
 					return false;
 				}
 			}
 		}
+		// Gibt true zurück falls keine lehren Felder mehr vorhanden sind (heißt
+		// indirekt, dass das Sudoku fertig generiert worden ist)
 		return true;
 	}
-	
-	
-	/*
+
+	/**
 	 * Löst ein Sudoku rekursiv
+	 * 
+	 * @return
 	 */
 	public boolean solveSudoku() {
-		//Iteration durch Array
+		// Iteration durch Array
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				//Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
+				// Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
 				if (this.cells[row][col].getValue() == 0) {
-					//Alle möglichen Zahlen werden durchprobiert (1-9)
+					// Alle möglichen Zahlen werden durchprobiert (1-9)
 					for (int y = 1; y <= 9; y++) {
-						//Überprüfung ob Zahl den Sudokuregeln entspricht
+						// Überprüfung ob Zahl den Sudokuregeln entspricht
 						if (valid(row, col, y)) {
-							//Zahl ist OK und wird in die Array eingefügt
+							// Zahl ist OK und wird in die Array eingefügt
 							this.cells[row][col].setValue(y);
-							if (solveSudoku()) {//rekursiever Aufruf für Backtracking
+							if (solveSudoku()) {// rekursiever Aufruf für Backtracking
 								return true;
-							} else {//Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
+							} else {// Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
 								this.cells[row][col].setValue(0);
 							}
 						}
 					}
+					// Gibt false zurück wenn in den vorgegebenen Versuchen keine passende Zahl
+					// gefunden wird
 					return false;
 				}
 			}
 		}
-		//Sudoku wurde gelöst
+		// Sudoku wurde gelöst
 		return true;
 	}
-	
+
+	/**
+	 * hint() schaltet eine Zahl für den Benutzer an einer zufülligen Stelle frei.
+	 * davor wird immer die solveSudoku() ausgefüht, damit nie eine Zahl eingefügt
+	 * wird, welche im nachhinein das Sudoku unlösbar macht.
+	 * 
+	 * @return
+	 */
 	public int[] hint() {
 		boolean correctRandom = false;
 		int[] coordinates = new int[2];
 		int counter = 0;
 
+		// es wird eine int-Array erstellt welche die derzeitigen Values der einzelnen
+		// Zellen übernimmt.
 		int help[][] = new int[this.cells.length][this.cells.length];
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
@@ -185,12 +211,18 @@ public abstract class BasicGameLogic {
 			}
 		}
 
+		// solve-Methode wird für das derzeitige Spiel ausgeführt
 		this.solveSudoku();
 
+		// es werden zufülligen Koordinaten und eine zufällige Zahlen generiert bis
+		// diese den Bedingungen in der If entsprechen
 		while (!correctRandom) {
+			// generiert zufällige Koordinaten und eine zufällige Zahl
 			int randomCol = (int) (Math.floor(Math.random() * this.cells.length - 0.0001));
 			int randomRow = (int) (Math.floor(Math.random() * this.cells.length - 0.0001));
 			int randomNumber = (int) (Math.random() * 9) + 1;
+			// Falls die Zahl bei den Koordinaten der Zahl an der gleichen Koordinaten im
+			// gelösten Sudoku entsprechen wird diese in die Hilfsarry eingefügt
 			if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0
 					&& this.cells[randomRow][randomCol].getValue() != -1) {
 				help[randomRow][randomCol] = randomNumber;
@@ -200,32 +232,32 @@ public abstract class BasicGameLogic {
 			}
 			counter++;
 			if (counter == 10000) {
-				coordinates = null;
 				break;
 			}
 		}
 
+		// die Values der Sudokuzellen werden gleich den int-Werten des Hilfsarrays
+		// gesetzt
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				this.cells[row][col].setValue(help[row][col]);
 			}
 		}
+		// returniert die Koordinaten der eingefügt Zahl
 		return coordinates;
 	}
-	
-	
+
 	public void initializeCustomGame() {
 		setUpLogicArray();
 		setDifficulty(0);
 		setDifficultyString();
 		difficulty();
-		if(this instanceof FreeFormLogic) {
-		setGameState(Gamestate.DRAWING);
-		} else setGameState(Gamestate.CREATING);
+		if (this instanceof FreeFormLogic) {
+			setGameState(Gamestate.DRAWING);
+		} else
+			setGameState(Gamestate.CREATING);
 	}
-	
-	
-	
+
 	public void setUpGameInformations() {
 		setStartTime(System.currentTimeMillis());
 		setGamePoints(10);
@@ -237,40 +269,34 @@ public abstract class BasicGameLogic {
 		initializeTimer();
 		getLiveTimer().start();
 	}
-	
+
 	public void setUpGameField() {
 		setUpLogicArray();
 		setShuffleCounter(0);
 		createSudoku();
 		difficulty();
 	}
-	
-	
-
-	public String getGametype() {
-		return this.gametype;
-	}
-	
-	public void setGametype(String gametype) {
-		this.gametype = gametype;
-	}
-	
-	public String getPlaytimestring() {
-		return playtimeString;
-	}
-	
-	public void setPlaytimestring(String playtimeString) {
-		this.playtimeString = playtimeString;
-	}
-	
-
-	
-	public abstract boolean testIfSolved();
 
 	/**
 	 * Getter und Setter für Instanzvariablen
 	 * 
 	 */
+	public String getGametype() {
+		return this.gametype;
+	}
+
+	public void setGametype(String gametype) {
+		this.gametype = gametype;
+	}
+
+	public String getPlaytimestring() {
+		return playtimeString;
+	}
+
+	public void setPlaytimestring(String playtimeString) {
+		this.playtimeString = playtimeString;
+	}
+
 	public Cell[][] getCells() {
 		return cells;
 	}
@@ -326,14 +352,14 @@ public abstract class BasicGameLogic {
 	public void setHintCounter(int hintCounter) {
 		this.hintCounter = hintCounter;
 	}
-	
-	public int getHintsPressed() {
-        return countHintsPressed;
-    }
 
-    public void setHintsPressed(int countHintsPressed) {
-        this.countHintsPressed = countHintsPressed;
-    }
+	public int getHintsPressed() {
+		return countHintsPressed;
+	}
+
+	public void setHintsPressed(int countHintsPressed) {
+		this.countHintsPressed = countHintsPressed;
+	}
 
 	public void setGameState(Gamestate gamestate) {
 		this.gamestate = gamestate;
@@ -344,7 +370,7 @@ public abstract class BasicGameLogic {
 	}
 
 	public String getGameText() {
-		
+
 		if (this.getGamestate() == Gamestate.DONE) {
 			gameText = "Congratulations you won!";
 		}
@@ -360,18 +386,16 @@ public abstract class BasicGameLogic {
 		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
 			gameText = "Unsolvable Sudoku! New Solution generated";
 		}
-		if(this.getGamestate() == Gamestate.CREATING) {
+		if (this.getGamestate() == Gamestate.CREATING) {
 			gameText = "Create your own game!";
 		}
-		
-		if(this.getGamestate() == Gamestate.OPEN) {
+
+		if (this.getGamestate() == Gamestate.OPEN) {
 			gameText = "Game ongoing!";
 		}
-		if(this.getGamestate() == Gamestate.DRAWING) {
+		if (this.getGamestate() == Gamestate.DRAWING) {
 			gameText = "Draw your own forms!";
 		}
-		
-
 		return gameText;
 	}
 
@@ -402,62 +426,56 @@ public abstract class BasicGameLogic {
 		}
 	}
 
-
-	
-
-	public void initializeTimer() {
-
-
-        liveTimePlayedString = new SimpleStringProperty("");
-
-        timerIsRunning = new SimpleBooleanProperty();
-
-        timer = new AnimationTimer() {
-            long helpmin = minutesPlayed;
-            long helpsec = secondsPlayed;
-
-            private LocalTime startTime;
-
-            @Override
-            public void handle(long now) {
-                long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
-                minutesPlayed = ((helpmin*60 + helpsec + elapsedSeconds)/60);
-                secondsPlayed = (helpsec +  helpmin*60 + elapsedSeconds) % 60;
-                
-                liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
-            }
-            
-
-            @Override
-            public void start() {
-            	timerIsRunning.set(true);
-                startTime = LocalTime.now();
-                super.start();
-            }
-
-            @Override
-            public void stop() {
-            	timerIsRunning.set(false);
-                super.stop();
-            }
-        };
-
-    }
-
 	public AnimationTimer getLiveTimer() {
 		return timer;
 	}
-	
+
 	public boolean timerIsRunning() {
 		return timerIsRunning.get();
 	}
-	
+
 	public void setShuffleCounter(int counter) {
 		this.shuffleCounter = counter;
-	}	
-	
+	}
 
 	public StringProperty getStringProp() {
 		return liveTimePlayedString;
+	}
+
+	public void initializeTimer() {
+
+		liveTimePlayedString = new SimpleStringProperty("");
+
+		timerIsRunning = new SimpleBooleanProperty();
+
+		timer = new AnimationTimer() {
+			long helpmin = minutesPlayed;
+			long helpsec = secondsPlayed;
+
+			private LocalTime startTime;
+
+			@Override
+			public void handle(long now) {
+				long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
+				minutesPlayed = ((helpmin * 60 + helpsec + elapsedSeconds) / 60);
+				secondsPlayed = (helpsec + helpmin * 60 + elapsedSeconds) % 60;
+
+				liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
+			}
+
+			@Override
+			public void start() {
+				timerIsRunning.set(true);
+				startTime = LocalTime.now();
+				super.start();
+			}
+
+			@Override
+			public void stop() {
+				timerIsRunning.set(false);
+				super.stop();
+			}
+		};
+
 	}
 }

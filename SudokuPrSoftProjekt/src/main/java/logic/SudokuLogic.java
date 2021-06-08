@@ -10,17 +10,6 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * Überprüft ob die Methoden checkRow, checkCol und CheckBox true zurückgeben
-	 */
-	@Override
-	public boolean valid(int row, int col, int guess) {
-		if (checkRow(row, col, guess) && checkCol(row, col, guess) && checkBox(row, col, guess)) {
-			return true;
-		}
-		return false;
-	}
-
-	/**
 	 * Überprüft in der übergebenen Reihe ob eine idente Zahl vorhanden ist
 	 */
 	@Override
@@ -47,7 +36,7 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 	
 	/**
-	 * Befüllt Sudokuarray mit mit dem Wert 0
+	 * Befüllt Sudokuarray mit dem Wert 0
 	 */
 	@Override
 	public void setUpLogicArray() {
@@ -80,8 +69,7 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * Abhängig von der Übergebenen Zahl werden zufällige Zahl des Arrays auf 0
-	 * gesetzt
+	 * Abhängig von der Übergebenen Zahl werden zufällige Zahl des Arrays auf 0 gesetzt
 	 */
 	public void difficulty() {
         int counter = 81;
@@ -131,19 +119,6 @@ public class SudokuLogic extends BasicGameLogic {
 				System.out.println("-------------------");
 			}
 		}
-	}
-
-	/**
-	 * Getter und Setter der Variablen
-	 */
-	@Override
-	public void setGameState(Gamestate gamestate) {
-		this.gamestate = gamestate;
-	}
-
-	@Override
-	public Gamestate getGamestate() {
-		return this.gamestate;
 	}
 
 	@Override

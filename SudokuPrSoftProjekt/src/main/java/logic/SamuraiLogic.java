@@ -163,32 +163,6 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	@Override
-	public boolean checkBox(int row, int col, int guess) {		
-		if(this.cells[row][col].getValue() != -1) {
-			int r = row - row % 3;
-			int c = col - col % 3;
-
-			for (row = r; row < r + 3; row++) {
-				for (col = c; col < c + 3; col++) {
-					if (this.cells[row][col].getValue() == guess) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
-	
-
-	@Override
-	public boolean valid(int row, int col, int guess) {
-		if (this.checkRow(row, col, guess) && this.checkCol(row, col, guess) && this.checkBox(row, col, guess)) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
 	public void setUpLogicArray() {
 		int box = 1;
 		Cell cell;
@@ -213,48 +187,6 @@ public class SamuraiLogic extends BasicGameLogic {
 				box++;
 			}
 		}
-	}
-
-	@Override
-	public int[] hint() {
-		// TODO Auto-generated method stub
-		boolean correctRandom = false;
-        int[] coordinates = new int[2];
-        int counter = 0;
-
-        int help[][] = new int[21][21];
-        for (int row = 0; row < this.cells.length; row++) {
-            for (int col = 0; col < this.cells[row].length; col++) {
-                help[row][col] = this.cells[row][col].getValue();
-            }
-        }
-
-        this.solveSudoku();
-
-        while (!correctRandom) {
-            int randomCol = (int) (Math.floor(Math.random() * 20.9999));
-            int randomRow = (int) (Math.floor(Math.random() * 20.9999));
-            int randomNumber = (int) (Math.random() * 9) + 1;
-            if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0
-                    && this.cells[randomRow][randomCol].getValue() != -1) {
-                help[randomRow][randomCol] = randomNumber;
-                coordinates[0] = randomRow;
-                coordinates[1] = randomCol;
-                correctRandom = true;
-            }
-            counter++;
-            if (counter == 10000) {
-                coordinates = null;
-                break;
-            }
-        }
-
-        for (int row = 0; row < 21; row++) {
-            for (int col = 0; col < 21; col++) {
-                this.cells[row][col].setValue(help[row][col]);
-            }
-        }
-        return coordinates;
 	}
 
 	@Override
@@ -303,11 +235,6 @@ public class SamuraiLogic extends BasicGameLogic {
 			}
 			System.out.println();
 		}
-	}
-
-	@Override
-	public Cell[][] getCells() {
-		return this.cells;
 	}
 
 	@Override

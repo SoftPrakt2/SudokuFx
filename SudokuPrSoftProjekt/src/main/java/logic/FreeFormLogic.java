@@ -5,15 +5,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import application.SudokuField;
 
 public class FreeFormLogic extends SudokuLogic {
 
@@ -78,7 +72,7 @@ public class FreeFormLogic extends SudokuLogic {
 						System.out.println("yeet");
 					}
 
-					if (globalCounter > 1000000) {
+					if (globalCounter > 100000) {
 						globalCounter = 0;
 						this.cells = loadPreMadeFreeForm();
 						System.out.println("preloadgamemydudeyeeet");
