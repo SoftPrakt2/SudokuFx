@@ -40,6 +40,7 @@ public class SamuraiLogicTest {
 		assertEquals(count, 369);
 	}
 	
+	
 	@Test
 	public void testSetCells() {
 		SamuraiLogic model2 = new SamuraiLogic(Gamestate.OPEN, 0 , 0 , false);

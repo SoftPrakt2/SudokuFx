@@ -34,6 +34,7 @@ public class BasicGameLogicTest {
 		 assertEquals(model.getCells()[1][1], model2.getCells()[1][1]);
 	}
 	
+	
 	@Test
 	public void testGetCells() {
 		Cell[][] a = model.getCells();
@@ -145,16 +146,7 @@ public class BasicGameLogicTest {
         assertEquals(model.getGameid(), 1);
     }
     
-    @Test
-    public void testGetHintCounter() {
-        model.setHintCounter(100);
-        assertEquals(model.getHintCounter(), 100);
-    }
-    @Test
-    public void testSetHintCounter() {
-        model.setHintCounter(100);
-        assertEquals(model.getHintCounter(), 100);
-    }
+    
     
     @Test
     public void testGetStartTime() {

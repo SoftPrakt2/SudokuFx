@@ -39,6 +39,7 @@ public class SudokuLogicTest {
 	}
 	
 	
+	
 	@Test
 	public void testSetCells() {
 		SudokuLogic model2 = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);

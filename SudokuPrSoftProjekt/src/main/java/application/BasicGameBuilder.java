@@ -124,13 +124,7 @@ public abstract class BasicGameBuilder {
 	 */
 	public abstract GridPane createBoard();
 
-	/**
-	 * 
-	 * Instanziiert die Buttons mit dem jeweilgen Button-Text Diese werden zwecks
-	 * des Layouts in eine HBox gegeben Ruft die Methode styleButton und
-	 * setButtonActions auf Fügt die Buttons anschließend in das übegergeben
-	 * BorderPane
-	 */
+
 	
 	
 	/**

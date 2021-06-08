@@ -27,10 +27,11 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		super(model);
 
 		textField = new SudokuField[21][21];
-		width = 1050;
-		height = 1050;
+		sceneWidth = 1050;
+		sceneHeight = 1050;
 	}
 
+	
 	
 	/**
 	 * Zeichnet ein Samurai-Sudoku-Feld
