@@ -131,6 +131,7 @@ public abstract class BasicGameBuilder {
 	 * Inizialisiert eine ToolBar welche als Behälter für die ebenfalls initialisierten Buttons und ein Zeitlabel dient
 	 * Die initialisierten Buttons werden mithilfe von Glyph Grafiken grafisch gestaltet
 	 * Um benötigte Abstände zwischen den Buttons und dem Zeiteintrag zu gewährleisten werden weiters leere Panes eingefügt
+	 * Die erstellte ToolBar wird anschließend in die  {@link #toolbox} VBox eingefügt
 	 */
 	public void initializeToolBar() {
 		toolBar = new ToolBar();
@@ -165,7 +166,12 @@ public abstract class BasicGameBuilder {
 	public abstract void createManualControls();
 	
 	
-	
+	/**
+	 * Diese Methode fügt Listener zu den SudokuTextFeldern hinzu
+	 * Hierbei handelt es sich um einen ChangeListener welcher auf
+	 * Veränderungen im Feld reagiert
+	 * Dieser ist für die automatische Konfliktanzeige zuständig
+	 */
 	public void addConflictListeners() {
 		for (int row = 0; row < textField.length; row++) {
 			for (int col = 0; col < textField[row].length; col++) {
@@ -185,7 +191,9 @@ public abstract class BasicGameBuilder {
 		}
 	}
 	
-	
+	/**
+	 * Diese Methode entfernt die in der Methode {@link #addConflictListeners()} hinzugefügten Listener von den Textfeldern
+	 */
 	public void removeConflictListeners() {
 		for (ChangeListener<String> l : conflictListener) {
 			for (SudokuField[] sudokuFieldArray : textField) {
@@ -232,11 +240,14 @@ public abstract class BasicGameBuilder {
 	//MenüObjekte für Help Menü
 	protected Menu helpMenu;
 	protected MenuItem rules;
-	protected RulesStage rule;
+	
 
+	
 	/**
 	 * 
-	 * Erstellt die Menüleiste mit den jeweiligen MenüItems
+	 * Diese Methode erstellt die Menüleiste für die UI eines Spiels
+	 * In die menuBar werden mehrere Menüs mit entsprechenden Menüitems eingefügt
+	 * Diese Menubar wird anschließend in die {@link #toolbox} eingefügt
 	 */
 	public void createMenuBar() {
 		// menuBar for the scene
@@ -255,18 +266,17 @@ public abstract class BasicGameBuilder {
 		popover = gamePopUp.createPopUp();
 		file.getItems().addAll(newGame, save, importItem, exportItem, seperator, exitItem);
 		
-		//Edit Menü initialisierungen
+		//Edit Menü Initialisierungen
 		editMenu = new Menu("Edit");
 		newRoundItem = new MenuItem("New Round");
 		reset = new MenuItem("Reset");
 		propertyMenu = new Menu("Properties");
-		editMenu.getItems().addAll(newRoundItem, reset, propertyMenu);
-		
 		conflictItem = new RadioMenuItem("Show Conflicts");
 		conflictItem.setSelected(false);
 		propertyMenu.getItems().addAll(conflictItem);
+		editMenu.getItems().addAll(newRoundItem, reset, propertyMenu);
 		
-		//Source Menü initialisierungen
+		//Source Menü Initialisierungen
 		sourceMenu = new Menu("Source");
 		hintMenuItem = new MenuItem("Hint");
 		autoSolveItem = new MenuItem("AutoSolve");
@@ -284,7 +294,7 @@ public abstract class BasicGameBuilder {
 		helpMenu = new Menu("Help");
 		rules = new MenuItem("Rules");
 		rules.setOnAction(e -> {
-			rule = new RulesStage();
+			RulesStage rule = new RulesStage();
 			rule.showPopUp("Sudoku Rules");
 		});
 		helpMenu.getItems().add(rules);
@@ -294,8 +304,6 @@ public abstract class BasicGameBuilder {
 		toolbox.getChildren().addAll(menuBar);
 	
 		pane.setTop(toolbox);
-		
-		
 		defineShortCuts();
 	}
 	
@@ -368,8 +376,6 @@ public abstract class BasicGameBuilder {
 		importItem.setOnAction(controller::importGame);
 
 		newGame.setOnAction(e -> popover.show(hintButton, -30));
-		
-		
 	}
 
 	public void createStatusBar() {
