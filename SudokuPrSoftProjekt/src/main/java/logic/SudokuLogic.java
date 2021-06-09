@@ -2,8 +2,21 @@ package logic;
 
 import java.util.Random;
 
+/**
+ * extends BasicGameLogic
+ * implements all abstract methods of BasicGameLogic
+ * @author rafael
+ *
+ */
 public class SudokuLogic extends BasicGameLogic {
 
+	/**
+	 * constructor for creating a SudokuLogic-Object
+	 * @param gamestate
+	 * @param minutesPlayed
+	 * @param secondsPlayed
+	 * @param isCorrect
+	 */
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[9][9];
@@ -12,7 +25,7 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * Überprüft in der übergebenen Reihe ob eine idente Zahl vorhanden ist
+	 * checks if the value already exists in a row
 	 */
 	@Override
 	public boolean checkRow(int row, int col, int guess) {
@@ -25,7 +38,7 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * Überprüft in der übergebenen Zeile ob eine idente Zahl vorhanden ist
+	 * checks if the value already exists in a column
 	 */
 	@Override
 	public boolean checkCol(int row, int col, int guess) {
@@ -38,7 +51,7 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 	
 	/**
-	 * Befüllt Sudokuarray mit dem Wert 0
+	 * fills the sudoku array with values and informations about coordinates
 	 */
 	@Override
 	public void setUpLogicArray() {
@@ -71,7 +84,8 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * Abhängig von der Übergebenen Zahl werden zufällige Zahl des Arrays auf 0 gesetzt
+	 * removes a certain amount of numbers from the array
+	 * the amount depends on the difficulty chosen by the user
 	 * 
 	 */
 	public void difficulty() {
@@ -94,6 +108,9 @@ public class SudokuLogic extends BasicGameLogic {
         }
     }
 	
+	/**
+	 * auxiliary method for {@link #difficulty()}
+	 */
 	@Override
 	public int getNumberOfVisibleValues() {
 		if(this.difficulty == 3) {

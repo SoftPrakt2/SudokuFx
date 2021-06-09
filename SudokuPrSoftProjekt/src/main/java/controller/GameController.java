@@ -18,6 +18,11 @@ import logic.SamuraiLogic;
 import logic.SaveModel;
 import logic.SudokuStorageModel;
 
+/**
+ * GameController ist das Bindeglied zwischen der View und dem Model Die
+ * Eingaben von der View werden an das Model weitergeleitet Die Eingaben vom
+ * Model werden an die View weitergeleitet
+ */
 public class GameController {
 
 	BasicGameBuilder scene;
@@ -25,6 +30,12 @@ public class GameController {
 	SudokuField[][] sudokuField;
 	static int numberCounter = 1;
 
+	/**
+	 * Constructor to create a GameController-Object
+	 * 
+	 * @param scene : is the playfield visible to the user
+	 * @param model : is the logic for creating a game and handling game mechanics
+	 */
 	public GameController(BasicGameBuilder scene, BasicGameLogic model) {
 		this.scene = scene;
 		this.model = model;
@@ -32,21 +43,19 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * Erstellt abhängig von der Schwierigkeit ein Sudoku-Spiel Setzt die Punkte des
-	 * Spiels auf 10 Setzt GameText auf "Game ongoing" Setzt GameState auf OPEN
+	 * Creates, depending on the difficultiy that the user chose, a sudoku game
+	 * uses the method {@link #createGame()}
 	 */
 	public void createGameHandler(ActionEvent event) {
 		createGame();
 	}
 
 	/**
-	 * 
-	 * Erstellt ein Spiel anhand der eingestellten Schwierigkeit
+	 * Creates a sudokue game
+	 * type and difficulty of the game are decides by user inputs (button-clicks)
+	 * {@link #enableEdit()} enables the textfields, so that the user can play
 	 */
-
 	public void createGame() {
-
 		model.setUpGameField();
 		model.setUpGameInformations();
 		scene.getGameInfoLabel()
@@ -72,9 +81,8 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * Löscht sämtliche Zahlen aus dem Spielfeld und setzt die verschiedenen
-	 * Spielstatuse auf den Anfangszustand
+	 * deltes all number from the textfield
+	 * restarts Timer and resets Gamestate to OPEN
 	 */
 	public void newGameHandler(ActionEvent event) {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -99,6 +107,12 @@ public class GameController {
 		scene.getGameNotificationLabel().setText(model.getGameText());
 	}
 
+	/**
+	 * resets a manualy created game
+	 * buttons for solve, check and hint get disabled
+	 * lock-button gets enabled and becomes visible
+	 * {@link #enableEdit()}
+	 */
 	public void resetCustomGameState() {
 		if (model.getGametype().equals("FreeForm")) {
 			scene.getToolBar().getItems().add(3, scene.getColorsDoneButton());
@@ -115,8 +129,8 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * Löscht Benutzereingaben für das Spiel
+	 * deletes user inputs
+	 * values that were created at the start of the game do not get deleted
 	 */
 	public void resetHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -131,21 +145,23 @@ public class GameController {
 		scene.getGameNotificationLabel().setText(model.getGameText());
 	}
 
+	/**
+	 * colores the textfields, depending on the information from the model
+	 * is relevant for FreeForm-Games
+	 * @param e
+	 */
 	public void customColorsDoneHandler(ActionEvent e) {
-
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
 			}
 		}
-
 		if (model.isConnected()) {
 			for (SudokuField coloredArray[] : sudokuField) {
 				for (SudokuField coloredField : coloredArray) {
 					coloredField.removeFreeFormColorListener();
 				}
 			}
-
 			scene.getToolBar().getItems().remove(scene.getColorsDoneButton());
 			scene.getToolBar().getItems().remove(scene.getColorBox());
 			scene.getToolBar().getItems().add(3, scene.getDoneButton());
@@ -160,12 +176,12 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * Fixiert die manuelle Sudokuerstellung des Spielers und übergibt die
-	 * eingegebenen Zahlen der Logik
+	 * fixes the numbers that the user wants to create a sudoku with
+	 * checks for conflicts and askes the user to remove them if any occure
+	 * {@link #compareResult()} test for conflicts
+	 * {@link ##enoughManualNumbers()} test if there are enought numbers to create a sudoku
 	 */
 	public void manuelDoneHandler(ActionEvent e) {
-
 		if (compareResult() && enoughManualNumbers()) {
 			for (int i = 0; i < sudokuField.length; i++) {
 				for (int j = 0; j < sudokuField[i].length; j++) {
@@ -175,7 +191,7 @@ public class GameController {
 //						model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
 						model.getCells()[j][i].setValue(Integer.parseInt(sudokuField[i][j].getText()));
 						model.getCells()[j][i].setIsReal(true);
-						
+
 						sudokuField[i][j].setDisable(true);
 					}
 				}
@@ -199,6 +215,10 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * test if there are enought numbers to create a sudoku
+	 * @return returns false if there are not enought numbers and returns ture otherwise
+	 */
 	public boolean enoughManualNumbers() {
 		int count = 0;
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -219,9 +239,10 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * Überprüft ob Konflikte zwischen den dem Benutzer eingegebnen Zahlen herschen
-	 * Kennzeichnet diese rot
+	 * checks for conflicts and colores them red if there are any
+	 * returns true if there are no conlicts
+	 * returns false if there are conflicts
+	 * {@link #connectWithModel()} connects model-array with textfield-array
 	 */
 	public boolean compareResult() {
 		boolean result = true;
@@ -266,8 +287,8 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * Hilfsmethode für die Befüllung der TextFields mit den Zahlen aus dem model
+	 * connects textfield-array with model-array 
+	 * filles the textfield-array with the values of the model-array
 	 */
 	public void connectArrays() {
 
@@ -288,10 +309,9 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * Löst sofern keine Konflikte vorhanden sind das derzeitige Spielfeld Fals
-	 * Konflikte vorhanden sind werden diese markiert und der Benutzer wird darauf
-	 * hingewiesen
+	 * solves the sudoku if there are no conflicts
+	 * askes the usere to remove the conflicts if there are any
+	 * uses the following methodes {@link #connectArrays(), #compareResult()}
 	 */
 	public void autoSolveHandler(ActionEvent e) {
 		scene.removeConflictListeners();
@@ -328,9 +348,8 @@ public class GameController {
 	}
 
 	/**
-	 * 
-	 * Überprüft ob der derzeitige Stand der Eingagen eine gültige Lösung ist und
-	 * gibt abhängig davon unterschiedliche Informationen aus
+	 * checks if the sudoku is solved (without conflicts)
+	 * {@link #compareResult()} checks for conflicts
 	 */
 	public void checkHandler(ActionEvent e) {
 
@@ -357,7 +376,7 @@ public class GameController {
 	}
 
 	/**
-	 * Leere Textfelder werden für den Benutzer freigegeben
+	 * empty text fields get enabled so that the user can input his numbers into them
 	 */
 	public void enableEdit() {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -371,6 +390,9 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * connect the textfield-array with the model-array
+	 */
 	public void connectWithModel() {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
@@ -384,6 +406,12 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * gives the user a hint
+	 * {@link #connectWithModel()}
+	 * 
+	 * @param e
+	 */
 	public void hintHandeler(ActionEvent e) {
 		if (compareResult()) {
 			if (model.getGamepoints() > 0) {
@@ -393,17 +421,28 @@ public class GameController {
 			scene.getGameInfoLabel()
 					.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 			int[] coordinates = model.hint();
-			for (int row = 0; row < sudokuField.length; row++) {
-				for (int col = 0; col < sudokuField[row].length; col++) {
-					if (coordinates != null) {
-						if (coordinates[0] == row && coordinates[1] == col
-								&& sudokuField[col][row].getText().equals("")) {
-							String number = Integer.toString(model.getCells()[row][col].getValue());
-							sudokuField[col][row].setText(number);
-							sudokuField[col][row].getStyleClass().add("textfieldHint");
-
-						}
-					}
+//			for (int row = 0; row < sudokuField.length; row++) {
+//				for (int col = 0; col < sudokuField[row].length; col++) {
+//					if (coordinates != null) {
+//						if (coordinates[0] == row && coordinates[1] == col
+//								&& sudokuField[col][row].getText().equals("")) {
+//							String number = Integer.toString(model.getCells()[row][col].getValue());
+//							sudokuField[col][row].setText(number);
+//							sudokuField[col][row].getStyleClass().add("textfieldHint");
+//
+//						}
+//					}
+//				}
+//			}
+			//checks if coordinates are null
+			if (coordinates != null) {
+				//checks if there is already a userinput in this textfield with these coordinates
+				//this check exists so taht userinputs do not get overwritten
+				if (sudokuField[coordinates[1]][coordinates[0]].getText().equals("")) {
+					String number = Integer.toString(model.getCells()[coordinates[0]][coordinates[1]].getValue());
+					sudokuField[coordinates[1]][coordinates[0]].setText(number);
+					// sudokuField[col][row].setStyle("-fx-text-fill: blue");
+					sudokuField[coordinates[1]][coordinates[0]].getStyleClass().add("textfieldHint");
 				}
 			}
 
@@ -421,8 +460,11 @@ public class GameController {
 		}
 	}
 
-	// methode für auto konflikt removen und adden
-
+	/**
+	 * adds or removes Listener to the text field
+	 * the listeners call the {@link #compareResult()} method and show conflicts
+	 * @param e
+	 */
 	public void switchOffConflicts(ActionEvent e) {
 		if (scene.getConflictItem().isSelected())
 			scene.addConflictListeners();
@@ -430,8 +472,11 @@ public class GameController {
 			scene.removeConflictListeners();
 	}
 
-	
-
+	/**
+	 * saves the game
+	 * stops the timer
+	 * @param e
+	 */
 	public void saveGame(ActionEvent e) {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
@@ -450,7 +495,13 @@ public class GameController {
 		storageModel.saveGame(model);
 
 	}
-
+	
+	/**
+	 * Imports a game
+	 * This import must be a JSON file
+	 * a new scene is creadet depending on the import
+	 * @param e
+	 */
 	public void importGame(ActionEvent e) {
 		SudokuStorageModel storageModel = new SudokuStorageModel();
 
@@ -508,6 +559,11 @@ public class GameController {
 
 	}
 
+	/**
+	 * exports the game as a JSON-File
+	 * user can choose the storage path
+	 * @param e
+	 */
 	public void exportGame(ActionEvent e) {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
@@ -521,6 +577,10 @@ public class GameController {
 		storageModel.exportGame(model);
 	}
 
+	/**
+	 * switches the scene to the menu-scene
+	 * @param e
+	 */
 	public void switchToMainMenu(ActionEvent e) {
 		emptyArrays();
 
@@ -533,6 +593,10 @@ public class GameController {
 
 	}
 
+	/**
+	 * deletes all inputs from the text fiels-array
+	 * enables all text fields
+	 */
 	public void emptyArrays() {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
@@ -542,6 +606,9 @@ public class GameController {
 		}
 	}
 
+	/**
+	 * getter and setter
+	 */
 	public BasicGameLogic getModel() {
 		return this.model;
 	}

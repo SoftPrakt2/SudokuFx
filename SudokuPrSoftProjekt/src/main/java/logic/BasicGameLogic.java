@@ -12,15 +12,12 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * 
- * Stellt die Basisvariablen und Methoden für die ableitenden Logiken dar
- * Deklariert abstract Methoden, welche von den Unterklassen implementiert
- * werden müssen.
+ * createds all variables and methods that are needed by all subclasses
+ * creades abstract methods that need to be implementeted by the subclasses
  *
  */
 public abstract class BasicGameLogic {
 
-//test
 	protected Gamestate gamestate;
 	protected boolean isCorrect;
 	protected String gametype = "";
@@ -52,11 +49,16 @@ public abstract class BasicGameLogic {
 	protected int numbersToBeSolvable;
 	protected int manualNumbersInserted;
 	
-
-	// Variablen für Timer
 	AnimationTimer timer;
 	BooleanProperty timerIsRunning = new SimpleBooleanProperty();
 
+	/**
+	 * constructor for creating a BasicGameLogic object
+	 * @param gamestate : differentiates between several gamestates that a game can have
+	 * @param minutesPlayed
+	 * @param secondsPlayed
+	 * @param isCorrect : boolean to check if the sudoku was solved correctly
+	 */
 	protected BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super();
 		this.gamestate = gamestate;
@@ -71,7 +73,7 @@ public abstract class BasicGameLogic {
 	
 
 	/**
-	 * Abstrakte Methoden welche von Unterklassen implementiert werden müssen.
+	 * abstract methods that need to be implemented by the subclasses
 	 */
 	public abstract void setUpLogicArray();
 
@@ -92,12 +94,10 @@ public abstract class BasicGameLogic {
 	public abstract boolean checkCol(int row, int col, int guess);
 
 	/**
-	 * Überprüft in der Box der übergebenen Reihe und Zeile eine idente Zahl vorhanden ist
-	 * Gibt true zurück falls keine idente Zahl vorhanden ist
-	 * Gibt false zurück falls eine idente Zahl vorhanden ist
-	 * @param row
-	 * @param col
-	 * @param guess
+	 * Checks if the number already exists in the box
+	 * @param row : row-coordinate of the new number
+	 * @param col : row-coordinate of the new number
+	 * @param guess : new number
 	 * @return
 	 */
 	public boolean checkBox(int row, int col, int guess) {
@@ -115,10 +115,10 @@ public abstract class BasicGameLogic {
 	}
 
 	/**
-	 * Überprüft ob CheckRow, CheckCol und CheckBox true zurück geben.
-	 * @param row
-	 * @param col
-	 * @param guess
+	 * checks if checkRow, checkCol and checkBox return true
+	 * @param row : row-coordinate of the new number
+	 * @param col : row-coordinate of the new number
+	 * @param guess : new number
 	 * @return
 	 */
 	public boolean valid(int row, int col, int guess) {
@@ -129,84 +129,74 @@ public abstract class BasicGameLogic {
 	}
 
 	/**
-	 * Autogenerator für ein neues Sudoku Befüllt rekursiv das im Hintergrund
-	 * liegende Sudoku-Array.
-	 * 
+	 * autogenerator for a new sudoku game
+	 * a recursive method for creating a new game
 	 * @return
 	 */
 	public boolean createSudoku() {
 		Random r = new Random();
-		// Iteration durch Array
+		// iterates the array
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				// Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
+				// checks if the cell has the value 0
 				if (this.cells[row][col].getValue() == 0) {
-					// Anzahl von Versuchen (in diesem Falle 9) die durchlaufen werden sollen
-					// bis eine Lösung gefunden wird
+					// number of tries to find a valid number 
 					for (int y = 0; y < 9; y++) {
-						// es wird eine zufällige Zahl generiert
+						// generates a random number between 1 and 9
 						int randomNum = r.nextInt(9) + 1;
-						// Überprüfung ob generierte Zahl den Sudokuregeln entspricht
+						// checks if the generated number is valid
 						if (valid(row, col, randomNum)) {
-							// Zahl ist OK und wird in die Array eingefügt
+							// sets value if the generated number is valid
 							this.cells[row][col].setValue(randomNum);
-							if (createSudoku()) {// rekursiever Aufruf für Backtracking
+							if (createSudoku()) {// recursive call the the method
 								return true;
-							} else {// Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
+							} else {
 								this.cells[row][col].setValue(0);
 							}
 						}
 					}
-					// Gibt false zurück wenn in den vorgegebenen Versuchen keine passende Zahl
-					// gefunden wird
 					return false;
 				}
 			}
 		}
-		// Gibt true zurück falls keine lehren Felder mehr vorhanden sind (heißt
-		// indirekt, dass das Sudoku fertig generiert worden ist)
 		return true;
 	}
 
 	/**
-	 * Löst ein Sudoku rekursiv
-	 * 
+	 * solves a sudoku game
+	 * a recursive method for solving a new game
 	 * @return
 	 */
 	public boolean solveSudoku() {
-		// Iteration durch Array
+		// iterates the array
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				// Es wird nach einer Zelle gesucht die einen Wert 0 aufweist
+				// checks if the cell has the value 0
 				if (this.cells[row][col].getValue() == 0) {
-					// Alle möglichen Zahlen werden durchprobiert (1-9)
+					// checks witch of the numbers between 1 and 9 are valid inputs
 					for (int y = 1; y <= 9; y++) {
-						// Überprüfung ob Zahl den Sudokuregeln entspricht
+						// checks if current number is valid
 						if (valid(row, col, y)) {
-							// Zahl ist OK und wird in die Array eingefügt
+							// sets value if the generated number is valid
 							this.cells[row][col].setValue(y);
-							if (solveSudoku()) {// rekursiever Aufruf für Backtracking
+							if (solveSudoku()) {// recursive call the the method
 								return true;
-							} else {// Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
+							} else {
 								this.cells[row][col].setValue(0);
 							}
 						}
 					}
-					// Gibt false zurück wenn in den vorgegebenen Versuchen keine passende Zahl
-					// gefunden wird
 					return false;
 				}
 			}
 		}
-		// Sudoku wurde gelöst
 		return true;
 	}
 
 	/**
-	 * hint() schaltet eine Zahl für den Benutzer an einer zufülligen Stelle frei.
-	 * davor wird immer die solveSudoku() ausgefüht, damit nie eine Zahl eingefügt
-	 * wird, welche im nachhinein das Sudoku unlösbar macht.
-	 * 
+	 * gives the user a valid hint
+	 * sudoku is solved before hint is given so that an situation 
+	 * does not occure, where the sudoku game becomes unsolvable
 	 * @return
 	 */
 	public int[] hint() {
@@ -214,8 +204,7 @@ public abstract class BasicGameLogic {
 		int[] coordinates = new int[2];
 		int counter = 0;
 
-		// es wird eine int-Array erstellt welche die derzeitigen Values der einzelnen
-		// Zellen übernimmt.
+		// current values of the sudoku game get saved
 		temporaryValues = new int[this.cells.length][this.cells.length];
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
@@ -223,20 +212,16 @@ public abstract class BasicGameLogic {
 			}
 		}
 
-		// solve-Methode wird für das derzeitige Spiel ausgeführt
+		// current sudoku gets solved
 		this.solveSudoku();
 
-//		Random randCoordinate = new Random();
 		Random r = new Random();
-		// es werden zufülligen Koordinaten und eine zufällige Zahlen generiert bis
-		// diese den Bedingungen in der If entsprechen
+		// chooses random coordinates and a random number that will be shown as a hint
 		while (!correctRandom) {
-			// generiert zufällige Koordinaten und eine zufällige Zahl
+			// generates random coordinates and a random number
 			int randomCol = r.nextInt(this.cells.length);
 			int randomRow = r.nextInt(this.cells.length);
 			int randomNumber = r.nextInt(9) + 1;
-			// Falls die Zahl bei den Koordinaten der Zahl an der gleichen Koordinaten im
-			// gelösten Sudoku entsprechen wird diese in die Hilfsarry eingefügt
 			if (this.cells[randomRow][randomCol].getValue() == randomNumber && temporaryValues[randomRow][randomCol] == 0
 					&& this.cells[randomRow][randomCol].getValue() != -1) {
 				temporaryValues[randomRow][randomCol] = randomNumber;
@@ -251,17 +236,19 @@ public abstract class BasicGameLogic {
 			}
 		}
 
-		// die Values der Sudokuzellen werden gleich den int-Werten des Hilfsarrays
-		// gesetzt
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				this.cells[row][col].setValue(temporaryValues[row][col]);
 			}
 		}
-		// returniert die Koordinaten der eingefügt Zahl
+		// returns the coordinates the the hint
 		return coordinates;
 	}
 	
+	/**
+	 * tests if the sudoku game still contains the value 0
+	 * @return
+	 */
 	public boolean testIfSolved() {
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
@@ -273,10 +260,20 @@ public abstract class BasicGameLogic {
 		return true;
 	}
 	
+	/**
+	 * sets the value of the cell
+	 * @param row
+	 * @param col
+	 * @param box
+	 * @param value
+	 */
 	public void setCell(int row, int col, int box, int value) {
 		this.cells[row][col] = new Cell(row, col, box, value);
 	}
 	
+	/**
+	 * removes all values of the array
+	 */
 	public void removeValues() {
         for (int row = 0; row < this.cells.length; row++) {
             for (int col = 0; col < this.cells[row].length; col++) {
@@ -286,6 +283,10 @@ public abstract class BasicGameLogic {
         }
 	}
 
+	/**
+	 * initializes a new game
+	 * calls alle methodes that are needed to create a game
+	 */
 	public void initializeCustomGame() {
 		setUpLogicArray();
 		setDifficulty(0);
@@ -297,6 +298,9 @@ public abstract class BasicGameLogic {
 			setGameState(Gamestate.CREATING);
 	}
 
+	/**
+	 * sets game information at the beginning of a new manual game
+	 */
 	public void setUpGameInformations() {
 		setStartTime(System.currentTimeMillis());
 		setGamePoints(10);
@@ -308,6 +312,9 @@ public abstract class BasicGameLogic {
 		getLiveTimer().start();
 	}
 
+	/**
+	 * calls all methods for a new game
+	 */
 	public void setUpGameField() {
 		setUpLogicArray();
 		setShuffleCounter(0);
@@ -316,8 +323,7 @@ public abstract class BasicGameLogic {
 	}
 
 	/**
-	 * Getter und Setter für Instanzvariablen
-	 * 
+	 * getter and setter
 	 */
 	public String getGametype() {
 		return this.gametype;
@@ -475,6 +481,9 @@ public abstract class BasicGameLogic {
 		this.manualNumbersInserted = manualNumbersInserted;
 	}
 
+	/**
+	 * starts a timer when a new game is created
+	 */
 	public void initializeTimer() {
 
 		liveTimePlayedString = new SimpleStringProperty("");

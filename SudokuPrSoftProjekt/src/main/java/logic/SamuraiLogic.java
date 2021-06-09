@@ -4,6 +4,13 @@ import java.util.Random;
 
 public class SamuraiLogic extends BasicGameLogic {
 
+	/**
+	 * Constructor for creating a SamuraiLogic-Object
+	 * @param gamestate
+	 * @param minutesPlayed
+	 * @param secondsPlayed
+	 * @param isCorrect
+	 */
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		cells = new Cell[21][21];
@@ -11,6 +18,9 @@ public class SamuraiLogic extends BasicGameLogic {
 		hintCounter = 10;
 	}
 
+	/**
+	 * checks if the value already exists in a row
+	 */
 	@Override
 	public boolean checkRow(int row, int col, int guess) {
 		// ---------------------topLeft---------------------
@@ -88,6 +98,9 @@ public class SamuraiLogic extends BasicGameLogic {
 		return true;
 	}
 
+	/**
+	 * checks if the value already exists in a column
+	 */
 	@Override
 	public boolean checkCol(int row, int col, int guess) {
 		if (row < 9 && col < 9) {
@@ -164,6 +177,9 @@ public class SamuraiLogic extends BasicGameLogic {
 		return true;
 	}
 
+	/**
+	 * fills the sudoku array with values and informations about coordinates
+	 */
 	@Override
 	public void setUpLogicArray() {
 		int box = 1;
@@ -180,6 +196,11 @@ public class SamuraiLogic extends BasicGameLogic {
 		}
 	}
 
+	/**
+	 * removes a certain amount of numbers from the array
+	 * the amount depends on the difficulty chosen by the user
+	 * 
+	 */
 	@Override
 	public void difficulty() {
 		int counter = getNumberOfVisibleValues();
@@ -202,6 +223,9 @@ public class SamuraiLogic extends BasicGameLogic {
         }
 	}
 	
+	/**
+	 * auxiliary method for {@link #difficulty()}
+	 */
 	@Override
 	public int getNumberOfVisibleValues() {
 		if(this.difficulty == 3) {
