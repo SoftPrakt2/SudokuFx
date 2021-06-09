@@ -3,6 +3,7 @@ package logic;
 
 import java.time.Duration;
 import java.time.LocalTime;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
@@ -33,6 +34,7 @@ public abstract class BasicGameLogic {
 	private int gameID = 0;
 
 	protected Cell[][] cells;
+	protected int[][] temporaryValues;
 
 	private String difficultyString;
 
@@ -74,12 +76,14 @@ public abstract class BasicGameLogic {
 	public abstract void setUpLogicArray();
 
 	public abstract void difficulty();
+	
+	public abstract int getNumberOfVisibleValues();
 
-	public abstract void printCells();
+//	public abstract void printCells();
 
-	public abstract void setCell(int col, int row, int guess);
+//	public abstract void setCell(int col, int row, int guess);
 
-	public abstract boolean testIfSolved();
+//	public abstract boolean testIfSolved();
 
 	public abstract boolean isConnected();
 
@@ -131,6 +135,7 @@ public abstract class BasicGameLogic {
 	 * @return
 	 */
 	public boolean createSudoku() {
+		Random r = new Random();
 		// Iteration durch Array
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
@@ -140,11 +145,11 @@ public abstract class BasicGameLogic {
 					// bis eine Lösung gefunden wird
 					for (int y = 0; y < 9; y++) {
 						// es wird eine zufällige Zahl generiert
-						int a = (int) (Math.random() * 9) + 1;
+						int randomNum = r.nextInt(9) + 1;
 						// Überprüfung ob generierte Zahl den Sudokuregeln entspricht
-						if (valid(row, col, a)) {
+						if (valid(row, col, randomNum)) {
 							// Zahl ist OK und wird in die Array eingefügt
-							this.cells[row][col].setValue(a);
+							this.cells[row][col].setValue(randomNum);
 							if (createSudoku()) {// rekursiever Aufruf für Backtracking
 								return true;
 							} else {// Fals keine Lösung gefunden wird wird der Wert der Zelle zurück auf 0 gesetzt
@@ -211,34 +216,37 @@ public abstract class BasicGameLogic {
 
 		// es wird eine int-Array erstellt welche die derzeitigen Values der einzelnen
 		// Zellen übernimmt.
-		int help[][] = new int[this.cells.length][this.cells.length];
+		temporaryValues = new int[this.cells.length][this.cells.length];
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				help[row][col] = this.cells[row][col].getValue();
+				temporaryValues[row][col] = this.cells[row][col].getValue();
 			}
 		}
 
 		// solve-Methode wird für das derzeitige Spiel ausgeführt
 		this.solveSudoku();
 
+//		Random randCoordinate = new Random();
+		Random r = new Random();
 		// es werden zufülligen Koordinaten und eine zufällige Zahlen generiert bis
 		// diese den Bedingungen in der If entsprechen
 		while (!correctRandom) {
 			// generiert zufällige Koordinaten und eine zufällige Zahl
-			int randomCol = (int) (Math.floor(Math.random() * this.cells.length - 0.0001));
-			int randomRow = (int) (Math.floor(Math.random() * this.cells.length - 0.0001));
-			int randomNumber = (int) (Math.random() * 9) + 1;
+			int randomCol = r.nextInt(this.cells.length);
+			int randomRow = r.nextInt(this.cells.length);
+			int randomNumber = r.nextInt(9) + 1;
 			// Falls die Zahl bei den Koordinaten der Zahl an der gleichen Koordinaten im
 			// gelösten Sudoku entsprechen wird diese in die Hilfsarry eingefügt
-			if (this.cells[randomRow][randomCol].getValue() == randomNumber && help[randomRow][randomCol] == 0
+			if (this.cells[randomRow][randomCol].getValue() == randomNumber && temporaryValues[randomRow][randomCol] == 0
 					&& this.cells[randomRow][randomCol].getValue() != -1) {
-				help[randomRow][randomCol] = randomNumber;
+				temporaryValues[randomRow][randomCol] = randomNumber;
 				coordinates[0] = randomRow;
 				coordinates[1] = randomCol;
 				correctRandom = true;
 			}
 			counter++;
 			if (counter == 10000) {
+				coordinates = null;
 				break;
 			}
 		}
@@ -247,11 +255,35 @@ public abstract class BasicGameLogic {
 		// gesetzt
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				this.cells[row][col].setValue(help[row][col]);
+				this.cells[row][col].setValue(temporaryValues[row][col]);
 			}
 		}
 		// returniert die Koordinaten der eingefügt Zahl
 		return coordinates;
+	}
+	
+	public boolean testIfSolved() {
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int col = 0; col < this.cells[row].length; col++) {
+				if (this.cells[row][col].getValue() == 0) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public void setCell(int row, int col, int box, int value) {
+		this.cells[row][col] = new Cell(row, col, box, value);
+	}
+	
+	public void removeValues() {
+        for (int row = 0; row < this.cells.length; row++) {
+            for (int col = 0; col < this.cells[row].length; col++) {
+                this.cells[row][col].setIsReal(false);
+                this.cells[row][col].setValue(0);
+            }
+        }
 	}
 
 	public void initializeCustomGame() {

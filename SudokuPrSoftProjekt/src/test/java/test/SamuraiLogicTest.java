@@ -51,17 +51,12 @@ public class SamuraiLogicTest {
 	}
 	
 	
-	@Test
-	public void testSetCell() {
-		model.setCell(1, 1, 1);
-		assertEquals(model.getCells()[1][1].getValue(), 1);
-		assertTrue(model.getCells()[1][1].getIsReal());
-	}
-
-
-
-
-	
+//	@Test
+//	public void testSetCell() {
+//		model.setCell(1, 1, 1);
+//		assertEquals(model.getCells()[1][1].getValue(), 1);
+//		assertTrue(model.getCells()[1][1].getIsReal());
+//	}
 
 	@Test
 	void TestRowTopLeft() {
@@ -403,10 +398,10 @@ public class SamuraiLogicTest {
 		assertTrue(model.solveSudoku());
 	}
 	
-	@Test
-	public void testPrintCells() {		
-	model.printCells();
-	}
+//	@Test
+//	public void testPrintCells() {		
+//	model.printCells();
+//	}
 	
 	@Test
 	public void testSetGamestate() {		
@@ -447,7 +442,8 @@ public class SamuraiLogicTest {
         model.setDifficulty(3);
         model.difficulty();
 //        model.solveSudoku();
-        model.setCell(0, 5, 0);
+//        model.setCell(0, 5, 0);
+        model.getCells()[0][5].setValue(0);
         int [] returnArray = model.hint();
         System.out.println(returnArray[0] + " " + returnArray[1]);
 

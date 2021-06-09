@@ -86,8 +86,6 @@ public class FreeFormLogic extends SudokuLogic {
 		if (!solveSudoku()) {
 			createSudoku();
 		}
-
-		printCells();
 		return true;
 	}
 
@@ -115,8 +113,6 @@ public class FreeFormLogic extends SudokuLogic {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-
-		this.printCells();
 		return data.getGameArray();
 	}
 

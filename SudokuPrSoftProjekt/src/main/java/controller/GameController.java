@@ -69,7 +69,6 @@ public class GameController {
 			}
 		}
 		enableEdit();
-		model.printCells();
 	}
 
 	/**
@@ -173,8 +172,10 @@ public class GameController {
 					if (model instanceof FreeFormLogic)
 						sudokuField[i][j].removeFreeFormColorListener();
 					if (!sudokuField[i][j].getText().equals("")) {
-						model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
-
+//						model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
+						model.getCells()[j][i].setValue(Integer.parseInt(sudokuField[i][j].getText()));
+						model.getCells()[j][i].setIsReal(true);
+						
 						sudokuField[i][j].setDisable(true);
 					}
 				}

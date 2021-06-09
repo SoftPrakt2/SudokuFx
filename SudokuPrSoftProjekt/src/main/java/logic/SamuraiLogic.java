@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Random;
+
 public class SamuraiLogic extends BasicGameLogic {
 
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
@@ -165,95 +167,70 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public void setUpLogicArray() {
 		int box = 1;
-		Cell cell;
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				if (row < 6 && col > 8 && col < 12) {
-					cell = new Cell(row, col, box, -1);
-					cells[row][col] = cell;
-				} else if (row > 8 && row < 12 && col < 6) {
-					cell = new Cell(row, col, box, -1);
-					cells[row][col] = cell;
-				} else if (row > 8 && row < 12 && col > 14) {
-					cell = new Cell(row, col, box, -1);
-					cells[row][col] = cell;
-				} else if (row > 14 && col > 8 && col < 12) {
-					cell = new Cell(row, col, box, -1);
-					cells[row][col] = cell;
-				} else {
-					cell = new Cell(row, col, box, 0);
-					cells[row][col] = cell;
+				if(!(row < 6 && col > 8 && col < 12) && !(row > 8 && row < 12 && col < 6) &&
+						!(row > 8 && row < 12 && col > 14) && !(row > 14 && col > 8 && col < 12)) {
+					setCell(row, col, box, 0);
 				}
-				box++;
+				else {
+					setCell(row, col, box, -1);
+				}
 			}
 		}
 	}
 
 	@Override
 	public void difficulty() {
-		int counter = 369;
-        if (this.difficulty == 3)
-            counter = 230;
-        if (this.difficulty == 5)
-            counter = 200;
-        if (this.difficulty == 7)
-            counter = 180;
+		int counter = getNumberOfVisibleValues();
 
         if(counter == 369) {
-            for (int row = 0; row < this.cells.length; row++) {
-                for (int col = 0; col < this.cells[row].length; col++) {
-                    if(this.cells[row][col].getValue() != -1) {
-                        this.cells[row][col].setIsReal(false);
-                        this.cells[row][col].setValue(0);
-                    }
+            removeValues();
+        }
+        else {
+        	Random r = new Random();
+        	while (counter != 0) {
+        		int randCol = r.nextInt(this.cells.length);
+            	int randRow = r.nextInt(this.cells.length);
+                if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getIsReal()
+                        && this.cells[randRow][randCol].getValue() != -1) {
+                    this.cells[randRow][randCol].setValue(0);
+                    this.cells[randRow][randCol].setIsReal(false);
+                    counter--;
                 }
             }
-            counter = 0;
-        }
-
-        while (counter != 0) {
-            int randomCol = (int) (Math.floor(Math.random() * 20.9999));
-            int randomRow = (int) (Math.floor(Math.random() * 20.9999));
-            if (this.cells[randomRow][randomCol].getValue() != 0 && this.cells[randomRow][randomCol].getIsReal()
-                    && this.cells[randomRow][randomCol].getValue() != -1) {
-                this.cells[randomRow][randomCol].setValue(0);
-                this.cells[randomRow][randomCol].setIsReal(false);
-                counter--;
-            }
         }
 	}
-
+	
 	@Override
-	public void printCells() {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				if (this.cells[row][col].getValue() == -1) {
-					System.out.print("- ");
-				} else {
-					System.out.print(this.cells[row][col].getValue() + " ");
-				}
-			}
-			System.out.println();
+	public int getNumberOfVisibleValues() {
+		if(this.difficulty == 3) {
+			return 230;
+		}
+		else if(this.difficulty == 5) {
+			return 200;
+		}
+		else if(this.difficulty == 7) {
+			return 180;
+		}
+		else {
+			return 369;
 		}
 	}
 
-	@Override
-	public void setCell(int row, int col, int guess) {
-		this.cells[row][col].setValue(guess);
-		this.cells[row][col].setIsReal(true);
-	}
-
-	@Override
-	public boolean testIfSolved() {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				if (this.cells[row][col].getValue() == 0) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+//	@Override
+//	public void printCells() {
+//		for (int row = 0; row < this.cells.length; row++) {
+//			for (int col = 0; col < this.cells[row].length; col++) {
+//				if (this.cells[row][col].getValue() == -1) {
+//					System.out.print("- ");
+//				} else {
+//					System.out.print(this.cells[row][col].getValue() + " ");
+//				}
+//			}
+//			System.out.println();
+//		}
+//	}
 
 	@Override
 	public boolean isConnected() {
