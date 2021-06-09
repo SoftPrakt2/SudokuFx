@@ -12,8 +12,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * createds all variables and methods that are needed by all subclasses
- * creades abstract methods that need to be implementeted by the subclasses
+ * Creates all variables and methods that are needed by all subclasses
+ * Creates abstract methods that need to be implemented by the subclasses
  *
  */
 public abstract class BasicGameLogic {
@@ -196,7 +196,7 @@ public abstract class BasicGameLogic {
 	/**
 	 * gives the user a valid hint
 	 * sudoku is solved before hint is given so that an situation 
-	 * does not occure, where the sudoku game becomes unsolvable
+	 * does not occur, where the sudoku game becomes unsolvable
 	 * @return
 	 */
 	public int[] hint() {
@@ -285,7 +285,7 @@ public abstract class BasicGameLogic {
 
 	/**
 	 * initializes a new game
-	 * calls alle methodes that are needed to create a game
+	 * calls all methods that are needed to create a game
 	 */
 	public void initializeCustomGame() {
 		setUpLogicArray();
