@@ -43,17 +43,17 @@ public class GameController {
 	}
 
 	/**
-	 * Creates, depending on the difficulty that the user chose, a sudoku game
-	 * uses the method {@link #createGame()}
+	 * Creates, depending on the difficulty that the user chose, a sudoku game uses
+	 * the method {@link #createGame()}
 	 */
 	public void createGameHandler(ActionEvent event) {
 		createGame();
 	}
 
 	/**
-	 * Creates a Sudoku-Game
-	 * type and difficulty of the game are decides by user inputs (button-clicks)
-	 * {@link #enableEdit()} enables the text fields, so that the user can play
+	 * Creates a Sudoku-Game type and difficulty of the game are decides by user
+	 * inputs (button-clicks) {@link #enableEdit()} enables the text fields, so that
+	 * the user can play
 	 */
 	public void createGame() {
 		model.setUpGameField();
@@ -73,7 +73,6 @@ public class GameController {
 				if ((!sudokuField[i][j].getText().equals("") || !sudokuField[i][j].getText().equals("-1"))
 						&& !number.equals("0")) {
 					sudokuField[i][j].setText(number);
-
 				}
 			}
 		}
@@ -81,8 +80,8 @@ public class GameController {
 	}
 
 	/**
-	 * deletes all number from the text field
-	 * restarts Timer and resets gamestate to OPEN
+	 * deletes all number from the text field restarts Timer and resets gamestate to
+	 * OPEN
 	 */
 	public void newGameHandler(ActionEvent event) {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -108,10 +107,8 @@ public class GameController {
 	}
 
 	/**
-	 * resets a manually created game
-	 * buttons for solve, check and hint get disabled
-	 * lock-button gets enabled and becomes visible
-	 * {@link #enableEdit()}
+	 * resets a manually created game buttons for solve, check and hint get disabled
+	 * lock-button gets enabled and becomes visible {@link #enableEdit()}
 	 */
 	public void resetCustomGameState() {
 		if (model.getGametype().equals("FreeForm")) {
@@ -129,13 +126,13 @@ public class GameController {
 	}
 
 	/**
-	 * deletes user inputs
-	 * values that were created at the start of the game do not get deleted
+	 * deletes user inputs values that were created at the start of the game do not
+	 * get deleted
 	 */
 	public void resetHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (!model.getCells()[j][i].getIsReal() && !sudokuField[i][j].getText().equals("-1")) {
+				if (!model.getCells()[j][i].getFixedNumber() && !sudokuField[i][j].getText().equals("-1")) {
 					sudokuField[i][j].clear();
 					model.getCells()[j][i].setValue(0);
 				}
@@ -146,8 +143,9 @@ public class GameController {
 	}
 
 	/**
-	 * Colors the text fields, depending on the information from the model
-	 * is relevant for FreeForm-Games
+	 * Colors the text fields, depending on the information from the model is
+	 * relevant for FreeForm-Games
+	 * 
 	 * @param e
 	 */
 	public void customColorsDoneHandler(ActionEvent e) {
@@ -176,10 +174,14 @@ public class GameController {
 	}
 
 	/**
-	 * fixes the numbers that the user wants to create a sudoku with
-	 * checks for conflicts and asks the user to remove them if any occur
+	 * fixes the numbers that the user wants to create a sudoku with checks for
+	 * conflicts and asks the user to remove them if any occur checks if the
+	 * manually created sudoku is solvable
+	 * 		- if it is not solvable the user needs to create a new sudoku 
 	 * {@link #compareResult()} test for conflicts
-	 * {@link ##enoughManualNumbers()} test if there are enough numbers to create a sudoku
+	 * {@link ##enoughManualNumbers()} test if there are enough numbers to create a
+	 * sudoku
+	 * 
 	 */
 	public void manuelDoneHandler(ActionEvent e) {
 		if (compareResult() && enoughManualNumbers()) {
@@ -188,26 +190,24 @@ public class GameController {
 					if (model instanceof FreeFormLogic)
 						sudokuField[i][j].removeFreeFormColorListener();
 					if (!sudokuField[i][j].getText().equals("")) {
-//						model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
+//							model.setCell(j, i, Integer.parseInt(sudokuField[i][j].getText()));
 						model.getCells()[j][i].setValue(Integer.parseInt(sudokuField[i][j].getText()));
-						model.getCells()[j][i].setIsReal(true);
-
+						model.getCells()[j][i].setFixedNumber(true);
 						sudokuField[i][j].setDisable(true);
 					}
 				}
 			}
-
-			model.setUpGameInformations();
-			scene.getGameNotificationLabel().setText(model.getGameText());
-			scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
-			scene.getDoneButton().setVisible(false);
-			Stream.of(scene.getHintButton(), scene.getAutoSolveButton(), scene.getCheckButton())
-					.forEach(button -> button.setDisable(false));
+				model.setUpGameInformations();
+				scene.getGameNotificationLabel().setText(model.getGameText());
+				scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
+				scene.getDoneButton().setVisible(false);
+				Stream.of(scene.getHintButton(), scene.getAutoSolveButton(), scene.getCheckButton())
+						.forEach(button -> button.setDisable(false));
+//			}
 		} else if (!compareResult()) {
 			for (int i = 0; i < sudokuField.length; i++) {
 				for (int j = 0; j < sudokuField[i].length; j++) {
 					model.getCells()[i][j].setValue(0);
-
 				}
 			}
 			model.setGameState(Gamestate.CONFLICT);
@@ -217,7 +217,9 @@ public class GameController {
 
 	/**
 	 * test if there are enough numbers to create a sudoku
-	 * @return returns false if there are not enough numbers and returns true otherwise
+	 * 
+	 * @return returns false if there are not enough numbers and returns true
+	 *         otherwise
 	 */
 	public boolean enoughManualNumbers() {
 		int count = 0;
@@ -228,7 +230,7 @@ public class GameController {
 				}
 			}
 		}
-		model.setManualNumbersInserted(count);
+//		model.setManualNumbersInserted(count);
 		if (count < model.getNumbersToBeSolvable()) {
 			model.setGameState(Gamestate.NOTENOUGHNUMBERS);
 			scene.getGameNotificationLabel().setText(model.getGameText());
@@ -239,9 +241,8 @@ public class GameController {
 	}
 
 	/**
-	 * checks for conflicts and colors them red if there are any
-	 * returns true if there are no conflicts
-	 * returns false if there are conflicts
+	 * checks for conflicts and colors them red if there are any returns true if
+	 * there are no conflicts returns false if there are conflicts
 	 * {@link #connectWithModel()} connects model-array with text field-array
 	 */
 	public boolean compareResult() {
@@ -260,7 +261,7 @@ public class GameController {
 
 					// vielleicht unnötig
 					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-					if (!model.getCells()[row][col].getIsReal()) {
+					if (!model.getCells()[row][col].getFixedNumber()) {
 						// nochmal genauer drüberschaun zwecks verständnis
 						model.getCells()[row][col].setValue(0);
 						if (!model.valid(row, col, Integer.parseInt(sudokuField[col][row].getText()))) {
@@ -287,8 +288,8 @@ public class GameController {
 	}
 
 	/**
-	 * connects text field-array with model-array 
-	 * Fills the text field-array with the values of the model-array
+	 * connects text field-array with model-array Fills the text field-array with
+	 * the values of the model-array
 	 */
 	public void connectArrays() {
 
@@ -301,7 +302,7 @@ public class GameController {
 				if (model.getCells()[j][i].getValue() != 0) {
 					sudokuField[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
 				}
-				if (model.getCells()[j][i].getIsReal()) {
+				if (model.getCells()[j][i].getFixedNumber()) {
 					sudokuField[i][j].setDisable(true);
 				}
 			}
@@ -309,9 +310,9 @@ public class GameController {
 	}
 
 	/**
-	 * solves the sudoku if there are no conflicts
-	 * Asks the user to remove the conflicts if there are any
-	 * uses the following methods {@link #connectArrays(), #compareResult()}
+	 * solves the sudoku if there are no conflicts Asks the user to remove the
+	 * conflicts if there are any uses the following methods
+	 * {@link #connectArrays(), #compareResult()}
 	 */
 	public void autoSolveHandler(ActionEvent e) {
 		scene.removeConflictListeners();
@@ -348,8 +349,8 @@ public class GameController {
 	}
 
 	/**
-	 * checks if the sudoku is solved (without conflicts)
-	 * {@link #compareResult()} checks for conflicts
+	 * checks if the sudoku is solved (without conflicts) {@link #compareResult()}
+	 * checks for conflicts
 	 */
 	public void checkHandler(ActionEvent e) {
 
@@ -376,7 +377,8 @@ public class GameController {
 	}
 
 	/**
-	 * empty text fields get enabled so that the user can input his numbers into them
+	 * empty text fields get enabled so that the user can input his numbers into
+	 * them
 	 */
 	public void enableEdit() {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -407,8 +409,7 @@ public class GameController {
 	}
 
 	/**
-	 * gives the user a hint
-	 * {@link #connectWithModel()}
+	 * gives the user a hint {@link #connectWithModel()}
 	 * 
 	 * @param e
 	 */
@@ -434,10 +435,11 @@ public class GameController {
 //					}
 //				}
 //			}
-			//checks if coordinates are null
+			// checks if coordinates are null
 			if (coordinates != null) {
-				//checks if there is already a userinput in this textfield with these coordinates
-				//this check exists so taht userinputs do not get overwritten
+				// checks if there is already a userinput in this textfield with these
+				// coordinates
+				// this check exists so taht userinputs do not get overwritten
 				if (sudokuField[coordinates[1]][coordinates[0]].getText().equals("")) {
 					String number = Integer.toString(model.getCells()[coordinates[0]][coordinates[1]].getValue());
 					sudokuField[coordinates[1]][coordinates[0]].setText(number);
@@ -461,8 +463,9 @@ public class GameController {
 	}
 
 	/**
-	 * adds or removes Listener to the text field
-	 * the listeners call the {@link #compareResult()} method and show conflicts
+	 * adds or removes Listener to the text field the listeners call the
+	 * {@link #compareResult()} method and show conflicts
+	 * 
 	 * @param e
 	 */
 	public void switchOffConflicts(ActionEvent e) {
@@ -473,8 +476,8 @@ public class GameController {
 	}
 
 	/**
-	 * saves the game
-	 * stops the timer
+	 * saves the game stops the timer
+	 * 
 	 * @param e
 	 */
 	public void saveGame(ActionEvent e) {
@@ -495,11 +498,11 @@ public class GameController {
 		storageModel.saveGame(model);
 
 	}
-	
+
 	/**
-	 * Imports a game
-	 * This import must be a JSON file
-	 * a new scene is created depending on the import
+	 * Imports a game This import must be a JSON file a new scene is created
+	 * depending on the import
+	 * 
 	 * @param e
 	 */
 	public void importGame(ActionEvent e) {
@@ -560,8 +563,8 @@ public class GameController {
 	}
 
 	/**
-	 * exports the game as a JSON-File
-	 * user can choose the storage path
+	 * exports the game as a JSON-File user can choose the storage path
+	 * 
 	 * @param e
 	 */
 	public void exportGame(ActionEvent e) {
@@ -579,6 +582,7 @@ public class GameController {
 
 	/**
 	 * switches the scene to the menu-scene
+	 * 
 	 * @param e
 	 */
 	public void switchToMainMenu(ActionEvent e) {
@@ -594,8 +598,7 @@ public class GameController {
 	}
 
 	/**
-	 * deletes all inputs from the text fields-array
-	 * enables all text fields
+	 * deletes all inputs from the text fields-array enables all text fields
 	 */
 	public void emptyArrays() {
 		for (int i = 0; i < sudokuField.length; i++) {

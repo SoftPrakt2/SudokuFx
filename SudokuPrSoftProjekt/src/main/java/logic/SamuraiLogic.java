@@ -1,7 +1,5 @@
 package logic;
 
-import java.util.Random;
-
 public class SamuraiLogic extends BasicGameLogic {
 
 	/**
@@ -209,14 +207,14 @@ public class SamuraiLogic extends BasicGameLogic {
             removeValues();
         }
         else {
-        	Random r = new Random();
+        	
         	while (counter != 0) {
         		int randCol = r.nextInt(this.cells.length);
             	int randRow = r.nextInt(this.cells.length);
-                if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getIsReal()
+                if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getFixedNumber()
                         && this.cells[randRow][randCol].getValue() != -1) {
                     this.cells[randRow][randCol].setValue(0);
-                    this.cells[randRow][randCol].setIsReal(false);
+                    this.cells[randRow][randCol].setFixedNumber(false);
                     counter--;
                 }
             }
@@ -229,13 +227,13 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public int getNumberOfVisibleValues() {
 		if(this.difficulty == 3) {
-			return 230;
+			return 210;
 		}
 		else if(this.difficulty == 5) {
-			return 200;
+			return 190;
 		}
 		else if(this.difficulty == 7) {
-			return 180;
+			return 170;
 		}
 		else {
 			return 369;

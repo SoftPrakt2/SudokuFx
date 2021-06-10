@@ -1,7 +1,5 @@
 package logic;
 
-import java.util.Random;
-
 /**
  * extends BasicGameLogic
  * implements all abstract methods of BasicGameLogic
@@ -95,13 +93,12 @@ public class SudokuLogic extends BasicGameLogic {
             removeValues();
         }
         else {
-        	Random r = new Random();
             while (counter != 0) {
                 	int randCol = r.nextInt(9);
                 	int randRow = r.nextInt(9);
-                if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getIsReal()) {
+                if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getFixedNumber()) {
                     this.cells[randRow][randCol].setValue(0);
-                    this.cells[randRow][randCol].setIsReal(false);
+                    this.cells[randRow][randCol].setFixedNumber(false);
                     counter--;
                 }
             }

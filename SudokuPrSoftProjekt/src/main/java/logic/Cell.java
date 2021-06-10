@@ -2,8 +2,6 @@ package logic;
 
 import com.google.gson.annotations.Expose;
 
-import javafx.scene.paint.Color;
-
 public class Cell {
 
 	// Spalte 1 - 9
@@ -19,7 +17,7 @@ public class Cell {
 	@Expose int value;
 
 	// Manuelle Eingabe
-	@Expose boolean isReal;
+	@Expose boolean fixedNumber;
 
 	// Color color
 	@Expose String boxcolor;
@@ -30,16 +28,16 @@ public class Cell {
 	        this.col = col;
 	        this.box = box;
 	        this.value = value;
-	        this.isReal = true;
+	        this.fixedNumber = true;
 	        this.boxcolor = "";
 	    }
 
-	    public boolean getIsReal() {
-	        return this.isReal;
+	    public boolean getFixedNumber() {
+	        return this.fixedNumber;
 	    }
 
-	    public void setIsReal(boolean newState) {
-	        this.isReal = newState;
+	    public void setFixedNumber(boolean newState) {
+	        this.fixedNumber = newState;
 	    }
 
 	    public int getCol() {

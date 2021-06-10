@@ -9,13 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import logic.BasicGameLogic;
-import logic.Cell;
 import logic.Gamestate;
 import logic.SamuraiLogic;
-import logic.SudokuLogic;
 
 
-public class SamuraiLogicTest {
+class SamuraiLogicTest {
 
 	
 	BasicGameLogic model;
@@ -27,7 +25,7 @@ public class SamuraiLogicTest {
 	}
 	
 	@Test
-	public void testSetUpLogicArray() {
+	void testSetUpLogicArray() {
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
 			for (int j = 0; j < model.getCells()[i].length; j++) {
@@ -42,7 +40,7 @@ public class SamuraiLogicTest {
 	
 	
 	@Test
-	public void testSetCells() {
+	void testSetCells() {
 		SamuraiLogic model2 = new SamuraiLogic(Gamestate.OPEN, 0 , 0 , false);
 		model2.setUpLogicArray();
 		model2.getCells()[1][1].setValue(1);
@@ -250,7 +248,7 @@ public class SamuraiLogicTest {
 	
 	
     @Test
-    public void testValid() {
+    void testValid() {
         assertTrue(model.valid(0, 0, 5));
 
         model.getCells()[0][0].setValue(5);
@@ -260,7 +258,7 @@ public class SamuraiLogicTest {
     }
     
 	@Test
-	public void testValidTrue() {
+	void testValidTrue() {
 		//ROW
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][7].setValue(2);
@@ -275,7 +273,7 @@ public class SamuraiLogicTest {
 	}
 	
 	@Test
-	public void testValidFalseBox() {
+	void testValidFalseBox() {
 		//ROW
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][7].setValue(2);
@@ -290,7 +288,7 @@ public class SamuraiLogicTest {
 	}
 
 	@Test
-	public void testValidFalseRow() {
+	void testValidFalseRow() {
 		//ROW
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][7].setValue(2);
@@ -305,7 +303,7 @@ public class SamuraiLogicTest {
 	}
 	
 	@Test
-	public void testValidFalseCol() {
+	void testValidFalseCol() {
 		//ROW
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][7].setValue(2);
@@ -320,7 +318,7 @@ public class SamuraiLogicTest {
 	}
 	
 	@Test
-	public void testCreate() {
+	void testCreate() {
 		model.createSudoku();
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
@@ -335,20 +333,20 @@ public class SamuraiLogicTest {
 	}
 	
 	@Test
-	public void testCreate2() {
+	void testCreate2() {
 		assertTrue(model.createSudoku());
 	}
 	
 	
 	@Test
-	public void testDifficulty3() {
+	void testDifficulty3() {
 		model.createSudoku();
 		model.setDifficulty(3);
 		model.difficulty();
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
 			for (int j = 0; j < model.getCells()[i].length; j++) {
-				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getIsReal() && model.getCells()[i][j].getValue() != -1) {
+				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getFixedNumber() && model.getCells()[i][j].getValue() != -1) {
 					count++;
 				}
 			}
@@ -359,14 +357,14 @@ public class SamuraiLogicTest {
 	
 	
 	@Test
-	public void testDifficulty5() {
+	void testDifficulty5() {
 		model.createSudoku();
 		model.setDifficulty(5);
 		model.difficulty();
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
 			for (int j = 0; j < model.getCells()[i].length; j++) {
-				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getIsReal() && model.getCells()[i][j].getValue() != -1) {
+				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getFixedNumber() && model.getCells()[i][j].getValue() != -1) {
 					count++;
 				}
 			}
@@ -375,14 +373,14 @@ public class SamuraiLogicTest {
 	}
 	
 	@Test
-	public void testDifficulty7() {
+	void testDifficulty7() {
 		model.createSudoku();
 		model.setDifficulty(7);
 		model.difficulty();
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
 			for (int j = 0; j < model.getCells()[i].length; j++) {
-				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getIsReal() && model.getCells()[i][j].getValue() != -1) {
+				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getFixedNumber() && model.getCells()[i][j].getValue() != -1) {
 					count++;
 				}
 			}
@@ -391,7 +389,7 @@ public class SamuraiLogicTest {
 	}
 	
 	@Test
-	public void testSolve() {		
+	void testSolve() {		
 	model.createSudoku();
 	model.setDifficulty(3);
 	model.difficulty();
@@ -404,13 +402,13 @@ public class SamuraiLogicTest {
 //	}
 	
 	@Test
-	public void testSetGamestate() {		
+	void testSetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		assertEquals(Gamestate.DONE, model.getGamestate());
 	}	
 	
 	@Test
-	public void testGetGamestate() {		
+	void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		model.getGamestate();
 		assertEquals(Gamestate.DONE, model.getGamestate());
@@ -418,7 +416,7 @@ public class SamuraiLogicTest {
 	
 	
 	@Test
-	public void testIfSolvedTrue() {		
+	void testIfSolvedTrue() {		
 		model.createSudoku();
 		model.setDifficulty(3);
 		model.difficulty();
@@ -427,7 +425,7 @@ public class SamuraiLogicTest {
 	}	
 	
 	@Test
-	public void testIfSolvedFalse() {		
+	void testIfSolvedFalse() {		
 		model.createSudoku();
 		model.setDifficulty(3);
 		model.difficulty();
@@ -436,7 +434,7 @@ public class SamuraiLogicTest {
 	
 	
 	@Test
-    public void testHint() {
+    void testHint() {
         int [] sollutionArray = new int[] {0, 0};
         model.createSudoku();
         model.setDifficulty(3);

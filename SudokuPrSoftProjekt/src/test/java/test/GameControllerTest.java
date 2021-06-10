@@ -21,7 +21,7 @@
 //import logic.SudokuLogic;
 //
 //@ExtendWith(ApplicationExtension.class)
-//public class GameControllerTest {
+//class GameControllerTest {
 //
 //	private GameController controller;
 //	private ActionEvent action = new ActionEvent();
@@ -35,7 +35,7 @@
 //	}
 //	
 //	@Test
-//	public void testConstructorWithDifferentGameTypes() {
+//	void testConstructorWithDifferentGameTypes() {
 //		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
 //		SamuraiGameBuilder scene = new SamuraiGameBuilder(model);
 //		scene.initializeGame();
@@ -48,7 +48,7 @@
 //	}
 //
 //	@Test
-//	public void testCreateGameHandler() {
+//	void testCreateGameHandler() {
 //		controller.getModel().setDifficulty(3);
 //		controller.createGameHandler(action);
 //		boolean testIfModleCreated = false;
@@ -68,7 +68,7 @@
 //	}
 //
 //	@Test
-//	public void testCreate() {
+//	void testCreate() {
 //		controller.getModel().setDifficulty(3);
 //		controller.createGame();
 //		boolean testIfModleCreated = false;
@@ -88,7 +88,7 @@
 //	}
 //
 //	@Test
-//	public void testNewGameHandlerWithoutConflict() {
+//	void testNewGameHandlerWithoutConflict() {
 //		controller.getModel().setDifficulty(3);
 //		controller.createGameHandler(action);
 //		int counter = 0;
@@ -125,7 +125,7 @@
 //	
 //	
 //	@Test
-//	public void testHintHandlerWithoutConflict() {
+//	void testHintHandlerWithoutConflict() {
 //		controller.getModel().setDifficulty(3);
 //		controller.createGame();
 //		int counter = 0;
@@ -149,7 +149,7 @@
 //	}
 //	
 //	@Test
-//	public void testHintHandlerWithConflict() {
+//	void testHintHandlerWithConflict() {
 //		controller.getModel().setDifficulty(0);
 //		controller.createGame();
 //		controller.getsudokuField()[1][1].setText("1");
@@ -178,7 +178,7 @@
 //	
 //	
 //	@Test
-//	public void testEnableEdit() {
+//	void testEnableEdit() {
 //		controller.getModel().setDifficulty(3);
 //		controller.createGame();
 //		controller.enableEdit();
@@ -199,7 +199,7 @@
 //	}
 //	
 //	@Test
-//	public void testResetHandler() {
+//	void testResetHandler() {
 //		controller.createGame();
 //		controller.getModel().getCells()[1][1].setValue(1);
 //		controller.connectArrays();
@@ -211,7 +211,7 @@
 //	}
 //	
 //	@Test
-//	public void testConnectWithModel() {
+//	void testConnectWithModel() {
 //		controller.createGame();
 //		controller.getsudokuField()[1][1].setText("1");
 //		System.out.println(controller.getModel().getCells()[1][1].getValue());
@@ -219,14 +219,14 @@
 //	}
 //	
 //	@Test
-//	public void testCompareResultTrue() {
+//	void testCompareResultTrue() {
 //		controller.createGame();
 //		assertTrue(controller.compareResult());
 //		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
 //	}
 //	
 //	@Test
-//	public void testCompareResultFalse() {
+//	void testCompareResultFalse() {
 //		controller.createGame();
 //		controller.getsudokuField()[1][1].setText("1");
 //		controller.getsudokuField()[1][2].setText("1");
@@ -238,7 +238,7 @@
 //	}
 //	
 //	@Test
-//	public void testAutoSolveWithoutConflicts() {
+//	void testAutoSolveWithoutConflicts() {
 //		controller.getModel().setDifficulty(0);
 //		controller.createGame();
 //		int modelcounter = 0;
@@ -281,7 +281,7 @@
 //	}
 //
 //	@Test
-//	public void testAutoSolveWithConflicts() {
+//	void testAutoSolveWithConflicts() {
 //		controller.createGame();
 //		controller.getsudokuField()[1][1].setText("1");
 //		controller.getsudokuField()[1][2].setText("1");
@@ -290,7 +290,7 @@
 //	}
 //	
 //	@Test
-//	public void testAutoSolveWithUnsolvable() {
+//	void testAutoSolveWithUnsolvable() {
 //		controller.createGame();
 //		controller.getsudokuField()[0][0].setText("1");
 //		controller.getsudokuField()[0][1].setText("2");
@@ -306,7 +306,7 @@
 //	}
 //	
 //	@Test
-//	public void testConnectArrays() {
+//	void testConnectArrays() {
 //		controller.createGame();
 //		controller.connectArrays();
 //		assertTrue(!controller.getsudokuField()[1][1].isDisabled());

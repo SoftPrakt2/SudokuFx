@@ -2,9 +2,6 @@ package test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +11,7 @@ import logic.Cell;
 import logic.Gamestate;
 import logic.SamuraiLogic;
 
-public class BasicGameLogicTest {
+class BasicGameLogicTest {
 	
 	BasicGameLogic model;
 	
@@ -26,7 +23,7 @@ public class BasicGameLogicTest {
 	
 
 	@Test
-	public void testSetCells() {
+	void testSetCells() {
 		SamuraiLogic model2 = new SamuraiLogic(Gamestate.OPEN, 0 , 0 , false);
 		model2.setUpLogicArray();
 		model2.getCells()[1][1].setValue(1);
@@ -36,20 +33,20 @@ public class BasicGameLogicTest {
 	
 	
 	@Test
-	public void testGetCells() {
+	void testGetCells() {
 		Cell[][] a = model.getCells();
 		  assertArrayEquals(a, model.getCells());
 	}
 	
 
     @Test
-    public void testSetDifficulty() {
+    void testSetDifficulty() {
         model.setDifficulty(5);
         assertEquals(model.getDifficulty(), 5);
     }
     
     @Test
-    public void testGetDifficulty() {
+    void testGetDifficulty() {
     	model.setDifficulty(7);
         assertEquals(model.getDifficulty(), 7);
     }
@@ -78,70 +75,70 @@ public class BasicGameLogicTest {
 //    }
 
     @Test
-    public void testGetSecondsPlayed() {
+    void testGetSecondsPlayed() {
         model.setSecondsPlayed(50);
         assertEquals(model.getSecondsplayed(), 50);
     }
     @Test
-    public void testSetSecondsPlayed() {
+    void testSetSecondsPlayed() {
         model.setSecondsPlayed(50);
         assertEquals(model.getSecondsplayed(), 50);
     }
 
     @Test
-    public void testGetMinutesPlayed() {
+    void testGetMinutesPlayed() {
         model.setMinutesPlayed(3);
         assertEquals(model.getMinutesplayed(), 3);
     }
     @Test
-    public void testSetMinutesPlayed() {
+    void testSetMinutesPlayed() {
         model.setMinutesPlayed(3);
         assertEquals(model.getMinutesplayed(), 3);
     }
     
     @Test
-    public void testGetGamePoints() {
+    void testGetGamePoints() {
         assertEquals(model.getGamepoints(), 10);
     }
     @Test
-    public void testSetGamePoints() {
+    void testSetGamePoints() {
         model.setGamePoints(11);
         assertEquals(model.getGamepoints(), 11);
     }
     
     
     @Test
-    public void testSetDifficultyString7() {
+    void testSetDifficultyString7() {
     	model.setDifficulty(7);
         model.setDifficultyString();
         assertEquals(model.getDifficultystring(), "Easy");
     }
     @Test
-    public void testSetDifficultyString5() {
+    void testSetDifficultyString5() {
     	model.setDifficulty(5);
         model.setDifficultyString();
         assertEquals(model.getDifficultystring(), "Medium");
     }
     @Test
-    public void testSetDifficultyString3() {
+    void testSetDifficultyString3() {
     	model.setDifficulty(3);
         model.setDifficultyString();
         assertEquals(model.getDifficultystring(), "Hard");
     }
     @Test
-    public void testSetDifficultyString0() {
+    void testSetDifficultyString0() {
     	model.setDifficulty(0);
         model.setDifficultyString();
         assertEquals(model.getDifficultystring(), "Manual");
     }
     
     @Test
-    public void testGetGameID() {
+    void testGetGameID() {
         model.setGameID(1);
         assertEquals(model.getGameid(), 1);
     }
     @Test
-    public void testSetGameID() {
+    void testSetGameID() {
         model.setGameID(1);
         assertEquals(model.getGameid(), 1);
     }
@@ -149,18 +146,18 @@ public class BasicGameLogicTest {
     
     
     @Test
-    public void testGetStartTime() {
+    void testGetStartTime() {
         model.setStartTime(0);
         assertEquals(model.getStartTime(), 0);
     }
     @Test
-    public void testSetStartTime() {
+    void testSetStartTime() {
         model.setStartTime(0);
         assertEquals(model.getStartTime(), 0);
     }
     
     @Test
-    public void testGetGameText() {
+    void testGetGameText() {
         model.setGameState(Gamestate.OPEN);
       //  assertEquals(model.getGameText(), "Game ongoing!");
         model.setGameState(Gamestate.DONE);
@@ -176,17 +173,17 @@ public class BasicGameLogicTest {
     }
     
     @Test
-    public void testGetGameState() {
+    void testGetGameState() {
         model.setGameState(Gamestate.OPEN);
         assertEquals(model.getGamestate(), Gamestate.OPEN);
     }
     @Test
-    public void testGetGameTyp() {
+    void testGetGameTyp() {
     	 assertEquals(model.getGametype(), "Samurai");
     }
     
     @Test
-    public void testCalculateGameTime() {
+    void testCalculateGameTime() {
 //    	model.setMinutesPlayed(2);
 //    	model.setSecondsPlayed(30);
 //    	

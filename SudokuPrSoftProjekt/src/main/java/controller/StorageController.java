@@ -170,8 +170,8 @@ public class StorageController {
 					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
 				}
 
-				if (model.getCells()[j][i].getIsReal() && model.getCells()[j][i].getValue() != 0) {
-					System.out.println(model.getCells()[j][i].getIsReal());
+				if (model.getCells()[j][i].getFixedNumber() && model.getCells()[j][i].getValue() != 0) {
+					System.out.println(model.getCells()[j][i].getFixedNumber());
 					s[i][j].setDisable(true);
 				}
 			}

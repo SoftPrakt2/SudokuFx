@@ -8,12 +8,11 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import logic.Cell;
 import logic.Gamestate;
 import logic.SudokuLogic;
 
 
-public class SudokuLogicTest {
+class SudokuLogicTest {
 
 	
 	SudokuLogic model;
@@ -25,7 +24,7 @@ public class SudokuLogicTest {
 	}
 	
 	@Test
-	public void testSetUpLogicArray() {
+	void testSetUpLogicArray() {
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
 			for (int j = 0; j < model.getCells()[i].length; j++) {
@@ -41,7 +40,7 @@ public class SudokuLogicTest {
 	
 	
 	@Test
-	public void testSetCells() {
+	void testSetCells() {
 		SudokuLogic model2 = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);
 		model2.setUpLogicArray();
 		model2.getCells()[1][1].setValue(1);
@@ -51,7 +50,7 @@ public class SudokuLogicTest {
 	
 	
 //	@Test
-//	public void testSetCell() {
+//	void testSetCell() {
 //		model.setCell(1, 1, 1);
 //		assertEquals(model.getCells()[1][1].getValue(), 1);
 //		assertTrue(model.getCells()[1][1].getIsReal());
@@ -59,49 +58,49 @@ public class SudokuLogicTest {
 	
 	
 	@Test
-	public void testCheckRowTrue() {
+	void testCheckRowTrue() {
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][5].setValue(3);
 		assertTrue(model.checkRow(0, 1, 2));
 	}
 	
 	@Test
-	public void testCheckRowFalse() {
+	void testCheckRowFalse() {
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][5].setValue(3);
 		assertFalse(model.checkRow(0, 1, 3));
 	}
 	
 	@Test
-	public void testCheckColTrue() {
+	void testCheckColTrue() {
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[5][0].setValue(3);
 		assertTrue(model.checkCol(1, 0, 2));
 	}
 	
 	@Test
-	public void testCheckColFalse() {
+	void testCheckColFalse() {
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[5][0].setValue(3);
 		assertFalse(model.checkCol(1, 0, 3));
 	}
 	
 	@Test
-	public void testCheckBoxTrue() {
+	void testCheckBoxTrue() {
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[2][2].setValue(3);
 		assertTrue(model.checkBox(1, 0, 2));
 	}
 	
 	@Test
-	public void testCheckBoxFalse() {
+	void testCheckBoxFalse() {
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[2][2].setValue(3);
 		assertFalse(model.checkBox(1, 0, 3));
 	}
 	
 	@Test
-	public void testValidTrue() {
+	void testValidTrue() {
 		//ROW
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][7].setValue(2);
@@ -116,7 +115,7 @@ public class SudokuLogicTest {
 	}
 	
 	@Test
-	public void testValidFalseBox() {
+	void testValidFalseBox() {
 		//ROW
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][7].setValue(2);
@@ -131,7 +130,7 @@ public class SudokuLogicTest {
 	}
 
 	@Test
-	public void testValidFalseRow() {
+	void testValidFalseRow() {
 		//ROW
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][7].setValue(2);
@@ -146,7 +145,7 @@ public class SudokuLogicTest {
 	}
 	
 	@Test
-	public void testValidFalseCol() {
+	void testValidFalseCol() {
 		//ROW
 		model.getCells()[0][0].setValue(1);
 		model.getCells()[0][7].setValue(2);
@@ -161,7 +160,7 @@ public class SudokuLogicTest {
 	}
 	
 	@Test
-	public void testCreate() {
+	void testCreate() {
 		model.createSudoku();
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
@@ -176,12 +175,12 @@ public class SudokuLogicTest {
 	}
 	
 	@Test
-	public void testCreate2() {
+	void testCreate2() {
 		assertTrue(model.createSudoku());
 	}
 	
 	@Test
-	public void testDifficulty3() {
+	void testDifficulty3() {
 		model.createSudoku();
 		model.setDifficulty(3);
 		model.difficulty();
@@ -197,7 +196,7 @@ public class SudokuLogicTest {
 	}
 	
 	@Test
-	public void testDifficulty5() {
+	void testDifficulty5() {
 		model.createSudoku();
 		model.setDifficulty(5);
 		model.difficulty();
@@ -213,7 +212,7 @@ public class SudokuLogicTest {
 	}
 	
 	@Test
-	public void testDifficulty7() {
+	void testDifficulty7() {
 		model.createSudoku();
 		model.setDifficulty(7);
 		model.difficulty();
@@ -229,7 +228,7 @@ public class SudokuLogicTest {
 	}
 	
 	@Test
-	public void testSolve() {		
+	void testSolve() {		
 	model.createSudoku();
 	model.setDifficulty(3);
 	model.difficulty();
@@ -242,14 +241,14 @@ public class SudokuLogicTest {
 //	}
 //	
 	@Test
-	public void testSetGamestate() {		
+	void testSetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		assertEquals(Gamestate.DONE, model.getGamestate());
 	}	
 	
 	
 	@Test
-	public void testGetGamestate() {		
+	void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		model.getGamestate();
 		assertEquals(Gamestate.DONE, model.getGamestate());
@@ -257,7 +256,7 @@ public class SudokuLogicTest {
 	
 	
 	@Test
-	public void testIfSolvedTrue() {		
+	void testIfSolvedTrue() {		
 		model.createSudoku();
 		model.setDifficulty(3);
 		model.difficulty();
@@ -266,7 +265,7 @@ public class SudokuLogicTest {
 	}	
 	
 	@Test
-	public void testIfSolvedFalse() {		
+	void testIfSolvedFalse() {		
 		model.createSudoku();
 		model.setDifficulty(3);
 		model.difficulty();
@@ -275,7 +274,7 @@ public class SudokuLogicTest {
 	
 	
 	@Test
-    public void testHint() {
+    void testHint() {
         int [] sollutionArray = new int[] {0, 0};
         model.createSudoku();
         model.setDifficulty(3);
@@ -289,7 +288,7 @@ public class SudokuLogicTest {
         assertNotEquals(returnArray, null);
     }
 //    @Test
-//    public void testHint2() {
+//    void testHint2() {
 //        int [] sollutionArray = new int[] {0, 0};
 //        model.createSudoku();
 //        model.setDifficulty(3);

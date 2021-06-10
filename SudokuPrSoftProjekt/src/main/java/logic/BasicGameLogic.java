@@ -24,6 +24,7 @@ public abstract class BasicGameLogic {
 	protected int gamePoints = 10;
 	protected long minutesPlayed;
 	protected long secondsPlayed;
+	protected Random r;
 
 	protected long startTime;
 	protected int gameIDhelper;
@@ -67,6 +68,7 @@ public abstract class BasicGameLogic {
 		this.isCorrect = isCorrect;
 		liveTimePlayedString = new SimpleStringProperty();
 		shuffleCounter = 0;
+		this.r = new Random();
 	}
 	
 	
@@ -134,7 +136,6 @@ public abstract class BasicGameLogic {
 	 * @return
 	 */
 	public boolean createSudoku() {
-		Random r = new Random();
 		// iterates the array
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
@@ -215,7 +216,6 @@ public abstract class BasicGameLogic {
 		// current sudoku gets solved
 		this.solveSudoku();
 
-		Random r = new Random();
 		// chooses random coordinates and a random number that will be shown as a hint
 		while (!correctRandom) {
 			// generates random coordinates and a random number
@@ -277,7 +277,7 @@ public abstract class BasicGameLogic {
 	public void removeValues() {
         for (int row = 0; row < this.cells.length; row++) {
             for (int col = 0; col < this.cells[row].length; col++) {
-                this.cells[row][col].setIsReal(false);
+                this.cells[row][col].setFixedNumber(false);
                 this.cells[row][col].setValue(0);
             }
         }
@@ -426,6 +426,9 @@ public abstract class BasicGameLogic {
 		}
 		if (this.getGamestate() == Gamestate.DRAWING) {
 			gameText = "Draw your own forms!";
+		}
+		if (this.getGamestate() == Gamestate.UNSOLVABLEMANUALSUDOKU) {
+			gameText = "Your created Sudoku is unsolvable! Please create a new Sudoku.";
 		}
 		return gameText;
 	}

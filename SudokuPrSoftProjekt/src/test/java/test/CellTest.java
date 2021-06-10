@@ -3,14 +3,13 @@ package test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import logic.Cell;
 
-public class CellTest {
+class CellTest {
 	
 	Cell cell;
 	
@@ -21,64 +20,64 @@ public class CellTest {
 
     //Getter
     @Test
-    public void testGetIsReal() {
-        assertTrue(cell.getIsReal());
+    void testGetIsReal() {
+        assertTrue(cell.getFixedNumber());
     }
 
     @Test
-    public void testGetRow() {
+    void testGetRow() {
         assertEquals(cell.getRow(), 0);
     }
 
     @Test
-    public void testGetCol() {
+    void testGetCol() {
         assertEquals(cell.getCol(), 1);
     }
 
     @Test
-    public void testGetBox() {
+    void testGetBox() {
         assertEquals(cell.getBox(), 3);
     }
 
     @Test
-    public void testGetValue() {
+    void testGetValue() {
         assertEquals(cell.getValue(), 9);
     }
 
 
     //Setter
     @Test
-    public void testSetIsReal() {
-        cell.setIsReal(false);
-        assertFalse(cell.getIsReal());
+    void testSetIsReal() {
+        cell.setFixedNumber(false);
+        assertFalse(cell.getFixedNumber());
     }
 
     @Test
-    public void testSetRow() {
+    void testSetRow() {
         cell.setRow(5);
         assertEquals(cell.getRow(), 5);
     }
 
     @Test
-    public void testSetCol() {
+    void testSetCol() {
         cell.setCol(5);
         assertEquals(cell.getCol(), 5);
     }
 
     @Test
-    public void testSetBox() {
+    void testSetBox() {
         cell.setBox(1);
         assertEquals(cell.getBox(), 1);
     }
 
     @Test
-    public void testSetValue() {
+    void testSetValue() {
         cell.setValue(5);
         assertEquals(cell.getValue(), 5);
     }
 
     @Test
-    public void testToString() {
+    void testToString() {
         String output = "Feld [col=" + cell.getCol() + ", row=" + cell.getRow() + ", box=" + cell.getBox()
                 + ", value=" + cell.getValue() + "]";
         assertEquals(cell.toString(), output);
