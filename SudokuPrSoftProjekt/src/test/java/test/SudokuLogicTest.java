@@ -13,7 +13,6 @@ import logic.SudokuLogic;
 
 
 class SudokuLogicTest {
-
 	
 	SudokuLogic model;
 	
@@ -34,7 +33,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 81);
+		assertEquals(81,count);
 	}
 	
 	
@@ -45,7 +44,7 @@ class SudokuLogicTest {
 		model2.setUpLogicArray();
 		model2.getCells()[1][1].setValue(1);
 		 model.setCells(model2.getCells());
-		 assertEquals(model.getCells()[1][1], model2.getCells()[1][1]);
+		 assertEquals(model2.getCells()[1][1],model.getCells()[1][1]);
 	}
 	
 	
@@ -171,7 +170,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 81);
+		assertEquals(81,count);
 	}
 	
 	@Test
@@ -192,7 +191,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 25);
+		assertEquals(25,count);
 	}
 	
 	@Test
@@ -208,7 +207,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 35);
+		assertEquals(35,count);
 	}
 	
 	@Test
@@ -224,7 +223,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 45);
+		assertEquals(45,count);
 	}
 	
 	@Test
@@ -243,7 +242,7 @@ class SudokuLogicTest {
 	@Test
 	void testSetGamestate() {		
 		model.setGameState(Gamestate.DONE);
-		assertEquals(Gamestate.DONE, model.getGamestate());
+		assertEquals(model.getGamestate(), Gamestate.DONE);
 	}	
 	
 	
@@ -251,7 +250,7 @@ class SudokuLogicTest {
 	void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		model.getGamestate();
-		assertEquals(Gamestate.DONE, model.getGamestate());
+		assertEquals(model.getGamestate(), Gamestate.DONE);
 	}	
 	
 	
@@ -285,7 +284,7 @@ class SudokuLogicTest {
         int [] returnArray = model.hint();
         System.out.println(returnArray[0] + " " + returnArray[1]);
 
-        assertNotEquals(returnArray, null);
+        assertNotEquals(null,returnArray);
     }
 //    @Test
 //    void testHint2() {
@@ -296,7 +295,7 @@ class SudokuLogicTest {
 //        model.solveSudoku();
 //        int [] returnArray = model.hint();
 //
-//        assertEquals(returnArray, null);
+//        assertEquals(null, returnArray);
 //    }
 }
 

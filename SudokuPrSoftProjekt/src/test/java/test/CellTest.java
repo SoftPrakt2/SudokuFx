@@ -26,22 +26,22 @@ class CellTest {
 
     @Test
     void testGetRow() {
-        assertEquals(cell.getRow(), 0);
+        assertEquals(0,cell.getRow());
     }
 
     @Test
     void testGetCol() {
-        assertEquals(cell.getCol(), 1);
+        assertEquals(1,cell.getCol());
     }
 
     @Test
     void testGetBox() {
-        assertEquals(cell.getBox(), 3);
+        assertEquals(3,cell.getBox());
     }
 
     @Test
     void testGetValue() {
-        assertEquals(cell.getValue(), 9);
+        assertEquals(9,cell.getValue());
     }
 
 
@@ -55,31 +55,31 @@ class CellTest {
     @Test
     void testSetRow() {
         cell.setRow(5);
-        assertEquals(cell.getRow(), 5);
+        assertEquals(5,cell.getRow());
     }
 
     @Test
     void testSetCol() {
         cell.setCol(5);
-        assertEquals(cell.getCol(), 5);
+        assertEquals(5,cell.getCol());
     }
 
     @Test
     void testSetBox() {
         cell.setBox(1);
-        assertEquals(cell.getBox(), 1);
+        assertEquals(1,cell.getBox());
     }
 
     @Test
     void testSetValue() {
         cell.setValue(5);
-        assertEquals(cell.getValue(), 5);
+        assertEquals(5,cell.getValue());
     }
 
     @Test
     void testToString() {
         String output = "Feld [col=" + cell.getCol() + ", row=" + cell.getRow() + ", box=" + cell.getBox()
                 + ", value=" + cell.getValue() + "]";
-        assertEquals(cell.toString(), output);
+        assertEquals(output, cell.toString());
     }
 }

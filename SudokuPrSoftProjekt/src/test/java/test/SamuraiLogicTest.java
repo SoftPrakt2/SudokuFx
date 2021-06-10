@@ -35,7 +35,7 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 369);
+		assertEquals(369, count);
 	}
 	
 	
@@ -45,14 +45,14 @@ class SamuraiLogicTest {
 		model2.setUpLogicArray();
 		model2.getCells()[1][1].setValue(1);
 		 model.setCells(model2.getCells());
-		 assertEquals(model.getCells()[1][1], model2.getCells()[1][1]);
+		 assertEquals(model2.getCells()[1][1], model.getCells()[1][1]);
 	}
 	
 	
-//	@Test
+////	@Test
 //	public void testSetCell() {
 //		model.setCell(1, 1, 1);
-//		assertEquals(model.getCells()[1][1].getValue(), 1);
+//		assertEquals(1,model.getCells()[1][1].getValue());
 //		assertTrue(model.getCells()[1][1].getIsReal());
 //	}
 
@@ -329,7 +329,7 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 441);
+		assertEquals(441, count);
 	}
 	
 	@Test
@@ -351,7 +351,7 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 159);
+		assertEquals(159,count );
 	}
 
 
@@ -368,7 +368,7 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 179);
+		assertEquals(179,count);
 	}
 	
 	@Test
@@ -384,7 +384,7 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 199);
+		assertEquals(199, count);
 	}
 	
 	@Test
@@ -403,14 +403,14 @@ class SamuraiLogicTest {
 	@Test
 	void testSetGamestate() {		
 		model.setGameState(Gamestate.DONE);
-		assertEquals(Gamestate.DONE, model.getGamestate());
+		assertEquals(model.getGamestate(), Gamestate.DONE);
 	}	
 	
 	@Test
 	void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		model.getGamestate();
-		assertEquals(Gamestate.DONE, model.getGamestate());
+		assertEquals(model.getGamestate(),Gamestate.DONE);
 	}	
 	
 	
@@ -444,7 +444,7 @@ class SamuraiLogicTest {
         int [] returnArray = model.hint();
         System.out.println(returnArray[0] + " " + returnArray[1]);
 
-        assertNotEquals(returnArray, null);
+        assertNotEquals(null, returnArray);
     }
 
 	
