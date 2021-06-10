@@ -4,6 +4,10 @@
   	 
 	}
 	
+	.root.popup {
+    -fx-background-color: transparent;
+}
+	
 	
 	
 .customBackgroundColor {
@@ -22,14 +26,13 @@
 
 .samuraicell {
 	-fx-background-color:  black,  	#D3D3D3;
-
     -fx-background-insets: 0, 0 ;
-
     -fx-padding: 1px;
 }
 
-
-
+.emptyFreeFormCell {
+	-fx-background-color: white;
+}
 
 
 

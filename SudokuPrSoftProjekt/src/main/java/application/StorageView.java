@@ -25,7 +25,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logic.BasicGameLogic;
 
-public class Storage {
+public class StorageView {
 
 	// variablen für Anzeige der Spiele in der Liste
 

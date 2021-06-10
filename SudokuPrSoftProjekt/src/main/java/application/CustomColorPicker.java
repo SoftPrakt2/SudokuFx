@@ -1,6 +1,5 @@
 package application;
 
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
@@ -11,66 +10,87 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 
-public class CustomColorPicker {
-	
+/**
+ * CustomColorPicker is responsible for the creation of a UI object which allows
+ * the User to fill a FreeForm GameField with colors when the appropriate
+ * gamemode is selected
+ * 
+ * @author grube
+ */
 
+public class CustomColorPicker {
+
+	/**
+	 * The UI Object which contains a list of predefined colors
+	 */
 	protected ComboBox<String> cmb;
 
-	
-	//erstellt einen ColorPicker mit vordefinierten Farben
+	/**
+	 * 
+	 * Initializes the ComboBox and adds a list of predefined Colors to it this list
+	 * of Colors will be shown as list of rectangles inside the UI
+	 * 
+	 * @return the created CombBox
+	 */
 	public ComboBox<String> createColorPicker() {
-	cmb = new ComboBox<>();
-	
-     ObservableList<String> data = FXCollections.observableArrayList(
-           "97c1a9","cab08b","dfd8ab","d5a1a3","80adbc","adb5be","eaeee0","957DAD","FFDFD3");
-     
+		cmb = new ComboBox<>();
 
-     cmb.setItems(data);
+		ObservableList<String> data = FXCollections.observableArrayList("97c1a9", "cab08b", "dfd8ab", "d5a1a3",
+				"80adbc", "adb5be", "eaeee0", "957DAD", "FFDFD3");
 
-     Callback<ListView<String>, ListCell<String>> factory = new Callback<ListView<String>, ListCell<String>>() {
-         @Override
-         public ListCell<String> call(ListView<String> list) {
-             return new ColorRectCell();
-         }
-     };
-     
-     cmb.setCellFactory(factory);
+		cmb.setItems(data);
 
-     Callback<ListView<String>, ListCell<String>> factoryTooltip = new Callback<ListView<String>, ListCell<String>>() {
-         @Override
-         public ListCell<String> call(ListView<String> list) {
-             return new ColorRectTooltipCell();
-         }
-     };
-     cmb.setButtonCell(factoryTooltip.call(null));
+		Callback<ListView<String>, ListCell<String>> factory = new Callback<ListView<String>, ListCell<String>>() {
+			@Override
+			public ListCell<String> call(ListView<String> list) {
+				return new ColorRectCell();
+			}
+		};
 
-     return cmb;
-    
+		cmb.setCellFactory(factory);
+
+		Callback<ListView<String>, ListCell<String>> factoryTooltip = new Callback<ListView<String>, ListCell<String>>() {
+			@Override
+			public ListCell<String> call(ListView<String> list) {
+				return new ColorRectTooltipCell();
+			}
+		};
+		cmb.setButtonCell(factoryTooltip.call(null));
+
+		return cmb;
+
 	}
 
+	static class ColorRectTooltipCell extends ColorRectCell {
+		@Override
+		public void updateItem(String item, boolean empty) {
+			super.updateItem(item, empty);
+			if (item != null) {
+				Tooltip.install(this.getParent(), new Tooltip(item));
+			}
+		}
+	}
 
- static class ColorRectTooltipCell extends ColorRectCell {
-     @Override
-     public void updateItem(String item, boolean empty) {
-         super.updateItem(item, empty);
-         if (item != null) {
-             Tooltip.install(this.getParent(), new Tooltip(item));
-         }
-     }
- }
+	/**
+	 * Changes the ColorCode Strings to rectangles with the corresponding color to ensure a better
+	 * usabilty in the Game UI
+	 * @author grube
+	 *
+	 */
+	static class ColorRectCell extends ListCell<String> {
+		@Override
+		/**
+		 * Colors the rectangles with the corresponding colorcode 
+		 */
+		public void updateItem(String item, boolean empty) {
+			super.updateItem(item, empty);
+			Rectangle rect = new Rectangle(10, 10);
+			if (item != null) {
+				rect.setFill(Color.web(item));
+				setGraphic(rect);
+			}
+		}
 
+	}
 
-  static class ColorRectCell extends ListCell<String>{
-       @Override
-       public void updateItem(String item, boolean empty){
-           super.updateItem(item, empty);
-           Rectangle rect = new Rectangle(10,10);
-           if(item != null){
-               rect.setFill(Color.web(item));
-               setGraphic(rect);
-       }
-   }
-	
-  }
-	
 }

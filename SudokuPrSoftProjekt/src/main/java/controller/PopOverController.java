@@ -1,14 +1,11 @@
 package controller;
 
-import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
 import application.GUI;
 import application.NewGamePopUp;
 import application.SamuraiGameBuilder;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
-import javafx.scene.Scene;
-import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
 import logic.SamuraiLogic;
@@ -20,6 +17,7 @@ public class PopOverController extends ModeController {
 		super(popup);
 
 	}
+	
 	
 	
 	@Override
@@ -48,24 +46,28 @@ public class PopOverController extends ModeController {
 		enableDifficultyButtons();
 	}
 
+	@Override
 	public void handleHard(ActionEvent e) {
 		model.setDifficulty(3);
 		gameScene.createNumbers();
 		alignStage();
 	}
 
+	@Override
 	public void handleEasy(ActionEvent e) {
 		model.setDifficulty(7);
 		gameScene.createNumbers();
 		alignStage();
 	}
 
+	@Override
 	public void handleMedium(ActionEvent e) {
 		model.setDifficulty(5);
 		gameScene.createNumbers();
 		alignStage();
 	}
 
+	@Override
 	public void handleManual(ActionEvent e) {
 		model.setDifficulty(0);
 		gameScene.createNumbers();
@@ -75,8 +77,7 @@ public class PopOverController extends ModeController {
 	public void alignStage() {
 		GUI.getStage().setHeight(gameScene.getHeight());
 		GUI.getStage().setWidth(gameScene.getWidth());
-		GUI.getStage().getScene().setRoot(gameScene.getPane());
-		
+		GUI.getStage().getScene().setRoot(gameScene.getGameUIRoot());
 	}
 
 }

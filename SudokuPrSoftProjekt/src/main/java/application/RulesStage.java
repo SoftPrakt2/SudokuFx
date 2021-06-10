@@ -8,7 +8,6 @@ import org.controlsfx.glyphfont.Glyph;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -42,16 +41,16 @@ public class RulesStage {
 	
 	protected FontAwesome fontAwesome;
 	
-	public void showPopUp(String title) {
+	public void showRulePopUp() {
 		Stage window = new Stage();
 
-		window.setTitle(title);
+		window.setTitle("Sudoku Rules");
 		
 	
 
-		window.setOnCloseRequest(e -> {
-			window.close();
-		});
+		window.setOnCloseRequest(e -> 
+			window.close()
+		);
 		
 		
 		window.setX(GUI.getStage().getX() + GUI.getStage().getWidth() + 5);

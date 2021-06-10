@@ -220,6 +220,7 @@ public class GameController {
 			scene.getGameNotificationLabel().setText(model.getGameText());
 		}
 	}
+	
 
 	/**
 	 * test if there are enough numbers to create a sudoku
@@ -542,7 +543,7 @@ public class GameController {
 
 			GUI.getStage().setHeight(scene.getHeight());
 			GUI.getStage().setWidth(scene.getWidth());
-			GUI.getStage().getScene().setRoot(scene.getPane());
+			GUI.getStage().getScene().setRoot(scene.getGameUIRoot());
 		}
 
 	}

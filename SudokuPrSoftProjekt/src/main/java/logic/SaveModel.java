@@ -1,9 +1,15 @@
 package logic;
 
+
+/**
+ * Diese Klasse definiert den Inhalt einer gespeicherten Spiele Datei
+ * Sämtliche in dieser Klasse befindlichen Variablen werden in die jeweile Speicherdatei gespeichert
+ * @author grube
+ *
+ */
+
 public class SaveModel  {
 	
-	
-
 	private Cell[][] gameArray;
 	private String gametype;
 	private int difficulty;

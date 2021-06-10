@@ -1,23 +1,21 @@
 package application;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
-import javafx.beans.value.ChangeListener;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import logic.BasicGameLogic;
 
+
+/**
+ * @author grube
+ * Defines the UI representation of a FreeForm Game
+ */
 public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	
@@ -28,19 +26,15 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		sceneHeight = 670;
 	}
 
-	CustomColorPicker colorPicker;
-	StackPane cell;
-
-	@SuppressWarnings("rawtypes")
-	protected List<ChangeListener> colorListeners = new ArrayList<>();
-
 	
-
-	
+	/**
+	 * Draws the FreeForm playboard, this playboard is filled with 9x9 Stackpanes with SudokuFields inside them
+	 * This container nesting is needed to ensure correct scaling of the playboard 
+	 */
+	@Override
 	public GridPane createBoard() {
 		playBoard = new GridPane();
-	
-		
+		StackPane cell;
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				cell = new StackPane();
@@ -50,22 +44,15 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 			
 
 				textField[row][col] = new SudokuField("");
-				textField[row][col].setPlayable(true);
-
 				textField[row][col].setMaxSize(200, 200);
 				textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 15));
 				textField[row][col].setAlignment(Pos.CENTER);
-
-				
 				textField[row][col].addFreeFormColorListener(comboColorBox);
 
 				cell.getChildren().add(textField[row][col]);
 
 				playBoard.add(cell, row, col);
 			}
-			
-			
-
 		}
 
 		playBoard.setAlignment(Pos.CENTER);
@@ -73,27 +60,22 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		return playBoard;
 	}
 	
-
-
-	
 	
 		@Override
 		public void createNumbers() {
-			// TODO Auto-generated method stub
 			controller.createGame();
 		}
 
+		/**
+		 * Creates the UI components which are needed for a manual FreeForm Game
+		 */
 		@Override
 		public void createManualControls() {
-			// TODO Auto-generated method stub
-			colorPicker = new CustomColorPicker();
+			CustomColorPicker colorPicker = new CustomColorPicker();
 			comboColorBox = colorPicker.createColorPicker();
 			
 			Glyph doneGraphic = fontAwesome.create(FontAwesome.Glyph.LOCK);
 			Glyph colorDoneGraphic = fontAwesome.create(FontAwesome.Glyph.PAINT_BRUSH);
-			HBox colorInstructions = new HBox();
-			colorInstructions.setPadding(new Insets(0,0,0,20));
-			colorInstructions.setAlignment(Pos.CENTER);
 			
 			customNumbersDone = new Button("");
 			customNumbersDone.setGraphic(doneGraphic);

@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.controlsfx.control.PopOver;
@@ -11,7 +12,6 @@ import org.controlsfx.glyphfont.Glyph;
 import controller.GameController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -25,8 +25,6 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.Mnemonic;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -35,103 +33,128 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import logic.BasicGameLogic;
 
-
 /**
- * Diese abstrakte Klasse stellt die Grundlage für eine Spiel UI dar. 
- * In dieser Klasse werden verschiedenste UI Komponenten wie Buttons oder das Menü erstellt. 
+ * 
+ * The abstract BasicGameBuilder class is the basic class for the Game UI. In
+ * this class several UI Components like Buttons or the menu are created
+ * 
  * @author grube
  *
  */
 public abstract class BasicGameBuilder {
 
-	protected BorderPane pane;
+	/**
+	 * The Main UI Container of a GameBuilder
+	 */
+	protected BorderPane gameRoot;
 	protected BasicGameLogic model;
 
-	//behälter und buttons für Spielbuttons
+	/**
+	 * 
+	 * The toolbar is the container for {@link #autosolve} {@link #check}
+	 * {@link #hintButton} and the {@link #liveTimeLabel} which displays the current
+	 * gametime
+	 */
 	protected ToolBar toolBar;
+
+	/**
+	 * The VBox toolbox works as the container for {@link #toolBar} and
+	 * {@link #menuBar} this VBox is needed, to position the {@link #toolBar} under
+	 * the {@link #menuBar}
+	 */
 	protected VBox toolbox;
-	protected VBox playButtonMenu;
-	protected Button check;
-	protected Button owngame;
+
+	/**
+	 * Button components for the Game UI
+	 */
+	protected Button checkButton;
 	protected Button autosolve;
 	protected Button customNumbersDone;
 	protected Button customColorsDone;
 	protected Button hintButton;
 	protected ComboBox<String> comboColorBox;
-	
-	protected HBox gameLabelBox;
+
+	/**
+	 * Labels for the game {@link #gameNotificationLabel} displays text
+	 * corresponding to the games state {@link #gameInfoLabel} displays information
+	 * about the game like current Points or selected Difficulty
+	 * {@link #liveTimeLabel} displays the current gametime
+	 */
 	protected Label gameNotificationLabel;
 	protected Label gameInfoLabel;
 	protected Label liveTimeLabel;
 	protected StatusBar statusbar;
-	
 
+	/**
+	 * {@link #fontAwesome} is used to style different button components of the Game
+	 * UI
+	 */
 	protected FontAwesome fontAwesome;
-	
-	protected ArrayList<ChangeListener> conflictListener;
-	
 
+	protected List<ChangeListener<String>> conflictListener;
 
-	// Variablen welche für die Festlegung der Fenstergröße benötigt werden
+	/**
+	 * variables which define the size of the Game Window
+	 */
 	protected int sceneWidth;
 	protected int sceneHeight;
 
+	/**
+	 * gamePopUp is an Object of the class {@link application.NewGamePopUp} popover
+	 * will later be initialized with the
+	 * {@link application.NewGamePopUp#createPopUp()} method
+	 */
 	protected NewGamePopUp gamePopUp;
 	protected PopOver popover;
-	
-	
-	
+
+	protected SudokuField[][] textField;
+	protected GameController controller;
+
 	/**
-	 * Konstruktor der Klasse 
+	 * container for the playing field
+	 */
+	protected GridPane playBoard;
+
+	/**
+	 * Konstruktor der Klasse
+	 * 
 	 * @param model Spiellogik welche dem GameBuilder übergeben wird
 	 */
 	protected BasicGameBuilder(BasicGameLogic model) {
-		pane = new BorderPane();
+		gameRoot = new BorderPane();
 		this.model = model;
-		}
-	
-	
-	
-	
-	protected SudokuField[][] textField;
+	}
 
-	// schwierigkeit welche vom hauptmenü mit den gettern und settern unten
-	// definiert wird
-	protected int difficulty;
-
-	protected GameController controller;
-
-	protected GridPane playBoard;
-
+	/**
+	 * In this method the Game UI is initialized with all necessary UI components
+	 * Furthermore the Game's controller is initialized with the GameBuilder and a
+	 * corresponding GameLogic
+	 */
 	public void initializeGame() {
-		
 		controller = new GameController(this, model);
 		gamePopUp = new NewGamePopUp();
-		pane.setPadding(new Insets(50, 50, 50, 50));
+		gameRoot.setPadding(new Insets(50, 50, 50, 50));
 		createMenuBar();
 		initializeToolBar();
 		createManualControls();
 		createStatusBar();
 		setButtonActions();
-		pane.setCenter(createBoard());
+		setMenuActions();
+		gameRoot.setCenter(createBoard());
 		conflictListener = new ArrayList<>();
 	}
-	
-	
+
 	/**
-	 * Zeichnet ein Spielfeld für das jeweilige Spiel
-	 * @return das gezeichnete Spielfeld
+	 * Draws the playing field
+	 * 
+	 * @return the drawn playing field
 	 */
 	public abstract GridPane createBoard();
 
-
-	
-	
 	/**
-	 * Inizialisiert eine ToolBar welche als Behälter für die ebenfalls initialisierten Buttons und ein Zeitlabel dient
-	 * Die initialisierten Buttons werden mithilfe von Glyph Grafiken grafisch gestaltet
-	 * Um benötigte Abstände zwischen den Buttons und dem Zeiteintrag zu gewährleisten werden weiters leere Panes eingefügt
-	 * Die erstellte ToolBar wird anschließend in die  {@link #toolbox} VBox eingefügt
+	 * Initializes the {@link #toolBar}, the Game Buttons and the
+	 * {@link #liveTimeLabel} The rightSpacer is used to ensure appropiate distance
+	 * between the buttons and the {@link #liveTimeLabel}
 	 */
 	public void initializeToolBar() {
 		toolBar = new ToolBar();
@@ -141,41 +164,38 @@ public abstract class BasicGameBuilder {
 		Glyph checkGraphic = fontAwesome.create(FontAwesome.Glyph.CHECK);
 		Glyph hintGraphic = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
 		Glyph autosolveGraphic = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
-		
-		
+
 		hintButton = new Button("");
 		hintButton.setGraphic(hintGraphic);
 
 		autosolve = new Button("");
 		autosolve.setGraphic(autosolveGraphic);
 
-		check = new Button("");
-		check.setGraphic(checkGraphic);
+		checkButton = new Button("");
+		checkButton.setGraphic(checkGraphic);
 		liveTimeLabel = new Label("");
 
-		
 		final Pane rightSpacer = new Pane();
 		HBox.setHgrow(rightSpacer, Priority.SOMETIMES);
-		final Pane rightSpacer2 = new Pane();
-		HBox.setHgrow(rightSpacer2, Priority.SOMETIMES);
-		toolBar.getItems().addAll(hintButton, autosolve, check, rightSpacer, liveTimeLabel);
+		toolBar.getItems().addAll(hintButton, autosolve, checkButton, rightSpacer, liveTimeLabel);
 		toolbox.getChildren().add(toolBar);
 	}
-	
-	
-	public abstract void createManualControls();
-	
-	
+
 	/**
-	 * Diese Methode fügt Listener zu den SudokuTextFeldern hinzu
-	 * Hierbei handelt es sich um einen ChangeListener welcher auf
-	 * Veränderungen im Feld reagiert
-	 * Dieser ist für die automatische Konfliktanzeige zuständig
+	 * Abstract method which is used to create the games specific manual game
+	 * components
+	 */
+	public abstract void createManualControls();
+
+	/**
+	 * Adds listener to the SudokuFields, these listener are used to allow automatic
+	 * conflict registration
 	 */
 	public void addConflictListeners() {
+		ChangeListener<String> changeListener;
 		for (int row = 0; row < textField.length; row++) {
 			for (int col = 0; col < textField[row].length; col++) {
-				ChangeListener<String> changeListener = new ChangeListener<>() {
+				changeListener = new ChangeListener<>() {
 					@Override
 					public void changed(ObservableValue<? extends String> observable, String oldValue,
 							String newValue) {
@@ -190,9 +210,10 @@ public abstract class BasicGameBuilder {
 			}
 		}
 	}
-	
+
 	/**
-	 * Diese Methode entfernt die in der Methode {@link #addConflictListeners()} hinzugefügten Listener von den Textfeldern
+	 * Removes the listeners from the SudokuFields added with the
+	 * {@link #addConflictListeners()} method
 	 */
 	public void removeConflictListeners() {
 		for (ChangeListener<String> l : conflictListener) {
@@ -204,113 +225,99 @@ public abstract class BasicGameBuilder {
 			}
 		}
 	}
-	
-	//Hauptmenü Leiste für die Spielscenes
+
 	protected MenuBar menuBar;
 
 	// MenüObjekte für File Menü
-	protected Menu file;
-	protected MenuItem newGame;
-	protected MenuItem save;
-	protected MenuItem load;
-	protected MenuItem importItem;
-	protected MenuItem exportItem;
-	protected SeparatorMenuItem seperator;
-	protected MenuItem exitItem;
+	protected Menu fileMenu;
+	protected MenuItem newGameMenuItem;
+	protected MenuItem saveMenuItem;
+	protected MenuItem importMenuItem;
+	protected MenuItem exportMenuItem;
+	protected SeparatorMenuItem seperatorItem;
+	protected MenuItem exitMenuItem;
 
 	// MenüObjekte für Edit Menü
 	protected Menu editMenu;
-	protected MenuItem reset;
-	protected MenuItem newRoundItem;
+	protected MenuItem resetMenuItem;
+	protected MenuItem newRoundMenuItem;
 	protected Menu propertyMenu;
-	protected RadioMenuItem conflictItem;
-
-	
+	protected RadioMenuItem conflictMenuItem;
 
 	// MenüObjekte für Edit Menü
 	protected Menu sourceMenu;
 	protected MenuItem hintMenuItem;
-	protected MenuItem autoSolveItem;
-	protected MenuItem checkItem;
+	protected MenuItem autoSolveMenuItem;
+	protected MenuItem checkMenuItem;
 
 	// MenüObjekte für SudokuFx Menü
-	protected Menu mainMenu;
+	protected Menu sudokufxMenu;
 	protected MenuItem mainMenuItem;
 
-	//MenüObjekte für Help Menü
+	// MenüObjekte für Help Menü
 	protected Menu helpMenu;
-	protected MenuItem rules;
-	
+	protected MenuItem rulesMenuItem;
 
-	
 	/**
-	 * 
-	 * Diese Methode erstellt die Menüleiste für die UI eines Spiels
-	 * In die menuBar werden mehrere Menüs mit entsprechenden Menüitems eingefügt
-	 * Diese Menubar wird anschließend in die {@link #toolbox} eingefügt
+	 * Initializes the Menu UI Components
 	 */
 	public void createMenuBar() {
 		// menuBar for the scene
 		menuBar = new MenuBar();
 		toolbox = new VBox();
 
-		//File Menü initialisierungen
-		file = new Menu("File");
-		save = new MenuItem("Save");
-		load = new MenuItem("Load");
-		newGame = new MenuItem("New");
-		exportItem = new MenuItem("Export");
-		importItem = new MenuItem("Import");
-		seperator = new SeparatorMenuItem();
-		exitItem = new MenuItem("Exit");
+		// File Menü initialisierungen
+		fileMenu = new Menu("File");
+		saveMenuItem = new MenuItem("Save");
+
+		newGameMenuItem = new MenuItem("New");
+		exportMenuItem = new MenuItem("Export");
+		importMenuItem = new MenuItem("Import");
+		seperatorItem = new SeparatorMenuItem();
+		exitMenuItem = new MenuItem("Exit");
 		popover = gamePopUp.createPopUp();
-		file.getItems().addAll(newGame, save, importItem, exportItem, seperator, exitItem);
-		
-		//Edit Menü Initialisierungen
+		fileMenu.getItems().addAll(newGameMenuItem, saveMenuItem, importMenuItem, exportMenuItem, seperatorItem,
+				exitMenuItem);
+
+		// Edit Menü Initialisierungen
 		editMenu = new Menu("Edit");
-		newRoundItem = new MenuItem("New Round");
-		reset = new MenuItem("Reset");
+		newRoundMenuItem = new MenuItem("New Round");
+		resetMenuItem = new MenuItem("Reset");
 		propertyMenu = new Menu("Properties");
-		conflictItem = new RadioMenuItem("Show Conflicts");
-		conflictItem.setSelected(false);
-		propertyMenu.getItems().addAll(conflictItem);
-		editMenu.getItems().addAll(newRoundItem, reset, propertyMenu);
-		
-		//Source Menü Initialisierungen
+		conflictMenuItem = new RadioMenuItem("Show Conflicts");
+		conflictMenuItem.setSelected(false);
+		propertyMenu.getItems().addAll(conflictMenuItem);
+		editMenu.getItems().addAll(newRoundMenuItem, resetMenuItem, propertyMenu);
+
+		// Source Menü Initialisierungen
 		sourceMenu = new Menu("Source");
 		hintMenuItem = new MenuItem("Hint");
-		autoSolveItem = new MenuItem("AutoSolve");
-		checkItem = new MenuItem("Check");
-		sourceMenu.getItems().addAll(hintMenuItem, autoSolveItem, checkItem);
-		
-		//SudokuFx Menü initialisierungen
-		mainMenu = new Menu("SudokuFX");
+		autoSolveMenuItem = new MenuItem("AutoSolve");
+		checkMenuItem = new MenuItem("Check");
+		sourceMenu.getItems().addAll(hintMenuItem, autoSolveMenuItem, checkMenuItem);
+
+		// SudokuFx Menü initialisierungen
+		sudokufxMenu = new Menu("SudokuFX");
 		mainMenuItem = new MenuItem("Go to Main Menu");
-		mainMenu.getItems().addAll(mainMenuItem);
-		
-		
+		sudokufxMenu.getItems().addAll(mainMenuItem);
 
-		// Help eintrag mit rules menu
+		// Help Menü initialisierungen
 		helpMenu = new Menu("Help");
-		rules = new MenuItem("Rules");
-		rules.setOnAction(e -> {
-			RulesStage rule = new RulesStage();
-			rule.showPopUp("Sudoku Rules");
-		});
-		helpMenu.getItems().add(rules);
+		rulesMenuItem = new MenuItem("Rules");
+		helpMenu.getItems().add(rulesMenuItem);
 
-		
-		menuBar.getMenus().addAll(file, editMenu, sourceMenu, mainMenu, helpMenu);
+		menuBar.getMenus().addAll(fileMenu, editMenu, sourceMenu, sudokufxMenu, helpMenu);
 		toolbox.getChildren().addAll(menuBar);
-	
-		pane.setTop(toolbox);
+
+		gameRoot.setTop(toolbox);
+		
+		fileMenu.getStyleClass().add("menu-item");
+		
 		defineShortCuts();
 	}
-	
-	
-	
-	/*
-	 * definiert Shortcuts für Spielfunktionen
+
+	/**
+	 * Adds shortcut functionality to the UI Objects inside the Menu
 	 */
 	public void defineShortCuts() {
 
@@ -319,68 +326,66 @@ public abstract class BasicGameBuilder {
 		KeyCombination checkKc = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
 		KeyCombination resetKc = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
 		KeyCombination autoConflictsKc = new KeyCodeCombination(KeyCode.K, KeyCombination.CONTROL_DOWN);
-		KeyCombination newRoundKc =  new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
+		KeyCombination newRoundKc = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
 		KeyCombination importKc = new KeyCodeCombination(KeyCode.I, KeyCombination.CONTROL_DOWN);
 		KeyCombination exportKc = new KeyCodeCombination(KeyCode.E, KeyCombination.CONTROL_DOWN);
 		KeyCombination saveKc = new KeyCodeCombination(KeyCode.S, KeyCombination.CONTROL_DOWN);
 		KeyCombination mainMenuKc = new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN);
-		
+
 		hintMenuItem.setAccelerator(hintKc);
-		autoSolveItem.setAccelerator(autoSolveKc);
-		checkItem.setAccelerator(checkKc);
-		reset.setAccelerator(resetKc);
-		conflictItem.setAccelerator(autoConflictsKc);
-		newRoundItem.setAccelerator(newRoundKc);
-		importItem.setAccelerator(importKc);
-		exportItem.setAccelerator(exportKc);
-		save.setAccelerator(saveKc);
+		autoSolveMenuItem.setAccelerator(autoSolveKc);
+		checkMenuItem.setAccelerator(checkKc);
+		resetMenuItem.setAccelerator(resetKc);
+		conflictMenuItem.setAccelerator(autoConflictsKc);
+		newRoundMenuItem.setAccelerator(newRoundKc);
+		importMenuItem.setAccelerator(importKc);
+		exportMenuItem.setAccelerator(exportKc);
+		saveMenuItem.setAccelerator(saveKc);
 		mainMenuItem.setAccelerator(mainMenuKc);
-    }
-	
-	
-	
-
-	
-
-	/**
-	 * Weist den Buttons und MenüItems Actions zu
-	 */
-	public void setButtonActions() {
-		newRoundItem.setOnAction(controller::newGameHandler);
-		autosolve.setOnAction(controller::checkHandler);
-
-		check.setOnAction(controller::checkHandler);
-		autosolve.setOnAction(controller::autoSolveHandler);
-		hintButton.setOnAction(controller::hintHandeler);
-
-		customNumbersDone.setOnAction(controller::manuelDoneHandler);
-		
-		if(this instanceof FreeFormGameBuilder) {
-			customColorsDone.setOnAction(controller::customColorsDoneHandler);
-		}
-		
-		checkItem.setOnAction(controller::checkHandler);
-		hintMenuItem.setOnAction(controller::hintHandeler);
-		autoSolveItem.setOnAction(controller::autoSolveHandler);
-
-		
-		save.setOnAction(controller::saveGame);
-		reset.setOnAction(controller::resetHandler);
-		mainMenuItem.setOnAction(controller::switchToMainMenu);
-
-		mainMenuItem.setOnAction(e -> controller.switchToMainMenu(e));
-
-		conflictItem.setOnAction(controller::switchOffConflicts);
-		exitItem.setOnAction(e -> GUI.closeProgram());
-		exportItem.setOnAction(controller::exportGame);
-		importItem.setOnAction(controller::importGame);
-
-		newGame.setOnAction(e -> popover.show(hintButton, -30));
 	}
 
+	/**
+	 * 
+	 * Defines which Action is fired when a specific button is pressed
+	 */
+	public void setButtonActions() {
+		newRoundMenuItem.setOnAction(controller::newGameHandler);
+		autosolve.setOnAction(controller::checkHandler);
+		checkButton.setOnAction(controller::checkHandler);
+		autosolve.setOnAction(controller::autoSolveHandler);
+		hintButton.setOnAction(controller::hintHandeler);
+		customNumbersDone.setOnAction(controller::manuelDoneHandler);
+		if (this instanceof FreeFormGameBuilder) {
+			customColorsDone.setOnAction(controller::customColorsDoneHandler);
+		}
+	}
+
+	/**
+	 * Defines which Action is fired when a specific menuitem is pressed
+	 */
+	public void setMenuActions() {
+		checkMenuItem.setOnAction(controller::checkHandler);
+		hintMenuItem.setOnAction(controller::hintHandeler);
+		autoSolveMenuItem.setOnAction(controller::autoSolveHandler);
+		saveMenuItem.setOnAction(controller::saveGame);
+		resetMenuItem.setOnAction(controller::resetHandler);
+		mainMenuItem.setOnAction(controller::switchToMainMenu);
+		conflictMenuItem.setOnAction(controller::switchOffConflicts);
+		exitMenuItem.setOnAction(e -> GUI.closeProgram());
+		exportMenuItem.setOnAction(controller::exportGame);
+		importMenuItem.setOnAction(controller::importGame);
+		newGameMenuItem.setOnAction(e -> popover.show(hintButton, -30));
+		rulesMenuItem.setOnAction(e -> {
+			RulesStage rule = new RulesStage();
+			rule.showRulePopUp();
+		});
+	}
+
+	/**
+	 * Creates a statusbar which is positioned on the bottom of the Game UI
+	 */
 	public void createStatusBar() {
 		gameNotificationLabel = new Label();
-
 		gameInfoLabel = new Label();
 
 		StatusBar statusBar = new StatusBar();
@@ -393,56 +398,54 @@ public abstract class BasicGameBuilder {
 		Stream.of(gameInfoLabel, gameNotificationLabel, liveTimeLabel)
 				.forEach(label -> label.getStyleClass().add("gameLabel"));
 
-		pane.setBottom(statusBar);
+		gameRoot.setBottom(statusBar);
 	}
 
-	
+	/**
+	 * Calls the {@link application.GameController#createGame()} method
+	 * this call is needed to ensure that numbers are shown in the textfield when selecting a game from the main menu
+	 */
 	public void createNumbers() {
 		controller.createGame();
 	}
-	
+
+	/**
+	 *  auxiliary method which disables the game buttons and corrseponding menuitem functionality if needed 
+	 */
 	public void disablePlayButtons() {
-		Stream.of(check,autosolve,hintButton).forEach(button -> button.setDisable(true));
+		Stream.of(checkButton, autosolve, hintButton).forEach(button -> button.setDisable(true));
+		Stream.of(autoSolveMenuItem,hintMenuItem,checkMenuItem).forEach(menuItem -> menuItem.setDisable(true));
+			
 	}
-	
-	
+
 	public GameController getController() {
 		return controller;
 	}
-	
-	
+
+	public BorderPane getGameUIRoot() {
+		return gameRoot;
+	}
+
 	/**
 	 * 
 	 * Getter und Setter für die Variablen dieser Klasse
 	 */
 	public SudokuField[][] getTextField() {
-		return textField;
-	}
-
-	public Label getGameLabel() {
-		return gameNotificationLabel;
-	}
-
-	public void setDifficulty(int difficulty) {
-		this.difficulty = difficulty;
-	}
-
-	public int getDifficulty() {
-		return difficulty;
+		return this.textField;
 	}
 
 	public Button getCheckButton() {
-		return this.check;
+		return this.checkButton;
 	}
-	
+
 	public Button getAutoSolveButton() {
 		return this.autosolve;
 	}
-	
+
 	public Button getHintButton() {
 		return this.hintButton;
 	}
-	
+
 	public Button getColorsDoneButton() {
 		return this.customColorsDone;
 	}
@@ -461,11 +464,7 @@ public abstract class BasicGameBuilder {
 	}
 
 	public RadioMenuItem getConflictItem() {
-		return conflictItem;
-	}
-
-	public BorderPane getPane() {
-		return pane;
+		return conflictMenuItem;
 	}
 
 	public int getWidth() {
@@ -479,14 +478,23 @@ public abstract class BasicGameBuilder {
 	public Label getLiveTimeLabel() {
 		return liveTimeLabel;
 	}
-	
+
 	public ComboBox<String> getColorBox() {
 		return comboColorBox;
 	}
-	
+
 	public ToolBar getToolBar() {
-	return toolBar;
+		return toolBar;
 	}
 	
-	
+	public MenuItem getHintMenuItem() {
+		return hintMenuItem;
+	}
+	public MenuItem getAutoSolveMenuItem() {
+		return autoSolveMenuItem;
+	}
+	public MenuItem getCheckMenuItem() {
+		return checkMenuItem;
+	}
+
 }

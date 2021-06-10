@@ -7,15 +7,14 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
+	
 
 	static Stage window;
 
-	Scene mainScene;
-	MainMenu mainmenu = new MainMenu();
+	private Scene mainScene;
 	static Pane mainPane;
 
-	// this is just a test
-
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -23,8 +22,8 @@ public class GUI extends Application {
 	@Override
 	public void start(Stage scene) {
 		
-
-
+		MainMenu mainmenu = new MainMenu();
+		
 		// test commit
 		window = scene;
 		scene.setMaxWidth(1500);
@@ -50,9 +49,9 @@ public class GUI extends Application {
 	}
 
 	public static void closeProgram() {
-		CloseWindowStage c = new CloseWindowStage();
-		Boolean answer = c.showPopUp("Closing", "Are you sure that you want to close the program?");
-		if (answer) {
+		CloseWindowStage closingStage = new CloseWindowStage();
+		closingStage.showPopUp();
+		if (closingStage.getClosingAnswer()) {
 			window.close();
 			Platform.exit();
 		}

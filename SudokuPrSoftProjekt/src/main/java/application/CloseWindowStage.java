@@ -8,40 +8,44 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-//PopUP Fenster für Nachfrage ob Spiel geschlossen werden soll
-public class CloseWindowStage {
 
-	//speichert antwort je nach dem welcher knopf gedrückt wird
-	private boolean answer;
-		
-	//
-	 public boolean showPopUp(String title, String message) {
-			Stage window = new Stage();
+
+/**
+ *  CloseWindowStage is used to generate a PopUp which asks the user if he/she wants to close the program
+ *  @author grube
+ *
+ */
+public class CloseWindowStage {
+	
+	/**
+	 * Answer of the user if he wants to close the program
+	 */
+	private boolean closingAnswer;
+	
+	
+	private Button yesButton;
+	private Button noButton;
+	private Stage window;
+	
+	
+	/**
+	 * Creates a Stage which displays the closing request
+	 */
+	 public void showPopUp() {
+			window = new Stage();
 			
-			//kann hinteres windows nicht klicken
+			window.setTitle("Closing");
 			window.initModality(Modality.APPLICATION_MODAL);
-			window.setTitle(title);
 			window.setMinWidth(250);
+			window.setResizable(false);
+			
 			Label label = new Label();
-			label.setText(message);
+			label.setText("Do you want to close the program?");
+			yesButton = new Button("Yes");
+			noButton = new Button("No");
+			setClosingAnswer();
 			
-			//create two buttons
-			Button yesButton = new Button("yes");
-			Button noButton = new Button("no");
 			
-			yesButton.setOnAction(e -> {
-				answer = true;
-				window.close();
-				
-			});
-			
-			noButton.setOnAction(e -> {
-				answer = false;
-				window.close();
-				
-			});
-			
-		
 			VBox layout = new VBox(10);
 			layout.getChildren().addAll(label, yesButton, noButton);
 			layout.setAlignment(Pos.CENTER);
@@ -49,8 +53,33 @@ public class CloseWindowStage {
 			window.setScene(scene);
 			window.showAndWait();
 			
-			return answer;
+			
 		}
+	
+	 /**
+	  * Defines the actions for the {@link #yesButton} and {@link #noButton}
+	  */
+	 public void setClosingAnswer() {
+		 yesButton.setOnAction(e -> {
+			 closingAnswer = true;
+				window.close();
+			});
+			
+			noButton.setOnAction(e -> {
+				closingAnswer = false;
+				window.close();	
+			});
+	 }
+	 
+	 /**
+	  * @return the answer of the user if he/she wants to close the program
+	  */
+	 public boolean getClosingAnswer() {
+		 return closingAnswer;
+	 }
+	 
+	 
+	 
 }
 
 

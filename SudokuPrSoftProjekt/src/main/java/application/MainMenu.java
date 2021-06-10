@@ -1,8 +1,7 @@
 package application;
 
-import java.io.IOException;
-import java.util.stream.Stream;
 
+import java.util.stream.Stream;
 import controller.ModeController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -25,46 +24,71 @@ import javafx.scene.layout.VBox;
  */
 public class MainMenu {
 
-	
+	/**
+	 * UI Components for the Game Mode Buttons in the MainMenu
+	 * The Buttons are created as ToggleButtons to ensure that only one selection per time is registered
+	 * {@link #gameModeBox} Container for the Game Mode Buttons and the  {@link #selectModeLabel}
+	 */
+	private VBox gameModeBox;
 	protected ToggleButton sudoku;
 	protected ToggleButton samurai;
 	protected ToggleButton freeform;
 	private ToggleGroup toggleGroupGameMode;
-	
 	private Label selectModeLabel;
 	
-	private VBox gameDifficultyBox;
 	
+	/**
+	 * UI Components for the Difficulty Buttons in the MainMenu
+	 * The Buttons are created as ToggleButtons to ensure that only one selection per time is registered
+	 * {@link #gameDifficultyBox} Container for the Difficulty Buttons and the  {@link #selectDifficultyLabel}
+	 */
+	private VBox gameDifficultyBox;
 	private ToggleGroup toggleGroupDifficulty;
 	private Label selectDifficultyLabel;
 	protected ToggleButton easy;
 	protected ToggleButton medium;
 	protected ToggleButton hard;
 	protected ToggleButton manual;
-	private VBox gameModeBox;
+	
 
+	
 	private VBox createGameBox;
 	private Label createLabel;
 	private Button createButton;
 	
 	private Button load;
 	private Button exit;
+	
+	
+	/**
+	 * These Properties are used to align the UI Objects font Size, and the components size itself 
+	 * to the windows size
+	 */
 	private final SimpleDoubleProperty fontSizeButtons = new SimpleDoubleProperty(10);
 	private final SimpleDoubleProperty fontSizeLabel = new SimpleDoubleProperty(40);
 
 	private Label welcomeLabel;
 	private ModeController controllerMainMenu;
 
+	/**
+	 * Scene of the MainMenu Class
+	 */
 	private Scene mainScene;
 
-	private BorderPane pane;
+	/**
+	 * root container of the Classes scene
+	 */
+	private BorderPane mainMenuRoot;
 
 	
+	/**
+	 * This method is used to initialize a Main Menu Object with all needed Informations
+	 */
 	public void setUpMainMenu() {
 
 		controllerMainMenu = new ModeController(this);
-		pane = new BorderPane();
-		mainScene = new Scene(pane, 670, 670);
+		mainMenuRoot = new BorderPane();
+		mainScene = new Scene(mainMenuRoot, 670, 670);
 
 		mainScene.getStylesheets().add("css/sudoku.css");
 
@@ -85,7 +109,7 @@ public class MainMenu {
 		container.setSpacing(20);
 		container.getChildren().addAll(welcomeLabel, gameModeBox, gameDifficultyBox, createGameBox, load, exit);
 		container.setAlignment(Pos.CENTER);
-		pane.setCenter(container);
+		mainMenuRoot.setCenter(container);
 	}
 
 	
@@ -179,15 +203,10 @@ public class MainMenu {
 		manual.setOnAction(controllerMainMenu::handleManual);
 		samurai.setOnAction(controllerMainMenu::handleToSamurai);
 		freeform.setOnAction(controllerMainMenu::handleToFreeForm);
-		load.setOnAction(event -> {
-			controllerMainMenu.handleToLoad(event);
-		});
+		load.setOnAction(controllerMainMenu::handleToLoad);
 		createButton.setOnAction(controllerMainMenu::handleGameStart);
 		exit.setOnAction(controllerMainMenu::handleExit);
 	}
-	
-	
-
 	
 	/**
 	 * This method is responsible for defining the look of the UI objects of this class
@@ -203,10 +222,10 @@ public class MainMenu {
 				button -> button.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSizeButtons.asString())));
 
 		Stream.of(sudoku, samurai, freeform, easy, medium, hard, load, exit, manual, createButton)
-				.forEach(button -> button.prefHeightProperty().bind(pane.heightProperty().divide(18)));
+				.forEach(button -> button.prefHeightProperty().bind(mainMenuRoot.heightProperty().divide(18)));
 
 		Stream.of(sudoku, samurai, freeform, easy, medium, hard, load, exit, manual, createButton)
-				.forEach(button -> button.prefWidthProperty().bind(pane.widthProperty().divide(4.75)));
+				.forEach(button -> button.prefWidthProperty().bind(mainMenuRoot.widthProperty().divide(4.75)));
 
 		// design for buttons
 		Stream.of(sudoku, samurai, freeform, load, exit, createButton, easy, medium, hard, manual)
@@ -244,7 +263,7 @@ public class MainMenu {
 	 * @return pane
 	 */
 	public Pane getPane() {
-		return pane;
+		return mainMenuRoot;
 	}
 	
 	/**
@@ -263,5 +282,14 @@ public class MainMenu {
 		return createButton;
 	}
 	
+	public ToggleButton getSudokuToggle() {
+		return sudoku;
+	}
+	public ToggleButton getSamuraiToggle() {
+		return samurai;
+	}
 
+	public ToggleButton getFreeFormToggle() {
+		return freeform;
+	}
 }

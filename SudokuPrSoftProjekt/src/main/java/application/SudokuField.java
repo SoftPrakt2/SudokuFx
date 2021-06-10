@@ -3,54 +3,64 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.paint.Color;
 
+/**
+ * This class is an extension of the JavaFx TextField SudokuFields are enhanced
+ * with several listeners to be better suitable for the purpose of a sudokugame
+ * 
+ * @author grube
+ *
+ */
 public class SudokuField extends TextField {
 
-	private boolean playable = true;
+	/**
+	 * color of a SudokuField
+	 */
 	private String color = "";
+
+	/**
+	 * variable which defines if a SudokuField is currently listening to color
+	 * background changes
+	 */
 	private boolean listeningToColors;
-	
+
 	ChangeListener<Boolean> freeFormColorListener;
-	
-	
 
 	public SudokuField(String txt) {
 		super(txt);
-		addListener();
+		addOnlyNumbers();
 		onlyOneNumber();
-		enterPressed();
 		updateColor();
-		ShortcutFriendlyTextField();
+		shortcutFriendlyTextField();
 		listeningToColors = false;
 		this.getStyleClass().add("textfieldBasic");
 	}
 
-	private void addListener() {
-		
-		
+	/**
+	 * Adds a listener to the Sudokufields textproperty to ensure that only numbers
+	 * from 1-9 are insertable to a SudokuField
+	 */
+	private void addOnlyNumbers() {
 		this.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				this.setText(newValue.replaceAll("[^\\d]", ""));
 			}
-			if(newValue.equals("0")) {
+			if (newValue.equals("0")) {
 				this.setText(newValue.replace("0", ""));
 			}
 		});
 	}
-	
 
-	
-
+	/**
+	 * Adds a listener to ensure that only one digit is insertable in a SudokuField
+	 */
 	public void onlyOneNumber() {
 		this.textProperty().addListener((observable, oldV, newV) -> {
 			if (newV.length() > 1)
@@ -58,92 +68,84 @@ public class SudokuField extends TextField {
 		});
 	}
 
-	public void enterPressed() {
-		this.setOnKeyReleased(e -> {
-			if (e.getCode() == KeyCode.ENTER) {
-				System.out.println(this.getText());
-			}
-		});
-
-	}
-
+	/**
+	 * Adds a listener to ensure that the Value of the SudokuFields textproperty is
+	 * updated
+	 */
 	public void updateText() {
 		this.textProperty().addListener((observable, oldV, newV) -> this.setText(newV));
-	};
+	}
 
+	/**
+	 * Adds a listener to ensure that the color of a SudokuFields textproperty is
+	 * black after inserting a new number
+	 */
 	public void updateColor() {
-		this.textProperty().addListener((observable, oldV, newV) ->
-		this.getStyleClass().remove("textfieldWrong"));
+		this.textProperty().addListener((observable, oldV, newV) -> this.getStyleClass().remove("textfieldWrong"));
 		this.getStyleClass().remove("textfieldHint");
-	};
-	
-	
+	}
 
-	public void ShortcutFriendlyTextField() {
-        
-        this.addEventHandler(KeyEvent.KEY_RELEASED,new EventHandler<KeyEvent>() {
+	/**
+	 * application.BasicGameBuilder#getColorBox() This method is needed to ensure
+	 * that the Shortcuts which are defined in
+	 * {@link application.BasicGameBuilder#defineShortCuts()} work when the user is
+	 * inside a SudokuField Without this method the SudokuField does not respond to
+	 * the Shortcuts
+	 */
+	public void shortcutFriendlyTextField() {
 
-        	 @Override
-	            public void handle(KeyEvent event) {
-	                //handle shortcuts if defined
-	            	if (!event.getCode().isModifierKey()) {
-	            	    Consumer<KeyCombination.Modifier[]> runAccelerator = (modifiers) -> {
-	            	        Runnable r = getScene().getAccelerators().get(new KeyCodeCombination(event.getCode(), modifiers));
-	            	        if (r != null) {
-	            	            r.run();
-	            	        }
-	            	    };
+		this.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
 
-	            	    List<KeyCombination.Modifier> modifiers = new ArrayList<>();
-	            	    if (event.isControlDown()) modifiers.add(KeyCodeCombination.SHORTCUT_DOWN);
-	            	    if (event.isShiftDown()) modifiers.add(KeyCodeCombination.SHIFT_DOWN);
-	            	    if (event.isAltDown()) modifiers.add(KeyCodeCombination.ALT_DOWN);
-	          
-	            	    runAccelerator.accept(modifiers.toArray(new KeyCombination.Modifier[modifiers.size()]));
-	            	}
-	            }
-        });
-    }
-	      
-	        
-	
+			@Override
+			public void handle(KeyEvent event) {
+				// handle shortcuts if defined
+				if (!event.getCode().isModifierKey()) {
+					Consumer<KeyCombination.Modifier[]> runAccelerator = modifiers -> {
+						Runnable r = getScene().getAccelerators()
+								.get(new KeyCodeCombination(event.getCode(), modifiers));
+						if (r != null) {
+							r.run();
+						}
+					};
+					List<KeyCombination.Modifier> modifiers = new ArrayList<>();
+					if (event.isControlDown())
+						modifiers.add(KeyCodeCombination.SHORTCUT_DOWN);
+					if (event.isShiftDown())
+						modifiers.add(KeyCodeCombination.SHIFT_DOWN);
+					if (event.isAltDown())
+						modifiers.add(KeyCodeCombination.ALT_DOWN);
 
-//	public void addFreeFormColorListener(ComboBox<Color> cmb) {
-//		this.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {
-//			if (isNowFocused) {
-//				this.setColor(cmb.getValue().toString().substring(2));
-//				this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
-//				System.out.println(this.getColor());
-//			}
-//		});
-//	}
-	
+					runAccelerator.accept(modifiers.toArray(new KeyCombination.Modifier[modifiers.size()]));
+				}
+			}
+		});
+	}
+
+	/**
+	 * This method ensures that SudokuFields have the ability to receive the
+	 * selected color of a {@link application.CustomColorPicker#cmb} and change the
+	 * background color of itself according to the selected color in the Colorpicker
+	 * 
+	 * @param cmb
+	 */
 	public void addFreeFormColorListener(ComboBox<String> cmb) {
 		freeFormColorListener = (obs, wasFocused, isNowFocused) -> {
-			if (isNowFocused && cmb != null && cmb.getValue()!=null) {
-			this.setColor(cmb.getValue());
-			System.out.println(cmb.getValue() + "gui");
-			
-		//	this.setStyle("-fx-background-color: #" + cmb.getValue().toString().substring(2));
-			
+			if (isNowFocused == true && cmb != null && cmb.getValue() != null) {
+				this.setColor(cmb.getValue());
 			}
 		};
-		
+
 		this.focusedProperty().addListener(freeFormColorListener);
 		listeningToColors = true;
 	}
-	
-	
+
+	/**
+	 * Removes the listener added to a SudokuField from the method
+	 * {@link #addFreeFormColorListener(ComboBox)}
+	 */
 	public void removeFreeFormColorListener() {
 		this.focusedProperty().removeListener(freeFormColorListener);
 		listeningToColors = false;
-	}
-	
-	
-	
-
-	public void setPlayable(boolean playable) {
-		this.playable = playable;
 	}
 
 	public void setColor(String color) {
@@ -155,10 +157,6 @@ public class SudokuField extends TextField {
 		return color;
 	}
 
-	public boolean getPlayable() {
-		return playable;
-	}
-	
 	public boolean isListeningToColors() {
 		return listeningToColors;
 	}

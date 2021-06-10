@@ -7,19 +7,44 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import logic.BasicGameLogic;
 
+/**
+ * This class is used to create a PopUP which gives the User the ability to change the gamemode while he/she is in an other game
+ * @author grube
+ *
+ */
 public class NewGamePopUp extends MainMenu {
 
-	PopOver popOver;
-	HBox gameModeButtons;
-	HBox difficultyButtons;
-	Label newGameModeLabel;
-	VBox popOverBox;
-	PopOverController popcontrol;
+	
+	protected PopOver popOver;
+	
+	/**
+	 * Container for the game mode buttons
+	 */
+	protected HBox gameModeButtons;
+	
+	/**
+	 * Container for the difficulty buttons
+	 */
+	protected HBox difficultyButtons;
+	
+	/**
+	 * Label which is used as Header of the popup
+	 */
+	protected Label newGameModeLabel;
+	
+	/**
+	 * root container of the popover
+	 */
+	protected VBox popOverBox;
+	protected PopOverController popcontrol;
 
 	
-
+	/**
+	 * Creates a PopOver Object and fills it with the UI Components needed
+	 * Furtermore the Objects controller is initialized
+	 * @return created PopOver
+	 */
 	public PopOver createPopUp() {
 		popcontrol = new PopOverController(this);
 
@@ -41,7 +66,11 @@ public class NewGamePopUp extends MainMenu {
 
 		return popOver;
 	}
-
+	
+	
+	/**
+	 * This method creates the togglebuttons which are responsible for selecting a gamemode by calling the method from the super class {@link  application.ModeController#createGameModeButtons()}
+	 */
 	@Override
 	public void createGameModeButtons() {
 		gameModeButtons = new HBox();
@@ -50,7 +79,11 @@ public class NewGamePopUp extends MainMenu {
 		gameModeButtons.getChildren().addAll(sudoku, samurai, freeform);
 		gameModeButtons.setAlignment(Pos.CENTER);
 	}
-
+	
+	
+	/**
+	 * This method creates the togglebuttons which are responsible for selecting a difficulty by calling the method from the super class {@link  application.ModeController#createDifficultyButtons()}
+	 */
 	@Override
 	public void createDifficultyButtons() {
 		difficultyButtons = new HBox();
@@ -60,6 +93,10 @@ public class NewGamePopUp extends MainMenu {
 		difficultyButtons.getChildren().addAll(easy, medium, hard);
 	}
 
+	
+	/**
+	 * This method is used to connect the buttons of the popup with methods which are defined in the @see SudokuFx.SudokuFx.application.PopOverController class
+	 */
 	@Override
 	public void setButtonActions() {
 		sudoku.setOnAction(popcontrol::handleToSudoku);

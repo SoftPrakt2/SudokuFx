@@ -7,7 +7,7 @@ import application.FreeFormGameBuilder;
 import application.GUI;
 import application.MainMenu;
 import application.SamuraiGameBuilder;
-import application.Storage;
+import application.StorageView;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -19,17 +19,30 @@ import logic.SudokuLogic;
 
 /**
  * 
- * Die ModeController Klasse stellt den Controller der MainMenu Klasse in der View dar. 
- * Der Aufgabenbereich dieser Klasse liegt darin je nach gedrücktem Knopf in der UI das richtige Spiel aufzurufen
- * Des Weiteren regelt dieser Controller die Einstellungen der Schwierigkeit eines Spiels 
+ * This Class is the Controller of the {@link application.MainMenu} class. This
+ * Controller handles the navigation through the program and ensures that the
+ * correct game with the correct difficulty is created Furthermore this
+ * controller handles the navigation to the Programms Storage View
  */
 
 public class ModeController {
 
 	private MainMenu menu;
+
+	/**
+	 * Game UI which will be initialized according to the pressed Gamemode Button
+	 */
 	protected BasicGameBuilder gameScene;
+	/**
+	 * Game Model which will be initialized according to the pressed Gamemode Button
+	 */
 	protected BasicGameLogic model;
 
+	/**
+	 * auxiliary variable which is used to cache the selected difficulty of the user
+	 * Will be handed over to the {@link logic.BasicGameLogic#setDifficulty(int)}
+	 * Method when {@link application.MainMenu#getPlayButton()} is pressed
+	 */
 	protected int difficulty;
 
 	public <E extends MainMenu> ModeController(E menu) {
@@ -37,22 +50,23 @@ public class ModeController {
 	}
 
 	/**
-	 * Instanziiert die abstrakte BasisLogic Klasse als SudokuLogik und die abstrakte BasicGameBuilder Klasse als SudokuGameBuilder  
-	 * 
+	 * instantiates the {@link #model} as SudokuLogic instantiates the
+	 * {@link #gameSceme} as SudokuGameBuilder The difficulty ToggleButtons of
+	 * {@link application.MainMenu#getPlayModeToggle()} will be enabled
 	 */
 	public void handleToSudoku(ActionEvent e) {
-		
+
 		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
 		gameScene = new SudokuGameBuilder(model);
 		gameScene.initializeGame();
 		enableDifficultyButtons();
 		checkIfManualWasPressed(e);
 	}
-	
+
 	/**
-	 * 
-	 * Instanziiert den BasicGameBuilder als SamuraiGameBuilder und ladet die
-	 * SamuraiScene
+	 * instantiates the {@link #model} as SamuraiLogic instantiates the
+	 * {@link #gameSceme} as SamuraiGameBuilder The difficulty ToggleButtons of
+	 * {@link application.MainMenu#getPlayModeToggle()} will be enabled
 	 */
 	public void handleToSamurai(ActionEvent e) {
 		model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
@@ -63,9 +77,9 @@ public class ModeController {
 	}
 
 	/**
-	 * 
-	 * Instanziiert den BasicGameBuilder als FreeFormGameBuilder und ladet die
-	 * FreeFormScene
+	 * instantiates the {@link #model} as FreeFormLogic instantiates the
+	 * {@link #gameSceme} as FreeFormGameBuilder The difficulty ToggleButtons of
+	 * {@link application.MainMenu#getPlayModeToggle()} will be enabled
 	 */
 	public void handleToFreeForm(ActionEvent e) {
 		model = new FreeFormLogic(Gamestate.OPEN, 0, 0, false);
@@ -76,104 +90,97 @@ public class ModeController {
 	}
 
 	/**
-	 * 
-	 * Instanziiert ein StorageObjekt und ruft die Scene des Storage-Objekts auf
-	 * 
+	 * Instanziiert ein StorageView Objekt und ruft die Scene des Storage-Objekts
+	 * auf
 	 * 
 	 */
-	public void handleToLoad(ActionEvent e)  {
-		Storage overview = new Storage();
+	public void handleToLoad(ActionEvent e) {
+		StorageView overview = new StorageView();
 		overview.createStage();
 	}
 
 	/**
-	 *  
 	 * 
+	 * closes the program
 	 */
 	public void handleExit(ActionEvent e) {
 		GUI.getStage().close();
 	}
 
 	/**
-	 * Stellen die schwierigkeit des zuvor ausgewählten Sudoku-Spiels ein
+	 * sets the {@link #difficulty} variable
 	 */
 	public void handleHard(ActionEvent e) {
-			difficulty = 3;
-			unlockGameActionButtons();
-			enablePlayButton();
+		difficulty = 3;
+		unlockGameActionButtons();
+		enablePlayButton();
 	}
-
-	public void handleEasy(ActionEvent e) {
-			difficulty = 7;
-			unlockGameActionButtons();
-			enablePlayButton();
-		
-	}
-
-	public void handleMedium(ActionEvent e) {
-			difficulty = 5;
-			unlockGameActionButtons();
-			enablePlayButton();
-	}
-
-	
-	public void handleManual(ActionEvent e) {
-			difficulty = 0;
-			if (model instanceof FreeFormLogic) {
-				model.setGameState(Gamestate.DRAWING);
-				gameScene.getColorsDoneButton().setVisible(true);
-				gameScene.getColorBox().setVisible(true);
-			} else {
-				model.setGameState(Gamestate.CREATING);
-				gameScene.getDoneButton().setVisible(true);
-			}
-			lockGameActionButtons();
-			enablePlayButton();
-		}
-	
 
 	/**
+	 * sets the {@link #difficulty} variable
+	 */
+	public void handleEasy(ActionEvent e) {
+		difficulty = 7;
+		unlockGameActionButtons();
+		enablePlayButton();
+	}
+
+	/**
+	 * sets the {@link #difficulty} variable
+	 */
+	public void handleMedium(ActionEvent e) {
+		difficulty = 5;
+		unlockGameActionButtons();
+		enablePlayButton();
+	}
+
+	/**
+	 * sets the {@link #difficulty} variable if {@link #model} is a FreeFormLogic
+	 * {@link application.BasicGameBuilder#getColorsDoneButton()} and
+	 * {@link application.BasicGameBuilder#getColorBox()} will be made visible
 	 * 
-	 * Initialisiert das Spiel mit den gewünschten Einstellungen Befüllt das
-	 * jeweilige Spielfeld der schwierigkeit entsprechend Setzt den Startzeitpunkt
-	 * des Spiels auf 0
+	 * otherwise {@link application.BasicGameBuilder#getDoneButton()} will be made
+	 * visible
+	 * uses {@link #lockGameActionButtons()} to lock the games playfunction buttons
+	 */
+	public void handleManual(ActionEvent e) {
+		difficulty = 0;
+		if (model instanceof FreeFormLogic) {
+			model.setGameState(Gamestate.DRAWING);
+			gameScene.getColorsDoneButton().setVisible(true);
+			gameScene.getColorBox().setVisible(true);
+		} else {
+			model.setGameState(Gamestate.CREATING);
+			gameScene.getDoneButton().setVisible(true);
+		}
+		model.initializeCustomGame();
+		lockGameActionButtons();
+		enablePlayButton();
+	}
+
+	/**
+	 * Responsible for switching to the selected game UI 
 	 */
 	public void handleGameStart(ActionEvent e) {
-		if(menu.getPlayModeToggle().getSelectedToggle() != null && menu.getDifficultyToggle().getSelectedToggle() != null) {
-		
-		
-		model.setDifficulty(difficulty);
-		if (difficulty == 0) {
-			model.initializeCustomGame();
-		} else {
-			gameScene.createNumbers();
-			gameScene.getDoneButton().setDisable(true);
-		}
-		gameScene.getGameNotificationLabel().setText(model.getGameText());
-		
-		
-		GUI.getStage().setHeight(gameScene.getHeight());
-		GUI.getStage().setWidth(gameScene.getWidth());
-		GUI.getStage().getScene().setRoot(gameScene.getPane());
+		if (menu.getPlayModeToggle().getSelectedToggle() != null
+				&& menu.getDifficultyToggle().getSelectedToggle() != null) {
 
-		
-		if (menu.getPlayModeToggle().getSelectedToggle() != null) {
-			menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
-		}
+			model.setDifficulty(difficulty);
+			if (model.getDifficulty() > 0) {
+				gameScene.createNumbers();
+			}
 
-		if (menu.getDifficultyToggle().getSelectedToggle() != null) {
-			menu.getDifficultyToggle().getSelectedToggle().setSelected(false);
-		}
+			gameScene.getGameNotificationLabel().setText(model.getGameText());
 
-		disableDifficultyButtons();
-		disablePlayButton();
+			alignGameWithWindow();
+			removeSelectedToggles();
+			disableDifficultyButtons();
+			disablePlayButton();
 		}
 	}
 
-	
-
 	/**
-	 * Schaltet die Schwierigkeitsbuttons zur Verwendung frei 
+	 * Enables the {@link application.MainMenu#getDifficultyToggle()} ToggleButtons
 	 */
 	public void enableDifficultyButtons() {
 		menu.getDifficultyToggle().getToggles().forEach(toggle -> {
@@ -183,7 +190,7 @@ public class ModeController {
 	}
 
 	/**
-	 * Sperrt die Schwierigkeitsbuttons, diese Methode wird benötigt, damit bei einem Wiederaufruf des Hauptmenüs diese nicht verwendet werden können
+	 * Disables the {@link application.MainMenu#getDifficultyToggle()} ToggleButtons
 	 */
 	public void disableDifficultyButtons() {
 		menu.getDifficultyToggle().getToggles().forEach(toggle -> {
@@ -192,30 +199,43 @@ public class ModeController {
 		});
 	}
 
-	
+	public void removeSelectedToggles() {
+		if (menu.getPlayModeToggle().getSelectedToggle() != null) {
+			menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
+		}
+
+		if (menu.getDifficultyToggle().getSelectedToggle() != null) {
+			menu.getDifficultyToggle().getSelectedToggle().setSelected(false);
+		}
+	}
+
 	/**
-	 * Schaltet den CreateGame Button zur Verwendung frei 
+	 * Schaltet den CreateGame Button zur Verwendung frei
 	 */
 	public void enablePlayButton() {
 		menu.getPlayButton().setDisable(false);
 	}
 
-	
 	/**
-	 * Sperrt die Schwierigkeitsbuttons, diese Methode wird benötigt, damit bei einem Wiederaufruf des Hauptmenüs diese nicht verwendet werden können
+	 * Sperrt die Schwierigkeitsbuttons, diese Methode wird benötigt, damit bei
+	 * einem Wiederaufruf des Hauptmenüs nicht im entsperrten Zustand ist
 	 */
 	public void disablePlayButton() {
 		menu.getPlayButton().setDisable(true);
 	}
 
-	
-	
+	/**
+	 * This method unlocks the {@link #gameScene} play Buttons and sets the {@link #gameScene} manual Buttons invisible
+	 * This is needed to ensure that if a user presses the {@link application.MainMenu#getDifficultyToggle()} manual button
+	 * and then presses another Button of the mentioned button group, the state of the {@link #gameScene} Buttons are available accordingly
+	 */
 	public void unlockGameActionButtons() {
-		Stream.of(gameScene.getHintButton(), gameScene.getAutoSolveButton(), gameScene.getCheckButton()).forEach(button -> {
-			if (button.isDisabled()) {
-				button.setDisable(false);
-			}
-		});
+		Stream.of(gameScene.getHintButton(), gameScene.getAutoSolveButton(), gameScene.getCheckButton())
+				.forEach(button -> {
+					if (button.isDisabled()) {
+						button.setDisable(false);
+					}
+				});
 		if (gameScene.getDoneButton().isVisible()) {
 			gameScene.getDoneButton().setVisible(false);
 		}
@@ -226,25 +246,53 @@ public class ModeController {
 			gameScene.getColorsDoneButton().setVisible(false);
 		}
 	}
-	
-	
-	
+
+	/**
+	 * Locks the {@link #gameScene} play buttons
+	 */
 	public void lockGameActionButtons() {
-		Stream.of(gameScene.getHintButton(), gameScene.getAutoSolveButton(), gameScene.getCheckButton()).forEach(button -> {
-			if (!button.isDisabled()) {
-				button.setDisable(true);
-			}
-	});
+		Stream.of(gameScene.getHintButton(), gameScene.getAutoSolveButton(), gameScene.getCheckButton())
+				.forEach(button -> {
+					if (!button.isDisabled()) {
+						button.setDisable(true);
+					}
+				});
+		Stream.of(gameScene.getAutoSolveMenuItem(), gameScene.getHintMenuItem(), gameScene.getCheckMenuItem())
+			.forEach(menuItem -> {
+				if(!menuItem.isDisable()) {
+					menuItem.setDisable(true);
+				}
+			});
 	}
-	
-	
+
 	public boolean checkIfManualWasPressed(ActionEvent e) {
-		if(difficulty == 0 && menu.getDifficultyToggle().getToggles() != null) {
+		if (difficulty == 0 && menu.getDifficultyToggle().getToggles() != null) {
 			handleManual(e);
 			return true;
 		}
 		return false;
 	}
-	
+
+	/**
+	 * Aligns the programs Window size to width and height variables defined in {@link #gameScene}
+	 * displays the GameUI 
+	 */
+	public void alignGameWithWindow() {
+		GUI.getStage().setHeight(gameScene.getHeight());
+		GUI.getStage().setWidth(gameScene.getWidth());
+		GUI.getStage().getScene().setRoot(gameScene.getGameUIRoot());
+	}
+
+	public BasicGameLogic getModel() {
+		return model;
+	}
+
+	public BasicGameBuilder getGameBuilder() {
+		return gameScene;
+	}
+
+	public int getSelectedDifficulty() {
+		return difficulty;
+	}
 
 }

@@ -8,7 +8,7 @@ import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
 import application.GUI;
 import application.SamuraiGameBuilder;
-import application.Storage;
+import application.StorageView;
 import application.SudokuField;
 import application.SudokuGameBuilder;
 import javafx.beans.binding.Bindings;
@@ -32,7 +32,7 @@ public class StorageController {
 	private BasicGameBuilder game;
 	private BasicGameLogic model;
 	private SudokuStorageModel storageModel;
-	private Storage storage;
+	private StorageView storage;
 	private File[] dir = new File("SaveFiles").listFiles();
 
 	protected ObservableList<BasicGameLogic> jsonObservableList;
@@ -44,11 +44,12 @@ public class StorageController {
 	TableColumn<BasicGameLogic, Gamestate> gamestatecolumn;
 	TableColumn<BasicGameLogic, Integer> gameidcolumn;
 	
+
 	IntegerProperty overallPointsProperty;
 
 	SharedStoragePreferences sharedStorage = new SharedStoragePreferences();
 
-	public StorageController(Storage storage) {
+	public StorageController(StorageView storage) {
 		this.storage = storage;
 		storageModel = new SudokuStorageModel();
 	}
@@ -96,7 +97,7 @@ public class StorageController {
 
 		GUI.getStage().setHeight(game.getHeight());
 		GUI.getStage().setWidth(game.getWidth());
-		GUI.getStage().getScene().setRoot(game.getPane());
+		GUI.getStage().getScene().setRoot(game.getGameUIRoot());
 		storage.getStage().close();
 
 		alignArrays();
@@ -159,6 +160,8 @@ public class StorageController {
 		dir = new File("SaveFiles").listFiles();
 	}
 
+	
+	
 	public void alignArrays() {
 		SudokuField[][] s = game.getTextField();
 		for (int i = 0; i < s.length; i++) {
@@ -171,14 +174,14 @@ public class StorageController {
 				}
 
 				if (model.getCells()[j][i].getFixedNumber() && model.getCells()[j][i].getValue() != 0) {
-					System.out.println(model.getCells()[j][i].getFixedNumber());
+					
 					s[i][j].setDisable(true);
 				}
 			}
 		}
 	}
 
-	
+
 	
 	public void calculateGameStats() {
 
@@ -220,14 +223,14 @@ public class StorageController {
 		StringBinding averagePlayTime = Bindings.createStringBinding(() -> {
 			long playTime = 0;
 			String time;
-			int counter = 0;
+			float counter = 0;
 			for (BasicGameLogic savedModel : storage.getTableView().getItems()) {
 				playTime += savedModel.getMinutesplayed() * 60 + savedModel.getSecondsplayed();
 				counter++;
 			}
 			if (counter == 0)
 				counter = 1;
-			playTime = Math.round(playTime / counter);
+			playTime = (long) (playTime/counter);
 			long minPlayed = playTime / 60;
 			long secPlayed = playTime % 60;
 
