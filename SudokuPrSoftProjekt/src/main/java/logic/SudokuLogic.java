@@ -19,9 +19,9 @@ public class SudokuLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[9][9];
 		gametype = "Sudoku";
-		hintCounter = 3;
+		numbersToBeSolvable = 21;
 	}
-
+	
 	/**
 	 * checks if the value already exists in a row
 	 */

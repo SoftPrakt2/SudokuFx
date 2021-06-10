@@ -13,7 +13,7 @@ public class SamuraiLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		cells = new Cell[21][21];
 		gametype = "Samurai";
-		hintCounter = 10;
+		numbersToBeSolvable = 140;
 	}
 
 	/**

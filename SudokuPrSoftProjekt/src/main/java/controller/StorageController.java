@@ -43,7 +43,7 @@ public class StorageController {
 	TableColumn<BasicGameLogic, String> playtimecolumn;
 	TableColumn<BasicGameLogic, Gamestate> gamestatecolumn;
 	TableColumn<BasicGameLogic, Integer> gameidcolumn;
-
+	
 	IntegerProperty overallPointsProperty;
 
 	SharedStoragePreferences sharedStorage = new SharedStoragePreferences();

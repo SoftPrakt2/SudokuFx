@@ -388,10 +388,7 @@ public abstract class BasicGameLogic {
 	public void setStartTime(long startTime) {
 		this.startTime = startTime;
 	}
-
-
-
-
+	
 	public void setGameState(Gamestate gamestate) {
 		this.gamestate = gamestate;
 	}
@@ -420,7 +417,6 @@ public abstract class BasicGameLogic {
 		if (this.getGamestate() == Gamestate.CREATING) {
 			gameText = "Create your own game!";
 		}
-
 		if (this.getGamestate() == Gamestate.OPEN) {
 			gameText = "Game ongoing!";
 		}
@@ -430,6 +426,13 @@ public abstract class BasicGameLogic {
 		if (this.getGamestate() == Gamestate.UNSOLVABLEMANUALSUDOKU) {
 			gameText = "Your created Sudoku is unsolvable! Please create a new Sudoku.";
 		}
+		if (this.getGamestate() == Gamestate.NOTENOUGHNUMBERS) {
+            gameText = "Not enough numbers! Please insert " + (numbersToBeSolvable - manualNumbersInserted)
+                    + " more numbers to create the game";
+        }
+        if (this.getGamestate() == Gamestate.NOFORMS) {
+            gameText = "Your forms are not properly connected!";
+        }
 		return gameText;
 	}
 
