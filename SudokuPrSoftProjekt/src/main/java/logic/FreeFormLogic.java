@@ -36,7 +36,7 @@ public class FreeFormLogic extends SudokuLogic {
 		}
 		return true;
 	}
-
+	
 	/**
 	 * Autogenerator für ein neues Sudoku Befüllt rekursiv das im Hintergrund
 	 * liegene Sudoku-Array.
@@ -147,7 +147,6 @@ public class FreeFormLogic extends SudokuLogic {
 			}
 		}
 
-		Random r = new Random();
 		// Durchläufe bis Array mit je 9 gefüllt ist
 		while (!nineNrCells()) {
 			Cell[][] rollbackCells = new Cell[9][9];
@@ -243,7 +242,6 @@ public class FreeFormLogic extends SudokuLogic {
 	public int proofEdgesAndSetNewBox(int i, int j) {
 
 		// oben, unten, rechts, links
-		Random r = new Random();
 		int direction = r.nextInt(4);
 
 		if (direction == 0 && i < 8 && cells[i][j].getBox() != cells[i + 1][j].getBox()) {
