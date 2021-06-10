@@ -1,5 +1,7 @@
 package logic;
 
+import java.util.Random;
+
 /**
  * extends BasicGameLogic
  * implements all abstract methods of BasicGameLogic
@@ -86,6 +88,25 @@ public class SudokuLogic extends BasicGameLogic {
 	 * the amount depends on the difficulty chosen by the user
 	 * 
 	 */
+//	public void difficulty() {
+//        int counter = getNumberOfVisibleValues();
+//
+//        if(counter == 81) {
+//            removeValues();
+//        }
+//        else {
+//            while (counter != 0) {
+//                int randCol = r.nextInt(9);
+//                int randRow = r.nextInt(9);
+//                if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getFixedNumber()) {
+//                    this.cells[randRow][randCol].setValue(0);
+//                    this.cells[randRow][randCol].setFixedNumber(false);
+//                    counter--;
+//                }
+//            }
+//        }
+//    }
+	
 	public void difficulty() {
         int counter = getNumberOfVisibleValues();
 
@@ -93,9 +114,10 @@ public class SudokuLogic extends BasicGameLogic {
             removeValues();
         }
         else {
+            Random r = new Random();
             while (counter != 0) {
-                	int randCol = r.nextInt(9);
-                	int randRow = r.nextInt(9);
+                    int randCol = r.nextInt(9);
+                    int randRow = r.nextInt(9);
                 if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getFixedNumber()) {
                     this.cells[randRow][randCol].setValue(0);
                     this.cells[randRow][randCol].setFixedNumber(false);
@@ -124,20 +146,20 @@ public class SudokuLogic extends BasicGameLogic {
 		}
 	}
 
-//	public void printCells() {
-//		for (int row = 0; row < this.cells.length; row++) {
-//			for (int col = 0; col < this.cells[row].length; col++) {
-//				System.out.print(this.cells[row][col].getValue() + " ");
-//				if (col == 2 || col == 5) {
-//					System.out.print("|");
-//				}
-//			}
-//			System.out.println();
-//			if (row == 2 || row == 5 || row == 8) {
-//				System.out.println("-------------------");
-//			}
-//		}
-//	}
+	public void printCells() {
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int col = 0; col < this.cells[row].length; col++) {
+				System.out.print(this.cells[row][col].getValue() + " ");
+				if (col == 2 || col == 5) {
+					System.out.print("|");
+				}
+			}
+			System.out.println();
+			if (row == 2 || row == 5 || row == 8) {
+				System.out.println("-------------------");
+			}
+		}
+	}
 
 	@Override
 	public boolean isConnected() {

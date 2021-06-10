@@ -57,30 +57,29 @@ public class FreeFormLogic extends SudokuLogic {
 				while (!correctNumber) {
 					counter++;
 					globalCounter++;
-					int randomNumber = (int) (Math.random() * 9) + 1;
+					int randomNumber = r.nextInt(9) + 1;
 					if (this.cells[i][j].getValue() == 0 && this.valid(i, j, randomNumber)) {
 						this.cells[i][j].setValue(randomNumber);
 						correctNumber = true;
 					}
-
 					if (counter == 20000) {
 						counter = 0;
 						deleteNumbers();
 						i = 0;
 						j = 0;
+						System.out.println("yeet");
 					}
 
-					if (globalCounter > 1000000) {
+					if (globalCounter > 3000000) {
 						globalCounter = 0;
 						this.cells = loadPreMadeFreeForm();
 						System.out.println("preloadgamemydudeyeeet");
+						this.printCells();
 						return true;
 					}
-
 				}
 			}
 		}
-
 		if (!solveSudoku()) {
 			createSudoku();
 		}
@@ -89,19 +88,17 @@ public class FreeFormLogic extends SudokuLogic {
 	}
 
 	public Cell[][] loadPreMadeFreeForm() {
-
 		SaveModel data = new SaveModel();
 		Gson gson = new GsonBuilder().create();
 
 		File[] freeFormDirectory = new File("FreeFormGames").listFiles();
 
-		int rand = r.nextInt(14);
+		int rand = r.nextInt(14) + 1;
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(freeFormDirectory[rand].getAbsoluteFile()));
 			data = gson.fromJson(br, SaveModel.class);
 			this.setCells(data.getGameArray());
-
 			try {
 				br.close();
 			} catch (IOException e) {

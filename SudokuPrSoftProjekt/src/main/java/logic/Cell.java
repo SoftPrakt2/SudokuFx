@@ -17,7 +17,7 @@ public class Cell {
 	@Expose int value;
 
 	// Manuelle Eingabe
-	@Expose boolean fixedNumber;
+	@Expose boolean isReal;
 
 	// Color color
 	@Expose String boxcolor;
@@ -28,16 +28,16 @@ public class Cell {
 	        this.col = col;
 	        this.box = box;
 	        this.value = value;
-	        this.fixedNumber = true;
+	        this.isReal = true;
 	        this.boxcolor = "";
 	    }
 
 	    public boolean getFixedNumber() {
-	        return this.fixedNumber;
+	        return this.isReal;
 	    }
 
 	    public void setFixedNumber(boolean newState) {
-	        this.fixedNumber = newState;
+	        this.isReal = newState;
 	    }
 
 	    public int getCol() {
