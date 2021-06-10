@@ -135,8 +135,6 @@ public class FreeFormLogic extends SudokuLogic {
 			}
 			int rand1 = r.nextInt(9);
 			int rand2 = r.nextInt(9);
-//			int rand1 = (int) (Math.floor(Math.random() * 8.9999));
-//			int rand2 = (int) (Math.floor(Math.random() * 8.9999));
 			proofEdgesAndSetNewBox(rand1, rand2);
 			if (!proofNrCells()) {
 				for (int i = 0; i < this.cells.length; i++) {
@@ -158,8 +156,6 @@ public class FreeFormLogic extends SudokuLogic {
 			}
 			int rand1 = r.nextInt(9);
 			int rand2 = r.nextInt(9);
-//			int rand1 = (int) (Math.floor(Math.random() * 8.9999));
-//			int rand2 = (int) (Math.floor(Math.random() * 8.9999));
 			proofEdgesAndSetNewBox(rand1, rand2);
 			if (!proofNrCells()) {
 				for (int i = 0; i < this.cells.length; i++) {
@@ -245,7 +241,6 @@ public class FreeFormLogic extends SudokuLogic {
 		int direction = r.nextInt(4);
 
 		if (direction == 0 && i < 8 && cells[i][j].getBox() != cells[i + 1][j].getBox()) {
-//			if (cells[i][j].getBox() != cells[i + 1][j].getBox()) {
 				int newBoxVal = cells[i + 1][j].getBox();
 				int oldBoxVal = cells[i][j].getBox();
 				cells[i][j].setBox(cells[i + 1][j].getBox());
@@ -254,11 +249,9 @@ public class FreeFormLogic extends SudokuLogic {
 				} else {
 					return newBoxVal;
 				}
-//			}
 		}
 
 		if (direction == 1 && i > 0 && cells[i][j].getBox() != cells[i - 1][j].getBox()) {
-//			if (cells[i][j].getBox() != cells[i - 1][j].getBox()) {
 				int newBoxVal = cells[i - 1][j].getBox();
 				int oldBoxVal = cells[i][j].getBox();
 				cells[i][j].setBox(cells[i - 1][j].getBox());
@@ -267,11 +260,9 @@ public class FreeFormLogic extends SudokuLogic {
 				} else {
 					return newBoxVal;
 				}
-//			}
 		}
 
 		if (direction == 2 && j < 8 && cells[i][j].getBox() != cells[i][j + 1].getBox()) {
-//			if (cells[i][j].getBox() != cells[i][j + 1].getBox()) {
 				int newBoxVal = cells[i][j + 1].getBox();
 				int oldBoxVal = cells[i][j].getBox();
 				cells[i][j].setBox(cells[i][j + 1].getBox());
@@ -280,11 +271,9 @@ public class FreeFormLogic extends SudokuLogic {
 				} else {
 					return newBoxVal;
 				}
-//			}
 		}
 
 		if (direction == 3 && j > 0 && cells[i][j].getBox() != cells[i][j - 1].getBox()) {
-//			if (cells[i][j].getBox() != cells[i][j - 1].getBox()) {
 				int newBoxVal = cells[i][j - 1].getBox();
 				int oldBoxVal = cells[i][j].getBox();
 				cells[i][j].setBox(cells[i][j - 1].getBox());
@@ -293,7 +282,6 @@ public class FreeFormLogic extends SudokuLogic {
 				} else {
 					return newBoxVal;
 				}
-//			}
 		}
 		return 0;
 	}
@@ -328,36 +316,20 @@ public class FreeFormLogic extends SudokuLogic {
 
 	private int isInternalConnected(int i, int j, int toNine, int[][] cellsmr) {
 		if (i < 8 && cellsmr[i + 1][j] == 0 && cells[i][j].getBox() == cells[i + 1][j].getBox()) {
-//			if (cellsmr[i + 1][j] == 0) {
-//				if (cells[i][j].getBox() == cells[i + 1][j].getBox()) {
 			cellsmr[i + 1][j] = 1;
 			toNine = isInternalConnected(i + 1, j, toNine, cellsmr) + 1;
-//				}
-//			}
 		}
 		if (i > 0 && cellsmr[i - 1][j] == 0 && cells[i][j].getBox() == cells[i - 1][j].getBox()) {
-//			if (cellsmr[i - 1][j] == 0) {
-//				if (cells[i][j].getBox() == cells[i - 1][j].getBox()) {
 			cellsmr[i - 1][j] = 1;
 			toNine = isInternalConnected(i - 1, j, toNine, cellsmr) + 1;
-//				}
-//			}
 		}
 		if (j < 8 && cellsmr[i][j + 1] == 0 && cells[i][j].getBox() == cells[i][j + 1].getBox()) {
-//			if (cellsmr[i][j + 1] == 0) {
-//				if (cells[i][j].getBox() == cells[i][j + 1].getBox()) {
 			cellsmr[i][j + 1] = 1;
 			toNine = isInternalConnected(i, j + 1, toNine, cellsmr) + 1;
-//				}
-//			}
 		}
 		if (j > 0 && cellsmr[i][j - 1] == 0 && cells[i][j].getBox() == cells[i][j - 1].getBox()) {
-//			if (cellsmr[i][j - 1] == 0) {
-//				if (cells[i][j].getBox() == cells[i][j - 1].getBox()) {
 			cellsmr[i][j - 1] = 1;
 			toNine = isInternalConnected(i, j - 1, toNine, cellsmr) + 1;
-//				}
-//			}
 		}
 		return toNine;
 	}

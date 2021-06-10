@@ -167,7 +167,23 @@ public class GameController {
 				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
 			}
 		}
-		if (model.isConnected()) {
+		
+		boolean helper = true;
+			int[] cells1to9 = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+			int box;
+			for (int d = 0; d < model.getCells().length; d++) {
+				for (int h= 0; h < this.model.getCells()[d].length; h++) {
+					box = model.getCells()[d][h].getBox();
+					cells1to9[box - 1] += 1;
+				}
+			}
+			for (int nk = 0; nk < 9; nk++) {
+				if (cells1to9[nk] != 9) {
+					helper = false;
+				}
+			}
+
+		if (model.isConnected() &&  helper == true) {
 			for (SudokuField coloredArray[] : sudokuField) {
 				for (SudokuField coloredField : coloredArray) {
 					coloredField.removeFreeFormColorListener();
