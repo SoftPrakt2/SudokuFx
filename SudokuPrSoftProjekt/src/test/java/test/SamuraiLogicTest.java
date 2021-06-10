@@ -351,11 +351,10 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 139);
+		assertEquals(count, 159);
 	}
-	
-	
-	
+
+
 	@Test
 	void testDifficulty5() {
 		model.createSudoku();
@@ -369,7 +368,7 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 169);
+		assertEquals(count, 179);
 	}
 	
 	@Test
@@ -385,7 +384,7 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(count, 189);
+		assertEquals(count, 199);
 	}
 	
 	@Test
