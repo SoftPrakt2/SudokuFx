@@ -2,9 +2,6 @@ package application;
 
 import java.util.stream.Stream;
 
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.Glyph;
-
 import controller.StorageController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -25,54 +22,86 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import logic.BasicGameLogic;
 
-public class StorageView {
 
-	// variablen für Anzeige der Spiele in der Liste
+/**
+ * This class defines the appearance of the programs game overview 
+ * To do so different UI Components like a table view, a context menu for this table view and different 
+ * labels are created
+ * @author grube
+ *
+ */
+public class GameOverview {
 
-	StorageController controller;
+	/**
+	 * Controller of this View class which will be initialized when opening this
+	 * class in the program
+	 */
+	protected StorageController controller;
 
-	// Objekte bezüglich File und JSON Funktionalität
+	/**
+	 * Stage object of this class
+	 */
+	protected Stage stage;
 
-	// ÜberBehälter für die Scene
+	/**
+	 * Scene object of this class
+	 */
 	protected Scene storageScene;
 
-	// Objekte für die ListView und die HashMap welche benötigt wird um den Spieler
-	// auswählen lassen zu können welches Spiel er laden will
+	/**
+	 * The tableview of this scene
+	 */
 	protected TableView<BasicGameLogic> tableView;
 
-	// Right Click Menu Items
+	/**
+	 * UI Objects which will be used for the contextmenu of the {@link #tableView}
+	 */
 	protected ContextMenu contextMenu;
 	protected MenuItem deleteMenuItem;
 	protected MenuItem loadMenuItem;
 
+	/**
+	 * Main Container for UI Objects in this Class
+	 */
 	protected BorderPane storageContainerBox;
 
-	protected HBox sceneHeaderBox;
 
-	protected Label gameHeadLabel;
+	/**
+	 * Labels for different headlines in the UI window
+	 */
+	protected Label storageHeaderLabel;
 	protected Label gameScoreHeaderLabel;
 	protected Label overallPointsHeaderLabel;
 	protected Label averagePointsHeaderLabel;
 	protected Label averageTimeHeaderLabel;
 	protected Label overallTimeHeaderLabel;
+
+	/**
+	 * Labels which will be later filled with Information about the users played
+	 * games
+	 */
 	protected Label averagePointsResultLabel;
 	protected Label overallPointsResultLabel;
 	protected Label overallTimeResultLabel;
 	protected Label averageTimeResultLabel;
 
-	protected VBox listviewBox;
+	/**
+	 * UI container for the {@link #tableView}
+	 */
+	protected VBox tableviewBox;
 
-	FontAwesome fontAwesome = new FontAwesome();
-	Glyph folderGraphic = fontAwesome.create(FontAwesome.Glyph.FOLDER);
-
-	protected Stage stage;
-
+	/**
+	 * This method is used to set up the Stage Object of this class
+	 * and show it in the UI 
+	 * @return
+	 */
 	public Stage createStage() {
 		storageScene = initializeStorageScene();
 		Stage currentStage = GUI.getStage();
 		double windowGap = 5;
 
 		stage = new Stage();
+		
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setScene(storageScene);
 		stage.setX(currentStage.getX() + currentStage.getWidth() + windowGap);
@@ -83,27 +112,37 @@ public class StorageView {
 		return stage;
 	}
 
+	/**
+	 * This method is used to set up this classes Scene object {@link #storageScene}
+	 * Indoing this the main UI container {@link #storageContainerBox} of this class is initialized
+	 * filled with the needed UI objects
+	 * and appropriately styled as well as positioned in the scene
+	 * Furthermore the controller of this View is initialized
+	 * @return the created scene
+	 */
 	public Scene initializeStorageScene() {
+		
+		
 		storageContainerBox = new BorderPane();
-		storageScene = new Scene(storageContainerBox, 510, 600);
-		controller = new StorageController(this);
-		storageScene.getStylesheets().add("css/sudoku.css");
 		storageContainerBox.getStyleClass().add("customBackgroundColor");
 		storageContainerBox.setPadding(new Insets(15, 15, 15, 15));
+		
+		
+		storageScene = new Scene(storageContainerBox, 510, 600);
+		storageScene.getStylesheets().add(getClass().getResource("/CSS/sudoku.css").toExternalForm());
+		controller = new StorageController(this);
+	
+		storageHeaderLabel = new Label("Game Overview");
+		storageContainerBox.setTop(storageHeaderLabel);
 
-		sceneHeaderBox = new HBox();
-		gameHeadLabel = new Label("Game Overview");
-		sceneHeaderBox.getChildren().addAll(gameHeadLabel);
-
-		listviewBox = new VBox();
+		tableviewBox = new VBox();
 		tableView = new TableView<>();
 		controller.setUpTableView();
-		listviewBox.getChildren().add(tableView);
-
-		storageContainerBox.setTop(sceneHeaderBox);
-		storageContainerBox.setCenter(listviewBox);
+		tableviewBox.getChildren().add(tableView);
+		
+		storageContainerBox.setCenter(tableviewBox);
 		createGameStatBox();
-		controller.fillListVew();
+		controller.fillTableVew();
 
 		setUpContextMenu();
 		styleLabels();
@@ -112,6 +151,11 @@ public class StorageView {
 		return storageScene;
 	}
 
+	/**
+	 * This method is used to initialize the {@link #contextMenu} Into this
+	 * contextMenu the menuitems {@link #deleteMenuItem} and {@link #loadMenuItem}
+	 * are inserted
+	 */
 	public void setUpContextMenu() {
 		contextMenu = new ContextMenu();
 		deleteMenuItem = new MenuItem("Delete");
@@ -123,24 +167,58 @@ public class StorageView {
 		loadMenuItem.setOnAction(controller::handleLoadAction);
 	}
 
+	/**
+	 * This method is used to add the functionality that a right mouse click inside
+	 * the {@link #tableView} opens the contextmenu defined in the
+	 * {@link #setUpContextMenu()} method
+	 */
+	public void addContextMenuFunctionality() {
+		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton().equals(MouseButton.SECONDARY)) {
+					contextMenu.show(tableView, event.getScreenX(), event.getScreenY());
+				}
+			}
+		});
+
+	}
+
+	/**
+	 * This method is used to initialize and position the
+	 * {@link #gameScoreHeaderLabel} label to allow better positioning of the label
+	 * it is put into its own HBox.
+	 * The HBox gameStatsBox is the main container forthe UI Objects which are created in the
+	 * {@link #createAverageResultContainer()} and
+	 * {@link #createOverallResultContainers()} The usage of the gameStatsBox allows
+	 * better positioning of the containers as a whole inside the window
+	 */
 	public void createGameStatBox() {
 		HBox gameStatsBox = new HBox();
 		gameScoreHeaderLabel = new Label("Game Scores");
-		HBox gameStatsLabelBox = new HBox();
-		gameStatsLabelBox.getChildren().add(gameScoreHeaderLabel);
-		gameStatsLabelBox.setAlignment(Pos.BASELINE_LEFT);
 		gameStatsBox.setPadding(new Insets(10, 10, 10, 10));
 		gameStatsBox.setSpacing(70);
 
-		gameStatsBox.getChildren().addAll(createAverageResultContainer(), gameStatsLabelBox,
+		gameStatsBox.getChildren().addAll(createAverageResultContainer(), gameScoreHeaderLabel,
 				createOverallResultContainers());
-		listviewBox.getChildren().add(gameStatsBox);
+		tableviewBox.getChildren().add(gameStatsBox);
 	}
 
-	
+	/**
+	 * This method initializes the UI elements which are needed to show the user the
+	 * average time and points achieved in his games To ensure better alignment and
+	 * positioning the result Labels are put into its own HBox This allows better
+	 * positioning and keeps the distance between the UI objects when the size of
+	 * the window changes
+	 * 
+	 * @return the VBOX UI Container which contains all the needed UI Objects to
+	 *         display average Information for the user
+	 */
 	public VBox createAverageResultContainer() {
+		// the averageResultsBox is the main Container of this method in which all UI
+		// components of the method are inserted into
 		VBox averageResultsBox = new VBox();
-		averageResultsBox.setPadding(new Insets(40, 0, 0, 0));
+		averageResultsBox.setPadding(new Insets(30, 0, 0, 0));
 
 		averagePointsHeaderLabel = new Label("Average Points");
 		averageTimeHeaderLabel = new Label("Average Time");
@@ -162,9 +240,19 @@ public class StorageView {
 		return averageResultsBox;
 	}
 
+	/**
+	 * This method initializes the UI elements which are needed to show the user the
+	 * overall time and points achieved in his games To ensure better alignment and
+	 * positioning the result Labels are put into its own HBox This allows better
+	 * positioning and keeps the distance between the UI objects when the size of
+	 * the window changes
+	 * 
+	 * @return the VBOX UI Container which contains all the needed UI Objects to
+	 *         display overall Game Information for the user
+	 */
 	public VBox createOverallResultContainers() {
 		VBox overallResultsBox = new VBox();
-		overallResultsBox.setPadding(new Insets(40, 0, 0, 0));
+		overallResultsBox.setPadding(new Insets(30, 0, 0, 0));
 
 		overallPointsHeaderLabel = new Label("Overall Points");
 		overallTimeHeaderLabel = new Label("Overall Time");
@@ -186,34 +274,34 @@ public class StorageView {
 		return overallResultsBox;
 	}
 
+	/**
+	 * This method is used to style the label objects of this class with the
+	 * corresponding CSS styleclass in the Sudoku CSS file
+	 */
 	public void styleLabels() {
 		Stream.of(averageTimeHeaderLabel, overallTimeHeaderLabel, overallPointsHeaderLabel, averagePointsHeaderLabel)
 				.forEach(label -> label.getStyleClass().add("standardLabel"));
 
-		Stream.of(averageTimeResultLabel, overallTimeResultLabel, overallPointsResultLabel, averagePointsResultLabel,
-				gameScoreHeaderLabel, gameHeadLabel).forEach(label -> label.getStyleClass().add("storageResultLabel"));
+		Stream.of(averageTimeResultLabel, overallTimeResultLabel, overallPointsResultLabel, averagePointsResultLabel
+				).forEach(label -> label.getStyleClass().add("storageResultLabel"));
+		
+		gameScoreHeaderLabel.getStyleClass().add("storageHeaderLabel");
+		storageHeaderLabel.getStyleClass().add("storageHeaderLabel");
 	}
 
-	// Methoe welche Funktionalität für Rechtsklick Menü ermöglicht
-	public void addContextMenuFunctionality() {
-		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton().equals(MouseButton.SECONDARY)) {
-					contextMenu.show(tableView, event.getScreenX(), event.getScreenY());
-				}
-			}
-		});
-
-	}
-
+	/**
+	 * This method is used to ensure that the different UI Objects are scaled
+	 * correctly with the size of the window To ensure this behaviour a
+	 * DoubleProperty Object is bind to the windows width and height informations
+	 * After that the labels font size are bind to the value of the DoubleProperty
+	 */
 	public void alignLabelWithWindowSize() {
 		final SimpleDoubleProperty fontSizeBinding = new SimpleDoubleProperty(10);
 
 		fontSizeBinding.bind(storageScene.widthProperty().add(storageScene.heightProperty()).divide(65));
 
 		Stream.of(averagePointsHeaderLabel, averageTimeHeaderLabel, overallPointsHeaderLabel, overallTimeHeaderLabel,
-				gameHeadLabel, gameScoreHeaderLabel)
+				storageHeaderLabel, gameScoreHeaderLabel)
 				.forEach(label -> label.styleProperty()
 						.bind(Bindings.concat("-fx-font-size: ", fontSizeBinding.asString())));
 

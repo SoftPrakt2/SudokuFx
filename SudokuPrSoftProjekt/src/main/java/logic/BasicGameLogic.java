@@ -433,6 +433,10 @@ public abstract class BasicGameLogic {
         if (this.getGamestate() == Gamestate.NOFORMS) {
             gameText = "Your forms are not properly connected!";
         }
+        if(this.getGamestate() == Gamestate.MANUALCONFLICT) {
+        	gameText = "Your game has conflicts!";
+        }
+        
 		return gameText;
 	}
 

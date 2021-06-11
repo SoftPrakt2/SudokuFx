@@ -7,7 +7,7 @@ import application.FreeFormGameBuilder;
 import application.GUI;
 import application.MainMenu;
 import application.SamuraiGameBuilder;
-import application.StorageView;
+import application.GameOverview;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -43,7 +43,7 @@ public class ModeController {
 	 * Will be handed over to the {@link logic.BasicGameLogic#setDifficulty(int)}
 	 * Method when {@link application.MainMenu#getPlayButton()} is pressed
 	 */
-	protected int difficulty;
+	protected int difficulty = -1;
 
 	public <E extends MainMenu> ModeController(E menu) {
 		this.menu = menu;
@@ -95,7 +95,7 @@ public class ModeController {
 	 * 
 	 */
 	public void handleToLoad(ActionEvent e) {
-		StorageView overview = new StorageView();
+		GameOverview overview = new GameOverview();
 		overview.createStage();
 	}
 
@@ -165,6 +165,7 @@ public class ModeController {
 		if (menu.getPlayModeToggle().getSelectedToggle() != null
 				&& menu.getDifficultyToggle().getSelectedToggle() != null) {
 
+			
 			model.setDifficulty(difficulty);
 			if (model.getDifficulty() > 0) {
 				gameScene.createNumbers();

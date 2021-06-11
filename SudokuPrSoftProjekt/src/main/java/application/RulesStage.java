@@ -21,23 +21,16 @@ public class RulesStage {
 	protected Scene rulesScene;
 	protected VBox rulesContainer;
 	protected Label rulesHeader;
-	protected Label buttonExplanationHeader;
-	protected Label difficultyExplanationHeader;
+
 	
-	protected Label sudokuLabel;
-	protected Label samuraiLabel;
-	protected Label freeFormLabel;
-	protected VBox buttonExplanations;
+	protected Label uiDesignDeveloperLabel;
+	protected Label sudokuDeveloperLabel;
+	protected Label samuraiDeveloperLabel;
+	protected Label freeFormDeveloperLabel;
+	protected Label versionLabel;
+	protected Label usedSoftwareLabel;
 	
 	
-	protected Label checkButtonExplanation;
-	protected Label autoSolveExplanation;
-	protected Label hintExplanation;
-	
-	protected Label easyLabel;
-	protected Label mediumLabel;
-	protected Label hardLabel;
-	protected Label manualLabel;
 	
 	protected FontAwesome fontAwesome;
 	
@@ -68,15 +61,15 @@ public class RulesStage {
 		fontAwesome = new FontAwesome();
 		
 		rulesContainer = new VBox();
-		rulesScene = new Scene(rulesContainer,400,400);
-		rulesScene.getStylesheets().add("css/sudoku.css");
+		rulesScene = new Scene(rulesContainer,480,200);
+		rulesScene.getStylesheets().add(getClass().getResource("/CSS/sudoku.css").toExternalForm());
 		rulesContainer.getStyleClass().add("customBackgroundColor");
 		
 		
-		rulesContainer.getChildren().addAll(createGameModeExplanationBox(),createButtonExplanationBox(), createDifficultyExplanationBox());
+		rulesContainer.getChildren().addAll(createGameModeExplanationBox());
 		rulesContainer.setSpacing(15);
 	
-		alignLabelsWithWindowSize();
+		styleLabels();
 		return rulesScene;
 	}
 	
@@ -84,141 +77,75 @@ public class RulesStage {
 	
 	public VBox createGameModeExplanationBox() {
 		VBox gameModeExplanationBox = new VBox();
+		gameModeExplanationBox.setSpacing(5);
 		
-		
-		HBox rulesHeaderBox = new HBox();
-		rulesHeaderBox.setPadding(new Insets(0,0,5,0));
-		rulesHeader = new Label("Available Gamemodes");
+		HBox headerBox = new HBox();
+		headerBox.setPadding(new Insets(0,0,5,0));
+		rulesHeader = new Label("SudokuFx");
 		rulesHeader.getStyleClass().add("ruleHeaderLabel");
-		rulesHeaderBox.getChildren().add(rulesHeader);
+		headerBox.getChildren().add(rulesHeader);
 		
-		HBox sudokuLabelBox = new HBox();
+		
+		
+		HBox versionBox = new HBox();
+		versionLabel = new Label("Version: 2021-07");
+		versionBox.getChildren().add(versionLabel);
+		
+		HBox usedSoftwareBox = new HBox();
+		usedSoftwareLabel = new Label("Includes Software like JavaFx, GSON and Java");
+		usedSoftwareBox.getChildren().add(usedSoftwareLabel);
+		
+		
+		HBox uiDesignBox = new HBox();
+		uiDesignDeveloperLabel = new Label("UI Design by Lukas Gruber");
+		uiDesignBox.getChildren().add(uiDesignDeveloperLabel);
+		
+		HBox sudokuSamuraiDeveloperBox = new HBox();
+		sudokuDeveloperLabel = new Label("Sudoku und Samurai Game Logic by Rafael Bakaschev and Simon Fuchsluger");
+		sudokuSamuraiDeveloperBox.getChildren().add(sudokuDeveloperLabel);
+		
 	
-		sudokuLabel = new Label("Sudoku: Classic 9x9 Sudoku Puzzle");
-		sudokuLabel.getStyleClass().add("standardLabel");
-		sudokuLabelBox.getChildren().add(sudokuLabel);
 		
-		HBox samuraiLabelBox = new HBox();
-	
-		samuraiLabel = new Label("Samurai: Sudoku Puzzle consisting of five 9x9 Sudoku Puzzles");
-		samuraiLabel.getStyleClass().add("standardLabel");
-		samuraiLabelBox.getChildren().add(samuraiLabel);
+		HBox freeFormDeveloperBox = new HBox();
+		freeFormDeveloperLabel = new Label("FreeForm Game Logic by Rafael Bakaschev and Simon Fuchsluger");
+		freeFormDeveloperBox.getChildren().add(freeFormDeveloperLabel);
 		
 		
-		HBox freeFormLabelBox = new HBox();
-		
-		freeFormLabel = new Label("Freeform: 9x9 Sudoku Puzzle with abstract forms as boxes");
-		freeFormLabel.getStyleClass().add("standardLabel");
-		freeFormLabelBox.getChildren().add(freeFormLabel);
 		
 		
-		gameModeExplanationBox.getChildren().addAll(rulesHeaderBox,sudokuLabelBox,samuraiLabelBox, freeFormLabelBox);
+		
+		
+		
+		
+		gameModeExplanationBox.getChildren().addAll(headerBox,versionBox,usedSoftwareBox,uiDesignBox,sudokuSamuraiDeveloperBox, freeFormDeveloperBox);
 		
 		return gameModeExplanationBox;
 	}
 	
 	
-	public VBox createButtonExplanationBox() {
-		
-		Glyph checkGraphic = fontAwesome.create(FontAwesome.Glyph.CHECK);
-		Glyph hintGraphic = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
-		Glyph autosolveGraphic = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
-		
-		buttonExplanations = new VBox();
-		buttonExplanations.setPadding(new Insets(15,0,0,0));
-		
-		
-		HBox buttonExplanationHeaderBox = new HBox();
-		buttonExplanationHeader = new Label("Button Functionalities");
-		buttonExplanationHeader.getStyleClass().add("ruleHeaderLabel");
-		buttonExplanationHeaderBox.setPadding(new Insets(0,0,5,0));
-		buttonExplanationHeaderBox.getChildren().add(buttonExplanationHeader);
-		
-		
-		HBox checkButtonExplanationBox = new HBox();
-		checkButtonExplanationBox.setSpacing(5);
-		Button checkButtonrepresentation = new Button();
-		checkButtonrepresentation.setMinSize(5,5);
-		checkButtonrepresentation.setGraphic(checkGraphic);
-		checkButtonExplanation = new Label("Press this Button to see if your Sudoku is correct");
-		checkButtonExplanation.getStyleClass().add("standardLabel");
-		checkButtonExplanationBox.getChildren().addAll(checkButtonrepresentation, checkButtonExplanation);
-		
-		
-		HBox autoSolveButtonExplanationBox = new HBox();
-		autoSolveButtonExplanationBox.setSpacing(5);
-		Button autoSolveButtonrepresentation = new Button();
-		autoSolveButtonrepresentation.setMinSize(5,5);
-		autoSolveButtonrepresentation.setGraphic(autosolveGraphic);
-		autoSolveExplanation = new Label("Press this Button to solve your Sudoku automatically");
-		autoSolveExplanation.getStyleClass().add("standardLabel");
-		autoSolveButtonExplanationBox.getChildren().addAll(autoSolveButtonrepresentation, autoSolveExplanation);
-		
-		HBox hintButtonExplanationBox = new HBox();
-		hintButtonExplanationBox.setSpacing(5);
-		Button hintButtonrepresentation = new Button();
-		hintButtonrepresentation.setMinSize(5,5);
-		hintButtonrepresentation.setGraphic(hintGraphic);
-		hintExplanation = new Label("Press this Button to show a hint");
-		hintExplanation.getStyleClass().add("standardLabel");
-		hintButtonExplanationBox.getChildren().addAll(hintButtonrepresentation, hintExplanation);
-		
-		buttonExplanations.getChildren().addAll(buttonExplanationHeaderBox, checkButtonExplanationBox, autoSolveButtonExplanationBox, hintButtonExplanationBox);
-		
-		return buttonExplanations;
-	}
+
 	
-	
-	public VBox createDifficultyExplanationBox() {
-		VBox difficultyExplanationBox = new VBox();
-		difficultyExplanationBox.setPadding(new Insets(15,0,0,0));
-		
-		HBox difficultyExplanationHeaderBox = new HBox();
-		difficultyExplanationHeaderBox.setPadding(new Insets(0,0,5,0));
-		difficultyExplanationHeader = new Label("Available Difficulties");
-		difficultyExplanationHeaderBox.getStyleClass().add("ruleHeaderLabel");
-		difficultyExplanationHeaderBox.getChildren().add(difficultyExplanationHeader);
-		
-		HBox easyModeLabelBox = new HBox();
-		easyLabel = new Label("Easy: 9x9 Sudokus: 45 Numbers are Shown | Samurai: 189");
-		easyLabel.getStyleClass().add("standardLabel");
-		easyModeLabelBox.getChildren().add(easyLabel);
-		
-		HBox mediumModeLabelBox = new HBox();
-		mediumLabel = new Label("Medium: 9x9 Sudokus: 35 Numbers are Shown | Samurai: 169");
-		mediumLabel.getStyleClass().add("standardLabel");
-		mediumModeLabelBox.getChildren().add(mediumLabel);
-		
-		
-		HBox hardModeLabelBox = new HBox();
-		hardLabel = new Label("Hard: 9x9 Sudokus: 25 Numbers are Shown | Samurai: 139");
-		hardLabel.getStyleClass().add("standardLabel");
-		hardModeLabelBox.getChildren().add(hardLabel);
-		
-		
-	
-		difficultyExplanationBox.getChildren().addAll(difficultyExplanationHeaderBox, easyModeLabelBox, mediumModeLabelBox, hardModeLabelBox);
-		alignLabelsWithWindowSize();
-		return difficultyExplanationBox;
-	}
+
 	
 
 	
 	
-	public void alignLabelsWithWindowSize() {
-
+	public void styleLabels() {
+		
+		Stream.of(versionLabel, usedSoftwareLabel,uiDesignDeveloperLabel, sudokuDeveloperLabel,freeFormDeveloperLabel).forEach(
+				label -> label.getStyleClass().add("standardLabel"));
+		
 		 final SimpleDoubleProperty fontSizeLabelSmall = new SimpleDoubleProperty(10);
 		 final SimpleDoubleProperty fontSizeLabelHeader = new SimpleDoubleProperty(10);
 		 
-		 fontSizeLabelSmall.bind(rulesScene.widthProperty().add(rulesScene.heightProperty()).divide(65));
-		 fontSizeLabelHeader.bind(rulesScene.widthProperty().add(rulesScene.heightProperty()).divide(40));
+		 fontSizeLabelSmall.bind(rulesScene.widthProperty().add(rulesScene.heightProperty()).divide(50));
+		 fontSizeLabelHeader.bind(rulesScene.widthProperty().add(rulesScene.heightProperty()).divide(30));
 		 
-		 Stream.of(sudokuLabel, samuraiLabel,freeFormLabel,checkButtonExplanation,autoSolveExplanation,hintExplanation,easyLabel, mediumLabel, hardLabel).forEach(
+		 Stream.of(versionLabel, usedSoftwareLabel,uiDesignDeveloperLabel, sudokuDeveloperLabel,freeFormDeveloperLabel).forEach(
 					label -> label.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSizeLabelSmall.asString())));
 		 
-		 Stream.of(rulesHeader,buttonExplanationHeader,difficultyExplanationHeader).forEach(
+		 Stream.of(rulesHeader).forEach(
 					label -> label.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSizeLabelHeader.asString())));
-		 
 	}
 	
 	

@@ -16,7 +16,7 @@ import logic.FreeFormLogic;
 import logic.Gamestate;
 import logic.SamuraiLogic;
 import logic.SaveModel;
-import logic.SudokuStorageModel;
+import logic.SudokuStorage;
 
 /**
  * GameController ist das Bindeglied zwischen der View und dem Model Die
@@ -50,6 +50,7 @@ public class GameController {
 		createGame();
 	}
 
+	
 	/**
 	 * Creates a Sudoku-Game type and difficulty of the game are decides by user
 	 * inputs (button-clicks) {@link #enableEdit()} enables the text fields, so that
@@ -86,57 +87,112 @@ public class GameController {
 	public void newGameHandler(ActionEvent event) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
+				if(sudokuField[i][j].getText().equals("-1") == false) {
 				sudokuField[i][j].clear();
+				}
 				sudokuField[i][j].getStyleClass().remove("textfieldHint");
 			}
 		}
 
 		numberCounter = 0;
-
+		
 		if (model.timerIsRunning()) {
 			model.getLiveTimer().stop();
 		}
 		scene.getLiveTimeLabel().textProperty().unbind();
 
-		if (model.getDifficulty() == 0) {
-			resetCustomGameState();
-		} else {
+		if (model.getDifficulty() == 0 && model.getGametype().equals("FreeForm")) {
+			resetManualFreeForm();
+		}
+		
+		if (model.getDifficulty() == 0 && !model.getGametype().equals("FreeForm")) {
+			resetManualSudokuOrSamurai();
+		
+		}else if (model.getDifficulty() > 0) {
 			createGame();
 		}
 		scene.getGameNotificationLabel().setText(model.getGameText());
 	}
-
-	/**
-	 * resets a manually created game buttons for solve, check and hint get disabled
-	 * lock-button gets enabled and becomes visible {@link #enableEdit()}
-	 */
-	public void resetCustomGameState() {
-		if (model.getGametype().equals("FreeForm")) {
-			if (model.getGamestate().equals(Gamestate.DRAWING)) {
-				scene.getColorsDoneButton().setVisible(true);
-				scene.getColorBox().setVisible(true);
-			}
-			if (model.getGamestate().equals(Gamestate.CREATING)) {
-				scene.getToolBar().getItems().add(3, scene.getColorsDoneButton());
-				scene.getToolBar().getItems().add(3, scene.getColorBox());
-				scene.getDoneButton().setVisible(false);
-			}
-			for (int i = 0; i < sudokuField.length; i++) {
-				for (int j = 0; j < sudokuField[i].length; j++) {
-					sudokuField[i][j].setStyle("");
-					if (!sudokuField[i][j].isListeningToColors()) {
-						sudokuField[i][j].addFreeFormColorListener(scene.getColorBox());
-					}
+	
+	
+	
+	public void resetManualFreeForm() {
+		for (int i = 0; i < sudokuField.length; i++) {
+			for (int j = 0; j < sudokuField[i].length; j++) {
+				sudokuField[i][j].setStyle("");
+				if (!sudokuField[i][j].isListeningToColors()) {
+					sudokuField[i][j].addFreeFormColorListener(scene.getColorBox());
 				}
 			}
-		} else {
-			scene.getDoneButton().setVisible(true);
 		}
+		
+		
+		if (model.getGamestate().equals(Gamestate.DRAWING)) {
+			scene.getColorsDoneButton().setVisible(true);
+			scene.getColorBox().setVisible(true);
+		}
+		if (model.getGamestate().equals(Gamestate.CREATING)) {
+			scene.getToolBar().getItems().remove(scene.getDoneButton());
+			scene.getToolBar().getItems().add(3, scene.getColorsDoneButton());
+			scene.getToolBar().getItems().add(3, scene.getColorBox());
+			scene.getColorBox().setVisible(true);
+			scene.getColorsDoneButton().setVisible(true);
+		} else {
+			scene.getToolBar().getItems().remove(scene.getDoneButton());
+			scene.getToolBar().getItems().remove(scene.getColorsDoneButton());
+			scene.getToolBar().getItems().remove(scene.getColorBox());
+			scene.getToolBar().getItems().add(3, scene.getColorsDoneButton());
+			scene.getToolBar().getItems().add(3, scene.getColorBox());
+			scene.getColorBox().setVisible(true);
+			scene.getColorsDoneButton().setVisible(true);
+		}
+		
+		
 		model.initializeCustomGame();
 		scene.disablePlayButtons();
 		scene.getLiveTimeLabel().setText("");
 		enableEdit();
 	}
+	
+	
+	
+	
+
+	/**
+	 * resets a manually created game buttons for solve, check and hint get disabled
+	 * lock-button gets enabled and becomes visible {@link #enableEdit()}
+	 */
+
+	
+	
+	
+	
+	public void resetManualSudokuOrSamurai() {
+		
+			scene.getToolBar().getItems().remove(scene.getDoneButton());
+			scene.getToolBar().getItems().add(3,scene.getDoneButton());
+			scene.getDoneButton().setVisible(true);
+			scene.disablePlayButtons();
+			
+			if(!model.getGamestate().equals(Gamestate.CREATING)) {
+			model.setGameState(Gamestate.CREATING);
+			scene.getGameNotificationLabel().setText(model.getGameText());
+			}
+			
+			model.initializeCustomGame();
+			enableEdit();
+			scene.getLiveTimeLabel().setText("");
+		}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * deletes user inputs values that were created at the start of the game do not
@@ -183,7 +239,7 @@ public class GameController {
 				}
 			}
 
-		if (model.isConnected() &&  helper == true) {
+	//	if (model.isConnected() &&  helper == true) {
 			for (SudokuField coloredArray[] : sudokuField) {
 				for (SudokuField coloredField : coloredArray) {
 					coloredField.removeFreeFormColorListener();
@@ -195,10 +251,10 @@ public class GameController {
 			scene.getDoneButton().setVisible(true);
 			model.setGameState(Gamestate.CREATING);
 			scene.getGameNotificationLabel().setText(model.getGameText());
-		} else {
-			model.setGameState(Gamestate.NOFORMS);
-			scene.getGameNotificationLabel().setText(model.getGameText());
-		}
+//		} else {
+//			model.setGameState(Gamestate.NOFORMS);
+//			scene.getGameNotificationLabel().setText(model.getGameText());
+//		}
 
 	}
 
@@ -227,12 +283,13 @@ public class GameController {
 			model.setUpGameInformations();
 			scene.getGameNotificationLabel().setText(model.getGameText());
 			scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
-			scene.getDoneButton().setVisible(false);
+			
+			scene.getToolBar().getItems().remove(scene.getDoneButton());
 			Stream.of(scene.getHintButton(), scene.getAutoSolveButton(), scene.getCheckButton())
 					.forEach(button -> button.setDisable(false));
 		} else if (!compareResult()) {
 			model.removeValues();
-			model.setGameState(Gamestate.CONFLICT);
+			model.setGameState(Gamestate.MANUALCONFLICT);
 			scene.getGameNotificationLabel().setText(model.getGameText());
 		}
 	}
@@ -248,7 +305,7 @@ public class GameController {
 		int count = 0;
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (!sudokuField[i][j].getText().equals("")) {
+				if (!sudokuField[i][j].getText().equals("") && !sudokuField[i][j].getText().equals("-1")) {
 					count++;
 				}
 			}
@@ -303,7 +360,7 @@ public class GameController {
 				}
 			}
 		}
-		if (result && model.getGamestate() != Gamestate.AUTOSOLVED && model.getGamestate() != Gamestate.UNSOLVABLE) {
+		if (result && model.getGamestate() != Gamestate.AUTOSOLVED && model.getGamestate() != Gamestate.UNSOLVABLE && model.getGamestate() != Gamestate.MANUALCONFLICT && model.getGamestate() != Gamestate.NOTENOUGHNUMBERS) {
 			model.setGameState(Gamestate.OPEN);
 		}
 
@@ -317,7 +374,7 @@ public class GameController {
 	public void connectArrays() {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (model instanceof FreeFormLogic) {
+				if (model instanceof FreeFormLogic && !model.getCells()[j][i].getBoxcolor().equals("")) {
 					sudokuField[i][j].setStyle("-fx-background-color: #" + model.getCells()[j][i].getBoxcolor() + ";");
 				}
 				if (model.getCells()[j][i].getValue() != 0) {
@@ -497,7 +554,7 @@ public class GameController {
 		if (model.timerIsRunning()) {
 			model.getLiveTimer().stop();
 		}
-		SudokuStorageModel storageModel = new SudokuStorageModel();
+		SudokuStorage storageModel = new SudokuStorage();
 		storageModel.saveGame(model);
 	}
 
@@ -508,7 +565,7 @@ public class GameController {
 	 * @param e
 	 */
 	public void importGame(ActionEvent e) {
-		SudokuStorageModel storageModel = new SudokuStorageModel();
+		SudokuStorage storageModel = new SudokuStorage();
 
 		SaveModel saveModel = storageModel.getImportedFile();
 
@@ -533,7 +590,7 @@ public class GameController {
 				scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 			}
 
-			if (model.getGamestate().equals(Gamestate.CREATING)) {
+			if (model.getGamestate().equals(Gamestate.CREATING) || model.getGamestate().equals(Gamestate.MANUALCONFLICT) || model.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
 				if (!scene.getToolBar().getItems().get(3).equals(scene.getDoneButton())) {
 					scene.getToolBar().getItems().add(3, scene.getDoneButton());
 				}
@@ -545,7 +602,6 @@ public class GameController {
 				scene.getColorBox().setVisible(true);
 				scene.getColorsDoneButton().setVisible(true);
 				scene.disablePlayButtons();
-
 			}
 
 			scene.getGameInfoLabel()
@@ -580,7 +636,7 @@ public class GameController {
                 }
             }
         }
-        SudokuStorageModel storageModel = new SudokuStorageModel();
+        SudokuStorage storageModel = new SudokuStorage();
         storageModel.exportGame(model);
     }
 

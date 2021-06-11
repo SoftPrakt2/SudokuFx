@@ -35,6 +35,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	 * Draws the Sudoku playboard, this playboard is filled with 9x9 Stackpanes with SudokuFields inside them
 	 * This container nesting is needed to ensure correct scaling of the playboard 
 	 */
+	@Override
 	public GridPane createBoard() {
 		final SimpleDoubleProperty textSize = new SimpleDoubleProperty(10);
 		
@@ -90,6 +91,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		customNumbersDone.setVisible(false);
 		toolBar.getItems().add(3,customNumbersDone);
 	}
+	
 	
 
 }

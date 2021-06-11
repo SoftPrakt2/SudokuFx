@@ -14,20 +14,16 @@ import com.google.gson.stream.JsonWriter;
 import application.GUI;
 import javafx.stage.FileChooser;
 
-
-
-
 /**
  * 
- * @author grube
- * Diese Klasse definiert die generelle Speicherlogik hierbei werden Methoden 
- * welche das Speichern und Laden eines Spiels ermöglichen definiert
+ * @author grube Diese Klasse definiert die generelle Speicherlogik hierbei
+ *         werden Methoden welche das Speichern und Laden eines Spiels
+ *         ermöglichen definiert
  */
 
+public class SudokuStorage {
 
-public class SudokuStorageModel {
 
-	//private SaveModel saveModel;
 
 	private boolean fileExists = true;
 
@@ -37,7 +33,9 @@ public class SudokuStorageModel {
 
 	/**
 	 * Diese Methode überträgt Informationen in ein Objekt der SaveModel Klasse
-	 * @param gameToSave Spiel Model dessen Informationen in das SaveModel geladen werden sollen
+	 * 
+	 * @param gameToSave Spiel Model dessen Informationen in das SaveModel geladen
+	 *                   werden sollen
 	 */
 	public SaveModel setInformationsToStore(BasicGameLogic gameToSave) {
 		SaveModel saveModel = new SaveModel();
@@ -57,17 +55,18 @@ public class SudokuStorageModel {
 		return saveModel;
 	}
 
-	
 	/**
-	 * Diese Methode übernimmt den tatsächlichen Speichervorgang, hierfür wird ein Objekt 
-	 * der SaveModel Klasse erstellt, dieses wird mit der {@link #setInformationsToStore(BasicGameLogic)} Methode befüllt
-	 * Anschließend wird mit einem JSONWriter und FileWriter die tatsächliche Datei geschrieben
+	 * Diese Methode übernimmt den tatsächlichen Speichervorgang, hierfür wird ein
+	 * Objekt der SaveModel Klasse erstellt, dieses wird mit der
+	 * {@link #setInformationsToStore(BasicGameLogic)} Methode befüllt Anschließend
+	 * wird mit einem JSONWriter und FileWriter die tatsächliche Datei geschrieben
+	 * 
 	 * @param gameToSave
 	 */
 	public void saveGame(BasicGameLogic gameToSave) {
 		SaveModel saveModel = setInformationsToStore(gameToSave);
 		Gson gson = new GsonBuilder().create();
-		
+
 		String fileName = "ID_" + saveModel.getGameId() + "_" + saveModel.getGametype() + "_"
 				+ saveModel.getDifficultyString() + ".json";
 
@@ -85,11 +84,11 @@ public class SudokuStorageModel {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	/**
-	 * Diese Methode übernimmt den tatsächlichen ExportVorgang, hierfür wird ein Objekt 
-	 * der SaveModel Klasse erstellt, dieses wird mit der {@link #setInformationsToStore(BasicGameLogic)} Methode befüllt
+	 * Diese Methode übernimmt den tatsächlichen ExportVorgang, hierfür wird ein
+	 * Objekt der SaveModel Klasse erstellt, dieses wird mit der
+	 * {@link #setInformationsToStore(BasicGameLogic)} Methode befüllt
 	 * 
 	 * @param gameToExport
 	 */
@@ -114,9 +113,8 @@ public class SudokuStorageModel {
 		}
 	}
 
-	
 	public SaveModel getImportedFile() {
-		
+
 		SaveModel importedGame = new SaveModel();
 		chooser = new FileChooser();
 		chooser.setTitle("Import your Game");
@@ -150,7 +148,6 @@ public class SudokuStorageModel {
 		return model;
 	}
 
-	
 	public SaveModel convertFileToSaveModel(File file) {
 		SaveModel data = new SaveModel();
 		Gson gson = new GsonBuilder().create();
@@ -163,8 +160,7 @@ public class SudokuStorageModel {
 		}
 		return data;
 	}
-	
-	
+
 	public void closeBufferedReader(BufferedReader br) {
 		try {
 			br.close();
@@ -172,8 +168,7 @@ public class SudokuStorageModel {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
 	public boolean fileExists() {
 		return fileExists;
 	}

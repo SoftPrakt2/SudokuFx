@@ -8,7 +8,7 @@ import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
 import application.GUI;
 import application.SamuraiGameBuilder;
-import application.StorageView;
+import application.GameOverview;
 import application.SudokuField;
 import application.SudokuGameBuilder;
 import javafx.beans.binding.Bindings;
@@ -25,86 +25,100 @@ import logic.FreeFormLogic;
 import logic.Gamestate;
 import logic.SaveModel;
 import logic.SharedStoragePreferences;
-import logic.SudokuStorageModel;
+import logic.SudokuStorage;
 
 public class StorageController {
 
-	private BasicGameBuilder game;
-	private BasicGameLogic model;
-	private SudokuStorageModel storageModel;
-	private StorageView storage;
-	private File[] dir = new File("SaveFiles").listFiles();
-
+	private BasicGameBuilder gameBuilder;
+	private BasicGameLogic gameModel;
+	private SudokuStorage storageModel;
+	private GameOverview storage;
+	private  File[] fileDirectory = new File("SaveFiles").listFiles();
+	
+	
+	/**
+	 * The ObservableList associated with the {@link application.GameOverview#getTableView()}
+	 * this list contains {@link application.BasicGameLogic} objects
+	 * BasicGameLogic Objects are stored in this list to allow the use of polymorphism later on when 
+	 * determing the exact gametype
+	 */
 	protected ObservableList<BasicGameLogic> jsonObservableList;
 
-	TableColumn<BasicGameLogic, String> gameTypecolumn;
-	TableColumn<BasicGameLogic, String> difficultycolumn;
-	TableColumn<BasicGameLogic, Integer> pointscolumn;
-	TableColumn<BasicGameLogic, String> playtimecolumn;
-	TableColumn<BasicGameLogic, Gamestate> gamestatecolumn;
-	TableColumn<BasicGameLogic, Integer> gameidcolumn;
 	
-
-	IntegerProperty overallPointsProperty;
-
-	SharedStoragePreferences sharedStorage = new SharedStoragePreferences();
-
-	public StorageController(StorageView storage) {
+	/**The different table columns of the {@link application.GameOverview#getTableView()} which will
+	 * later be filled with informations from saved games
+	 * 
+	 */
+	private TableColumn<BasicGameLogic, String> gameTypecolumn;
+	private TableColumn<BasicGameLogic, String> difficultycolumn;
+	private TableColumn<BasicGameLogic, Integer> pointscolumn;
+	private TableColumn<BasicGameLogic, String> playtimecolumn;
+	private TableColumn<BasicGameLogic, Gamestate> gamestatecolumn;
+	private TableColumn<BasicGameLogic, Integer> gameidcolumn;
+	
+	
+	public StorageController(GameOverview storage) {
 		this.storage = storage;
-		storageModel = new SudokuStorageModel();
+		storageModel = new SudokuStorage();
 	}
-
 	
+	
+	/**
+	 * This method is used to load a saved sudoku game into a GameUI
+	 * Depending on the exakt type of the {@link #gameModel} Object the corresponding
+	 * GameBuilder will be initialized 
+	 * Depending on the Gamestate of {@link #gameModel} different UI objects have to be enabled or disabled
+	 * @param e action of the user in the UI
+	 */
 	public void handleLoadAction(ActionEvent e) {
 
-		model = storage.getTableView().getSelectionModel().getSelectedItem();
+		gameModel = storage.getTableView().getSelectionModel().getSelectedItem();
 
-		if (model.getGametype().equals("Sudoku")) {
-			game = new SudokuGameBuilder(model);
+		if (gameModel.getGametype().equals("Sudoku")) {
+			gameBuilder = new SudokuGameBuilder(gameModel);
 		}
-		if (model.getGametype().equals("Samurai")) {
-			game = new SamuraiGameBuilder(model);
+		if (gameModel.getGametype().equals("Samurai")) {
+			gameBuilder = new SamuraiGameBuilder(gameModel);
 		}
-		if (model.getGametype().equals("FreeForm")) {
-			game = new FreeFormGameBuilder(model);
-		}
-
-		game.initializeGame();
-
-		if (!model.getGamestate().equals(Gamestate.CREATING) && !model.getGamestate().equals(Gamestate.DRAWING)) {
-			model.initializeTimer();
-			model.getLiveTimer().start();
+		if (gameModel.getGametype().equals("FreeForm")) {
+			gameBuilder = new FreeFormGameBuilder(gameModel);
 		}
 
-		if (model.getGamestate().equals(Gamestate.CREATING)) {
-			if (game instanceof FreeFormGameBuilder) {
-				game.getToolBar().getItems().add(3, game.getDoneButton());
-			}
-			game.getDoneButton().setVisible(true);
-			game.disablePlayButtons();
+		gameBuilder.initializeGame();
+
+		if (!gameModel.getGamestate().equals(Gamestate.CREATING) && !gameModel.getGamestate().equals(Gamestate.DRAWING)) {
+			gameModel.initializeTimer();
+			gameModel.getLiveTimer().start();
+			gameBuilder.getGameInfoLabel().setText("Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
+			gameBuilder.getLiveTimeLabel().textProperty().bind(Bindings.concat(gameModel.getStringProp()));
 		}
 
-		if (model.getGamestate().equals(Gamestate.DRAWING)) {
-			game.getColorBox().setVisible(true);
-			game.getColorsDoneButton().setVisible(true);
-			game.disablePlayButtons();
+		if (gameModel.getGamestate().equals(Gamestate.CREATING) || gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
+				|| gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
+			gameBuilder.getDoneButton().setVisible(true);
+			gameBuilder.disablePlayButtons();
+		}
+
+		if (gameModel.getGamestate().equals(Gamestate.DRAWING) || gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
+			gameBuilder.getColorBox().setVisible(true);
+			gameBuilder.getColorsDoneButton().setVisible(true);
+			gameBuilder.disablePlayButtons();
 		}
 
 		
-		game.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
-		game.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
-		game.getGameNotificationLabel().setText(model.getGameText());
 
-		GUI.getStage().setHeight(game.getHeight());
-		GUI.getStage().setWidth(game.getWidth());
-		GUI.getStage().getScene().setRoot(game.getGameUIRoot());
-		storage.getStage().close();
+		
+		gameBuilder.getGameNotificationLabel().setText(gameModel.getGameText());
+
+		
 
 		alignArrays();
-
+		alignWindowToGameSize();
 	}
-
 	
+	/**
+	 * This method initializes the different table columns and adds them to the {@link application.GameOverview#getTableView()}
+	 */
 	@SuppressWarnings("unchecked")
 	public void setUpTableView() {
 		gameTypecolumn = new TableColumn<>("GameType");
@@ -116,19 +130,29 @@ public class StorageController {
 		storage.getTableView().getColumns().addAll(gameidcolumn, gameTypecolumn, difficultycolumn, pointscolumn,
 				playtimecolumn, gamestatecolumn);
 	}
-
-	public void fillListVew() {
-
+	
+	
+	/**
+	 * This method fills the {@link application.GameOverview#getTableView()} with informations from the saved Files in the specified directory
+	 * To do so the directory is iterated through and each file in it will be converted to an Object of the
+	 * {@link logic.SaveModel} class
+	 * Afterwards the informations of the SaveModel object will be loaded into the {@link #gameModel} object which is an Object of 
+	 * {@link application.BasicGameLogic} class
+	 * This approach allows the use of polymorphism when the {@link #gameModel} is filled with the informations from the savedGame
+	 * This happens in the {@link application.SudokuStorageView}
+	 * method
+	 */
+	public void fillTableVew() {
 		jsonObservableList = FXCollections.observableArrayList();
-		
-		SaveModel readedObject;
 
-		if (dir != null) {
-			for (File child : dir) {
+		SaveModel savedGame;
+
+		if (fileDirectory != null) {
+			for (File child : fileDirectory) {
 				if (child.getName().endsWith(".json")) {
-					readedObject = storageModel.convertFileToSaveModel(child.getAbsoluteFile());
-					model = storageModel.loadIntoModel(model, readedObject);
-					jsonObservableList.add(model);
+					savedGame = storageModel.convertFileToSaveModel(child.getAbsoluteFile());
+					gameModel = storageModel.loadIntoModel(gameModel, savedGame);
+					jsonObservableList.add(gameModel);
 				}
 
 			}
@@ -143,46 +167,66 @@ public class StorageController {
 		storage.getTableView().setItems(jsonObservableList);
 		calculateGameStats();
 	}
-
+	
+	
+	/**
+	 * This method is used to delete an Object from the {@link #jsonObservableList}
+	 * and the File directory 
+	 * @param action of the user in the UI
+	 */
 	public void deleteEntry(ActionEvent e) {
 
 		int deleteIndex = storage.getTableView().getSelectionModel().getSelectedIndex();
 		jsonObservableList.remove(deleteIndex);
 
-		if (dir[deleteIndex].exists()) {
+		if (fileDirectory[deleteIndex].exists()) {
 			try {
-				Files.delete(dir[deleteIndex].toPath());
+				Files.delete(fileDirectory[deleteIndex].toPath());
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 		}
 
-		dir = new File("SaveFiles").listFiles();
+		fileDirectory = new File("SaveFiles").listFiles();
 	}
 
 	
-	
+	/**
+	 * This method is used to align the values which are shown in the
+	 * {@link application.BasicGameBuilder#getTextField()} with the values inside the
+	 * {@link #gameModel} {@link application.BasicGameLogic#getCells()} array
+	 */
 	public void alignArrays() {
-		SudokuField[][] s = game.getTextField();
-		for (int i = 0; i < s.length; i++) {
-			for (int j = 0; j < s[i].length; j++) {
-				if (model instanceof FreeFormLogic && !model.getCells()[j][i].getBoxcolor().equals("")) {
-					s[i][j].setColor(model.getCells()[j][i].getBoxcolor());
+		SudokuField[][] sudokuField = gameBuilder.getTextField();
+		for (int i = 0; i < sudokuField.length; i++) {
+			for (int j = 0; j < sudokuField[i].length; j++) {
+				if (gameModel instanceof FreeFormLogic && !gameModel.getCells()[j][i].getBoxcolor().equals("")) {
+					sudokuField[i][j].setColor(gameModel.getCells()[j][i].getBoxcolor());
 				}
-				if (model.getCells()[j][i].getValue() != 0) {
-					s[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
+				if (gameModel.getCells()[j][i].getValue() != 0) {
+					sudokuField[i][j].setText(Integer.toString(gameModel.getCells()[j][i].getValue()));
 				}
 
-				if (model.getCells()[j][i].getFixedNumber() && model.getCells()[j][i].getValue() != 0) {
-					
-					s[i][j].setDisable(true);
+				if (gameModel.getCells()[j][i].getFixedNumber() && gameModel.getCells()[j][i].getValue() != 0) {
+					sudokuField[i][j].setDisable(true);
 				}
 			}
 		}
 	}
-
-
 	
+	
+	/**
+	 * This method is used to align the programms window size to the size variables 
+	 * defined in the {@link #gameBuilder} object
+	 */
+	public void alignWindowToGameSize() {
+		GUI.getStage().setHeight(gameBuilder.getHeight());
+		GUI.getStage().setWidth(gameBuilder.getWidth());
+		GUI.getStage().getScene().setRoot(gameBuilder.getGameUIRoot());
+		storage.getStage().close();
+	}
+	
+
 	public void calculateGameStats() {
 
 		IntegerBinding totalCost = Bindings.createIntegerBinding(() -> {
@@ -230,7 +274,7 @@ public class StorageController {
 			}
 			if (counter == 0)
 				counter = 1;
-			playTime = (long) (playTime/counter);
+			playTime = (long) (playTime / counter);
 			long minPlayed = playTime / 60;
 			long secPlayed = playTime % 60;
 

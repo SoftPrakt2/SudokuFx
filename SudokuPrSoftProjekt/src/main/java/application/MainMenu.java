@@ -90,8 +90,9 @@ public class MainMenu {
 		mainMenuRoot = new BorderPane();
 		mainScene = new Scene(mainMenuRoot, 670, 670);
 
-		mainScene.getStylesheets().add("css/sudoku.css");
-
+		//mainScene.getStylesheets().add("css/sudoku.css");
+		//mainScene.getStylesheets().add(getClass().getResource("css/sudoku.css").toExternalForm());
+	
 		welcomeLabel = new Label("SudokuFx");
 		createGameModeButtons();
 		createDifficultyButtons();
@@ -119,6 +120,7 @@ public class MainMenu {
 	 * To ensure that only one button is pressed at a time the togglebuttons in this method are put into a ToggleGroup
 	 */
 	public void createGameModeButtons() {
+		
 		gameModeBox = new VBox();
 		HBox gameModeButtons = new HBox();
 		selectModeLabel = new Label("Step 1: Choose a GameMode");

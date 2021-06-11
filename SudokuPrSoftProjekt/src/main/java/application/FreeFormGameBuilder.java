@@ -88,7 +88,8 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 			comboColorBox.setVisible(false);
 			
 			toolBar.getItems().add(3,customColorsDone);
-			toolBar.getItems().add(4,comboColorBox);
+			toolBar.getItems().add(3,comboColorBox);
 		}
+		
 		
 }

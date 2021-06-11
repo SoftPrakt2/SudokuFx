@@ -6,16 +6,16 @@ import org.junit.jupiter.api.Test;
 import logic.BasicGameLogic;
 import logic.Gamestate;
 import logic.SudokuLogic;
-import logic.SudokuStorageModel;
+import logic.SudokuStorage;
 
 class SudokuStorageModelTest {
 
-	SudokuStorageModel ssmt = new SudokuStorageModel();
+	SudokuStorage ssmt = new SudokuStorage();
 	BasicGameLogic model = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);
 	
 	@BeforeEach
 	public void setUp() {
-		SudokuStorageModel ssmt = new SudokuStorageModel();
+		SudokuStorage ssmt = new SudokuStorage();
 		BasicGameLogic model = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);
 	}
 

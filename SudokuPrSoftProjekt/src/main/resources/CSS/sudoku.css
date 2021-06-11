@@ -4,7 +4,7 @@
   	 
 	}
 	
-	.root.popup {
+.root.popup {
     -fx-background-color: transparent;
 }
 	
@@ -288,6 +288,13 @@
 .storageResultLabel {
 	-fx-font-family:Georgia;
 	-fx-font-size: 20px;
+}
+
+
+.storageHeaderLabel {
+	-fx-font-family:Georgia;
+	-fx-font-size: 25px;
+	-fx-font-weight: bold;
 }
 
 

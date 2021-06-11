@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
@@ -34,8 +35,13 @@ public class GUI extends Application {
 		
 		mainPane = mainmenu.getPane();
 		window.setScene(mainScene);
-		mainScene.getStylesheets().add("css/sudoku.css");
+	
+	
+		mainScene.getStylesheets().add(getClass().getResource("/CSS/sudoku.css").toExternalForm());
+	
+	
 		window.show();
+		
 
 		window.setTitle("SudokuFx");
 		window.setOnCloseRequest(e -> {

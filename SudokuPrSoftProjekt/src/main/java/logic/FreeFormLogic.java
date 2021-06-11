@@ -18,7 +18,7 @@ public class FreeFormLogic extends SudokuLogic {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[9][9];
 		gametype = "FreeForm";
-		hintCounter = 3;
+		numbersToBeSolvable = 2;
 	}
 
 	/**

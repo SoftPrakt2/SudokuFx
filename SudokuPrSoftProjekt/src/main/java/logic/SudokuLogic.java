@@ -21,7 +21,7 @@ public class SudokuLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
 		this.cells = new Cell[9][9];
 		gametype = "Sudoku";
-		numbersToBeSolvable = 21;
+		numbersToBeSolvable = 2;
 	}
 	
 	/**

@@ -4,6 +4,8 @@ import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
 import controller.GameController;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -32,10 +34,12 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	 * This container nesting is needed to ensure correct scaling of the playboard 
 	 * To achieve the desired look of the playboard, 
 	 * empty StackPane cells are put into the GridPane on positions where the player should not be able to insert numbers
-	 * These StackPane cells are then filled with SudokuField with "-1" as Text to ensure that these Fields are not recognized by game logic methods 
+	 * These StackPane cells are then filled with SudokuField with "-1" as Text to ensure that these Fields are not recognized by game logic methods
+	 * 
 	 */
 	@Override
 	public GridPane createBoard() {
+		final SimpleDoubleProperty textSize = new SimpleDoubleProperty(10);
 		controller = new GameController(this, model);
 		playBoard = new GridPane();
 
@@ -45,29 +49,42 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		for (int row = 0; row < textField.length; row++) {
 			for (int col = 0; col < textField[row].length; col++) {
 				StackPane cell = new StackPane();
+				//Styles the cell with the assoziated CSS styleclass in the sudoku css files
 				cell.getStyleClass().add("samuraicell");
-				
+				//aligns the size of the cells to the current size of the playboard
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(22));
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(22));
-
+				
+				
+				//empty StackPane cells and SudokuFields
 				StackPane cellEmpty = new StackPane();
 				SudokuField emptyField = new SudokuField("-1");
-				
 				cellEmpty.getChildren().add(emptyField);
 				cellEmpty.setDisable(true);
 				textField[row][col] = emptyField;
-
+				
+				//depending on the position in the matrix the cells will be styled as empty cell 
+				//or as playable cell 
 				if ((row == 9 || row == 10 || row == 11) && (col < 6 || col > 14)) {
 					emptyField.getStyleClass().add("emptySamuraiCell");
 				} else if ((row < 6 || row > 14) && (col == 9 || col == 10 || col == 11)) {
 					emptyField.getStyleClass().add("emptySamuraiCell");
 				} else {
+			
 					textField[row][col] = new SudokuField("");
+					//align the size of the Text inside a SudokuField to the window size
+					textField[row][col].styleProperty().bind(Bindings.concat("-fx-font-size: ", textSize.asString()));
+					textSize.bind(gameRoot.widthProperty().add(gameRoot.heightProperty()).divide(100));
+					
+					//style the textfield with the values defined in the styleclass
 					textField[row][col].getStyleClass().add("samuraiFont");
 					textField[row][col].setMaxSize(100, 100);
 					textField[row][col].setAlignment(Pos.CENTER);
+					
+					//add the textfield to the cell
 					cell.getChildren().add(textField[row][col]);
 					playBoard.add(cell, row, col);
+					
 					
 				}
 			}
