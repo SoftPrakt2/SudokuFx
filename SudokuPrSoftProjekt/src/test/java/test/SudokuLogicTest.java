@@ -18,7 +18,7 @@ class SudokuLogicTest {
 	
 	@BeforeEach
 	public void setUp(){
-		model = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);
+		model = new SudokuLogic(Gamestate.OPEN, 0 , 0);
 		model.setUpLogicArray();
 	}
 	
@@ -40,7 +40,7 @@ class SudokuLogicTest {
 	
 	@Test
 	void testSetCells() {
-		SudokuLogic model2 = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);
+		SudokuLogic model2 = new SudokuLogic(Gamestate.OPEN, 0 , 0);
 		model2.setUpLogicArray();
 		model2.getCells()[1][1].setValue(1);
 		 model.setCells(model2.getCells());

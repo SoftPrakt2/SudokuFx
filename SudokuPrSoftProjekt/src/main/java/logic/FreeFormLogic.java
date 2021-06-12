@@ -14,8 +14,8 @@ public class FreeFormLogic extends SudokuLogic {
 
 	static int counter = 0;
 
-	public FreeFormLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
-		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
+	public FreeFormLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
+		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[9][9]);
 		setGametype("FreeForm");
 		setNumbersToBeSolvable(2);

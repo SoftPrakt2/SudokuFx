@@ -17,14 +17,14 @@ class BasicGameLogicTest {
 	
 	@BeforeEach
 	public void setUp(){
-		model = new SamuraiLogic(Gamestate.OPEN, 0 , 0 , false);
+		model = new SamuraiLogic(Gamestate.OPEN, 0 , 0);
 		model.setUpLogicArray();
 	}
 	
 
 	@Test
 	void testSetCells() {
-		SamuraiLogic model2 = new SamuraiLogic(Gamestate.OPEN, 0 , 0 , false);
+		SamuraiLogic model2 = new SamuraiLogic(Gamestate.OPEN, 0 , 0);
 		model2.setUpLogicArray();
 		model2.getCells()[1][1].setValue(1);
 		 model.setCells(model2.getCells());

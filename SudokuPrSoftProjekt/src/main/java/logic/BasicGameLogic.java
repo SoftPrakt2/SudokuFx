@@ -49,8 +49,6 @@ public abstract class BasicGameLogic {
 	 */
 	private StringProperty liveTimePlayedString;
 	
-	private boolean isCorrect;
-	
 	/**
 	 * variable which describes how many numbers are needed for a Sudoku Game to be solvable
 	 */
@@ -74,12 +72,11 @@ public abstract class BasicGameLogic {
 	 * @param secondsPlayed
 	 * @param isCorrect : boolean to check if the sudoku was solved correctly
 	 */
-	protected BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
+	protected BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
 		super();
 		this.gamestate = gamestate;
 		this.minutesPlayed = minutesPlayed;
 		this.secondsPlayed = secondsPlayed;
-		this.isCorrect = isCorrect;
 		liveTimePlayedString = new SimpleStringProperty();
 		shuffleCounter = 0;
 		this.r = new Random();

@@ -29,7 +29,7 @@ public class PopOverController extends ModeController {
 	
 	@Override
 	public void handleToSudoku(ActionEvent e) {
-		setModel(new SudokuLogic(Gamestate.OPEN, 0, 0, false));
+		setModel(new SudokuLogic(Gamestate.OPEN, 0, 0));
 		setGameScene(new SudokuGameBuilder(getModel()));
 		getGameBuilder().initializeGame();
 		enableDifficultyButtons();
@@ -37,7 +37,7 @@ public class PopOverController extends ModeController {
 	
 	@Override
 	public void handleToSamurai(ActionEvent e) {
-		setModel(new SamuraiLogic(Gamestate.OPEN, 0, 0, false));
+		setModel(new SamuraiLogic(Gamestate.OPEN, 0, 0));
 		setGameScene(new SamuraiGameBuilder(getModel()));
 		getGameBuilder().initializeGame();
 		enableDifficultyButtons();
@@ -48,7 +48,7 @@ public class PopOverController extends ModeController {
 	
 	@Override
 	public void handleToFreeForm(ActionEvent e) {
-		setModel(new FreeFormLogic(Gamestate.OPEN, 0, 0, false));
+		setModel(new FreeFormLogic(Gamestate.OPEN, 0, 0));
 		setGameScene(new FreeFormGameBuilder(getModel()));
 		getGameBuilder().initializeGame();
 		enableDifficultyButtons();

@@ -55,7 +55,7 @@ public class ModeController {
 	 * {@link application.MainMenu#getPlayModeToggle()} will be enabled
 	 */
 	public void handleToSudoku(ActionEvent e) {
-		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+		model = new SudokuLogic(Gamestate.OPEN, 0, 0);
 		gameScene = new SudokuGameBuilder(model);
 		gameScene.initializeGame();
 		enableDifficultyButtons();
@@ -68,7 +68,7 @@ public class ModeController {
 	 * {@link application.MainMenu#getPlayModeToggle()} will be enabled
 	 */
 	public void handleToSamurai(ActionEvent e) {
-		model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+		model = new SamuraiLogic(Gamestate.OPEN, 0, 0);
 		gameScene = new SamuraiGameBuilder(model);
 		gameScene.initializeGame();
 		enableDifficultyButtons();
@@ -81,7 +81,7 @@ public class ModeController {
 	 * {@link application.MainMenu#getPlayModeToggle()} will be enabled
 	 */
 	public void handleToFreeForm(ActionEvent e) {
-		model = new FreeFormLogic(Gamestate.OPEN, 0, 0, false);
+		model = new FreeFormLogic(Gamestate.OPEN, 0, 0);
 		gameScene = new FreeFormGameBuilder(model);
 		gameScene.initializeGame();
 		enableDifficultyButtons();

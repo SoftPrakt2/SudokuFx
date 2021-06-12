@@ -131,7 +131,7 @@ public class GameController {
 			scene.getColorsDoneButton().setVisible(true);
 			scene.getColorBox().setVisible(true);
 		}
-		if (model.getGamestate().equals(Gamestate.CREATING)) {
+		else if (model.getGamestate().equals(Gamestate.CREATING)) {
 			scene.getToolBar().getItems().remove(scene.getDoneButton());
 			scene.getToolBar().getItems().remove(scene.getColorsDoneButton());
 			scene.getToolBar().getItems().remove(scene.getColorBox());

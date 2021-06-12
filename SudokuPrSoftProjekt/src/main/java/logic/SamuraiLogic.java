@@ -9,8 +9,8 @@ public class SamuraiLogic extends BasicGameLogic {
 	 * @param secondsPlayed
 	 * @param isCorrect
 	 */
-	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
-		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
+	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
+		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[21][21]);
 		setGametype("Samurai");
 		setNumbersToBeSolvable(140);

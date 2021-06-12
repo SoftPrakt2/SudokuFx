@@ -11,12 +11,12 @@ import logic.SudokuStorage;
 class SudokuStorageModelTest {
 
 	SudokuStorage ssmt = new SudokuStorage();
-	BasicGameLogic model = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);
+	BasicGameLogic model = new SudokuLogic(Gamestate.OPEN, 0 , 0);
 	
 	@BeforeEach
 	public void setUp() {
 		SudokuStorage ssmt = new SudokuStorage();
-		BasicGameLogic model = new SudokuLogic(Gamestate.OPEN, 0 , 0 , false);
+		BasicGameLogic model = new SudokuLogic(Gamestate.OPEN, 0 , 0);
 	}
 
 	@Test

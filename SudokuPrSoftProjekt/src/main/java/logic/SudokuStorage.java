@@ -150,15 +150,15 @@ public class SudokuStorage {
 	public BasicGameLogic loadIntoModel(BasicGameLogic model, SaveModel savedGame) {
 		if (savedGame.getGametype().equals("Sudoku"))
 			model = new SudokuLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
-					savedGame.getSecondsPlayed(), false);
+					savedGame.getSecondsPlayed());
 		
 		if (savedGame.getGametype().equals("Samurai"))
 			model = new SamuraiLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
-					savedGame.getSecondsPlayed(), false);
+					savedGame.getSecondsPlayed());
 		
 		if (savedGame.getGametype().equals("FreeForm"))
 			model = new FreeFormLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
-					savedGame.getSecondsPlayed(), false);
+					savedGame.getSecondsPlayed());
 		
 		
 		model.setGametype(savedGame.getGametype());

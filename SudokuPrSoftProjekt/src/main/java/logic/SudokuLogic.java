@@ -17,8 +17,8 @@ public class SudokuLogic extends BasicGameLogic {
 	 * @param secondsPlayed
 	 * @param isCorrect
 	 */
-	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
-		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
+	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
+		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[9][9]);
 		setGametype("Sudoku");
 		setNumbersToBeSolvable(2);
@@ -96,7 +96,6 @@ public class SudokuLogic extends BasicGameLogic {
             removeValues();
         }
         else {
-            Random r = new Random();
             while (counter != 0) {
                     int randCol = r.nextInt(9);
                     int randRow = r.nextInt(9);
