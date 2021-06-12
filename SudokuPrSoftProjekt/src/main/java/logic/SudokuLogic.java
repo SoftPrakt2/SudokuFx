@@ -19,9 +19,9 @@ public class SudokuLogic extends BasicGameLogic {
 	 */
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed, boolean isCorrect) {
 		super(gamestate, minutesPlayed, secondsPlayed, isCorrect);
-		this.cells = new Cell[9][9];
-		gametype = "Sudoku";
-		numbersToBeSolvable = 2;
+		setCells(new Cell[9][9]);
+		setGametype("Sudoku");
+		setNumbersToBeSolvable(2);
 	}
 	
 	/**
@@ -29,8 +29,8 @@ public class SudokuLogic extends BasicGameLogic {
 	 */
 	@Override
 	public boolean checkRow(int row, int col, int guess) {
-		for (col = 0; col < this.cells.length; col++) {
-			if (this.cells[row][col].getValue() == guess) {
+		for (col = 0; col < this.getCells().length; col++) {
+			if (this.getCells()[row][col].getValue() == guess) {
 				return false;
 			}
 		}
@@ -42,8 +42,8 @@ public class SudokuLogic extends BasicGameLogic {
 	 */
 	@Override
 	public boolean checkCol(int row, int col, int guess) {
-		for (row = 0; row < this.cells.length; row++) {
-			if (this.cells[row][col].getValue() == guess) {
+		for (row = 0; row < this.getCells().length; row++) {
+			if (this.getCells()[row][col].getValue() == guess) {
 				return false;
 			}
 		}
@@ -56,8 +56,8 @@ public class SudokuLogic extends BasicGameLogic {
 	@Override
 	public void setUpLogicArray() {
 		int box = 0;
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
 				if (row < 3 && col < 3) {
 					box = 1;
 				} else if (row < 3 && col < 6) {
@@ -78,7 +78,7 @@ public class SudokuLogic extends BasicGameLogic {
 					box = 9;
 				}
 				Cell cell = new Cell(row, col, box, 0);
-				cells[row][col] = cell;
+				this.getCells()[row][col] = cell;
 			}
 		}
 	}
@@ -88,25 +88,7 @@ public class SudokuLogic extends BasicGameLogic {
 	 * the amount depends on the difficulty chosen by the user
 	 * 
 	 */
-//	public void difficulty() {
-//        int counter = getNumberOfVisibleValues();
-//
-//        if(counter == 81) {
-//            removeValues();
-//        }
-//        else {
-//            while (counter != 0) {
-//                int randCol = r.nextInt(9);
-//                int randRow = r.nextInt(9);
-//                if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getFixedNumber()) {
-//                    this.cells[randRow][randCol].setValue(0);
-//                    this.cells[randRow][randCol].setFixedNumber(false);
-//                    counter--;
-//                }
-//            }
-//        }
-//    }
-	
+
 	public void difficulty() {
         int counter = getNumberOfVisibleValues();
 
@@ -118,9 +100,9 @@ public class SudokuLogic extends BasicGameLogic {
             while (counter != 0) {
                     int randCol = r.nextInt(9);
                     int randRow = r.nextInt(9);
-                if (this.cells[randRow][randCol].getValue() != 0 && this.cells[randRow][randCol].getFixedNumber()) {
-                    this.cells[randRow][randCol].setValue(0);
-                    this.cells[randRow][randCol].setFixedNumber(false);
+                if (this.getCells()[randRow][randCol].getValue() != 0 && this.getCells()[randRow][randCol].getFixedNumber()) {
+                	this.getCells()[randRow][randCol].setValue(0);
+                	this.getCells()[randRow][randCol].setFixedNumber(false);
                     counter--;
                 }
             }
@@ -132,13 +114,13 @@ public class SudokuLogic extends BasicGameLogic {
 	 */
 	@Override
 	public int getNumberOfVisibleValues() {
-		if(this.difficulty == 3) {
+		if(this.getDifficulty() == 3) {
 			return 56;
 		}
-		else if(this.difficulty == 5) {
+		else if(this.getDifficulty() == 5) {
 			return 46;
 		}
-		else if(this.difficulty == 7) {
+		else if(this.getDifficulty() == 7) {
 			return 36;
 		}
 		else {
@@ -147,9 +129,9 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	public void printCells() {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				System.out.print(this.cells[row][col].getValue() + " ");
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				System.out.print(this.getCells()[row][col].getValue() + " ");
 				if (col == 2 || col == 5) {
 					System.out.print("|");
 				}

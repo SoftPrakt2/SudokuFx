@@ -9,35 +9,37 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * This class is used to create a PopUP which gives the User the ability to change the gamemode while he/she is in an other game
+ * This class is used to create a PopUP which gives the User the ability to change the gamemode while he/she is in an other game, the popup is shown when the user
+ * presses the {@link application.BasicGameBuilder} newGameItem
+ * Due to the similarity of the components and stucture this class inherits from the {@link application.MainMenu} class
  * @author grube
  *
  */
 public class NewGamePopUp extends MainMenu {
 
 	
-	protected PopOver popOver;
+	private PopOver popOver;
 	
 	/**
 	 * Container for the game mode buttons
 	 */
-	protected HBox gameModeButtons;
+	private HBox gameModeButtons;
 	
 	/**
 	 * Container for the difficulty buttons
 	 */
-	protected HBox difficultyButtons;
+	private HBox difficultyButtons;
 	
 	/**
 	 * Label which is used as Header of the popup
 	 */
-	protected Label newGameModeLabel;
+	private Label newGameModeLabel;
 	
 	/**
 	 * root container of the popover
 	 */
-	protected VBox popOverBox;
-	protected PopOverController popcontrol;
+	private VBox popOverBox;
+	private PopOverController popcontrol;
 
 	
 	/**

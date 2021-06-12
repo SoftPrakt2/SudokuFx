@@ -42,7 +42,7 @@ public class StorageController {
 	 * BasicGameLogic Objects are stored in this list to allow the use of polymorphism later on when 
 	 * determing the exact gametype
 	 */
-	protected ObservableList<BasicGameLogic> jsonObservableList;
+	private ObservableList<BasicGameLogic> jsonObservableList;
 
 	
 	/**The different table columns of the {@link application.GameOverview#getTableView()} which will
@@ -95,6 +95,7 @@ public class StorageController {
 
 		if (gameModel.getGamestate().equals(Gamestate.CREATING) || gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
 				|| gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
+			gameBuilder.getToolBar().getItems().add(3,gameBuilder.getDoneButton());
 			gameBuilder.getDoneButton().setVisible(true);
 			gameBuilder.disablePlayButtons();
 		}
@@ -139,8 +140,6 @@ public class StorageController {
 	 * Afterwards the informations of the SaveModel object will be loaded into the {@link #gameModel} object which is an Object of 
 	 * {@link application.BasicGameLogic} class
 	 * This approach allows the use of polymorphism when the {@link #gameModel} is filled with the informations from the savedGame
-	 * This happens in the {@link application.SudokuStorageView}
-	 * method
 	 */
 	public void fillTableVew() {
 		jsonObservableList = FXCollections.observableArrayList();
@@ -216,7 +215,7 @@ public class StorageController {
 	
 	
 	/**
-	 * This method is used to align the programms window size to the size variables 
+	 * This method is used to align the programs window size to the size variables 
 	 * defined in the {@link #gameBuilder} object
 	 */
 	public void alignWindowToGameSize() {
@@ -226,10 +225,16 @@ public class StorageController {
 		storage.getStage().close();
 	}
 	
-
+		
+	/**
+	 * This method is used to calculate the different game results shown in the {@link application.GameOverview} Screen
+	 * The results are dependend on the content in the {@link application.GameOverview#getTableView()} thus for each result
+	 * a binding is created which contains the specific result of the calculation
+	 * Lastly each binding is then binded to the {@link application.GameOverview} specific lable for the result
+	 */
 	public void calculateGameStats() {
 
-		IntegerBinding totalCost = Bindings.createIntegerBinding(() -> {
+		IntegerBinding totalGamePoints = Bindings.createIntegerBinding(() -> {
 			int total = 0;
 			for (BasicGameLogic savedModel : storage.getTableView().getItems()) {
 				total = total + savedModel.getGamepoints();
@@ -282,7 +287,7 @@ public class StorageController {
 			return time;
 		}, storage.getTableView().getItems());
 
-		storage.getOverallPointsLabel().textProperty().bind(totalCost.asString());
+		storage.getOverallPointsLabel().textProperty().bind(totalGamePoints.asString());
 		storage.getAveragePointsResultLabel().textProperty().bind(averagePoints.asString());
 		storage.getOverallTimeResultLabel().textProperty().bind(overAllPlayTime);
 		storage.getAverageTimeResultLabel().textProperty().bind(averagePlayTime);

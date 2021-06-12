@@ -1,14 +1,16 @@
 package application;
 
+
+
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import logic.BasicGameLogic;
 
 
@@ -21,9 +23,9 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	public FreeFormGameBuilder(BasicGameLogic model) {
 		super(model);
-		textField = new SudokuField[9][9];
-		sceneWidth = 670;
-		sceneHeight = 670;
+		setTextField(new SudokuField[9][9]);
+		setSceneWidth(670);
+		setSceneHeight(670);
 	}
 
 	
@@ -33,23 +35,33 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	 */
 	@Override
 	public GridPane createBoard() {
-		playBoard = new GridPane();
+		final SimpleDoubleProperty textSize = new SimpleDoubleProperty(10);
+		
+		GridPane playBoard = new GridPane();
 		StackPane cell;
 		for (int row = 0; row < 9; row++) {
 			for (int col = 0; col < 9; col++) {
 				cell = new StackPane();
-
+				
+				//align the size of the cell to the playboards size
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(10));
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));
 			
 
-				textField[row][col] = new SudokuField("");
-				textField[row][col].setMaxSize(200, 200);
-				textField[row][col].setFont(Font.font("Arial", FontWeight.BOLD, 15));
-				textField[row][col].setAlignment(Pos.CENTER);
-				textField[row][col].addFreeFormColorListener(comboColorBox);
+				getTextField()[row][col] = new SudokuField("");
+				getTextField()[row][col].setMaxSize(200, 200);
+				getTextField()[row][col].setAlignment(Pos.CENTER);
+				
 
-				cell.getChildren().add(textField[row][col]);
+				//adds a listener to the textfields to listen to changes regarding background color
+				//this is needed when creating a custom freeform game 
+				getTextField()[row][col].addFreeFormColorListener(comboColorBox);
+
+			
+				Font font = new Font("Arial",textSize.get());
+				getTextField()[row][col].setFont(font);
+				
+				cell.getChildren().add(getTextField()[row][col]);
 
 				playBoard.add(cell, row, col);
 			}
@@ -60,11 +72,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		return playBoard;
 	}
 	
-	
-		@Override
-		public void createNumbers() {
-			controller.createGame();
-		}
+
 
 		/**
 		 * Creates the UI components which are needed for a manual FreeForm Game
@@ -77,17 +85,17 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 			Glyph doneGraphic = fontAwesome.create(FontAwesome.Glyph.LOCK);
 			Glyph colorDoneGraphic = fontAwesome.create(FontAwesome.Glyph.PAINT_BRUSH);
 			
-			customNumbersDone = new Button("");
-			customNumbersDone.setGraphic(doneGraphic);
-			customNumbersDone.setVisible(false);
+			setCustomNumbersDone(new Button(""));
+			getCustomNumbersDone().setGraphic(doneGraphic);
+			getCustomNumbersDone().setVisible(false);
 			
-			customColorsDone = new Button("");
-			customColorsDone.setGraphic(colorDoneGraphic);
+			setCustomColorsDone(new Button(""));
+			getCustomColorsDone().setGraphic(colorDoneGraphic);
 			
-			customColorsDone.setVisible(false);
+			getCustomColorsDone().setVisible(false);
 			comboColorBox.setVisible(false);
 			
-			toolBar.getItems().add(3,customColorsDone);
+			toolBar.getItems().add(3,getCustomColorsDone());
 			toolBar.getItems().add(3,comboColorBox);
 		}
 		

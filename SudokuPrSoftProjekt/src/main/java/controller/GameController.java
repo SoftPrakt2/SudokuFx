@@ -29,11 +29,12 @@ public class GameController {
 	BasicGameLogic model;
 	SudokuField[][] sudokuField;
 	static int numberCounter = 1;
+	
 
 	/**
 	 * Constructor to create a GameController-Object
 	 * 
-	 * @param scene : is the playfield visible to the user
+	 * @param scene : the Game UI currently visible to the user
 	 * @param model : is the logic for creating a game and handling game mechanics
 	 */
 	public GameController(BasicGameBuilder scene, BasicGameLogic model) {
@@ -59,8 +60,7 @@ public class GameController {
 	public void createGame() {
 		model.setUpGameField();
 		model.setUpGameInformations();
-		scene.getGameInfoLabel()
-				.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
+		scene.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 		scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -133,6 +133,8 @@ public class GameController {
 		}
 		if (model.getGamestate().equals(Gamestate.CREATING)) {
 			scene.getToolBar().getItems().remove(scene.getDoneButton());
+			scene.getToolBar().getItems().remove(scene.getColorsDoneButton());
+			scene.getToolBar().getItems().remove(scene.getColorBox());
 			scene.getToolBar().getItems().add(3, scene.getColorsDoneButton());
 			scene.getToolBar().getItems().add(3, scene.getColorBox());
 			scene.getColorBox().setVisible(true);
@@ -162,11 +164,6 @@ public class GameController {
 	 * resets a manually created game buttons for solve, check and hint get disabled
 	 * lock-button gets enabled and becomes visible {@link #enableEdit()}
 	 */
-
-	
-	
-	
-	
 	public void resetManualSudokuOrSamurai() {
 		
 			scene.getToolBar().getItems().remove(scene.getDoneButton());
@@ -184,24 +181,16 @@ public class GameController {
 			scene.getLiveTimeLabel().setText("");
 		}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 	/**
-	 * deletes user inputs values that were created at the start of the game do not
+	 * deletes user input values that were created at the start of the game do not
 	 * get deleted
 	 */
 	public void resetHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (!model.getCells()[j][i].getFixedNumber() && !sudokuField[i][j].getText().equals("-1")) {
+					sudokuField[i][j].getStyleClass().remove("textfieldHint");
 					sudokuField[i][j].clear();
 					model.getCells()[j][i].setValue(0);
 				}
@@ -220,12 +209,14 @@ public class GameController {
 	public void customColorsDoneHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
+			
 				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
+				
 			}
 		}
 		
 		boolean helper = true;
-			int[] cells1to9 = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+			int[] cells1to9 = { 0, 0, 0, 0, 0, 0, 0, 0, 0};
 			int box;
 			for (int d = 0; d < model.getCells().length; d++) {
 				for (int h= 0; h < this.model.getCells()[d].length; h++) {
@@ -239,7 +230,7 @@ public class GameController {
 				}
 			}
 
-	//	if (model.isConnected() &&  helper == true) {
+		if (model.isConnected() &&  helper == true) {
 			for (SudokuField coloredArray[] : sudokuField) {
 				for (SudokuField coloredField : coloredArray) {
 					coloredField.removeFreeFormColorListener();
@@ -251,10 +242,10 @@ public class GameController {
 			scene.getDoneButton().setVisible(true);
 			model.setGameState(Gamestate.CREATING);
 			scene.getGameNotificationLabel().setText(model.getGameText());
-//		} else {
-//			model.setGameState(Gamestate.NOFORMS);
-//			scene.getGameNotificationLabel().setText(model.getGameText());
-//		}
+		} else {
+			model.setGameState(Gamestate.NOFORMS);
+			scene.getGameNotificationLabel().setText(model.getGameText());
+		}
 
 	}
 
@@ -287,6 +278,10 @@ public class GameController {
 			scene.getToolBar().getItems().remove(scene.getDoneButton());
 			Stream.of(scene.getHintButton(), scene.getAutoSolveButton(), scene.getCheckButton())
 					.forEach(button -> button.setDisable(false));
+			Stream.of(scene.getAutoSolveMenuItem(), scene.getHintMenuItem(), scene.getCheckMenuItem())
+			.forEach(menuItem ->menuItem.setDisable(false));
+				
+		
 		} else if (!compareResult()) {
 			model.removeValues();
 			model.setGameState(Gamestate.MANUALCONFLICT);
@@ -336,6 +331,7 @@ public class GameController {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
 				sudokuField[col][row].getStyleClass().remove("textfieldWrong");
+		
 				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 					numberCounter++;
 
@@ -587,18 +583,18 @@ public class GameController {
 			if (!model.getGamestate().equals(Gamestate.CREATING) && !model.getGamestate().equals(Gamestate.DRAWING)) {
 				model.initializeTimer();
 				model.getLiveTimer().start();
+				scene.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 				scene.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getStringProp()));
 			}
 
-			if (model.getGamestate().equals(Gamestate.CREATING) || model.getGamestate().equals(Gamestate.MANUALCONFLICT) || model.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
-				if (!scene.getToolBar().getItems().get(3).equals(scene.getDoneButton())) {
-					scene.getToolBar().getItems().add(3, scene.getDoneButton());
-				}
+			if (model.getGamestate().equals(Gamestate.CREATING) || model.getGamestate().equals(Gamestate.MANUALCONFLICT)
+					|| model.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
+				scene.getToolBar().getItems().add(3,scene.getDoneButton());
 				scene.getDoneButton().setVisible(true);
 				scene.disablePlayButtons();
 			}
 
-			if (model.getGamestate().equals(Gamestate.DRAWING)) {
+			if (model.getGamestate().equals(Gamestate.DRAWING) || model.getGamestate().equals(Gamestate.NOFORMS)) {
 				scene.getColorBox().setVisible(true);
 				scene.getColorsDoneButton().setVisible(true);
 				scene.disablePlayButtons();

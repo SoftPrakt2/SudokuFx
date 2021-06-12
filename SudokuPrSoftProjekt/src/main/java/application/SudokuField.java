@@ -30,6 +30,8 @@ public class SudokuField extends TextField {
 	 * background changes
 	 */
 	private boolean listeningToColors;
+	
+	private boolean isColored; 
 
 	ChangeListener<Boolean> freeFormColorListener;
 
@@ -42,6 +44,7 @@ public class SudokuField extends TextField {
 		listeningToColors = false;
 		this.getStyleClass().add("textfieldBasic");
 	}
+	
 
 	/**
 	 * Adds a listener to the Sudokufields textproperty to ensure that only numbers
@@ -81,8 +84,11 @@ public class SudokuField extends TextField {
 	 * black after inserting a new number
 	 */
 	public void updateColor() {
-		this.textProperty().addListener((observable, oldV, newV) -> this.getStyleClass().remove("textfieldWrong"));
+		this.textProperty().addListener((observable, oldV, newV) -> {
+		
+		this.getStyleClass().remove("textfieldWrong");
 		this.getStyleClass().remove("textfieldHint");
+		});
 	}
 
 	/**
@@ -151,6 +157,7 @@ public class SudokuField extends TextField {
 	public void setColor(String color) {
 		this.color = color;
 		this.setStyle("-fx-background-color: #" + color);
+		isColored = true;
 	}
 
 	public String getColor() {
@@ -159,6 +166,10 @@ public class SudokuField extends TextField {
 
 	public boolean isListeningToColors() {
 		return listeningToColors;
+	}
+	
+	public boolean isColored() {
+		return isColored;
 	}
 
 }

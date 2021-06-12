@@ -21,10 +21,10 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 	public SamuraiGameBuilder(BasicGameLogic model) {
 		super(model);
-		textField = new SudokuField[21][21];
-		sceneWidth = 1050;
-		sceneHeight = 1050;
-	}
+		setTextField(new SudokuField[21][21]);
+		setSceneWidth(1050);
+		setSceneHeight(1050);
+		}
 
 	
 	
@@ -40,14 +40,13 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	@Override
 	public GridPane createBoard() {
 		final SimpleDoubleProperty textSize = new SimpleDoubleProperty(10);
-		controller = new GameController(this, model);
-		playBoard = new GridPane();
+		GridPane playBoard = new GridPane();
 
 		gameRoot.setPadding(new Insets(5, 5, 5, 5));
 
 
-		for (int row = 0; row < textField.length; row++) {
-			for (int col = 0; col < textField[row].length; col++) {
+		for (int row = 0; row < getTextField().length; row++) {
+			for (int col = 0; col < getTextField()[row].length; col++) {
 				StackPane cell = new StackPane();
 				//Styles the cell with the assoziated CSS styleclass in the sudoku css files
 				cell.getStyleClass().add("samuraicell");
@@ -61,7 +60,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				SudokuField emptyField = new SudokuField("-1");
 				cellEmpty.getChildren().add(emptyField);
 				cellEmpty.setDisable(true);
-				textField[row][col] = emptyField;
+				getTextField()[row][col] = emptyField;
 				
 				//depending on the position in the matrix the cells will be styled as empty cell 
 				//or as playable cell 
@@ -71,18 +70,18 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 					emptyField.getStyleClass().add("emptySamuraiCell");
 				} else {
 			
-					textField[row][col] = new SudokuField("");
+					getTextField()[row][col] = new SudokuField("");
 					//align the size of the Text inside a SudokuField to the window size
-					textField[row][col].styleProperty().bind(Bindings.concat("-fx-font-size: ", textSize.asString()));
+					getTextField()[row][col].styleProperty().bind(Bindings.concat("-fx-font-size: ", textSize.asString()));
 					textSize.bind(gameRoot.widthProperty().add(gameRoot.heightProperty()).divide(100));
 					
 					//style the textfield with the values defined in the styleclass
-					textField[row][col].getStyleClass().add("samuraiFont");
-					textField[row][col].setMaxSize(100, 100);
-					textField[row][col].setAlignment(Pos.CENTER);
+					getTextField()[row][col].getStyleClass().add("samuraiFont");
+					getTextField()[row][col].setMaxSize(100, 100);
+					getTextField()[row][col].setAlignment(Pos.CENTER);
 					
 					//add the textfield to the cell
-					cell.getChildren().add(textField[row][col]);
+					cell.getChildren().add(getTextField()[row][col]);
 					playBoard.add(cell, row, col);
 					
 					
@@ -102,25 +101,25 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	 * The styling of the SudokuFields by adding a Styleclass from the projects CSS File
 	 */
 	public void drawColors() {
-		for(int i = 0; i < textField.length; i++) {
-			for(int j = 0; j < textField[i].length; j++) {
+		for(int i = 0; i < getTextField().length; i++) {
+			for(int j = 0; j < getTextField()[i].length; j++) {
 				if((j < 3 ||(j> 5 && j <9) || (j>11 && j<15) || j>17 && j<21) &&(i != 3&& i!=4 && i !=5 && i!=15 && i!=16 && i!=17)) {
 					if(((j > 5 && j<9) || (j >11 && j < 18))  && (i > 8 && i <12)) {
 						//These fields should get no background color
 					} else {
-						textField[i][j].getStyleClass().add("coloredSamuraiCell");
+						getTextField()[i][j].getStyleClass().add("coloredSamuraiCell");
 					}
 			}
 			}
 		}
-		for(int i = 0; i < textField.length; i++) {
-			for(int j = 0; j < textField[i].length; j++) {
+		for(int i = 0; i < getTextField().length; i++) {
+			for(int j = 0; j < getTextField()[i].length; j++) {
 				if( ((j > 2 && j< 6) || (j > 14 && j <18))
 						&& ( (i > 2 && i < 6) || (i > 14 && i <18)))	{
-					textField[i][j].getStyleClass().add("coloredSamuraiCell");
+					getTextField()[i][j].getStyleClass().add("coloredSamuraiCell");
 				}
 				if((j > 8 && j < 12) && (i > 8 && i < 12)) {
-					textField[i][j].getStyleClass().add("coloredSamuraiCell");
+					getTextField()[i][j].getStyleClass().add("coloredSamuraiCell");
 				}
 			}
 		}
@@ -134,10 +133,10 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	@Override
 	public void createManualControls() {
 		Glyph doneGraphic = fontAwesome.create(FontAwesome.Glyph.LOCK);
-		customNumbersDone = new Button("");
-		customNumbersDone.setGraphic(doneGraphic);
-		customNumbersDone.setVisible(false);
-		toolBar.getItems().add(3,customNumbersDone);
+		setCustomNumbersDone(new Button(""));
+		getCustomNumbersDone().setGraphic(doneGraphic);
+		getCustomNumbersDone().setVisible(false);
+		toolBar.getItems().add(3,getCustomNumbersDone());
 	}
 	
 }

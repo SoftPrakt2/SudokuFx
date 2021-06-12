@@ -25,6 +25,9 @@ public class GUI extends Application {
 		
 		MainMenu mainmenu = new MainMenu();
 		
+		
+	
+		
 		// test commit
 		window = scene;
 		scene.setMaxWidth(1500);

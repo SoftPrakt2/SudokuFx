@@ -21,19 +21,14 @@ import javafx.util.Callback;
 public class CustomColorPicker {
 
 	/**
-	 * The UI Object which contains a list of predefined colors
-	 */
-	protected ComboBox<String> cmb;
-
-	/**
 	 * 
-	 * Initializes the ComboBox and adds a list of predefined Colors to it this list
+	 * Initializes the UI Object ComboBox,which contains a list of predefined colors. and adds a list of predefined Colors to it this list
 	 * of Colors will be shown as list of rectangles inside the UI
 	 * 
 	 * @return the created CombBox
 	 */
 	public ComboBox<String> createColorPicker() {
-		cmb = new ComboBox<>();
+		ComboBox<String> cmb = new ComboBox<>();
 
 		ObservableList<String> data = FXCollections.observableArrayList("97c1a9", "cab08b", "dfd8ab", "d5a1a3",
 				"80adbc", "adb5be", "eaeee0", "957DAD", "FFDFD3");

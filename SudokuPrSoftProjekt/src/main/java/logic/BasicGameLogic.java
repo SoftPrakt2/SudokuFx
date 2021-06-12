@@ -18,40 +18,54 @@ import javafx.beans.property.StringProperty;
  */
 public abstract class BasicGameLogic {
 
-	protected Gamestate gamestate;
-	protected boolean isCorrect;
-	protected String gametype = "";
-	protected int gamePoints = 10;
-	protected long minutesPlayed;
-	protected long secondsPlayed;
+	private Gamestate gamestate;
+
+	private String gametype = "";
+	private int gamePoints = 10;
+	private long minutesPlayed;
+	private long secondsPlayed;
 	protected Random r;
 
-	protected long startTime;
-	protected int gameIDhelper;
-	protected String gameText = "";
+	private long startTime;
+
+	private String gameText = "";
 	private int gameID = 0;
 
-	protected Cell[][] cells;
-	protected int[][] temporaryValues;
+	private Cell[][] cells;
+	private int[][] temporaryValues;
 
 	private String difficultyString;
 
-	public String playtimeString;
+	private String playtimeString;
 
 	protected int shuffleCounter;
 
-	protected int hintCounter;
-	protected int countHintsPressed = 0;
-
-	protected int difficulty;
-
-	protected StringProperty liveTimePlayedString;
 	
-	protected int numbersToBeSolvable;
-	protected int manualNumbersInserted;
+	private int difficulty;
+
+	/**
+	 * this StringProperty contains the current playing time
+	 * this variable will later be displayed through the {@link application.BasicGameBuilder#getLiveTimeLabel()} label
+	 */
+	private StringProperty liveTimePlayedString;
 	
-	AnimationTimer timer;
-	BooleanProperty timerIsRunning = new SimpleBooleanProperty();
+	private boolean isCorrect;
+	
+	/**
+	 * variable which describes how many numbers are needed for a Sudoku Game to be solvable
+	 */
+	private int numbersToBeSolvable;
+	
+	
+	/**
+	 * variable which holds the amount of numbers the user has typed into the game field
+	 * This variable is needed to check if the user has entered enough numbers while creating a manual game
+	 * for the game to be solvable
+	 */
+	private int manualNumbersInserted;
+	
+	private AnimationTimer timer;
+	private BooleanProperty timerIsRunning = new SimpleBooleanProperty();
 
 	/**
 	 * constructor for creating a BasicGameLogic object
@@ -82,12 +96,6 @@ public abstract class BasicGameLogic {
 	public abstract void difficulty();
 	
 	public abstract int getNumberOfVisibleValues();
-
-//	public abstract void printCells();
-
-//	public abstract void setCell(int col, int row, int guess);
-
-//	public abstract boolean testIfSolved();
 
 	public abstract boolean isConnected();
 
@@ -283,9 +291,9 @@ public abstract class BasicGameLogic {
         }
 	}
 
+	
 	/**
-	 * initializes a new game
-	 * calls all methods that are needed to create a game
+	 * sets game information at the beginning of a new manual game
 	 */
 	public void initializeCustomGame() {
 		setUpLogicArray();
@@ -299,7 +307,8 @@ public abstract class BasicGameLogic {
 	}
 
 	/**
-	 * sets game information at the beginning of a new manual game
+	 * initializes a new game
+	 * calls all methods that are needed to create a game
 	 */
 	public void setUpGameInformations() {
 		setStartTime(System.currentTimeMillis());
@@ -320,6 +329,47 @@ public abstract class BasicGameLogic {
 		setShuffleCounter(0);
 		createSudoku();
 		difficulty();
+	}
+	
+	
+	/**
+	 * starts a timer when a new game is created
+	 */
+	public void initializeTimer() {
+
+		liveTimePlayedString = new SimpleStringProperty("");
+
+		timerIsRunning = new SimpleBooleanProperty();
+
+		timer = new AnimationTimer() {
+			long helpmin = minutesPlayed;
+			long helpsec = secondsPlayed;
+
+			private LocalTime startTime;
+
+			@Override
+			public void handle(long now) {
+				long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
+				minutesPlayed = ((helpmin * 60 + helpsec + elapsedSeconds) / 60);
+				secondsPlayed = (helpsec + helpmin * 60 + elapsedSeconds) % 60;
+
+				liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
+			}
+
+			@Override
+			public void start() {
+				timerIsRunning.set(true);
+				startTime = LocalTime.now();
+				super.start();
+			}
+
+			@Override
+			public void stop() {
+				timerIsRunning.set(false);
+				super.stop();
+			}
+		};
+
 	}
 
 	/**
@@ -342,7 +392,7 @@ public abstract class BasicGameLogic {
 	}
 
 	public Cell[][] getCells() {
-		return cells;
+		return this.cells;
 	}
 
 	public void setCells(Cell[][] cells) {
@@ -396,7 +446,12 @@ public abstract class BasicGameLogic {
 	public Gamestate getGamestate() {
 		return this.gamestate;
 	}
-
+	
+	/**
+	 * This method is used to set the gametext which will be displayed in the
+	 * {@link application.BasicGameBuilder#getGameInfoLabel()} label
+	 * @return
+	 */
 	public String getGameText() {
 
 		if (this.getGamestate() == Gamestate.DONE) {
@@ -427,7 +482,7 @@ public abstract class BasicGameLogic {
 			gameText = "Your created Sudoku is unsolvable! Please create a new Sudoku.";
 		}
 		if (this.getGamestate() == Gamestate.NOTENOUGHNUMBERS) {
-            gameText = "Not enough numbers! Please insert " + (numbersToBeSolvable - manualNumbersInserted)
+            gameText = "Not enough numbers! Please insert " + (getNumbersToBeSolvable() - manualNumbersInserted)
                     + " more numbers to create the game";
         }
         if (this.getGamestate() == Gamestate.NOFORMS) {
@@ -491,43 +546,7 @@ public abstract class BasicGameLogic {
 		this.manualNumbersInserted = manualNumbersInserted;
 	}
 
-	/**
-	 * starts a timer when a new game is created
-	 */
-	public void initializeTimer() {
-
-		liveTimePlayedString = new SimpleStringProperty("");
-
-		timerIsRunning = new SimpleBooleanProperty();
-
-		timer = new AnimationTimer() {
-			long helpmin = minutesPlayed;
-			long helpsec = secondsPlayed;
-
-			private LocalTime startTime;
-
-			@Override
-			public void handle(long now) {
-				long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
-				minutesPlayed = ((helpmin * 60 + helpsec + elapsedSeconds) / 60);
-				secondsPlayed = (helpsec + helpmin * 60 + elapsedSeconds) % 60;
-
-				liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
-			}
-
-			@Override
-			public void start() {
-				timerIsRunning.set(true);
-				startTime = LocalTime.now();
-				super.start();
-			}
-
-			@Override
-			public void stop() {
-				timerIsRunning.set(false);
-				super.stop();
-			}
-		};
-
+	public void setNumbersToBeSolvable(int numbersToBeSolvable) {
+		this.numbersToBeSolvable = numbersToBeSolvable;
 	}
 }

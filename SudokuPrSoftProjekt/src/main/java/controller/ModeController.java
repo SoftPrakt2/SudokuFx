@@ -32,11 +32,11 @@ public class ModeController {
 	/**
 	 * Game UI which will be initialized according to the pressed Gamemode Button
 	 */
-	protected BasicGameBuilder gameScene;
+	private BasicGameBuilder gameScene;
 	/**
 	 * Game Model which will be initialized according to the pressed Gamemode Button
 	 */
-	protected BasicGameLogic model;
+	private BasicGameLogic model;
 
 	/**
 	 * auxiliary variable which is used to cache the selected difficulty of the user
@@ -55,7 +55,6 @@ public class ModeController {
 	 * {@link application.MainMenu#getPlayModeToggle()} will be enabled
 	 */
 	public void handleToSudoku(ActionEvent e) {
-
 		model = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
 		gameScene = new SudokuGameBuilder(model);
 		gameScene.initializeGame();
@@ -90,8 +89,8 @@ public class ModeController {
 	}
 
 	/**
-	 * Instanziiert ein StorageView Objekt und ruft die Scene des Storage-Objekts
-	 * auf
+	 * Instantiates a {@link application.GameOverview} object and opens its stage 
+	 * 
 	 * 
 	 */
 	public void handleToLoad(ActionEvent e) {
@@ -173,7 +172,7 @@ public class ModeController {
 
 			gameScene.getGameNotificationLabel().setText(model.getGameText());
 
-			alignGameWithWindow();
+			alignGameWithWindow(gameScene);
 			removeSelectedToggles();
 			disableDifficultyButtons();
 			disablePlayButton();
@@ -237,6 +236,13 @@ public class ModeController {
 						button.setDisable(false);
 					}
 				});
+		Stream.of(gameScene.getAutoSolveMenuItem(), gameScene.getHintMenuItem(),gameScene.getCheckMenuItem()).forEach(menuItem -> {
+					if (menuItem.isDisable()) {
+						menuItem.setDisable(false);
+					}
+				});
+		
+		
 		if (gameScene.getDoneButton().isVisible()) {
 			gameScene.getDoneButton().setVisible(false);
 		}
@@ -249,7 +255,7 @@ public class ModeController {
 	}
 
 	/**
-	 * Locks the {@link #gameScene} play buttons
+	 * Locks the {@link #gameScene} playaction menuitems and buttons
 	 */
 	public void lockGameActionButtons() {
 		Stream.of(gameScene.getHintButton(), gameScene.getAutoSolveButton(), gameScene.getCheckButton())
@@ -266,6 +272,13 @@ public class ModeController {
 			});
 	}
 
+	
+	/**
+	 * 
+	 * auxiliary method which is needed for ensuring the correct button state when the user selects the manual difficulty and then decides to switch difficulty
+	 * This method ensures that the correct buttons are visible and locked if needed
+	 * @return true if difficulty equals 0 which means the difficulty is manual 
+	 */
 	public boolean checkIfManualWasPressed(ActionEvent e) {
 		if (difficulty == 0 && menu.getDifficultyToggle().getToggles() != null) {
 			handleManual(e);
@@ -277,13 +290,26 @@ public class ModeController {
 	/**
 	 * Aligns the programs Window size to width and height variables defined in {@link #gameScene}
 	 * displays the GameUI 
+	 * @param game 
 	 */
-	public void alignGameWithWindow() {
-		GUI.getStage().setHeight(gameScene.getHeight());
-		GUI.getStage().setWidth(gameScene.getWidth());
-		GUI.getStage().getScene().setRoot(gameScene.getGameUIRoot());
+	public void alignGameWithWindow(BasicGameBuilder game) {
+		GUI.getStage().setHeight(game.getHeight());
+		GUI.getStage().setWidth(game.getWidth());
+		GUI.getStage().getScene().setRoot(game.getGameUIRoot());
 	}
 
+	
+	
+	public int getSelectedDifficulty() {
+		return difficulty;
+	}
+	
+	
+	/**
+	 * 
+	 * The following getter and setters are needed to provide the
+	 * {@link application.PopOverController with the needed variables}
+	 */
 	public BasicGameLogic getModel() {
 		return model;
 	}
@@ -292,8 +318,13 @@ public class ModeController {
 		return gameScene;
 	}
 
-	public int getSelectedDifficulty() {
-		return difficulty;
+	public void setModel(BasicGameLogic model) {
+		this.model = model;
 	}
+	
+	public void setGameScene(BasicGameBuilder gameScene) {
+		this.gameScene = gameScene;
+	}
+	
 
 }

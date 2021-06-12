@@ -90,9 +90,6 @@ public class MainMenu {
 		mainMenuRoot = new BorderPane();
 		mainScene = new Scene(mainMenuRoot, 670, 670);
 
-		//mainScene.getStylesheets().add("css/sudoku.css");
-		//mainScene.getStylesheets().add(getClass().getResource("css/sudoku.css").toExternalForm());
-	
 		welcomeLabel = new Label("SudokuFx");
 		createGameModeButtons();
 		createDifficultyButtons();

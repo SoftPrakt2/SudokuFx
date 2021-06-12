@@ -28,11 +28,15 @@ public class CloseWindowStage {
 	private Stage window;
 	
 	
+	
 	/**
 	 * Creates a Stage which displays the closing request
 	 */
 	 public void showPopUp() {
 			window = new Stage();
+			
+			window.setX(GUI.getStage().getX() + GUI.getStage().getWidth() + 5);
+			window.setY(GUI.getStage().getY());
 			
 			window.setTitle("Closing");
 			window.initModality(Modality.APPLICATION_MODAL);

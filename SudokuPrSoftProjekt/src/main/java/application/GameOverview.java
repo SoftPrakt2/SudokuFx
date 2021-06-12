@@ -36,59 +36,59 @@ public class GameOverview {
 	 * Controller of this View class which will be initialized when opening this
 	 * class in the program
 	 */
-	protected StorageController controller;
+	private StorageController controller;
 
 	/**
 	 * Stage object of this class
 	 */
-	protected Stage stage;
+	private Stage stage;
 
 	/**
 	 * Scene object of this class
 	 */
-	protected Scene storageScene;
+	private Scene storageScene;
 
 	/**
 	 * The tableview of this scene
 	 */
-	protected TableView<BasicGameLogic> tableView;
+	private TableView<BasicGameLogic> tableView;
 
 	/**
 	 * UI Objects which will be used for the contextmenu of the {@link #tableView}
 	 */
-	protected ContextMenu contextMenu;
-	protected MenuItem deleteMenuItem;
-	protected MenuItem loadMenuItem;
+	private ContextMenu contextMenu;
+	private MenuItem deleteMenuItem;
+	private MenuItem loadMenuItem;
 
 	/**
 	 * Main Container for UI Objects in this Class
 	 */
-	protected BorderPane storageContainerBox;
+	private BorderPane storageContainerBox;
 
 
 	/**
 	 * Labels for different headlines in the UI window
 	 */
-	protected Label storageHeaderLabel;
-	protected Label gameScoreHeaderLabel;
-	protected Label overallPointsHeaderLabel;
-	protected Label averagePointsHeaderLabel;
-	protected Label averageTimeHeaderLabel;
-	protected Label overallTimeHeaderLabel;
+	private Label storageHeaderLabel;
+	private Label gameScoreHeaderLabel;
+	private Label overallPointsHeaderLabel;
+	private Label averagePointsHeaderLabel;
+	private Label averageTimeHeaderLabel;
+	private Label overallTimeHeaderLabel;
 
 	/**
 	 * Labels which will be later filled with Information about the users played
 	 * games
 	 */
-	protected Label averagePointsResultLabel;
-	protected Label overallPointsResultLabel;
-	protected Label overallTimeResultLabel;
-	protected Label averageTimeResultLabel;
+	private Label averagePointsResultLabel;
+	private Label overallPointsResultLabel;
+	private Label overallTimeResultLabel;
+	private Label averageTimeResultLabel;
 
 	/**
 	 * UI container for the {@link #tableView}
 	 */
-	protected VBox tableviewBox;
+	private VBox tableviewBox;
 
 	/**
 	 * This method is used to set up the Stage Object of this class
@@ -202,6 +202,8 @@ public class GameOverview {
 		gameStatsBox.getChildren().addAll(createAverageResultContainer(), gameScoreHeaderLabel,
 				createOverallResultContainers());
 		tableviewBox.getChildren().add(gameStatsBox);
+		BasicGameBuilder o;
+		
 	}
 
 	/**

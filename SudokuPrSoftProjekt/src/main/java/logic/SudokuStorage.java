@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,26 +17,24 @@ import javafx.stage.FileChooser;
 
 /**
  * 
- * @author grube Diese Klasse definiert die generelle Speicherlogik hierbei
- *         werden Methoden welche das Speichern und Laden eines Spiels
- *         ermöglichen definiert
+ * @author grube 
+ *         This class definies the saving and loading logic of the program
+ *         To do so several methods regarding saving, loading, importing and exporting are implemented
  */
 
 public class SudokuStorage {
 
-
-
 	private boolean fileExists = true;
-
+	
 	private FileChooser chooser;
 
 	SharedStoragePreferences storagePref = new SharedStoragePreferences();
 
 	/**
-	 * Diese Methode überträgt Informationen in ein Objekt der SaveModel Klasse
-	 * 
-	 * @param gameToSave Spiel Model dessen Informationen in das SaveModel geladen
-	 *                   werden sollen
+	 * Auxiliary method sets the fields of an {@link logic.SaveModel} objects with informations
+	 * from the paramamter explained down below
+	 * @param gameToSave Gamemodel whose informations need to be stored inside an savemodel object
+	 *                  
 	 */
 	public SaveModel setInformationsToStore(BasicGameLogic gameToSave) {
 		SaveModel saveModel = new SaveModel();
@@ -61,7 +60,11 @@ public class SudokuStorage {
 	 * {@link #setInformationsToStore(BasicGameLogic)} Methode befüllt Anschließend
 	 * wird mit einem JSONWriter und FileWriter die tatsächliche Datei geschrieben
 	 * 
-	 * @param gameToSave
+	 * This method handles the actual saving process, in an object of the {@link logic.SaveModel} class
+	 * the needed informations about the to be saved game are stored
+	 * The saveFile File object then is filled with the informations stored in the {@link logic.SaveModel} object
+	 * To write the specific file a JSONWriter and a Filewriter is needed
+	 * @param gameToSave gamemodel which should be saved
 	 */
 	public void saveGame(BasicGameLogic gameToSave) {
 		SaveModel saveModel = setInformationsToStore(gameToSave);
@@ -69,7 +72,8 @@ public class SudokuStorage {
 
 		String fileName = "ID_" + saveModel.getGameId() + "_" + saveModel.getGametype() + "_"
 				+ saveModel.getDifficultyString() + ".json";
-
+		
+		
 		File saveFile = new File("SaveFiles", fileName);
 
 		JsonWriter writer;
@@ -86,9 +90,11 @@ public class SudokuStorage {
 	}
 
 	/**
-	 * Diese Methode übernimmt den tatsächlichen ExportVorgang, hierfür wird ein
-	 * Objekt der SaveModel Klasse erstellt, dieses wird mit der
-	 * {@link #setInformationsToStore(BasicGameLogic)} Methode befüllt
+	* This method handles the actual export process, in an object of the {@link logic.SaveModel} class
+	 * the needed informations about the to be exported game are stored
+	 * The saveFile File object then is filled with the informations stored in the {@link logic.SaveModel} object
+	 * To locate the path where the user wants to save the file an object of the FileChooser class is initialized 
+	 * and an object of the Jsonwriter class is used to write the game informations to the file
 	 * 
 	 * @param gameToExport
 	 */
@@ -112,7 +118,11 @@ public class SudokuStorage {
 			e.printStackTrace();
 		}
 	}
-
+	
+	/**
+	 * This method is needed to extract the needed informations of a file the user wants to import
+	 * @return {@link logic.SaveModel} object with the informations stored from the imported file
+	 */
 	public SaveModel getImportedFile() {
 
 		SaveModel importedGame = new SaveModel();
@@ -127,17 +137,30 @@ public class SudokuStorage {
 		}
 		return importedGame;
 	}
-
+	
+	
+	/**
+	 * This method is used to load the informations stored in a {@link logic.SaveModel} object into an 
+	 * object of the  {@link logic.BasicGameLogic} class
+	 * Depending on the saved gameType the corresponding GameBuilder will be initialized
+	 * @param model which should filled with informations from the saved game
+	 * @param savedGame {@link logic.SaveModel} object which contains the informations which should be loaded into the model parameter explained above
+	 * @return the BasicGameLogic model which is now filled with the saved informations
+	 */
 	public BasicGameLogic loadIntoModel(BasicGameLogic model, SaveModel savedGame) {
 		if (savedGame.getGametype().equals("Sudoku"))
 			model = new SudokuLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
 					savedGame.getSecondsPlayed(), false);
+		
 		if (savedGame.getGametype().equals("Samurai"))
 			model = new SamuraiLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
 					savedGame.getSecondsPlayed(), false);
+		
 		if (savedGame.getGametype().equals("FreeForm"))
 			model = new FreeFormLogic(savedGame.getGameState(), savedGame.getMinutesPlayed(),
 					savedGame.getSecondsPlayed(), false);
+		
+		
 		model.setGametype(savedGame.getGametype());
 		model.setCells(savedGame.getGameArray());
 		model.setGamePoints(savedGame.getGamePoints());
@@ -148,6 +171,12 @@ public class SudokuStorage {
 		return model;
 	}
 
+	
+	
+	/**
+	 * This auxiliary method is needed to extract the needed informations of a file the user wants to import
+	 * @return an object of the {@link logic.SaveModel} class 
+	 */
 	public SaveModel convertFileToSaveModel(File file) {
 		SaveModel data = new SaveModel();
 		Gson gson = new GsonBuilder().create();
@@ -161,6 +190,10 @@ public class SudokuStorage {
 		return data;
 	}
 
+	
+	/**
+	 * this auxiliary method is needed to close the reader used to read informations from a file
+	 */
 	public void closeBufferedReader(BufferedReader br) {
 		try {
 			br.close();

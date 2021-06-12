@@ -46,8 +46,8 @@ public abstract class BasicGameBuilder {
 	/**
 	 * The Main UI Container of a GameBuilder
 	 */
-	protected BorderPane gameRoot;
-	protected BasicGameLogic model;
+	protected final BorderPane gameRoot;
+	private BasicGameLogic model;
 
 	/**
 	 * 
@@ -62,16 +62,16 @@ public abstract class BasicGameBuilder {
 	 * {@link #menuBar} this VBox is needed, to position the {@link #toolBar} under
 	 * the {@link #menuBar}
 	 */
-	protected VBox toolbox;
+	private VBox toolbox;
 
 	/**
 	 * Button components for the Game UI
 	 */
-	protected Button checkButton;
-	protected Button autosolve;
-	protected Button customNumbersDone;
-	protected Button customColorsDone;
-	protected Button hintButton;
+	private Button checkButton;
+	private Button autosolve;
+	private Button customNumbersDone;
+	private Button customColorsDone;
+	private Button hintButton;
 	protected ComboBox<String> comboColorBox;
 
 	/**
@@ -80,10 +80,10 @@ public abstract class BasicGameBuilder {
 	 * about the game like current Points or selected Difficulty
 	 * {@link #liveTimeLabel} displays the current gametime
 	 */
-	protected Label gameNotificationLabel;
-	protected Label gameInfoLabel;
-	protected Label liveTimeLabel;
-	protected StatusBar statusbar;
+	private Label gameNotificationLabel;
+	private Label gameInfoLabel;
+	private Label liveTimeLabel;
+	
 
 	/**
 	 * {@link #fontAwesome} is used to style different button components of the Game
@@ -91,34 +91,29 @@ public abstract class BasicGameBuilder {
 	 */
 	protected FontAwesome fontAwesome;
 
-	protected List<ChangeListener<String>> conflictListener;
+	private List<ChangeListener<String>> conflictListener;
 
 	/**
 	 * variables which define the size of the Game Window
 	 */
-	protected int sceneWidth;
-	protected int sceneHeight;
+	private int sceneWidth;
+	private int sceneHeight;
 
 	/**
 	 * gamePopUp is an Object of the class {@link application.NewGamePopUp} popover
 	 * will later be initialized with the
 	 * {@link application.NewGamePopUp#createPopUp()} method
 	 */
-	protected NewGamePopUp gamePopUp;
-	protected PopOver popover;
+	private NewGamePopUp gamePopUp;
+	private PopOver popover;
 
-	protected SudokuField[][] textField;
-	protected GameController controller;
-
-	/**
-	 * container for the playing field
-	 */
-	protected GridPane playBoard;
+	private SudokuField[][] textField;
+	private GameController controller;
 
 	/**
-	 * Konstruktor der Klasse
+	 * Constructor of the class
 	 * 
-	 * @param model Spiellogik welche dem GameBuilder übergeben wird
+	 * @param model GameLogic
 	 */
 	protected BasicGameBuilder(BasicGameLogic model) {
 		gameRoot = new BorderPane();
@@ -193,8 +188,8 @@ public abstract class BasicGameBuilder {
 	 */
 	public void addConflictListeners() {
 		ChangeListener<String> changeListener;
-		for (int row = 0; row < textField.length; row++) {
-			for (int col = 0; col < textField[row].length; col++) {
+		for (int row = 0; row < getTextField().length; row++) {
+			for (int col = 0; col < getTextField()[row].length; col++) {
 				changeListener = new ChangeListener<>() {
 					@Override
 					public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -204,7 +199,7 @@ public abstract class BasicGameBuilder {
 					}
 				};
 
-				textField[col][row].textProperty().addListener(changeListener);
+				getTextField()[col][row].textProperty().addListener(changeListener);
 				conflictListener.add(changeListener);
 
 			}
@@ -217,7 +212,7 @@ public abstract class BasicGameBuilder {
 	 */
 	public void removeConflictListeners() {
 		for (ChangeListener<String> l : conflictListener) {
-			for (SudokuField[] sudokuFieldArray : textField) {
+			for (SudokuField[] sudokuFieldArray : getTextField()) {
 				for (SudokuField field : sudokuFieldArray) {
 
 					field.textProperty().removeListener(l);
@@ -226,37 +221,37 @@ public abstract class BasicGameBuilder {
 		}
 	}
 
+	//menubar for the GameUI
 	protected MenuBar menuBar;
-
 	// MenüObjekte für File Menü
-	protected Menu fileMenu;
-	protected MenuItem newGameMenuItem;
-	protected MenuItem saveMenuItem;
-	protected MenuItem importMenuItem;
-	protected MenuItem exportMenuItem;
-	protected SeparatorMenuItem seperatorItem;
-	protected MenuItem exitMenuItem;
+	private Menu fileMenu;
+	private MenuItem newGameMenuItem;
+	private MenuItem saveMenuItem;
+	private MenuItem importMenuItem;
+	private MenuItem exportMenuItem;
+	private SeparatorMenuItem seperatorItem;
+	private MenuItem exitMenuItem;
 
 	// MenüObjekte für Edit Menü
-	protected Menu editMenu;
-	protected MenuItem resetMenuItem;
-	protected MenuItem newRoundMenuItem;
-	protected Menu propertyMenu;
-	protected RadioMenuItem conflictMenuItem;
+	private Menu editMenu;
+	private MenuItem resetMenuItem;
+	private MenuItem newRoundMenuItem;
+	private Menu propertyMenu;
+	private RadioMenuItem conflictMenuItem;
 
 	// MenüObjekte für Edit Menü
-	protected Menu sourceMenu;
-	protected MenuItem hintMenuItem;
-	protected MenuItem autoSolveMenuItem;
-	protected MenuItem checkMenuItem;
+	private Menu sourceMenu;
+	private MenuItem hintMenuItem;
+	private MenuItem autoSolveMenuItem;
+	private MenuItem checkMenuItem;
 
 	// MenüObjekte für SudokuFx Menü
-	protected Menu sudokufxMenu;
-	protected MenuItem mainMenuItem;
+	private Menu sudokufxMenu;
+	private MenuItem mainMenuItem;
 
 	// MenüObjekte für Help Menü
-	protected Menu helpMenu;
-	protected MenuItem rulesMenuItem;
+	private Menu helpMenu;
+	private MenuItem rulesMenuItem;
 
 	/**
 	 * Initializes the Menu UI Components
@@ -266,7 +261,7 @@ public abstract class BasicGameBuilder {
 		menuBar = new MenuBar();
 		toolbox = new VBox();
 
-		// File Menü initialisierungen
+		// File Menu initialisation
 		fileMenu = new Menu("File");
 		saveMenuItem = new MenuItem("Save");
 
@@ -279,7 +274,8 @@ public abstract class BasicGameBuilder {
 		fileMenu.getItems().addAll(newGameMenuItem, saveMenuItem, importMenuItem, exportMenuItem, seperatorItem,
 				exitMenuItem);
 
-		// Edit Menü Initialisierungen
+		
+		// Edit Menu initialisation
 		editMenu = new Menu("Edit");
 		newRoundMenuItem = new MenuItem("New Round");
 		resetMenuItem = new MenuItem("Reset");
@@ -289,19 +285,19 @@ public abstract class BasicGameBuilder {
 		propertyMenu.getItems().addAll(conflictMenuItem);
 		editMenu.getItems().addAll(newRoundMenuItem, resetMenuItem, propertyMenu);
 
-		// Source Menü Initialisierungen
+		// Source Menu initialisation
 		sourceMenu = new Menu("Source");
 		hintMenuItem = new MenuItem("Hint");
 		autoSolveMenuItem = new MenuItem("AutoSolve");
 		checkMenuItem = new MenuItem("Check");
 		sourceMenu.getItems().addAll(hintMenuItem, autoSolveMenuItem, checkMenuItem);
 
-		// SudokuFx Menü initialisierungen
+		// SudokuFx Menu initialisation
 		sudokufxMenu = new Menu("SudokuFX");
 		mainMenuItem = new MenuItem("Go to Main Menu");
 		sudokufxMenu.getItems().addAll(mainMenuItem);
 
-		// Help Menü initialisierungen
+		// Help Menu initialisation
 		helpMenu = new Menu("Help");
 		rulesMenuItem = new MenuItem("Rules");
 		helpMenu.getItems().add(rulesMenuItem);
@@ -323,7 +319,7 @@ public abstract class BasicGameBuilder {
 
 		KeyCombination hintKc = new KeyCodeCombination(KeyCode.H, KeyCombination.SHORTCUT_DOWN);
 		KeyCombination autoSolveKc = new KeyCodeCombination(KeyCode.A, KeyCombination.SHORTCUT_DOWN);
-		KeyCombination checkKc = new KeyCodeCombination(KeyCode.C, KeyCombination.CONTROL_DOWN);
+		KeyCombination checkKc = new KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN);
 		KeyCombination resetKc = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
 		KeyCombination autoConflictsKc = new KeyCodeCombination(KeyCode.K, KeyCombination.CONTROL_DOWN);
 		KeyCombination newRoundKc = new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN);
@@ -354,9 +350,9 @@ public abstract class BasicGameBuilder {
 		checkButton.setOnAction(controller::checkHandler);
 		autosolve.setOnAction(controller::autoSolveHandler);
 		hintButton.setOnAction(controller::hintHandeler);
-		customNumbersDone.setOnAction(controller::manuelDoneHandler);
+		getCustomNumbersDone().setOnAction(controller::manuelDoneHandler);
 		if (this instanceof FreeFormGameBuilder) {
-			customColorsDone.setOnAction(controller::customColorsDoneHandler);
+			getCustomColorsDone().setOnAction(controller::customColorsDoneHandler);
 		}
 	}
 
@@ -418,9 +414,7 @@ public abstract class BasicGameBuilder {
 			
 	}
 
-	public GameController getController() {
-		return controller;
-	}
+
 
 	public BorderPane getGameUIRoot() {
 		return gameRoot;
@@ -447,11 +441,11 @@ public abstract class BasicGameBuilder {
 	}
 
 	public Button getColorsDoneButton() {
-		return this.customColorsDone;
+		return this.getCustomColorsDone();
 	}
 
 	public Button getDoneButton() {
-		return this.customNumbersDone;
+		return this.getCustomNumbersDone();
 	}
 
 	// hat infos über punkte, schwierigkeit, und spielzeit
@@ -468,11 +462,11 @@ public abstract class BasicGameBuilder {
 	}
 
 	public int getWidth() {
-		return sceneWidth;
+		return getSceneWidth();
 	}
 
 	public int getHeight() {
-		return sceneHeight;
+		return getSceneHeight();
 	}
 
 	public Label getLiveTimeLabel() {
@@ -495,6 +489,42 @@ public abstract class BasicGameBuilder {
 	}
 	public MenuItem getCheckMenuItem() {
 		return checkMenuItem;
+	}
+
+	public void setTextField(SudokuField[][] textField) {
+		this.textField = textField;
+	}
+
+	public Button getCustomNumbersDone() {
+		return customNumbersDone;
+	}
+
+	public void setCustomNumbersDone(Button customNumbersDone) {
+		this.customNumbersDone = customNumbersDone;
+	}
+
+	public int getSceneWidth() {
+		return sceneWidth;
+	}
+
+	public void setSceneWidth(int sceneWidth) {
+		this.sceneWidth = sceneWidth;
+	}
+
+	public int getSceneHeight() {
+		return sceneHeight;
+	}
+
+	public void setSceneHeight(int sceneHeight) {
+		this.sceneHeight = sceneHeight;
+	}
+
+	public Button getCustomColorsDone() {
+		return customColorsDone;
+	}
+
+	public void setCustomColorsDone(Button customColorsDone) {
+		this.customColorsDone = customColorsDone;
 	}
 
 }
