@@ -61,6 +61,7 @@ public abstract class BasicGameBuilder {
 	 * The VBox toolbox works as the container for {@link #toolBar} and
 	 * {@link #menuBar} this VBox is needed, to position the {@link #toolBar} under
 	 * the {@link #menuBar}
+	 * test
 	 */
 	private VBox toolbox;
 
