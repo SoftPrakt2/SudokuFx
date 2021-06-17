@@ -143,18 +143,7 @@ class BasicGameLogicTest {
         assertEquals(1,model.getGameid());
     }
     
-    
-    
-    @Test
-    void testGetStartTime() {
-        model.setStartTime(0);
-        assertEquals(0,model.getStartTime());
-    }
-    @Test
-    void testSetStartTime() {
-        model.setStartTime(0);
-        assertEquals(0,model.getStartTime());
-    }
+
     
     @Test
     void testGetGameText() {
@@ -182,24 +171,7 @@ class BasicGameLogicTest {
     	 assertEquals("Samurai",model.getGametype());
     }
     
-    @Test
-    void testCalculateGameTime() {
-//    	model.setMinutesPlayed(2);
-//    	model.setSecondsPlayed(30);
-//    	
-//    	
-//		long time;
-//		long endTime = System.currentTimeMillis();
-//		time = (endTime - model.getStartTime()) / 1000;
-////		time += model.getLoadedminutes() * 60 + model.getLoadedseconds();
-//		model.setSecondsPlayed(time);
-//		if (time > 60) {
-//			model.setMinutesPlayed(time / 60);
-//			model.setSecondsPlayed(time % 60);
-//		}
-//		
-//        assertEquals(model.calculateGameTime(), time);
-    }
+
     
 
 

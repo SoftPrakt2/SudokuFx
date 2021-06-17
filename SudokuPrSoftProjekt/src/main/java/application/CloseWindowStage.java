@@ -1,5 +1,6 @@
 package application;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -40,7 +41,7 @@ public class CloseWindowStage {
 			
 			window.setTitle("Closing");
 			window.initModality(Modality.APPLICATION_MODAL);
-			window.setMinWidth(250);
+			window.setMinWidth(260);
 			window.setResizable(false);
 			
 			Label label = new Label();
@@ -52,10 +53,12 @@ public class CloseWindowStage {
 			
 			VBox layout = new VBox(10);
 			layout.getChildren().addAll(label, yesButton, noButton);
+			layout.setPadding(new Insets(0,0,5,0));
 			layout.setAlignment(Pos.CENTER);
 			Scene scene = new Scene(layout);
 			window.setScene(scene);
 			window.showAndWait();
+			
 			
 			
 		}

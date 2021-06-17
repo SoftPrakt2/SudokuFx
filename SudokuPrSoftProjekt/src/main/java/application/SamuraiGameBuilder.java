@@ -21,7 +21,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 	public SamuraiGameBuilder(BasicGameLogic model) {
 		super(model);
-		setTextField(new SudokuField[21][21]);
+		setTextField(new SudokuTextField[21][21]);
 		setSceneWidth(1050);
 		setSceneHeight(1050);
 		}
@@ -57,7 +57,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				
 				//empty StackPane cells and SudokuFields
 				StackPane cellEmpty = new StackPane();
-				SudokuField emptyField = new SudokuField("-1");
+				SudokuTextField emptyField = new SudokuTextField("-1");
 				cellEmpty.getChildren().add(emptyField);
 				cellEmpty.setDisable(true);
 				getTextField()[row][col] = emptyField;
@@ -70,7 +70,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 					emptyField.getStyleClass().add("emptySamuraiCell");
 				} else {
 			
-					getTextField()[row][col] = new SudokuField("");
+					getTextField()[row][col] = new SudokuTextField("");
 					//align the size of the Text inside a SudokuField to the window size
 					getTextField()[row][col].styleProperty().bind(Bindings.concat("-fx-font-size: ", textSize.asString()));
 					textSize.bind(gameRoot.widthProperty().add(gameRoot.heightProperty()).divide(100));
@@ -123,6 +123,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				}
 			}
 		}
+		
 		
 		
 	}

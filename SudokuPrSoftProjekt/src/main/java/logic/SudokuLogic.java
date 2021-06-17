@@ -1,7 +1,5 @@
 package logic;
 
-import java.util.Random;
-
 /**
  * extends BasicGameLogic
  * implements all abstract methods of BasicGameLogic
@@ -146,4 +144,5 @@ public class SudokuLogic extends BasicGameLogic {
 	public boolean isConnected() {
 		return false;
 	}
+	
 }

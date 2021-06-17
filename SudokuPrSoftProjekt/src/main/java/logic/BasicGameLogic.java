@@ -21,27 +21,41 @@ public abstract class BasicGameLogic {
 	private Gamestate gamestate;
 
 	private String gametype = "";
+	
+	
 	private int gamePoints = 10;
+	
+	
 	private long minutesPlayed;
 	private long secondsPlayed;
 	protected Random r;
 
-	private long startTime;
+	
 
 	private String gameText = "";
 	private int gameID = 0;
 
 	private Cell[][] cells;
 	private int[][] temporaryValues;
-
+	
+	/**
+	 * this variable is used to display the selected difficulty with letters
+	 */
 	private String difficultyString;
 
 	private String playtimeString;
 
 	protected int shuffleCounter;
 
-	
 	private int difficulty;
+	
+	
+	/**
+	 * this variable is needed to determine how many numbers are currently inside the sudokuboard (both from the user and automatically generated)
+	 * used for determing if the game is correctly saved or not
+	 */
+	private int numbersInsideTextField;
+	
 
 	/**
 	 * this StringProperty contains the current playing time
@@ -235,7 +249,7 @@ public abstract class BasicGameLogic {
 				correctRandom = true;
 			}
 			counter++;
-			if (counter == 10000) {
+			if (counter == 50000) {
 				coordinates = null;
 				break;
 			}
@@ -308,7 +322,7 @@ public abstract class BasicGameLogic {
 	 * calls all methods that are needed to create a game
 	 */
 	public void setUpGameInformations() {
-		setStartTime(System.currentTimeMillis());
+	//	setStartTime(System.currentTimeMillis());
 		setGamePoints(10);
 		setGameState(Gamestate.OPEN);
 		setDifficultyString();
@@ -428,13 +442,6 @@ public abstract class BasicGameLogic {
 		this.gamePoints = gamePoints;
 	}
 
-	public long getStartTime() {
-		return startTime;
-	}
-
-	public void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
 	
 	public void setGameState(Gamestate gamestate) {
 		this.gamestate = gamestate;
@@ -447,7 +454,7 @@ public abstract class BasicGameLogic {
 	/**
 	 * This method is used to set the gametext which will be displayed in the
 	 * {@link application.BasicGameBuilder#getGameInfoLabel()} label
-	 * @return
+	 * @return the string depending on the current gamestate
 	 */
 	public String getGameText() {
 
@@ -546,4 +553,18 @@ public abstract class BasicGameLogic {
 	public void setNumbersToBeSolvable(int numbersToBeSolvable) {
 		this.numbersToBeSolvable = numbersToBeSolvable;
 	}
+	
+	public void setNumbersInsideTextField(int numbersInsideTextField) {
+		this.numbersInsideTextField = numbersInsideTextField;
+	}
+	
+		
+	public int getNumbersInsideTextField () {
+		return this.numbersInsideTextField;
+	}
+	
+	
+	
+	
+	
 }

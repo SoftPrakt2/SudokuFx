@@ -13,7 +13,7 @@ public class SamuraiLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[21][21]);
 		setGametype("Samurai");
-		setNumbersToBeSolvable(140);
+		setNumbersToBeSolvable(2);
 	}
 
 	/**

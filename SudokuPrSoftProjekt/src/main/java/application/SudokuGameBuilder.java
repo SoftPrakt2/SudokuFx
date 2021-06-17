@@ -25,7 +25,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	
 	public SudokuGameBuilder(BasicGameLogic model) {
 		super(model);
-		setTextField(new SudokuField[9][9]);
+		setTextField(new SudokuTextField[9][9]);
 		setSceneWidth(700);
 		setSceneHeight(700);
 	}
@@ -55,7 +55,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(10));
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));
 
-				getTextField()[row][col] = new SudokuField("");
+				getTextField()[row][col] = new SudokuTextField("");
 				getTextField()[row][col].setMaxSize(200, 200);
 				getTextField()[row][col].getStyleClass().add("textfieldBasic");
 				getTextField()[row][col].setAlignment(Pos.CENTER);
@@ -95,5 +95,9 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	}
 	
 	
+	}
+	
+	
+	
 
-}
+

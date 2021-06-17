@@ -23,7 +23,10 @@ import javafx.stage.FileChooser;
  */
 
 public class SudokuStorage {
-
+	
+	/**
+	 * auxiliary Method to check if a file exists
+	 */
 	private boolean fileExists = true;
 	
 	private FileChooser chooser;
@@ -33,11 +36,14 @@ public class SudokuStorage {
 	/**
 	 * Auxiliary method sets the fields of an {@link logic.SaveModel} objects with informations
 	 * from the paramamter explained down below
-	 * @param gameToSave Gamemodel whose informations need to be stored inside an savemodel object
+	 * @param gameToSave specific game whose informations need to be stored inside an savemodel object
 	 *                  
 	 */
 	public SaveModel setInformationsToStore(BasicGameLogic gameToSave) {
 		SaveModel saveModel = new SaveModel();
+		
+		
+		
 		int helper;
 		saveModel.setGameArray(gameToSave.getCells());
 		saveModel.setGametype(gameToSave.getGametype());
@@ -48,23 +54,21 @@ public class SudokuStorage {
 		saveModel.setMinutesPlayed(gameToSave.getMinutesplayed());
 		saveModel.setSecondsPlayed(gameToSave.getSecondsplayed());
 		saveModel.setGameId(storagePref.getStoragePrefs().getInt("GameID", 1));
-
-		helper = storagePref.getStoragePrefs().getInt("GameID", 0) + 1;
+	
+		
+	//	storagePref.getStoragePrefs().putInt("GameID", 1);
+		
+		helper = saveModel.getGameId()+1;
 		storagePref.getStoragePrefs().putInt("GameID", helper);
 		return saveModel;
 	}
 
 	/**
-	 * Diese Methode übernimmt den tatsächlichen Speichervorgang, hierfür wird ein
-	 * Objekt der SaveModel Klasse erstellt, dieses wird mit der
-	 * {@link #setInformationsToStore(BasicGameLogic)} Methode befüllt Anschließend
-	 * wird mit einem JSONWriter und FileWriter die tatsächliche Datei geschrieben
-	 * 
 	 * This method handles the actual saving process, in an object of the {@link logic.SaveModel} class
 	 * the needed informations about the to be saved game are stored
 	 * The saveFile File object then is filled with the informations stored in the {@link logic.SaveModel} object
 	 * To write the specific file a JSONWriter and a Filewriter is needed
-	 * @param gameToSave gamemodel which should be saved
+	 * @param gameToSave specific game which should be saved
 	 */
 	public void saveGame(BasicGameLogic gameToSave) {
 		SaveModel saveModel = setInformationsToStore(gameToSave);
@@ -85,9 +89,10 @@ public class SudokuStorage {
 			fw.close();
 			writer.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			  System.err.print("The game could not be saved");
 		}
 	}
+	
 
 	/**
 	* This method handles the actual export process, in an object of the {@link logic.SaveModel} class
@@ -96,7 +101,7 @@ public class SudokuStorage {
 	 * To locate the path where the user wants to save the file an object of the FileChooser class is initialized 
 	 * and an object of the Jsonwriter class is used to write the game informations to the file
 	 * 
-	 * @param gameToExport
+	 * @param gameToExport specific game which should be exported
 	 */
 	public void exportGame(BasicGameLogic gameToExport) {
 		Gson gson = new GsonBuilder().create();
@@ -115,9 +120,10 @@ public class SudokuStorage {
 				writer.close();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			 System.err.print("The game could not be exported");
 		}
 	}
+	
 	
 	/**
 	 * This method is needed to extract the needed informations of a file the user wants to import
@@ -185,7 +191,7 @@ public class SudokuStorage {
 			data = gson.fromJson(br, SaveModel.class);
 			closeBufferedReader(br);
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			System.err.print("The file was not found");
 		}
 		return data;
 	}
@@ -198,10 +204,11 @@ public class SudokuStorage {
 		try {
 			br.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.err.print("Reader could not be closed");
 		}
 	}
-
+	
+	
 	public boolean fileExists() {
 		return fileExists;
 	}

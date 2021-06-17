@@ -108,13 +108,12 @@ public abstract class BasicGameBuilder {
 	private NewGamePopUp gamePopUp;
 	private PopOver popover;
 
-	private SudokuField[][] textField;
+	private SudokuTextField[][] textField;
 	private GameController controller;
 
 	/**
 	 * Constructor of the class
-	 * 
-	 * @param model GameLogic
+	 * @param model the corresponding GameLogic model of this GameBuilder
 	 */
 	protected BasicGameBuilder(BasicGameLogic model) {
 		gameRoot = new BorderPane();
@@ -155,7 +154,7 @@ public abstract class BasicGameBuilder {
 	public void initializeToolBar() {
 		toolBar = new ToolBar();
 
-		// Graphiken für Buttons
+		
 		fontAwesome = new FontAwesome();
 		Glyph checkGraphic = fontAwesome.create(FontAwesome.Glyph.CHECK);
 		Glyph hintGraphic = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
@@ -213,8 +212,8 @@ public abstract class BasicGameBuilder {
 	 */
 	public void removeConflictListeners() {
 		for (ChangeListener<String> l : conflictListener) {
-			for (SudokuField[] sudokuFieldArray : getTextField()) {
-				for (SudokuField field : sudokuFieldArray) {
+			for (SudokuTextField[] sudokuFieldArray : getTextField()) {
+				for (SudokuTextField field : sudokuFieldArray) {
 
 					field.textProperty().removeListener(l);
 				}
@@ -252,7 +251,7 @@ public abstract class BasicGameBuilder {
 
 	// MenüObjekte für Help Menü
 	private Menu helpMenu;
-	private MenuItem rulesMenuItem;
+	private MenuItem aboutMenuItem;
 
 	/**
 	 * Initializes the Menu UI Components
@@ -300,8 +299,8 @@ public abstract class BasicGameBuilder {
 
 		// Help Menu initialisation
 		helpMenu = new Menu("Help");
-		rulesMenuItem = new MenuItem("Rules");
-		helpMenu.getItems().add(rulesMenuItem);
+		aboutMenuItem = new MenuItem("About");
+		helpMenu.getItems().add(aboutMenuItem);
 
 		menuBar.getMenus().addAll(fileMenu, editMenu, sourceMenu, sudokufxMenu, helpMenu);
 		toolbox.getChildren().addAll(menuBar);
@@ -372,8 +371,8 @@ public abstract class BasicGameBuilder {
 		exportMenuItem.setOnAction(controller::exportGame);
 		importMenuItem.setOnAction(controller::importGame);
 		newGameMenuItem.setOnAction(e -> popover.show(hintButton, -30));
-		rulesMenuItem.setOnAction(e -> {
-			RulesStage rule = new RulesStage();
+		aboutMenuItem.setOnAction(e -> {
+			AboutStage rule = new AboutStage();
 			rule.showRulePopUp();
 		});
 	}
@@ -411,11 +410,8 @@ public abstract class BasicGameBuilder {
 	 */
 	public void disablePlayButtons() {
 		Stream.of(checkButton, autosolve, hintButton).forEach(button -> button.setDisable(true));
-		Stream.of(autoSolveMenuItem,hintMenuItem,checkMenuItem).forEach(menuItem -> menuItem.setDisable(true));
-			
+		Stream.of(autoSolveMenuItem,hintMenuItem,checkMenuItem).forEach(menuItem -> menuItem.setDisable(true));	
 	}
-
-
 
 	public BorderPane getGameUIRoot() {
 		return gameRoot;
@@ -425,7 +421,7 @@ public abstract class BasicGameBuilder {
 	 * 
 	 * Getter und Setter für die Variablen dieser Klasse
 	 */
-	public SudokuField[][] getTextField() {
+	public SudokuTextField[][] getTextField() {
 		return this.textField;
 	}
 
@@ -445,11 +441,6 @@ public abstract class BasicGameBuilder {
 		return this.getCustomColorsDone();
 	}
 
-	public Button getDoneButton() {
-		return this.getCustomNumbersDone();
-	}
-
-	// hat infos über punkte, schwierigkeit, und spielzeit
 	public Label getGameInfoLabel() {
 		return gameInfoLabel;
 	}
@@ -492,7 +483,7 @@ public abstract class BasicGameBuilder {
 		return checkMenuItem;
 	}
 
-	public void setTextField(SudokuField[][] textField) {
+	public void setTextField(SudokuTextField[][] textField) {
 		this.textField = textField;
 	}
 
@@ -527,5 +518,6 @@ public abstract class BasicGameBuilder {
 	public void setCustomColorsDone(Button customColorsDone) {
 		this.customColorsDone = customColorsDone;
 	}
+	
 
 }

@@ -18,7 +18,7 @@ import javafx.scene.input.KeyEvent;
  * @author grube
  *
  */
-public class SudokuField extends TextField {
+public class SudokuTextField extends TextField {
 
 	/**
 	 * color of a SudokuField
@@ -33,9 +33,9 @@ public class SudokuField extends TextField {
 	
 	private boolean isColored; 
 
-	ChangeListener<Boolean> freeFormColorListener;
+	private ChangeListener<Boolean> freeFormColorListener;
 
-	public SudokuField(String txt) {
+	public SudokuTextField(String txt) {
 		super(txt);
 		addOnlyNumbers();
 		onlyOneNumber();
@@ -50,7 +50,7 @@ public class SudokuField extends TextField {
 	 * Adds a listener to the Sudokufields textproperty to ensure that only numbers
 	 * from 1-9 are insertable to a SudokuField
 	 */
-	private void addOnlyNumbers() {
+	public final void addOnlyNumbers() {
 		this.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				this.setText(newValue.replaceAll("[^\\d]", ""));
@@ -64,7 +64,7 @@ public class SudokuField extends TextField {
 	/**
 	 * Adds a listener to ensure that only one digit is insertable in a SudokuField
 	 */
-	public void onlyOneNumber() {
+	public final void onlyOneNumber() {
 		this.textProperty().addListener((observable, oldV, newV) -> {
 			if (newV.length() > 1)
 				this.setText(oldV);
@@ -75,7 +75,7 @@ public class SudokuField extends TextField {
 	 * Adds a listener to ensure that the Value of the SudokuFields textproperty is
 	 * updated
 	 */
-	public void updateText() {
+	public final void updateText() {
 		this.textProperty().addListener((observable, oldV, newV) -> this.setText(newV));
 	}
 
@@ -83,7 +83,7 @@ public class SudokuField extends TextField {
 	 * Adds a listener to ensure that the color of a SudokuFields textproperty is
 	 * black after inserting a new number
 	 */
-	public void updateColor() {
+	public final void updateColor() {
 		this.textProperty().addListener((observable, oldV, newV) -> {
 		
 		this.getStyleClass().remove("textfieldWrong");
@@ -98,7 +98,7 @@ public class SudokuField extends TextField {
 	 * inside a SudokuField Without this method the SudokuField does not respond to
 	 * the Shortcuts
 	 */
-	public void shortcutFriendlyTextField() {
+	public final void shortcutFriendlyTextField() {
 
 		this.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
 
@@ -134,7 +134,7 @@ public class SudokuField extends TextField {
 	 * 
 	 * @param cmb
 	 */
-	public void addFreeFormColorListener(ComboBox<String> cmb) {
+	public final void addFreeFormColorListener(ComboBox<String> cmb) {
 		freeFormColorListener = (obs, wasFocused, isNowFocused) -> {
 			if (isNowFocused == true && cmb != null && cmb.getValue() != null) {
 				this.setColor(cmb.getValue());
@@ -156,8 +156,13 @@ public class SudokuField extends TextField {
 
 	public void setColor(String color) {
 		this.color = color;
+		if(!color.equals("")) {
 		this.setStyle("-fx-background-color: #" + color);
 		isColored = true;
+		} else {
+			isColored = false;
+		}
+		
 	}
 
 	public String getColor() {

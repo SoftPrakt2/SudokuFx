@@ -7,14 +7,13 @@ import java.nio.file.Files;
 import application.BasicGameBuilder;
 import application.FreeFormGameBuilder;
 import application.GUI;
-import application.SamuraiGameBuilder;
 import application.GameOverview;
-import application.SudokuField;
+import application.SamuraiGameBuilder;
 import application.SudokuGameBuilder;
+import application.SudokuTextField;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.StringBinding;
-import javafx.beans.property.IntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,7 +23,6 @@ import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
 import logic.SaveModel;
-import logic.SharedStoragePreferences;
 import logic.SudokuStorage;
 
 public class StorageController {
@@ -33,20 +31,21 @@ public class StorageController {
 	private BasicGameLogic gameModel;
 	private SudokuStorage storageModel;
 	private GameOverview storage;
-	private  File[] fileDirectory = new File("SaveFiles").listFiles();
-	
-	
+	private File[] fileDirectory = new File("SaveFiles").listFiles();
+
 	/**
-	 * The ObservableList associated with the {@link application.GameOverview#getTableView()}
-	 * this list contains {@link application.BasicGameLogic} objects
-	 * BasicGameLogic Objects are stored in this list to allow the use of polymorphism later on when 
-	 * determing the exact gametype
+	 * The ObservableList associated with the
+	 * {@link application.GameOverview#getTableView()} this list contains
+	 * {@link application.BasicGameLogic} objects BasicGameLogic Objects are stored
+	 * in this list to allow the use of polymorphism later on when determing the
+	 * exact gametype
 	 */
 	private ObservableList<BasicGameLogic> jsonObservableList;
 
-	
-	/**The different table columns of the {@link application.GameOverview#getTableView()} which will
-	 * later be filled with informations from saved games
+	/**
+	 * The different table columns of the
+	 * {@link application.GameOverview#getTableView()} which will later be filled
+	 * with informations from saved games
 	 * 
 	 */
 	private TableColumn<BasicGameLogic, String> gameTypecolumn;
@@ -55,19 +54,18 @@ public class StorageController {
 	private TableColumn<BasicGameLogic, String> playtimecolumn;
 	private TableColumn<BasicGameLogic, Gamestate> gamestatecolumn;
 	private TableColumn<BasicGameLogic, Integer> gameidcolumn;
-	
-	
+
 	public StorageController(GameOverview storage) {
 		this.storage = storage;
 		storageModel = new SudokuStorage();
 	}
-	
-	
+
 	/**
-	 * This method is used to load a saved sudoku game into a GameUI
-	 * Depending on the exakt type of the {@link #gameModel} Object the corresponding
-	 * GameBuilder will be initialized 
-	 * Depending on the Gamestate of {@link #gameModel} different UI objects have to be enabled or disabled
+	 * This method is used to load a saved sudoku game into a GameUI Depending on
+	 * the exakt type of the {@link #gameModel} Object the corresponding GameBuilder
+	 * will be initialized Depending on the Gamestate of {@link #gameModel}
+	 * different UI objects have to be enabled or disabled
+	 * 
 	 * @param e action of the user in the UI
 	 */
 	public void handleLoadAction(ActionEvent e) {
@@ -86,19 +84,24 @@ public class StorageController {
 
 		gameBuilder.initializeGame();
 
-		if (!gameModel.getGamestate().equals(Gamestate.CREATING) && !gameModel.getGamestate().equals(Gamestate.DRAWING)) {
+		if (!gameModel.getGamestate().equals(Gamestate.CREATING)
+				&& !gameModel.getGamestate().equals(Gamestate.DRAWING)) {
 			gameModel.initializeTimer();
 			gameModel.getLiveTimer().start();
-			gameBuilder.getGameInfoLabel().setText("Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
+			gameBuilder.getGameInfoLabel().setText(
+					"Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
 			gameBuilder.getLiveTimeLabel().textProperty().bind(Bindings.concat(gameModel.getStringProp()));
 		}
 
-		if (gameModel.getGamestate().equals(Gamestate.CREATING) || gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
+		if (gameModel.getGamestate().equals(Gamestate.CREATING)
+				|| gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
 				|| gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
-			gameBuilder.getToolBar().getItems().add(3,gameBuilder.getDoneButton());
-			gameBuilder.getDoneButton().setVisible(true);
+			gameBuilder.getToolBar().getItems().remove(gameBuilder.getCustomNumbersDone());
+			gameBuilder.getToolBar().getItems().add(3, gameBuilder.getCustomNumbersDone());
+			gameBuilder.getCustomNumbersDone().setVisible(true);
 			gameBuilder.disablePlayButtons();
 		}
+		
 
 		if (gameModel.getGamestate().equals(Gamestate.DRAWING) || gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
 			gameBuilder.getColorBox().setVisible(true);
@@ -106,19 +109,15 @@ public class StorageController {
 			gameBuilder.disablePlayButtons();
 		}
 
-		
-
-		
 		gameBuilder.getGameNotificationLabel().setText(gameModel.getGameText());
-
-		
 
 		alignArrays();
 		alignWindowToGameSize();
 	}
-	
+
 	/**
-	 * This method initializes the different table columns and adds them to the {@link application.GameOverview#getTableView()}
+	 * This method initializes the different table columns and adds them to the
+	 * {@link application.GameOverview#getTableView()}
 	 */
 	@SuppressWarnings("unchecked")
 	public void setUpTableView() {
@@ -131,15 +130,16 @@ public class StorageController {
 		storage.getTableView().getColumns().addAll(gameidcolumn, gameTypecolumn, difficultycolumn, pointscolumn,
 				playtimecolumn, gamestatecolumn);
 	}
-	
-	
+
 	/**
-	 * This method fills the {@link application.GameOverview#getTableView()} with informations from the saved Files in the specified directory
-	 * To do so the directory is iterated through and each file in it will be converted to an Object of the
-	 * {@link logic.SaveModel} class
-	 * Afterwards the informations of the SaveModel object will be loaded into the {@link #gameModel} object which is an Object of 
-	 * {@link application.BasicGameLogic} class
-	 * This approach allows the use of polymorphism when the {@link #gameModel} is filled with the informations from the savedGame
+	 * This method fills the {@link application.GameOverview#getTableView()} with
+	 * informations from the saved Files in the specified directory To do so the
+	 * directory is iterated through and each file in it will be converted to an
+	 * Object of the {@link logic.SaveModel} class Afterwards the informations of
+	 * the SaveModel object will be loaded into the {@link #gameModel} object which
+	 * is an Object of {@link application.BasicGameLogic} class This approach allows
+	 * the use of polymorphism when the {@link #gameModel} is filled with the
+	 * informations from the savedGame
 	 */
 	public void fillTableVew() {
 		jsonObservableList = FXCollections.observableArrayList();
@@ -153,7 +153,6 @@ public class StorageController {
 					gameModel = storageModel.loadIntoModel(gameModel, savedGame);
 					jsonObservableList.add(gameModel);
 				}
-
 			}
 			gameTypecolumn.setCellValueFactory(new PropertyValueFactory<>("gametype"));
 			difficultycolumn.setCellValueFactory(new PropertyValueFactory<>("difficultystring"));
@@ -166,11 +165,11 @@ public class StorageController {
 		storage.getTableView().setItems(jsonObservableList);
 		calculateGameStats();
 	}
-	
-	
+
 	/**
 	 * This method is used to delete an Object from the {@link #jsonObservableList}
-	 * and the File directory 
+	 * and the File directory
+	 * 
 	 * @param action of the user in the UI
 	 */
 	public void deleteEntry(ActionEvent e) {
@@ -189,14 +188,13 @@ public class StorageController {
 		fileDirectory = new File("SaveFiles").listFiles();
 	}
 
-	
 	/**
 	 * This method is used to align the values which are shown in the
-	 * {@link application.BasicGameBuilder#getTextField()} with the values inside the
-	 * {@link #gameModel} {@link application.BasicGameLogic#getCells()} array
+	 * {@link application.BasicGameBuilder#getTextField()} with the values inside
+	 * the {@link #gameModel} {@link application.BasicGameLogic#getCells()} array
 	 */
 	public void alignArrays() {
-		SudokuField[][] sudokuField = gameBuilder.getTextField();
+		SudokuTextField[][] sudokuField = gameBuilder.getTextField();
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (gameModel instanceof FreeFormLogic && !gameModel.getCells()[j][i].getBoxcolor().equals("")) {
@@ -212,10 +210,9 @@ public class StorageController {
 			}
 		}
 	}
-	
-	
+
 	/**
-	 * This method is used to align the programs window size to the size variables 
+	 * This method is used to align the programs window size to the size variables
 	 * defined in the {@link #gameBuilder} object
 	 */
 	public void alignWindowToGameSize() {
@@ -224,13 +221,14 @@ public class StorageController {
 		GUI.getStage().getScene().setRoot(gameBuilder.getGameUIRoot());
 		storage.getStage().close();
 	}
-	
-		
+
 	/**
-	 * This method is used to calculate the different game results shown in the {@link application.GameOverview} Screen
-	 * The results are dependend on the content in the {@link application.GameOverview#getTableView()} thus for each result
-	 * a binding is created which contains the specific result of the calculation
-	 * Lastly each binding is then binded to the {@link application.GameOverview} specific lable for the result
+	 * This method is used to calculate the different game results shown in the
+	 * {@link application.GameOverview} Screen The results are dependend on the
+	 * content in the {@link application.GameOverview#getTableView()} thus for each
+	 * result a binding is created which contains the specific result of the
+	 * calculation Lastly each binding is then binded to the
+	 * {@link application.GameOverview} specific lable for the result
 	 */
 	public void calculateGameStats() {
 

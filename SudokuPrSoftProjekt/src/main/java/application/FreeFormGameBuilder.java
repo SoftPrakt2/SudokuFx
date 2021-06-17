@@ -23,7 +23,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	
 	public FreeFormGameBuilder(BasicGameLogic model) {
 		super(model);
-		setTextField(new SudokuField[9][9]);
+		setTextField(new SudokuTextField[9][9]);
 		setSceneWidth(670);
 		setSceneHeight(670);
 	}
@@ -48,7 +48,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));
 			
 
-				getTextField()[row][col] = new SudokuField("");
+				getTextField()[row][col] = new SudokuTextField("");
 				getTextField()[row][col].setMaxSize(200, 200);
 				getTextField()[row][col].setAlignment(Pos.CENTER);
 				

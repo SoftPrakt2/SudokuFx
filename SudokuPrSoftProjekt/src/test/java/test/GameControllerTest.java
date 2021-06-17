@@ -28,7 +28,7 @@
 //
 //	@BeforeEach
 //	public void setUp() {
-//		FreeFormLogic model = new FreeFormLogic(Gamestate.OPEN, 0, 0, false);
+//		FreeFormLogic model = new FreeFormLogic(Gamestate.OPEN,0,0);
 //		FreeFormGameBuilder scene = new FreeFormGameBuilder(model);
 //		scene.initializeGame();
 //		controller = new GameController(scene, model);
@@ -36,12 +36,12 @@
 //	
 //	@Test
 //	void testConstructorWithDifferentGameTypes() {
-//		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN, 0, 0, false);
+//		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN,0,0);
 //		SamuraiGameBuilder scene = new SamuraiGameBuilder(model);
 //		scene.initializeGame();
 //		controller = new GameController(scene, model);
 //		
-//		SudokuLogic modelSudoku = new SudokuLogic(Gamestate.OPEN, 0, 0, false);
+//		SudokuLogic modelSudoku = new SudokuLogic(Gamestate.OPEN,0,0);
 //		SudokuGameBuilder sceneSudoku = new SudokuGameBuilder(modelSudoku);
 //		sceneSudoku.initializeGame();
 //		controller = new GameController(sceneSudoku, modelSudoku);
@@ -305,6 +305,15 @@
 //		controller.autoSolveHandler(action);
 //		assertEquals(Gamestate.UNSOLVABLE, controller.getModel().getGamestate());
 //	}
+//	
+//	
+//	@Test
+//	void testEmptyArrays() {
+//		controller.emptyArrays();
+//		assertEquals(controller.getsudokuField()[0][0].getText(),"");
+//	}
+//	
+//	
 //	
 //	
 ////	@Test

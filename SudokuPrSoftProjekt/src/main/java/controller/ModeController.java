@@ -150,7 +150,7 @@ public class ModeController {
 			gameScene.getColorBox().setVisible(true);
 		} else {
 			model.setGameState(Gamestate.CREATING);
-			gameScene.getDoneButton().setVisible(true);
+			gameScene.getCustomNumbersDone().setVisible(true);
 		}
 		model.initializeCustomGame();
 		lockGameActionButtons();
@@ -229,6 +229,8 @@ public class ModeController {
 	 * This is needed to ensure that if a user presses the {@link application.MainMenu#getDifficultyToggle()} manual button
 	 * and then presses another Button of the mentioned button group, the state of the {@link #gameScene} Buttons are available accordingly
 	 */
+
+	
 	public void unlockGameActionButtons() {
 		Stream.of(gameScene.getHintButton(), gameScene.getAutoSolveButton(), gameScene.getCheckButton())
 				.forEach(button -> {
@@ -243,8 +245,8 @@ public class ModeController {
 				});
 		
 		
-		if (gameScene.getDoneButton().isVisible()) {
-			gameScene.getDoneButton().setVisible(false);
+		if (gameScene.getCustomNumbersDone().isVisible()) {
+			gameScene.getCustomNumbersDone().setVisible(false);
 		}
 
 		if (gameScene instanceof FreeFormGameBuilder
@@ -324,6 +326,11 @@ public class ModeController {
 	
 	public void setGameScene(BasicGameBuilder gameScene) {
 		this.gameScene = gameScene;
+	}
+	
+	
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
 	}
 	
 
