@@ -84,8 +84,12 @@ public class StorageController {
 
 		gameBuilder.initializeGame();
 
-		if (!gameModel.getGamestate().equals(Gamestate.CREATING)
-				&& !gameModel.getGamestate().equals(Gamestate.DRAWING)) {
+		if (!gameModel.getGamestate().equals(Gamestate.CREATING) 
+				&& !gameModel.getGamestate().equals(Gamestate.DRAWING) 
+				&& !gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT) 
+				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS) 
+			&& !gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
+			
 			gameModel.initializeTimer();
 			gameModel.getLiveTimer().start();
 			gameBuilder.getGameInfoLabel().setText(
@@ -100,6 +104,7 @@ public class StorageController {
 			gameBuilder.getToolBar().getItems().add(3, gameBuilder.getCustomNumbersDone());
 			gameBuilder.getCustomNumbersDone().setVisible(true);
 			gameBuilder.disablePlayButtons();
+			
 		}
 		
 

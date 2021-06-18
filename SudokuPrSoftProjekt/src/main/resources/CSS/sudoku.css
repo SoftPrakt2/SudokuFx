@@ -47,6 +47,17 @@
 	
 }
 
+
+.textFieldUser {
+	-fx-pref-width: 3em ;
+    -fx-pref-height: 3em ;
+	-fx-text-fill: green;
+	
+	-fx-font-family:"Arial";
+	-fx-font-weight:bold;
+	-fx-font-size: 23px;
+}
+
 .textfieldWrong {
 	-fx-pref-width: 3em ;
     -fx-pref-height: 3em ;

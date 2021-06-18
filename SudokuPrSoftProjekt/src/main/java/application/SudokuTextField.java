@@ -31,7 +31,10 @@ public class SudokuTextField extends TextField {
 	 */
 	private boolean listeningToColors;
 	
-	private boolean isColored; 
+	private boolean isColored;
+	
+	
+	private boolean justChanged;
 
 	private ChangeListener<Boolean> freeFormColorListener;
 
@@ -43,6 +46,7 @@ public class SudokuTextField extends TextField {
 		shortcutFriendlyTextField();
 		listeningToColors = false;
 		this.getStyleClass().add("textfieldBasic");
+		hintWrong();
 	}
 	
 
@@ -54,9 +58,11 @@ public class SudokuTextField extends TextField {
 		this.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				this.setText(newValue.replaceAll("[^\\d]", ""));
+				this.getStyleClass().add("textFieldUser");
 			}
 			if (newValue.equals("0")) {
 				this.setText(newValue.replace("0", ""));
+				this.getStyleClass().add("textFieldUser");
 			}
 		});
 	}
@@ -88,6 +94,7 @@ public class SudokuTextField extends TextField {
 		
 		this.getStyleClass().remove("textfieldWrong");
 		this.getStyleClass().remove("textfieldHint");
+
 		});
 	}
 
@@ -153,7 +160,19 @@ public class SudokuTextField extends TextField {
 		this.focusedProperty().removeListener(freeFormColorListener);
 		listeningToColors = false;
 	}
-
+	
+	
+	
+	
+	
+	public final void hintWrong() {
+		this.textProperty().addListener((observable, oldV, newV) -> {
+			
+			this.justChanged = true;
+		});
+	}
+	
+	
 	public void setColor(String color) {
 		this.color = color;
 		if(!color.equals("")) {
@@ -177,4 +196,21 @@ public class SudokuTextField extends TextField {
 		return isColored;
 	}
 
+	
+	
+	public boolean justChanged() {
+		return justChanged;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

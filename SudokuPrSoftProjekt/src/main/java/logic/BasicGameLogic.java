@@ -50,6 +50,7 @@ public abstract class BasicGameLogic {
 	private int difficulty;
 	
 	
+	
 	/**
 	 * this variable is needed to determine how many numbers are currently inside the sudokuboard (both from the user and automatically generated)
 	 * used for determing if the game is correctly saved or not
@@ -210,6 +211,7 @@ public abstract class BasicGameLogic {
 				}
 			}
 		}
+	
 		return true;
 	}
 
@@ -234,6 +236,9 @@ public abstract class BasicGameLogic {
 
 		// current sudoku gets solved
 		this.solveSudoku();
+		if(!this.testIfSolved()) {
+            return null;
+        }
 
 		// chooses random coordinates and a random number that will be shown as a hint
 		while (!correctRandom) {
@@ -258,6 +263,10 @@ public abstract class BasicGameLogic {
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				this.cells[row][col].setValue(temporaryValues[row][col]);
+				
+				
+				
+				
 			}
 		}
 		// returns the coordinates the the hint
@@ -471,7 +480,7 @@ public abstract class BasicGameLogic {
 			gameText = "Please remove the conflicts";
 		}
 		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
-			gameText = "Unsolvable Sudoku! New Solution generated";
+			gameText = "Unsolvable Sudoku state!";
 		}
 		if (this.getGamestate() == Gamestate.CREATING) {
 			gameText = "Create your own game!";

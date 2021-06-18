@@ -137,6 +137,7 @@ public abstract class BasicGameBuilder {
 		setMenuActions();
 		gameRoot.setCenter(createBoard());
 		conflictListener = new ArrayList<>();
+	
 	}
 
 	/**
@@ -205,6 +206,18 @@ public abstract class BasicGameBuilder {
 			}
 		}
 	}
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+
+	
 
 	/**
 	 * Removes the listeners from the SudokuFields added with the
@@ -519,5 +532,17 @@ public abstract class BasicGameBuilder {
 		this.customColorsDone = customColorsDone;
 	}
 	
-
+	
+	SudokuTextField changedOne;
+	
+	
+	public void setChangedOne(SudokuTextField changedOne) {
+		this.changedOne = changedOne;
+	}
+	
+	public SudokuTextField getChangedOne() {
+		return this.changedOne;
+	}
+	
+	
 }
