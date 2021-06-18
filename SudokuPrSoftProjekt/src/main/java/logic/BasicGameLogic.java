@@ -56,7 +56,8 @@ public abstract class BasicGameLogic {
 	private Cell[][] cells;
 	
 	/**
-	 * saves the int values of the created sudoku
+	 * saves the int values of the created sudoku, this is needed to generate a background solution of a game 
+	 * for comparing user inputs in the UI
 	 * gets used by GameController {@link controller.GameController.#hintHandeler(javafx.event.ActionEvent)}
 	 */
 	private int[][] savedResults;
@@ -207,7 +208,7 @@ public abstract class BasicGameLogic {
 				}
 			}
 		}
-		this.manualGame = false;
+
 		this.savedResults = new int[this.cells.length][this.cells.length];
 		for (int row = 0; row < this.getCells().length; row++) {
 			for (int col = 0; col < this.getCells()[row].length; col++) {
@@ -216,6 +217,52 @@ public abstract class BasicGameLogic {
 		}
 		return true;
 	}
+	
+	/**
+	 * This method is used to save the values of a created game sudoku game
+	 */
+	public void connectToSavedResults() {
+	
+        for (int row = 0; row < this.getCells().length; row++) {
+            for (int col = 0; col < this.getCells()[row].length; col++) {
+                this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
+            }
+        }
+    }
+	
+	
+	
+	
+	
+	public int[][] alignWithHelper() {
+		Cell[][] help = this.getCells();
+	
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				if(!this.getCells()[row][col].isReal) {
+					this.getCells()[row][col].setValue(0);
+				}
+				
+			}
+			}
+		this.solveSudoku();
+		
+		
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
+				System.out.println(this.getSavedResults()[row][col]);
+			}
+		}
+		this.setCells(help);
+		
+		return this.getSavedResults();
+	}
+
+	
+	
+	
+	
 
 	/**
 	 * solves a sudoku game
@@ -516,7 +563,7 @@ public abstract class BasicGameLogic {
 			gameText = "Please remove the conflicts";
 		}
 		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
-			gameText = "Unsolvable Sudoku state!";
+			gameText = "Unsolvable Sudoku state! "+" Please remove the red numbers to continue.";
 		}
 		if (this.getGamestate() == Gamestate.CREATING) {
 			gameText = "Create your own game!";
@@ -527,9 +574,7 @@ public abstract class BasicGameLogic {
 		if (this.getGamestate() == Gamestate.DRAWING) {
 			gameText = "Draw your own forms!";
 		}
-		if (this.getGamestate() == Gamestate.UNSOLVABLEMANUALSUDOKU) {
-			gameText = "Your created Sudoku is unsolvable! Please create a new Sudoku.";
-		}
+	
 		if (this.getGamestate() == Gamestate.NOTENOUGHNUMBERS) {
             gameText = "Not enough numbers! Please insert " + (getNumbersToBeSolvable() - manualNumbersInserted)
                     + " more numbers to create the game";

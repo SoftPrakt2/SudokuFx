@@ -1,6 +1,7 @@
 package controller;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -25,6 +26,12 @@ import logic.Gamestate;
 import logic.SaveModel;
 import logic.SudokuStorage;
 
+/**
+ * This class is the controller for the {@link application.GameOverview} and {@link logic.SudokuStorage} class
+ * it handles the output shown in the table view of the {@link application.GameOverview} class and actions within and regarding this tableview
+ * @author grube
+ *
+ */
 public class StorageController {
 
 	private BasicGameBuilder gameBuilder;
@@ -115,9 +122,12 @@ public class StorageController {
 		}
 
 		gameBuilder.getGameNotificationLabel().setText(gameModel.getGameText());
-
+		
+		
 		alignArrays();
+		
 		alignWindowToGameSize();
+		
 	}
 
 	/**
@@ -200,6 +210,7 @@ public class StorageController {
 	 */
 	public void alignArrays() {
 		SudokuTextField[][] sudokuField = gameBuilder.getTextField();
+	
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (gameModel instanceof FreeFormLogic && !gameModel.getCells()[j][i].getBoxcolor().equals("")) {
@@ -212,9 +223,16 @@ public class StorageController {
 				if (gameModel.getCells()[j][i].getFixedNumber() && gameModel.getCells()[j][i].getValue() != 0) {
 					sudokuField[i][j].setDisable(true);
 				}
+				
+				
 			}
 		}
+		//depending on the game state a solution of the game should be created in the background 
+		if(!gameModel.getGamestate().equals(Gamestate.CREATING) && !gameModel.getGamestate().equals(Gamestate.DRAWING) && !gameModel.getGamestate().equals(Gamestate.NOFORMS)
+				&&	!gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)   && !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS))
+			gameModel.setSavedResults(gameModel.alignWithHelper());
 	}
+	
 
 	/**
 	 * This method is used to align the programs window size to the size variables

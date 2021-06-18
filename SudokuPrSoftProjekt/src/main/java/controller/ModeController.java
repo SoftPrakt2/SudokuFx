@@ -51,7 +51,7 @@ public class ModeController {
 
 	/**
 	 * instantiates the {@link #model} as SudokuLogic instantiates the
-	 * {@link #gameSceme} as SudokuGameBuilder The difficulty ToggleButtons of
+	 * {@link #gameScene} as SudokuGameBuilder The difficulty ToggleButtons of
 	 * {@link application.MainMenu#getPlayModeToggle()} will be enabled
 	 */
 	public void handleToSudoku(ActionEvent e) {
@@ -225,12 +225,11 @@ public class ModeController {
 	}
 
 	/**
-	 * This method unlocks the {@link #gameScene} play Buttons and sets the {@link #gameScene} manual Buttons invisible
+	 * This method unlocks the {@link #gameScene} playfunction Buttons and corresponding menu items and sets the {@link #gameScene} manual Buttons invisible
 	 * This is needed to ensure that if a user presses the {@link application.MainMenu#getDifficultyToggle()} manual button
 	 * and then presses another Button of the mentioned button group, the state of the {@link #gameScene} Buttons are available accordingly
 	 */
 
-	
 	public void unlockGameActionButtons() {
 		Stream.of(gameScene.getHintButton(), gameScene.getAutoSolveButton(), gameScene.getCheckButton())
 				.forEach(button -> {

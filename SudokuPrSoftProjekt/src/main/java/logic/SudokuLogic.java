@@ -20,6 +20,7 @@ public class SudokuLogic extends BasicGameLogic {
 		setCells(new Cell[9][9]);
 		setGametype("Sudoku");
 		setNumbersToBeSolvable(2);
+		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
 	
 	/**

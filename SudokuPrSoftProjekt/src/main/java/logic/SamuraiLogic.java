@@ -19,6 +19,7 @@ public class SamuraiLogic extends BasicGameLogic {
 		setCells(new Cell[21][21]);
 		setGametype("Samurai");
 		setNumbersToBeSolvable(2);
+		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
 
 	/**

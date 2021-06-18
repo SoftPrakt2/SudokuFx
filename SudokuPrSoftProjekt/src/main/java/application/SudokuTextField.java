@@ -30,14 +30,15 @@ public class SudokuTextField extends TextField {
 	 * background changes
 	 */
 	private boolean listeningToColors;
-	
+
 	private boolean isColored;
-	
-	
-	private boolean justChanged;
 
 	private ChangeListener<Boolean> freeFormColorListener;
 
+	/**
+	 * Constructor of a SudokuTextfield, all listener are injected to an object when its initialized
+	 * @param txt from the super TextField class
+	 */
 	public SudokuTextField(String txt) {
 		super(txt);
 		addOnlyNumbers();
@@ -46,9 +47,8 @@ public class SudokuTextField extends TextField {
 		shortcutFriendlyTextField();
 		listeningToColors = false;
 		this.getStyleClass().add("textfieldBasic");
-		hintWrong();
+
 	}
-	
 
 	/**
 	 * Adds a listener to the Sudokufields textproperty to ensure that only numbers
@@ -58,11 +58,11 @@ public class SudokuTextField extends TextField {
 		this.textProperty().addListener((observable, oldValue, newValue) -> {
 			if (!newValue.matches("\\d*")) {
 				this.setText(newValue.replaceAll("[^\\d]", ""));
-				this.getStyleClass().add("textFieldUser");
+
 			}
 			if (newValue.equals("0")) {
 				this.setText(newValue.replace("0", ""));
-				this.getStyleClass().add("textFieldUser");
+
 			}
 		});
 	}
@@ -91,9 +91,9 @@ public class SudokuTextField extends TextField {
 	 */
 	public final void updateColor() {
 		this.textProperty().addListener((observable, oldV, newV) -> {
-		
-		this.getStyleClass().remove("textfieldWrong");
-		this.getStyleClass().remove("textfieldHint");
+
+			this.getStyleClass().remove("textfieldWrong");
+			this.getStyleClass().remove("textfieldHint");
 
 		});
 	}
@@ -160,28 +160,21 @@ public class SudokuTextField extends TextField {
 		this.focusedProperty().removeListener(freeFormColorListener);
 		listeningToColors = false;
 	}
-	
-	
-	
-	
-	
-	public final void hintWrong() {
-		this.textProperty().addListener((observable, oldV, newV) -> {
-			
-			this.justChanged = true;
-		});
-	}
-	
-	
+
+	/**
+	 * Sets the background of a textfield
+	 * 
+	 * @param color of the background
+	 */
 	public void setColor(String color) {
 		this.color = color;
-		if(!color.equals("")) {
-		this.setStyle("-fx-background-color: #" + color);
-		isColored = true;
+		if (!color.equals("")) {
+			this.setStyle("-fx-background-color: #" + color);
+			isColored = true;
 		} else {
 			isColored = false;
 		}
-		
+
 	}
 
 	public String getColor() {
@@ -191,26 +184,9 @@ public class SudokuTextField extends TextField {
 	public boolean isListeningToColors() {
 		return listeningToColors;
 	}
-	
+
 	public boolean isColored() {
 		return isColored;
 	}
 
-	
-	
-	public boolean justChanged() {
-		return justChanged;
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
