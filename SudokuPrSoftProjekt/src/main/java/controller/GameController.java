@@ -48,7 +48,7 @@ public class GameController {
 	public void createGameHandler(ActionEvent event) {
 		createGame();
 	}
-
+	
 	/**
 	 * Creates a Sudoku-Game type and difficulty of the game are decides by user
 	 * inputs (button-clicks) {@link #enableEdit()} enables the text fields, so that
@@ -394,7 +394,6 @@ public class GameController {
 				if (model.getCells()[j][i].getFixedNumber()) {
 					sudokuField[i][j].setDisable(true);
 				}
-
 			}
 		}
 	}
@@ -524,14 +523,22 @@ public class GameController {
 					sudokuField[coordinates[1]][coordinates[0]].setText(number);
 					sudokuField[coordinates[1]][coordinates[0]].getStyleClass().add("textfieldHint");
 				}
-			} else {
-			
-				
-				model.setGameState(Gamestate.UNSOLVABLE);
-				scene.getGameNotificationLabel().setText(model.getGameText());
-			//	resetAfterWrongHint();
 			}
-
+			else if(!model.getManualGame()) {
+				if(model.getSavedResults() != null) {
+					for (int row = 0; row < sudokuField.length; row++) {
+						for (int col = 0; col < sudokuField[row].length; col++) {
+							if (!sudokuField[col][row].getText().equals("")
+									&& !sudokuField[col][row].getText().equals("-1")
+									&& model.getSavedResults()[row][col] != Integer.parseInt(sudokuField[col][row].getText())) {							
+								sudokuField[col][row].getStyleClass().add("textfieldWrong");
+							}
+						}
+					}
+				}
+				model.setGameState(Gamestate.UNSOLVABLE);
+				scene.getGameNotificationLabel().setText(model.getGameText() + " Please remove the red numbers to continue.");
+			}
 		} else {
 			if (model.getGamepoints() > 0)
 				model.setGamePoints(model.getGamepoints() - 1);

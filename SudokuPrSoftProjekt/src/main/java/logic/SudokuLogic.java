@@ -3,17 +3,17 @@ package logic;
 /**
  * extends BasicGameLogic
  * implements all abstract methods of BasicGameLogic
+ * is a superclass of FreeFormLogic
+ * 
  * @author rafael
- *
  */
 public class SudokuLogic extends BasicGameLogic {
 
 	/**
 	 * constructor for creating a SudokuLogic-Object
-	 * @param gamestate
-	 * @param minutesPlayed
-	 * @param secondsPlayed
-	 * @param isCorrect
+	 * this constructor extends the BasicGameLogic constructor
+	 * the size of the needed Cells-Array gets set with {@link #setCells(Cell[][])}
+	 * the game type of the current game gets set with {@link #setGametype(String)}
 	 */
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
 		super(gamestate, minutesPlayed, secondsPlayed);
@@ -24,6 +24,7 @@ public class SudokuLogic extends BasicGameLogic {
 	
 	/**
 	 * checks if the value already exists in a row
+	 * gets called in {@link #valid(int, int, int)}
 	 */
 	@Override
 	public boolean checkRow(int row, int col, int guess) {
@@ -37,6 +38,7 @@ public class SudokuLogic extends BasicGameLogic {
 
 	/**
 	 * checks if the value already exists in a column
+	 * gets called in {@link #valid(int, int, int)}
 	 */
 	@Override
 	public boolean checkCol(int row, int col, int guess) {
@@ -47,9 +49,11 @@ public class SudokuLogic extends BasicGameLogic {
 		}
 		return true;
 	}
-	
+
 	/**
-	 * fills the sudoku array with values and informations about coordinates
+	 * fills the cells-array with values and informations about coordinates
+	 * the box-id is the most important past of this method, because it is needed 
+	 * for the checkBox method in FreeFormLogic, which is a subclass.
 	 */
 	@Override
 	public void setUpLogicArray() {
@@ -86,7 +90,6 @@ public class SudokuLogic extends BasicGameLogic {
 	 * the amount depends on the difficulty chosen by the user
 	 * 
 	 */
-
 	public void difficulty() {
         int counter = getNumberOfVisibleValues();
 
@@ -122,21 +125,6 @@ public class SudokuLogic extends BasicGameLogic {
 		}
 		else {
 			return 81;
-		}
-	}
-
-	public void printCells() {
-		for (int row = 0; row < this.getCells().length; row++) {
-			for (int col = 0; col < this.getCells()[row].length; col++) {
-				System.out.print(this.getCells()[row][col].getValue() + " ");
-				if (col == 2 || col == 5) {
-					System.out.print("|");
-				}
-			}
-			System.out.println();
-			if (row == 2 || row == 5 || row == 8) {
-				System.out.println("-------------------");
-			}
 		}
 	}
 

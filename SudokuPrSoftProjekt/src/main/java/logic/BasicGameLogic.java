@@ -12,30 +12,59 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 /**
- * Creates all variables and methods that are needed by all subclasses
- * Creates abstract methods that need to be implemented by the subclasses
+ * The abstract class BasicGameLogic is a basic class for all 
+ * Sudoku-Subclasses (SudokuLogic, SumraiLogic)
+ * This class creates variables and methods like createSudoku, solveSudoku,
+ * valid and hint, that get used by the subclasses
+ * 
+ * it also defines abstract methods that need to be implemented 
+ * by the subclasses SudokuLogic and SamuraiLogic
  *
+ * @author rafael
  */
 public abstract class BasicGameLogic {
 
+	/**
+	 * A Sudoku game can have different states,
+	 * depending on what the user does
+	 * For Example:
+	 * OPEN when the game is still ongoing
+	 * AUTOSOLVED if the user chose to automatically solve the current sudoku game
+	 * ...
+	 */
 	private Gamestate gamestate;
 
 	private String gametype = "";
 	
 	
 	private int gamePoints = 10;
+	private boolean manualGame;
 	
 	
 	private long minutesPlayed;
 	private long secondsPlayed;
-	protected Random r;
-
-	
+	protected Random r;	
 
 	private String gameText = "";
 	private int gameID = 0;
 
+	/**
+	 * this Cell-Array contains the values of a game
+	 * every Cell also has information regarding its
+	 * current Row, Column and Box
+	 */
 	private Cell[][] cells;
+	
+	/**
+	 * saves the int values of the created sudoku
+	 * gets used by GameController {@link controller.GameController.#hintHandeler(javafx.event.ActionEvent)}
+	 */
+	private int[][] savedResults;
+	/**
+	 * This int-Array is used in the {@link #hint()} method to
+	 * save the current values from the Cell-Array before the 
+	 * {@link #solveSudoku()} method gets used
+	 */
 	private int[][] temporaryValues;
 	
 	/**
@@ -83,8 +112,8 @@ public abstract class BasicGameLogic {
 	/**
 	 * constructor for creating a BasicGameLogic object
 	 * @param gamestate : differentiates between several gamestates that a game can have
-	 * @param minutesPlayed
-	 * @param secondsPlayed
+	 * @param minutesPlayed : the number of minutes, that the player has played his current game
+	 * @param secondsPlayed : the number of seconds, that the player has played his current game
 	 * @param isCorrect : boolean to check if the sudoku was solved correctly
 	 */
 	protected BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
@@ -95,10 +124,8 @@ public abstract class BasicGameLogic {
 		liveTimePlayedString = new SimpleStringProperty();
 		shuffleCounter = 0;
 		this.r = new Random();
+		this.manualGame = true;
 	}
-	
-	
-	
 
 	/**
 	 * abstract methods that need to be implemented by the subclasses
@@ -116,7 +143,7 @@ public abstract class BasicGameLogic {
 	public abstract boolean checkCol(int row, int col, int guess);
 
 	/**
-	 * Checks if the number already exists in the box
+	 * Checks if the number already exists in a box
 	 * @param row : row-coordinate of the new number
 	 * @param col : row-coordinate of the new number
 	 * @param guess : new number
@@ -178,6 +205,13 @@ public abstract class BasicGameLogic {
 					}
 					return false;
 				}
+			}
+		}
+		this.manualGame = false;
+		this.savedResults = new int[this.cells.length][this.cells.length];
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
 			}
 		}
 		return true;
@@ -275,6 +309,8 @@ public abstract class BasicGameLogic {
 	
 	/**
 	 * tests if the sudoku game still contains the value 0
+	 * returns false if the sudoku game still contains the value 0
+	 * returns true otherwise
 	 * @return
 	 */
 	public boolean testIfSolved() {
@@ -300,7 +336,7 @@ public abstract class BasicGameLogic {
 	}
 	
 	/**
-	 * removes all values of the array
+	 * removes all values of the Cell-Array
 	 */
 	public void removeValues() {
         for (int row = 0; row < this.cells.length; row++) {
@@ -328,7 +364,7 @@ public abstract class BasicGameLogic {
 
 	/**
 	 * initializes a new game
-	 * calls all methods that are needed to create a game
+	 * resets values so that a new game can be created correctly
 	 */
 	public void setUpGameInformations() {
 	//	setStartTime(System.currentTimeMillis());
@@ -566,14 +602,20 @@ public abstract class BasicGameLogic {
 	public void setNumbersInsideTextField(int numbersInsideTextField) {
 		this.numbersInsideTextField = numbersInsideTextField;
 	}
-	
 		
 	public int getNumbersInsideTextField () {
 		return this.numbersInsideTextField;
 	}
 	
+	public int[][] getSavedResults(){
+		return this.savedResults;
+	}
 	
+	public void setSavedResults(int[][] cells) {
+		this.savedResults = cells;
+	}
 	
-	
-	
+	public boolean getManualGame() {
+		return this.manualGame;
+	}	
 }

@@ -75,7 +75,6 @@ public class FreeFormLogic extends SudokuLogic {
 						globalCounter = 0;
 						setCells(loadPreMadeFreeForm());
 						System.out.println("preloadgamemydudeyeeet");
-						this.printCells();
 						return true;
 					}
 				}
@@ -286,7 +285,6 @@ public class FreeFormLogic extends SudokuLogic {
 
 	@Override
 	public boolean isConnected() {
-
 		int[][] cellsmr = new int[9][9];
 		for (int m = 0; m < cellsmr.length; m++) {
 			for (int n = 0; n < cellsmr[m].length; n++) {

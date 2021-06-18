@@ -1,13 +1,18 @@
 package logic;
 
+/**
+ * extends BasicGameLogic
+ * implements all abstract methods of BasicGameLogic
+ * 
+ * @author rafael
+ */
 public class SamuraiLogic extends BasicGameLogic {
 
 	/**
-	 * Constructor for creating a SamuraiLogic-Object
-	 * @param gamestate
-	 * @param minutesPlayed
-	 * @param secondsPlayed
-	 * @param isCorrect
+	 * constructor for creating a Samurai-Object
+	 * this constructor extends the BasicGameLogic constructor
+	 * the size of the needed Cells-Array gets set with {@link #setCells(Cell[][])}
+	 * the game type of the current game gets set with {@link #setGametype(String)}
 	 */
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
 		super(gamestate, minutesPlayed, secondsPlayed);
@@ -18,6 +23,7 @@ public class SamuraiLogic extends BasicGameLogic {
 
 	/**
 	 * checks if the value already exists in a row
+	 * gets called in {@link #valid(int, int, int)}
 	 */
 	@Override
 	public boolean checkRow(int row, int col, int guess) {
@@ -98,6 +104,7 @@ public class SamuraiLogic extends BasicGameLogic {
 
 	/**
 	 * checks if the value already exists in a column
+	 * gets called in {@link #valid(int, int, int)}
 	 */
 	@Override
 	public boolean checkCol(int row, int col, int guess) {
@@ -176,7 +183,8 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * fills the sudoku array with values and informations about coordinates
+	 * fills the cells-array with values and informations about coordinates
+	 * so that the cells-array is not null
 	 */
 	@Override
 	public void setUpLogicArray() {
