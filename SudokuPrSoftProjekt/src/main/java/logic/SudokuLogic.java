@@ -132,5 +132,11 @@ public class SudokuLogic extends BasicGameLogic {
 	public boolean isConnected() {
 		return false;
 	}
+
+	@Override
+	public boolean proofFilledOut() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

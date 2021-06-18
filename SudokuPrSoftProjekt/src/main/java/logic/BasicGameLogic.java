@@ -618,4 +618,7 @@ public abstract class BasicGameLogic {
 	public boolean getManualGame() {
 		return this.manualGame;
 	}	
+	
+	
+	public abstract boolean proofFilledOut();
 }
