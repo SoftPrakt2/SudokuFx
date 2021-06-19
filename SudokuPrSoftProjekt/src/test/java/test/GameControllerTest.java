@@ -203,13 +203,16 @@
 //	void testResetHandler() {
 //		controller.createGame();
 //		controller.getModel().getCells()[1][1].setValue(1);
+//		controller.getModel().printCells();
 //		controller.connectArrays();
+//		controller.getModel().printCells();
 //		assertEquals(1, controller.getModel().getCells()[1][1].getValue());
 //		assertTrue(controller.getsudokuField()[1][1].getText().equals("1"));
 //		controller.resetHandler(action);
 //		assertEquals(0, controller.getModel().getCells()[1][1].getValue());
 //		assertTrue(controller.getsudokuField()[1][1].getText().equals(""));
 //	}
+//	
 //	
 //	@Test
 //	void testConnectWithModel() {

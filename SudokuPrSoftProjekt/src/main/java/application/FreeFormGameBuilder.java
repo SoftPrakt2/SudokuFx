@@ -56,10 +56,9 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 				//adds a listener to the textfields to listen to changes regarding background color
 				//this is needed when creating a custom freeform game 
 				getTextField()[row][col].addFreeFormColorListener(comboColorBox);
-
+				
 			
-				Font font = new Font("Arial",textSize.get());
-				getTextField()[row][col].setFont(font);
+				getTextField()[row][col].getStyleClass().add("textfieldBasic");
 				
 				cell.getChildren().add(getTextField()[row][col]);
 

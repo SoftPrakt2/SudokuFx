@@ -27,8 +27,11 @@ import logic.SaveModel;
 import logic.SudokuStorage;
 
 /**
- * This class is the controller for the {@link application.GameOverview} and {@link logic.SudokuStorage} class
- * it handles the output shown in the table view of the {@link application.GameOverview} class and actions within and regarding this tableview
+ * This class is the controller for the {@link application.GameOverview} and
+ * {@link logic.SudokuStorage} class it handles the output shown in the table
+ * view of the {@link application.GameOverview} class and actions within and
+ * regarding this tableview
+ * 
  * @author grube
  *
  */
@@ -77,6 +80,8 @@ public class StorageController {
 	 */
 	public void handleLoadAction(ActionEvent e) {
 
+		if(storage.getTableView().getSelectionModel().getSelectedItem() != null) {
+		
 		gameModel = storage.getTableView().getSelectionModel().getSelectedItem();
 
 		if (gameModel.getGametype().equals("Sudoku")) {
@@ -89,14 +94,16 @@ public class StorageController {
 			gameBuilder = new FreeFormGameBuilder(gameModel);
 		}
 
+		
+		
+		
 		gameBuilder.initializeGame();
 
-		if (!gameModel.getGamestate().equals(Gamestate.CREATING) 
-				&& !gameModel.getGamestate().equals(Gamestate.DRAWING) 
-				&& !gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT) 
-				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS) 
-			&& !gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
-			
+		if (!gameModel.getGamestate().equals(Gamestate.CREATING) && !gameModel.getGamestate().equals(Gamestate.DRAWING)
+				&& !gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
+				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)
+				&& !gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
+
 			gameModel.initializeTimer();
 			gameModel.getLiveTimer().start();
 			gameBuilder.getGameInfoLabel().setText(
@@ -111,9 +118,8 @@ public class StorageController {
 			gameBuilder.getToolBar().getItems().add(3, gameBuilder.getCustomNumbersDone());
 			gameBuilder.getCustomNumbersDone().setVisible(true);
 			gameBuilder.disablePlayButtons();
-			
+
 		}
-		
 
 		if (gameModel.getGamestate().equals(Gamestate.DRAWING) || gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
 			gameBuilder.getColorBox().setVisible(true);
@@ -122,12 +128,11 @@ public class StorageController {
 		}
 
 		gameBuilder.getGameNotificationLabel().setText(gameModel.getGameText());
-		
-		
+
 		alignArrays();
-		
+
 		alignWindowToGameSize();
-		
+		}
 	}
 
 	/**
@@ -144,6 +149,13 @@ public class StorageController {
 		gameidcolumn = new TableColumn<>("GameID");
 		storage.getTableView().getColumns().addAll(gameidcolumn, gameTypecolumn, difficultycolumn, pointscolumn,
 				playtimecolumn, gamestatecolumn);
+		gameTypecolumn.setSortable(false);
+		difficultycolumn.setSortable(false);
+		pointscolumn.setSortable(false);
+		playtimecolumn.setSortable(false);
+		gamestatecolumn.setSortable(false);
+		gameidcolumn.setSortable(false);
+
 	}
 
 	/**
@@ -190,10 +202,12 @@ public class StorageController {
 	public void deleteEntry(ActionEvent e) {
 
 		int deleteIndex = storage.getTableView().getSelectionModel().getSelectedIndex();
+		if(deleteIndex >= 0) {
 		jsonObservableList.remove(deleteIndex);
 
 		if (fileDirectory[deleteIndex].exists()) {
 			try {
+
 				Files.delete(fileDirectory[deleteIndex].toPath());
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -201,6 +215,7 @@ public class StorageController {
 		}
 
 		fileDirectory = new File("SaveFiles").listFiles();
+		}
 	}
 
 	/**
@@ -210,7 +225,8 @@ public class StorageController {
 	 */
 	public void alignArrays() {
 		SudokuTextField[][] sudokuField = gameBuilder.getTextField();
-	
+
+		
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (gameModel instanceof FreeFormLogic && !gameModel.getCells()[j][i].getBoxcolor().equals("")) {
@@ -222,17 +238,28 @@ public class StorageController {
 
 				if (gameModel.getCells()[j][i].getFixedNumber() && gameModel.getCells()[j][i].getValue() != 0) {
 					sudokuField[i][j].setDisable(true);
+					sudokuField[i][j].getStyleClass().remove("textfieldBasic");
+					sudokuField[i][j].getStyleClass().add("textfieldLocked");
+				
 				}
 				
+
+				else if (gameModel.getCells()[j][i].isHint() && gameModel.getCells()[j][i].getValue() != 0) {
 				
+
+					sudokuField[i][j].getStyleClass().add("textfieldHint");
+				}
+
 			}
 		}
-		//depending on the game state a solution of the game should be created in the background 
-		if(!gameModel.getGamestate().equals(Gamestate.CREATING) && !gameModel.getGamestate().equals(Gamestate.DRAWING) && !gameModel.getGamestate().equals(Gamestate.NOFORMS)
-				&&	!gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)   && !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS))
+		// depending on the game state a solution of the game should be created in the
+		// background
+		if (!gameModel.getGamestate().equals(Gamestate.CREATING) && !gameModel.getGamestate().equals(Gamestate.DRAWING)
+				&& !gameModel.getGamestate().equals(Gamestate.NOFORMS)
+				&& !gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
+				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS))
 			gameModel.setSavedResults(gameModel.alignWithHelper());
 	}
-	
 
 	/**
 	 * This method is used to align the programs window size to the size variables

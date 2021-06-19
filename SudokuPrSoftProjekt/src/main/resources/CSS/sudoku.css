@@ -36,16 +36,21 @@
 
 
 
+
+
 .textfieldBasic {
 	 -fx-pref-width: 3em ;
     -fx-pref-height: 3em ;
-	-fx-text-fill: black;
+	-fx-text-fill:   #4F7942;
 	
 	-fx-font-family:"Arial";
 	-fx-font-weight:bold;
 	-fx-font-size: 23px;
 	
 }
+
+
+
 
 
 .textFieldUser {
@@ -75,6 +80,17 @@
 	-fx-font-family:"Arial";
 	-fx-font-weight:bold;
 	-fx-font-size: 23px;
+}
+
+.textfieldLocked {
+	 -fx-pref-width: 3em ;
+    -fx-pref-height: 3em ;
+	-fx-text-fill: black;
+	
+	-fx-font-family:"Arial";
+	-fx-font-weight:bold;
+	-fx-font-size: 23px;
+	
 }
 
 

@@ -533,16 +533,7 @@ public abstract class BasicGameBuilder {
 	}
 	
 	
-	SudokuTextField changedOne;
 	
-	
-	public void setChangedOne(SudokuTextField changedOne) {
-		this.changedOne = changedOne;
-	}
-	
-	public SudokuTextField getChangedOne() {
-		return this.changedOne;
-	}
 	
 	
 }

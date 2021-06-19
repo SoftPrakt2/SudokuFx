@@ -19,6 +19,8 @@ public class Cell {
 
 	// Cell color
 	String boxcolor;
+	
+	boolean isHint;
 
 	public Cell(int row, int col, int box, int value) {
 		super();
@@ -28,6 +30,7 @@ public class Cell {
 		this.value = value;
 		this.isReal = true;
 		this.boxcolor = "";
+		isHint = false;
 	}
 
 	/**
@@ -36,6 +39,14 @@ public class Cell {
 	 */
 	public boolean getFixedNumber() {
 		return this.isReal;
+	}
+	
+	public void setIsHint(boolean isHint) {
+		this.isHint = isHint;
+	}
+	
+	public boolean isHint() {
+		return isHint;
 	}
 
 	public void setFixedNumber(boolean newState) {

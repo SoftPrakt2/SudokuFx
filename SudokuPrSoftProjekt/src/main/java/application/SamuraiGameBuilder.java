@@ -76,7 +76,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 					textSize.bind(gameRoot.widthProperty().add(gameRoot.heightProperty()).divide(100));
 					
 					//style the textfield with the values defined in the styleclass
-					getTextField()[row][col].getStyleClass().add("samuraiFont");
+					getTextField()[row][col].getStyleClass().add("textfieldBasic");
 					getTextField()[row][col].setMaxSize(100, 100);
 					getTextField()[row][col].setAlignment(Pos.CENTER);
 					

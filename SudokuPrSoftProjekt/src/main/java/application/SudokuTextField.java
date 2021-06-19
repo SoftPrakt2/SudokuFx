@@ -46,7 +46,7 @@ public class SudokuTextField extends TextField {
 		updateColor();
 		shortcutFriendlyTextField();
 		listeningToColors = false;
-		this.getStyleClass().add("textfieldBasic");
+		//this.getStyleClass().add("textfieldBasic");
 
 	}
 

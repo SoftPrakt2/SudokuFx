@@ -330,8 +330,10 @@ public abstract class BasicGameLogic {
 			if (this.cells[randomRow][randomCol].getValue() == randomNumber && temporaryValues[randomRow][randomCol] == 0
 					&& this.cells[randomRow][randomCol].getValue() != -1) {
 				temporaryValues[randomRow][randomCol] = randomNumber;
+				
 				coordinates[0] = randomRow;
 				coordinates[1] = randomCol;
+				
 				correctRandom = true;
 			}
 			counter++;
@@ -340,17 +342,21 @@ public abstract class BasicGameLogic {
 				break;
 			}
 		}
-
+		
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
 				this.cells[row][col].setValue(temporaryValues[row][col]);
 				
 				
-				
+		
 				
 			}
 		}
 		// returns the coordinates the the hint
+		if(coordinates !=null) {
+			this.cells[coordinates[0]][coordinates[1]].setIsHint(true);
+		}
+	
 		return coordinates;
 	}
 	
@@ -369,6 +375,23 @@ public abstract class BasicGameLogic {
 			}
 		}
 		return true;
+	}
+	
+	
+	
+	public void printCells() {
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int col = 0; col < this.cells[row].length; col++) {
+				System.out.print(this.cells[row][col].getValue() + " ");
+				if (col == 2 || col == 5) {
+					System.out.print("|");
+				}
+			}
+			System.out.println();
+			if (row == 2 || row == 5 || row == 8) {
+				System.out.println("-------------------");
+			}
+		}
 	}
 	
 	/**
