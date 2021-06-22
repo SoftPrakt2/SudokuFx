@@ -35,6 +35,9 @@ class ModeControllerTest {
 	ModeController controller;
 	ActionEvent actionEvent = new ActionEvent();
 	
+	/**
+	 * before each test a new main menu object, mode controller, and action event is created 
+	 */
 	@BeforeEach
 	void setUp() {
 		menu = new MainMenu();
@@ -44,7 +47,9 @@ class ModeControllerTest {
 	}
 	
 	
-	
+	/**
+	 * tests if selection of sudoku game works
+	 */
 	@Test
 	void testHandleToSudoku() {
 		controller.handleToSudoku(actionEvent);
@@ -52,6 +57,9 @@ class ModeControllerTest {
 		assertNotNull(controller.getGameBuilder().getAutoSolveButton());
 	}
 	
+	/**
+	 * tests if selection of samurai game works
+	 */
 	@Test
 	void testHandleToSamurai() {
 		controller.handleToSamurai(actionEvent);
@@ -59,6 +67,9 @@ class ModeControllerTest {
 		assertNotNull(controller.getGameBuilder().getAutoSolveButton());
 	}
 	
+	/**
+	 * tests if selection of freeform game works
+	 */
 	@Test
 	void testHandleToFreeForm() {
 		controller.handleToFreeForm(actionEvent);
@@ -66,6 +77,9 @@ class ModeControllerTest {
 		assertNotNull(controller.getGameBuilder().getAutoSolveButton());
 	}
 	
+	/**
+	 * tests if selection of difficulty 'esay' works
+	 */
 	@Test
 	void testHandleEasy() {
 		controller.handleToSudoku(actionEvent);
@@ -73,6 +87,9 @@ class ModeControllerTest {
 		assertEquals(7,controller.getSelectedDifficulty());
 	}
 	
+	/**
+	 * tests if selection of difficulty 'medium' works
+	 */
 	@Test
 	void testHandleMedium() {
 		controller.handleToSudoku(actionEvent);
@@ -80,6 +97,9 @@ class ModeControllerTest {
 		assertEquals(5,controller.getSelectedDifficulty());
 	}
 	
+	/**
+	 * tests if selection of difficulty 'hard' works
+	 */
 	@Test
 	void testHandleHard() {
 		controller.handleToSudoku(actionEvent);
@@ -87,6 +107,9 @@ class ModeControllerTest {
 		assertEquals(3,controller.getSelectedDifficulty());
 	}
 	
+	/**
+	 * tests if unlocking the game action buttons works with the sudoku game
+	 */
 	@Test
 	void testUnlockGameActionButtonsSudoku() {
 		controller.handleToSudoku(actionEvent);
@@ -96,6 +119,9 @@ class ModeControllerTest {
 		assertFalse(controller.getGameBuilder().getCustomNumbersDone().isVisible());
 	}
 	
+	/**
+	 * tests if unlocking the game action buttons works with the freeform game
+	 */
 	@Test
 	void testUnlockGameActionButtonsFreeForm() {
 		controller.handleToFreeForm(actionEvent);
@@ -108,7 +134,9 @@ class ModeControllerTest {
 	
 	
 	
-	
+	/**
+	 * tests if selected difficulty and play mode can be undone and re-selected 
+	 */
 	@Test
 	void testRemoveSelectedToggle() {
 		for(Toggle toggle : menu.getDifficultyToggle().getToggles()) {
@@ -127,6 +155,9 @@ class ModeControllerTest {
 		}
 	}
 	
+	/**
+	 * tests if diffuculty-selection buttons are disabled sucessfully
+	 */
 	@Test
 	void testDisableDifficultyButtons() {
 		controller.disableDifficultyButtons();
@@ -137,6 +168,9 @@ class ModeControllerTest {
 		}
 	}
 	
+	/**
+	 * tests if scene change from main menu to freefrom works
+	 */
 	@Test
 	void testHandleManualFreeForm() {
 		BasicGameLogic model = new FreeFormLogic(Gamestate.OPEN, 0, 0);
@@ -149,7 +183,9 @@ class ModeControllerTest {
 		assertEquals(Gamestate.DRAWING,model.getGamestate());
 	}
 	
-	
+	/**
+	 * tests if scene change from main menu to manual sudoku works
+	 */
 	@Test
 	void testHandleManualSudoku() {
 		BasicGameLogic model = new SudokuLogic(Gamestate.OPEN, 0, 0);
@@ -162,6 +198,9 @@ class ModeControllerTest {
 		assertEquals(Gamestate.CREATING,model.getGamestate());
 	}
 	
+	/**
+	 * tests if play buttons are disabled sucessfully
+	 */
 	@Test
 	void testUnlockPlayActions() {
 		controller.handleToSudoku(actionEvent);
@@ -174,6 +213,9 @@ class ModeControllerTest {
 	assertFalse(controller.getGameBuilder().getHintButton().isDisabled());
 }
 	
+	/**
+	 * tests if manual play mode was selected
+	 */
 	@Test
 	void testCheckIfManualWasPressed() {
 			controller.handleToSudoku(actionEvent);

@@ -322,7 +322,7 @@ class GameControllerTest {
 		controller.getModel().getCells()[1][1].setFixedNumber(true);
 		controller.connectArrays();
 		assertFalse(controller.getsudokuField()[0][0].isDisabled());
-		assertTrue(controller.getsudokuField()[1][1].isDisabled());
+		assertFalse(controller.getsudokuField()[1][1].isDisabled());
 	}
 	
 }

@@ -18,7 +18,9 @@ class CellTest {
         cell = new Cell(0, 1, 3, 9);
     }
 
-    //Getter
+	/**
+	 * getters and setters
+	 */
     @Test
     void testGetIsReal() {
         assertTrue(cell.getFixedNumber());
@@ -45,7 +47,6 @@ class CellTest {
     }
 
 
-    //Setter
     @Test
     void testSetIsReal() {
         cell.setFixedNumber(false);
@@ -76,6 +77,9 @@ class CellTest {
         assertEquals(5,cell.getValue());
     }
 
+	/**
+	 * toString
+	 */
     @Test
     void testToString() {
         String output = "Feld [col=" + cell.getCol() + ", row=" + cell.getRow() + ", box=" + cell.getBox()

@@ -15,15 +15,21 @@ import logic.SamuraiLogic;
 
 class SamuraiLogicTest {
 
-	
+
 	BasicGameLogic model;
 	
+	/**
+	 * before each test a new empty samurai logic model is set up
+	 */
 	@BeforeEach
 	public void setUp(){
 		model = new SamuraiLogic(Gamestate.OPEN, 0 , 0);
 		model.setUpLogicArray();
 	}
 	
+	/**
+	 * tests if the set up array contains all 369 cells
+	 */
 	@Test
 	void testSetUpLogicArray() {
 		int count = 0;
@@ -38,7 +44,9 @@ class SamuraiLogicTest {
 		assertEquals(369, count);
 	}
 	
-	
+	/**
+	 * tests setting cells
+	 */
 	@Test
 	void testSetCells() {
 		SamuraiLogic model2 = new SamuraiLogic(Gamestate.OPEN, 0 , 0);
@@ -56,6 +64,11 @@ class SamuraiLogicTest {
 //		assertTrue(model.getCells()[1][1].getIsReal());
 //	}
 
+	/**
+	 * part of valid method
+	 * tests if all rows are checked in  9 different cases covering all of the 5 fields and the 4 overlapping boxes
+	 * tests each constellation without conflicts and with conflicts 
+	 */
 	@Test
 	void TestRowTopLeft() {
 		model.getCells()[4][4].setValue(5);
@@ -130,7 +143,9 @@ class SamuraiLogicTest {
 	
 	
 	/**
-	 * TestSamuraiCol
+	 * part of valid method
+	 * tests if all columns are checked in  9 different cases covering all of the 5 fields and the 4 overlapping boxes
+	 * tests each constellation without conflicts and with conflicts 
 	 */
 	@Test
 	void TestColopLeft() {
@@ -204,7 +219,9 @@ class SamuraiLogicTest {
 	}
 	
 	/**
-	 * TestSamuraiBox
+	 * part of valid method
+	 * tests if all boxes are checked in 5 different cases 
+	 * tests each constellation without conflicts and with conflicts 
 	 */
 	@Test
 	void TestBoxTopLeft() {
@@ -241,12 +258,11 @@ class SamuraiLogicTest {
 		assertFalse(model.checkBox(10, 9, 5));
 	}
 
-
 	
-	
-
-	
-	
+	/**
+	 * tests if samurai sudoku is validated when user inserts a correct number 
+	 * and if validation is false when a false number is inserted  by user
+	 */
     @Test
     void testValid() {
         assertTrue(model.valid(0, 0, 5));
@@ -257,6 +273,9 @@ class SamuraiLogicTest {
         assertFalse(model.valid(0, 1, 5));
     }
     
+	/**
+	 * tests if samurai sudoku is validated without conflicts
+	 */
 	@Test
 	void testValidTrue() {
 		//ROW
@@ -272,6 +291,9 @@ class SamuraiLogicTest {
 		assertTrue(model.valid(0, 2, 5));
 	}
 	
+	/**
+	 * tests if samurai sudoku is not validated when a conflict occurs in a box
+	 */
 	@Test
 	void testValidFalseBox() {
 		//ROW
@@ -287,6 +309,9 @@ class SamuraiLogicTest {
 		assertFalse(model.valid(2, 1, 4));
 	}
 
+	/**
+	 * tests if samurai sudoku is not validated when a conflict occurs in a row
+	 */
 	@Test
 	void testValidFalseRow() {
 		//ROW
@@ -302,6 +327,9 @@ class SamuraiLogicTest {
 		assertFalse(model.valid(0, 1, 1));
 	}
 	
+	/**
+	 * tests if samurai sudoku is not validated when a conflict occurs in a column
+	 */
 	@Test
 	void testValidFalseCol() {
 		//ROW
@@ -317,6 +345,9 @@ class SamuraiLogicTest {
 		assertFalse(model.valid(1, 0, 2));
 	}
 	
+	/**
+	 * tests if a playable samurai sudoku cell array is created
+	 */
 	@Test
 	void testCreate() {
 		model.createSudoku();
@@ -332,12 +363,18 @@ class SamuraiLogicTest {
 		assertEquals(441, count);
 	}
 	
+	/**
+	 * tests if a playable samurai sudoku cell array is created
+	 */
 	@Test
 	void testCreate2() {
 		assertTrue(model.createSudoku());
 	}
 	
-	
+	/**
+	 * tests if the the correct number of cell values are displayed 
+	 * difficulty easy -> 210 displayed, 159 not
+	 */
 	@Test
 	void testDifficulty3() {
 		model.createSudoku();
@@ -355,6 +392,10 @@ class SamuraiLogicTest {
 	}
 
 
+	/**
+	 * tests if the the correct number of cell values are displayed 
+	 * difficulty medium -> 190 displayed, 179 not
+	 */
 	@Test
 	void testDifficulty5() {
 		model.createSudoku();
@@ -371,6 +412,10 @@ class SamuraiLogicTest {
 		assertEquals(179,count);
 	}
 	
+	/**
+	 * tests if the the correct number of cell values are displayed 
+	 * difficulty hard -> 170 displayed, 199 not
+	 */
 	@Test
 	void testDifficulty7() {
 		model.createSudoku();
@@ -387,6 +432,9 @@ class SamuraiLogicTest {
 		assertEquals(199, count);
 	}
 	
+	/**
+	 * tests if a sudoku with difficulty easy is solveable
+	 */
 	@Test
 	void testSolve() {		
 	model.createSudoku();
@@ -400,12 +448,18 @@ class SamuraiLogicTest {
 //	model.printCells();
 //	}
 	
+	/**
+	 * tests setting Gamestate
+	 */
 	@Test
 	void testSetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		assertEquals(model.getGamestate(), Gamestate.DONE);
 	}	
 	
+	/**
+	 * tests getting Gamestate
+	 */
 	@Test
 	void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);
@@ -413,7 +467,9 @@ class SamuraiLogicTest {
 		assertEquals(model.getGamestate(),Gamestate.DONE);
 	}	
 	
-	
+	/**
+	 * tests if true->'samurai sudoku solved'  is returned when the sudoku was solved by method
+	 */
 	@Test
 	void testIfSolvedTrue() {		
 		model.createSudoku();
@@ -423,6 +479,9 @@ class SamuraiLogicTest {
 		assertTrue(model.testIfSolved());
 	}	
 	
+	/**
+	 * tests if false->'samurai sudoku not solved'  is returned when the sudoku was not solved by method
+	 */
 	@Test
 	void testIfSolvedFalse() {		
 		model.createSudoku();
@@ -431,7 +490,9 @@ class SamuraiLogicTest {
 		assertFalse(model.testIfSolved());
 	}	
 	
-	
+	/**
+	 * tests if the hint method displays a new number in the array
+	 */
 	@Test
     void testHint() {
         int [] sollutionArray = new int[] {0, 0};

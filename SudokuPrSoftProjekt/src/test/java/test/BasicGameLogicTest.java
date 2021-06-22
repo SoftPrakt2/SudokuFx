@@ -15,13 +15,18 @@ class BasicGameLogicTest {
 	
 	BasicGameLogic model;
 	
+	/**
+	 * before each test a new empty logic model is set up
+	 */
 	@BeforeEach
 	public void setUp(){
 		model = new SamuraiLogic(Gamestate.OPEN, 0 , 0);
 		model.setUpLogicArray();
 	}
 	
-
+	/**
+	 * getters and setters
+	 */
 	@Test
 	void testSetCells() {
 		SamuraiLogic model2 = new SamuraiLogic(Gamestate.OPEN, 0 , 0);
