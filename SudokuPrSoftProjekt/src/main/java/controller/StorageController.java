@@ -94,8 +94,7 @@ public class StorageController {
 			gameBuilder = new FreeFormGameBuilder(gameModel);
 		}
 
-		
-		
+			
 		
 		gameBuilder.initializeGame();
 
@@ -245,9 +244,10 @@ public class StorageController {
 				
 
 				else if (gameModel.getCells()[j][i].isHint() && gameModel.getCells()[j][i].getValue() != 0) {
-				
-
+					
+					
 					sudokuField[i][j].getStyleClass().add("textfieldHint");
+					sudokuField[i][j].setDisable(true);
 				}
 
 			}

@@ -26,9 +26,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		setSceneHeight(1050);
 		}
 
-	
-	
-	
+		
 	/**
 	 * Draws the SamuraiGame playboard, this playboard is filled with 21x21 Stackpanes with SudokuFields inside them
 	 * This container nesting is needed to ensure correct scaling of the playboard 
@@ -123,7 +121,6 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				}
 			}
 		}
-		
 		
 		
 	}

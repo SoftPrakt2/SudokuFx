@@ -32,7 +32,7 @@ public class Cell {
 		this.boxcolor = "";
 		isHint = false;
 	}
-
+	
 	/**
 	 * getter and setter
 	 * @return

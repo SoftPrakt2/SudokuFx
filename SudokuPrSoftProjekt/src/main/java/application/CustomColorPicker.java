@@ -41,7 +41,7 @@ public class CustomColorPicker {
 				return new ColorRectCell();
 			}
 		};
-
+		
 		cmb.setCellFactory(factory);
 
 		Callback<ListView<String>, ListCell<String>> factoryTooltip = new Callback<ListView<String>, ListCell<String>>() {

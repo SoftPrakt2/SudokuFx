@@ -61,7 +61,6 @@ public abstract class BasicGameBuilder {
 	 * The VBox toolbox works as the container for {@link #toolBar} and
 	 * {@link #menuBar} this VBox is needed, to position the {@link #toolBar} under
 	 * the {@link #menuBar}
-	 * test
 	 */
 	private VBox toolbox;
 
@@ -207,20 +206,10 @@ public abstract class BasicGameBuilder {
 		}
 	}
 	
-	
-	
-	
 
-	
-	
-	
-	
-	
-
-	
 
 	/**
-	 * Removes the listeners from the SudokuFields added with the
+	 * Removes the listeners from the SudokuTextFields added with the
 	 * {@link #addConflictListeners()} method
 	 */
 	public void removeConflictListeners() {
@@ -389,6 +378,7 @@ public abstract class BasicGameBuilder {
 			rule.showRulePopUp();
 		});
 	}
+	
 
 	/**
 	 * Creates a statusbar which is positioned on the bottom of the Game UI
@@ -432,7 +422,7 @@ public abstract class BasicGameBuilder {
 
 	/**
 	 * 
-	 * Getter und Setter für die Variablen dieser Klasse
+	 * Getter and setter for variables of this class
 	 */
 	public SudokuTextField[][] getTextField() {
 		return this.textField;

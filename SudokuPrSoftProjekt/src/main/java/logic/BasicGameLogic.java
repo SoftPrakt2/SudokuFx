@@ -79,8 +79,6 @@ public abstract class BasicGameLogic {
 
 	private int difficulty;
 	
-	
-	
 	/**
 	 * this variable is needed to determine how many numbers are currently inside the sudokuboard (both from the user and automatically generated)
 	 * used for determing if the game is correctly saved or not
@@ -222,7 +220,6 @@ public abstract class BasicGameLogic {
 	 * This method is used to save the values of a created game sudoku game
 	 */
 	public void connectToSavedResults() {
-	
         for (int row = 0; row < this.getCells().length; row++) {
             for (int col = 0; col < this.getCells()[row].length; col++) {
                 this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
@@ -232,8 +229,11 @@ public abstract class BasicGameLogic {
 	
 	
 	
-	
-	
+	/**
+	 * This auxiliary method is used to store a games solution inside a help array
+	 * This is needed so user inputs can be checked if they are correct 
+	 * @return
+	 */
 	public int[][] alignWithHelper() {
 		Cell[][] help = this.getCells();
 	
@@ -260,10 +260,6 @@ public abstract class BasicGameLogic {
 	}
 
 	
-	
-	
-	
-
 	/**
 	 * solves a sudoku game
 	 * a recursive method for solving a new game
@@ -419,7 +415,8 @@ public abstract class BasicGameLogic {
 
 	
 	/**
-	 * sets game information at the beginning of a new manual game
+	 * this method is used to encapsulate all methods which are needed
+	 * to setup a new cell array for manually created games
 	 */
 	public void initializeCustomGame() {
 		setUpLogicArray();
@@ -433,11 +430,11 @@ public abstract class BasicGameLogic {
 	}
 
 	/**
-	 * initializes a new game
+	 * This method is used to encapsulate all methods which are used 
+	 * set up a games information variables 
 	 * resets values so that a new game can be created correctly
 	 */
 	public void setUpGameInformations() {
-	//	setStartTime(System.currentTimeMillis());
 		setGamePoints(10);
 		setGameState(Gamestate.OPEN);
 		setDifficultyString();
@@ -448,7 +445,8 @@ public abstract class BasicGameLogic {
 	}
 
 	/**
-	 * calls all methods for a new game
+	 * this method is used to encapsulate all methods which are needed
+	 * to setup a new cell array
 	 */
 	public void setUpGameField() {
 		setUpLogicArray();
@@ -459,7 +457,8 @@ public abstract class BasicGameLogic {
 	
 	
 	/**
-	 * starts a timer when a new game is created
+	 * this method is used to initialize a timer object 
+	 * this method furthermore sets the {@link #getMinutesplayed()} and {@link #getSecondsplayed()} variables in realtime
 	 */
 	public void initializeTimer() {
 

@@ -69,7 +69,7 @@ public class NewGamePopUp extends MainMenu {
 		return popOver;
 	}
 	
-	
+
 	/**
 	 * This method creates the togglebuttons which are responsible for selecting a gamemode by calling the method from the super class {@link  application.ModeController#createGameModeButtons()}
 	 */

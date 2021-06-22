@@ -141,5 +141,6 @@ public class AboutStage {
 		Stream.of(rulesHeader).forEach(label -> label.styleProperty()
 				.bind(Bindings.concat("-fx-font-size: ", fontSizeLabelHeader.asString())));
 	}
+	
 
 }

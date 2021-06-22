@@ -7,7 +7,7 @@ package application;
  *
  */
 public class GUIStarter {
-
+	
 	/**
 	 * 
 	 * 

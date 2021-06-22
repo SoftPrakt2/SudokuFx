@@ -1,7 +1,5 @@
 package application;
 
-import java.util.stream.Stream;
-
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
@@ -22,7 +20,12 @@ import logic.BasicGameLogic;
 public class SudokuGameBuilder extends BasicGameBuilder {
 
 	
-	
+	/**
+	 * constructor for this GameBuilder
+	 * sets the SudokuTextField array with the correct size 
+	 * sets the size of the UI when loading a game of this type
+	 * @param model
+	 */
 	public SudokuGameBuilder(BasicGameLogic model) {
 		super(model);
 		setTextField(new SudokuTextField[9][9]);
@@ -30,7 +33,6 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		setSceneHeight(700);
 	}
 		
-
 	/**
 	 * Draws the Sudoku playboard, this playboard is filled with 9x9 Stackpanes with SudokuFields inside them
 	 * This container nesting is needed to ensure correct scaling of the playboard 
@@ -94,8 +96,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 		toolBar.getItems().add(3,getCustomNumbersDone());
 	}
 	
-	
-	}
+}
 	
 	
 	

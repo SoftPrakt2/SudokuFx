@@ -29,7 +29,6 @@ public class CloseWindowStage {
 	private Stage window;
 	
 	
-	
 	/**
 	 * Creates a Stage which displays the closing request
 	 */

@@ -22,6 +22,7 @@ public class SamuraiLogic extends BasicGameLogic {
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
 
+
 	/**
 	 * checks if the value already exists in a row
 	 * gets called in {@link #valid(int, int, int)}

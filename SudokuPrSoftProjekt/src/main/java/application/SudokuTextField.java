@@ -44,6 +44,7 @@ public class SudokuTextField extends TextField {
 		addOnlyNumbers();
 		onlyOneNumber();
 		updateColor();
+		
 		shortcutFriendlyTextField();
 		listeningToColors = false;
 		//this.getStyleClass().add("textfieldBasic");

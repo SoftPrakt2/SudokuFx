@@ -104,7 +104,11 @@ public class GameController {
 	 * necessary variable for a new game to their default state/values.
 	 * Restarts Timer and resets game state to OPEN.
 	 * 
-	 * Removes all unnecessary styles from the text field.
+	 * Depending on the selected game in the main menu 
+	 * either {@link #createGame()}
+	 * {@link #resetManualSudokuOrSamurai()}
+	 * or {@link #newManualFreeFormGame()}
+	 * are called and responisble for creating a new game
 	 */
 	public void newGameHandler(ActionEvent event) {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -119,6 +123,7 @@ public class GameController {
 		resetTextFills();
 
 		model.setNumbersInsideTextField(0);
+		model.setGameID(0);
 
 		if (model.timerIsRunning()) {
 			model.getLiveTimer().stop();
@@ -215,9 +220,11 @@ public class GameController {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (!model.getCells()[j][i].getFixedNumber() && !sudokuField[i][j].getText().equals("-1")) {
-
 					sudokuField[i][j].clear();
 					model.getCells()[j][i].setValue(0);
+				}
+				if(model.getCells()[j][i].isHint()) {
+					sudokuField[i][j].setDisable(false);
 				}
 			}
 		}
@@ -238,9 +245,7 @@ public class GameController {
 	public void customColorsDoneHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
-
 				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
-
 			}
 		}
 
@@ -262,6 +267,7 @@ public class GameController {
 		}
 
 	}
+
 
 	/**
 	 * fixes the numbers that the user wants to create a sudoku with checks for
@@ -414,18 +420,20 @@ public class GameController {
 						 */
 						model.getCells()[row][col].setValue(0);
 						if (!model.valid(row, col, Integer.parseInt(sudokuField[col][row].getText()))) {
+						
 							/**
 							 * if the number with in the current text field with the row and column
 							 * coordinates is wrong, a new style class is added (number gets shown in red),
 							 * so that the user knows that there is a conflict with this number
 							 */
 							model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+							sudokuField[col][row].getStyleClass().remove("textfieldHint");
 							sudokuField[col][row].getStyleClass().add("textfieldWrong");
 							model.setGameState(Gamestate.INCORRECT);
 							result = false;
 						} else {
-							sudokuField[col][row].getStyleClass().remove("textfieldWrong");
-							sudokuField[col][row].getStyleClass().add("textfieldBasic");
+					//		sudokuField[col][row].getStyleClass().remove("textfieldWrong");
+					//s		sudokuField[col][row].getStyleClass().add("textfieldBasic");
 						}
 					}
 				}
@@ -523,6 +531,7 @@ public class GameController {
 		}
 	}
 
+
 	/**
 	 * Empty text fields get enabled so that the user can input his
 	 * numbers inside them.
@@ -541,7 +550,10 @@ public class GameController {
 		}
 	}
 
-	
+	/**
+	 * This auxiliary method is used when creating a new game inside a GameUI
+	 * Sets back the colors of the numbers inside the playing field
+	 */
 	public void resetTextFills() {
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
@@ -601,8 +613,10 @@ public class GameController {
 				 */
 				if (sudokuField[coordinates[1]][coordinates[0]].getText().equals("")) {
 					String number = Integer.toString(model.getCells()[coordinates[0]][coordinates[1]].getValue());
+					model.getCells()[coordinates[0]][coordinates[1]].setIsHint(true);
 					sudokuField[coordinates[1]][coordinates[0]].setText(number);
 					sudokuField[coordinates[1]][coordinates[0]].getStyleClass().add("textfieldHint");
+					sudokuField[coordinates[1]][coordinates[0]].setDisable(true);
 
 					model.setGameState(Gamestate.OPEN);
 					scene.getGameNotificationLabel().setText(model.getGameText());
@@ -613,6 +627,7 @@ public class GameController {
 						if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")
 								&& model.getSavedResults()[row][col] != Integer
 										.parseInt(sudokuField[col][row].getText())) {
+							
 							sudokuField[col][row].getStyleClass().add("textfieldWrong");
 						}
 					}
@@ -651,7 +666,10 @@ public class GameController {
 	}
 
 	/**
-	 * saves the game stops the timer
+	 * this method is used when the game is saved in a Game UI Scene
+	 * The GameModels Cell Array is aligned with the numbers inside the UI SudokuTextFieldArray
+	 * The timer of the UI will be stopped and afterwards the game will be saved with the
+	 * {@link logic.SudokuStorage#saveGame(BasicGameLogic)} method
 	 * 
 	 * @param e
 	 */
@@ -679,7 +697,8 @@ public class GameController {
 
 	/**
 	 * Imports a game This import must be a JSON file a new scene is created
-	 * depending on the import Depending on the saved games gamestate different UI
+	 * depending on the import 
+	 * Depending on the saved games gamestate different UI
 	 * objects have to be enabled or disabled
 	 * 
 	 * @param e
@@ -746,7 +765,6 @@ public class GameController {
 	
 	
 	
-	
 	/**
 	 * This auxiliary method is used during the import process, its use is 
 	 * to align the imported array of numbers with the UI textfield array
@@ -769,8 +787,10 @@ public class GameController {
 					sudokuField[i][j].getStyleClass().add("textfieldLocked");
 				}
 
-				 if (model.getCells()[j][i].isHint() && model.getCells()[j][i].getValue() != 0) {
+				else if (model.getCells()[j][i].isHint() && model.getCells()[j][i].getValue() != 0) {
+					
 					sudokuField[i][j].getStyleClass().add("textfieldHint");
+					sudokuField[i][j].setDisable(true);
 				}
 			}
 		}

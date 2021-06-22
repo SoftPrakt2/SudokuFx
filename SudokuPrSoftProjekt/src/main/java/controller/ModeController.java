@@ -21,8 +21,8 @@ import logic.SudokuLogic;
  * 
  * This Class is the Controller of the {@link application.MainMenu} class. This
  * Controller handles the navigation through the program and ensures that the
- * correct game with the correct difficulty is created Furthermore this
- * controller handles the navigation to the Programms Storage View
+ * correct game with the correct difficulty is created 
+ * Furthermore this controller handles the navigation to the Programms Storage View
  */
 
 public class ModeController {
@@ -153,7 +153,7 @@ public class ModeController {
 			gameScene.getCustomNumbersDone().setVisible(true);
 		}
 		model.initializeCustomGame();
-		lockGameActionButtons();
+		lockGameActionElements();
 		enablePlayButton();
 	}
 
@@ -210,15 +210,14 @@ public class ModeController {
 	}
 
 	/**
-	 * Schaltet den CreateGame Button zur Verwendung frei
+	 * Enables the CreateButton inside the mainmenu
 	 */
 	public void enablePlayButton() {
 		menu.getPlayButton().setDisable(false);
 	}
 
 	/**
-	 * Sperrt die Schwierigkeitsbuttons, diese Methode wird benötigt, damit bei
-	 * einem Wiederaufruf des Hauptmenüs nicht im entsperrten Zustand ist
+	 * Disables the CreateButton inside the mainmenu
 	 */
 	public void disablePlayButton() {
 		menu.getPlayButton().setDisable(true);
@@ -258,7 +257,7 @@ public class ModeController {
 	/**
 	 * Locks the {@link #gameScene} playaction menuitems and buttons
 	 */
-	public void lockGameActionButtons() {
+	public void lockGameActionElements() {
 		Stream.of(gameScene.getHintButton(), gameScene.getAutoSolveButton(), gameScene.getCheckButton())
 				.forEach(button -> {
 					if (!button.isDisabled()) {
@@ -326,7 +325,6 @@ public class ModeController {
 	public void setGameScene(BasicGameBuilder gameScene) {
 		this.gameScene = gameScene;
 	}
-	
 	
 	public void setDifficulty(int difficulty) {
 		this.difficulty = difficulty;

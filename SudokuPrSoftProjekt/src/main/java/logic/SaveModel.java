@@ -30,7 +30,7 @@ public class SaveModel  {
 	public Cell[][] getGameArray() {
 		return gameArray;
 	}
-
+	
 	public void setGameArray(Cell[][] gameArray) {
 		this.gameArray = gameArray;
 	}

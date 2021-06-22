@@ -29,9 +29,13 @@ public class SudokuStorage {
 	 */
 	private boolean fileExists = true;
 	
+	private boolean gameAlreadySaved = false;
+	
 	private FileChooser chooser;
 
 	SharedStoragePreferences storagePref = new SharedStoragePreferences();
+	
+	File[] fileDirectory = new File("SaveFiles").listFiles();
 
 	/**
 	 * Auxiliary method sets the fields of an {@link logic.SaveModel} objects with informations
@@ -42,8 +46,6 @@ public class SudokuStorage {
 	public SaveModel setInformationsToStore(BasicGameLogic gameToSave) {
 		SaveModel saveModel = new SaveModel();
 		
-		
-		
 		int helper;
 		saveModel.setGameArray(gameToSave.getCells());
 		saveModel.setGametype(gameToSave.getGametype());
@@ -53,15 +55,19 @@ public class SudokuStorage {
 		saveModel.setGameState(gameToSave.getGamestate());
 		saveModel.setMinutesPlayed(gameToSave.getMinutesplayed());
 		saveModel.setSecondsPlayed(gameToSave.getSecondsplayed());
+		if(gameToSave.getGameid() < 1) {
 		saveModel.setGameId(storagePref.getStoragePrefs().getInt("GameID", 1));
-	
+		} else {
+			saveModel.setGameId(gameToSave.getGameid());
+		}
 		
-	//	storagePref.getStoragePrefs().putInt("GameID", 1);
 		
 		helper = saveModel.getGameId()+1;
 		storagePref.getStoragePrefs().putInt("GameID", helper);
+	//	storagePref.getStoragePrefs().remove("GameID");
 		return saveModel;
 	}
+	
 
 	/**
 	 * This method handles the actual saving process, in an object of the {@link logic.SaveModel} class
@@ -73,15 +79,32 @@ public class SudokuStorage {
 	public void saveGame(BasicGameLogic gameToSave) {
 		SaveModel saveModel = setInformationsToStore(gameToSave);
 		Gson gson = new GsonBuilder().create();
+		JsonWriter writer;
+		FileWriter fw;
 
 		String fileName = "ID_" + saveModel.getGameId() + "_" + saveModel.getGametype() + "_"
 				+ saveModel.getDifficultyString() + ".json";
 		
 		
 		File saveFile = new File("SaveFiles", fileName);
-
-		JsonWriter writer;
-		FileWriter fw;
+		
+		for(File file : fileDirectory) {
+			SaveModel help = this.convertFileToSaveModel(file);
+			if(help.getGameId() == gameToSave.getGameid()) {
+				gameAlreadySaved = true;
+				try {
+					fw = new FileWriter(file);
+					writer = new JsonWriter(fw);
+					gson.toJson(saveModel, SaveModel.class, writer);
+					fw.close();
+					writer.close();
+				} catch (IOException e) {
+					  System.err.print("The game could not be saved");
+				}
+			}
+		}
+		
+	if(!gameAlreadySaved) {
 		try {
 			fw = new FileWriter(saveFile);
 			writer = new JsonWriter(fw);
@@ -92,7 +115,7 @@ public class SudokuStorage {
 			  System.err.print("The game could not be saved");
 		}
 	}
-	
+	}
 
 	/**
 	* This method handles the actual export process, in an object of the {@link logic.SaveModel} class
@@ -176,6 +199,7 @@ public class SudokuStorage {
 		model.setPlaytimestring(String.format("%02d:%02d", model.getMinutesplayed(), model.getSecondsplayed()));
 		return model;
 	}
+	
 
 	
 	
@@ -195,6 +219,7 @@ public class SudokuStorage {
 		}
 		return data;
 	}
+	
 
 	
 	/**
@@ -212,5 +237,38 @@ public class SudokuStorage {
 	public boolean fileExists() {
 		return fileExists;
 	}
+	
+	
+	
+	
+	public File readFromSaveFileTestHelper(BasicGameLogic gameToSave) {
+			SaveModel saveModel = setInformationsToStore(gameToSave);
+			Gson gson = new GsonBuilder().create();
+			JsonWriter writer;
+			FileWriter fw;
+			
+			String fileName = "ID_" + saveModel.getGameId() + "_" + saveModel.getGametype() + "_"
+					+ saveModel.getDifficultyString() + ".json";
+			
+			
+			File saveFile = new File("SaveFiles", fileName);
+		
+			try {
+				fw = new FileWriter(saveFile);
+				writer = new JsonWriter(fw);
+				gson.toJson(saveModel, SaveModel.class, writer);
+				fw.close();
+				writer.close();
+			} catch (IOException e) {
+				  System.err.print("The game could not be saved");
+			}
+		return saveFile;
+		}
+	}
+	
+	
+	
+	
+	
 
-}
+

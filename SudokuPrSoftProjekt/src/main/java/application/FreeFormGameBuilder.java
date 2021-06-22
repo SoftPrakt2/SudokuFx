@@ -28,7 +28,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		setSceneHeight(670);
 	}
 
-	
+
 	/**
 	 * Draws the FreeForm playboard, this playboard is filled with 9x9 Stackpanes with SudokuFields inside them
 	 * This container nesting is needed to ensure correct scaling of the playboard 

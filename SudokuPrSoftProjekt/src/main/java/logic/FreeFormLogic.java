@@ -85,14 +85,12 @@ public class FreeFormLogic extends SudokuLogic {
 						deleteNumbers();
 						i = 0;
 						j = 0;
-						System.out.println("yeet");
 					}
 
 					if (globalCounter > 2000000) {
 						globalCounter = 0;
 						setCells(loadPreMadeFreeForm());
 						connectToSavedResults();
-						System.out.println("preloadgamemydudeyeeet");
 						return true;
 					}
 				}
@@ -132,6 +130,7 @@ public class FreeFormLogic extends SudokuLogic {
 		}
 		return data.getGameArray();
 	}
+	
 	
 	/**
 	 * resets all values to 0
