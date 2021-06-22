@@ -90,6 +90,7 @@ public class FreeFormLogic extends SudokuLogic {
 					if (globalCounter > 2000000) {
 						globalCounter = 0;
 						setCells(loadPreMadeFreeForm());
+						System.out.println("loaded game");
 						connectToSavedResults();
 						return true;
 					}

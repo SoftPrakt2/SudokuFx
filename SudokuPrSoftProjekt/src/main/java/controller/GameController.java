@@ -225,7 +225,9 @@ public class GameController {
 				}
 				if(model.getCells()[j][i].isHint()) {
 					sudokuField[i][j].setDisable(false);
+					model.getCells()[j][i].setIsHint(false);
 				}
+
 			}
 		}
 		model.setGameState(Gamestate.OPEN);

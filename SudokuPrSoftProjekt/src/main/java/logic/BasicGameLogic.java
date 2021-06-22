@@ -585,7 +585,7 @@ public abstract class BasicGameLogic {
 			gameText = "Please remove the conflicts";
 		}
 		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
-			gameText = "Unsolvable Sudoku state! "+" Please remove the red numbers to continue.";
+			gameText = "Unsolvable Sudoku state!";
 		}
 		if (this.getGamestate() == Gamestate.CREATING) {
 			gameText = "Create your own game!";
