@@ -93,7 +93,7 @@ public class GameOverview {
 	/**
 	 * This method is used to set up the Stage Object of this class
 	 * and show it in the UI 
-	 * @return
+	 * @return stage object which is shown in the UI in 
 	 */
 	public Stage createStage() {
 		storageScene = initializeStorageScene();
@@ -186,9 +186,9 @@ public class GameOverview {
 
 	/**
 	 * This method is used to initialize and position the
-	 * {@link #gameScoreHeaderLabel} label to allow better positioning of the label
-	 * it is put into its own HBox.
-	 * The HBox gameStatsBox is the main container forthe UI Objects which are created in the
+	 * {@link #gameScoreHeaderLabel} and the UI components regarding displaying game informations to allow better positioning of the components
+	 * these are put into a own HBox the gameStatsBox
+	 * The HBox gameStatsBox is the main container for the UI Objects which are created in the
 	 * {@link #createAverageResultContainer()} and
 	 * {@link #createOverallResultContainers()} The usage of the gameStatsBox allows
 	 * better positioning of the containers as a whole inside the window

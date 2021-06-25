@@ -277,7 +277,7 @@ public class StorageController {
 	 * {@link application.GameOverview} Screen The results are dependend on the
 	 * content in the {@link application.GameOverview#getTableView()} thus for each
 	 * result a binding is created which contains the specific result of the
-	 * calculation Lastly each binding is then binded to the
+	 * calculation Lastly each binding is then bound to the
 	 * {@link application.GameOverview} specific lable for the result
 	 */
 	public void calculateGameStats() {

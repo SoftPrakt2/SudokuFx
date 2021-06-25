@@ -15,7 +15,7 @@ public class SharedStoragePreferences {
 	
     Preferences prefs = Preferences.userRoot().node(getClass().getName());
 
-    @SuppressWarnings("static-access")
+  
 	public Preferences getStoragePrefs() {
         return prefs;
     }

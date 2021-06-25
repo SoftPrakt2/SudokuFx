@@ -31,6 +31,9 @@ public class SudokuTextField extends TextField {
 	 */
 	private boolean listeningToColors;
 
+	/**
+	 * defines if a SudokuTextField is currently colored
+	 */
 	private boolean isColored;
 
 	private ChangeListener<Boolean> freeFormColorListener;
@@ -47,7 +50,7 @@ public class SudokuTextField extends TextField {
 		
 		shortcutFriendlyTextField();
 		listeningToColors = false;
-		//this.getStyleClass().add("textfieldBasic");
+	
 
 	}
 

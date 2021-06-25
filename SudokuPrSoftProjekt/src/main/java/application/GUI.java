@@ -23,6 +23,10 @@ public class GUI extends Application {
 	static Pane mainPane;
 
 	
+	/**
+	 * responsible for launching the application 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}

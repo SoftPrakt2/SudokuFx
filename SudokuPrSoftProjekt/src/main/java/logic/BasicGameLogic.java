@@ -33,7 +33,10 @@ public abstract class BasicGameLogic {
 	 * ...
 	 */
 	private Gamestate gamestate;
-
+	
+	/**
+	 * defines the gametype when a subclass is initialized 
+	 */
 	private String gametype = "";
 	
 	
@@ -69,14 +72,21 @@ public abstract class BasicGameLogic {
 	private int[][] temporaryValues;
 	
 	/**
-	 * this variable is used to display the selected difficulty with letters
+	 * this variable is used to display the selected difficulty in letters
 	 */
 	private String difficultyString;
-
+	
+	
+	/**
+	 * this variable will be used to display the game time informations created in the {@link #timer}
+	 */
 	private String playtimeString;
 
 	protected int shuffleCounter;
-
+	
+	/**
+	 * defines the difficulty for a game will be needed in the {@link #difficulty} method
+	 */
 	private int difficulty;
 	
 	/**
@@ -419,6 +429,8 @@ public abstract class BasicGameLogic {
 	 * to setup a new cell array for manually created games
 	 */
 	public void initializeCustomGame() {
+		setSecondsPlayed(0);
+		setMinutesPlayed(0);
 		setUpLogicArray();
 		setDifficulty(0);
 		setDifficultyString();

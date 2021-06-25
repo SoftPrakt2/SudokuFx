@@ -77,7 +77,7 @@ public abstract class BasicGameBuilder {
 	/**
 	 * Labels for the game {@link #gameNotificationLabel} displays text
 	 * corresponding to the games state {@link #gameInfoLabel} displays information
-	 * about the game like current Points or selected Difficulty
+	 * about the game like current Points and selected Difficulty
 	 * {@link #liveTimeLabel} displays the current gametime
 	 */
 	private Label gameNotificationLabel;

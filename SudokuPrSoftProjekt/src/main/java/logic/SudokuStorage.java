@@ -55,15 +55,25 @@ public class SudokuStorage {
 		saveModel.setGameState(gameToSave.getGamestate());
 		saveModel.setMinutesPlayed(gameToSave.getMinutesplayed());
 		saveModel.setSecondsPlayed(gameToSave.getSecondsplayed());
+		
+		//if the game was never saved before give it an ID
 		if(gameToSave.getGameid() < 1) {
 		saveModel.setGameId(storagePref.getStoragePrefs().getInt("GameID", 1));
+		helper = (saveModel.getGameId()+1);
+		storagePref.getStoragePrefs().putInt("GameID", helper);
+		
+		//safety mechanism to ensure that when first saving the game and pressing multiple times the save button 
+		//in the menu only one game is saved
+		gameToSave.setGameID(saveModel.getGameId());
+		
+		
 		} else {
 			saveModel.setGameId(gameToSave.getGameid());
+		//	storagePref.getStoragePrefs().putInt("GameID", saveModel.getGameId());
 		}
 		
 		
-		helper = saveModel.getGameId()+1;
-		storagePref.getStoragePrefs().putInt("GameID", helper);
+	//	storagePref.getStoragePrefs().remove("GameID");
 	//	storagePref.getStoragePrefs().remove("GameID");
 		return saveModel;
 	}

@@ -96,6 +96,9 @@ public class ModeController {
 	public void handleToLoad(ActionEvent e) {
 		GameOverview overview = new GameOverview();
 		overview.createStage();
+		removeSelectedToggles();
+		disableDifficultyButtons();
+		disablePlayButton();
 	}
 
 	/**
