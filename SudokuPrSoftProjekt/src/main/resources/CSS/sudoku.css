@@ -1,27 +1,30 @@
+/**
+ * general styles of the application
+ */
+
 .root {
     -fx-padding: 5px ;
-  	-fx-background-color: #D3D3D3;
-  	 
-	}
+  	-fx-background-color: #dedede;
+}
 	
 .root.popup {
     -fx-background-color: transparent;
 }
 	
-	
-	
 .customBackgroundColor {
     -fx-padding: 5px ;
   	-fx-background-color:  -fx-background;
-	}
+}
 
-	
 .grid-pane {
 	 -fx-background-color: #D3D3D3;
 }
 
 
 
+/**
+ * style of cells from samurai sudoku
+ */
 
 .samuraicell {
 	-fx-background-color:  black,  	#D3D3D3;
@@ -29,28 +32,46 @@
     -fx-padding: 1px;
 }
 
+.coloredSamuraiCell {
+	-fx-background-color:  #97c1a9;
+}
+
+.coloredSamuraiCell2 {
+	-fx-background-color: #556B2F;
+}
+
+.emptySamuraiCell {
+	-fx-pref-width: 2em;
+}
+
+.samuraiFont {
+	-fx-font-family:"Arial";
+	-fx-font-weight:bold;
+	-fx-font-size: 20px;
+}	
+
+
+/**
+ * style of cells from freeform sudoku
+ */
+
 .emptyFreeFormCell {
 	-fx-background-color: white;
 }
 
 
-
-
+/**
+ * styles of cells (text fields) 
+ */
 
 .textfieldBasic {
 	 -fx-pref-width: 3em ;
     -fx-pref-height: 3em ;
 	-fx-text-fill:   #4F7942;
-	
 	-fx-font-family:"Arial";
 	-fx-font-weight:bold;
 	-fx-font-size: 23px;
-	
 }
-
-
-
-
 
 .textFieldUser {
 	-fx-pref-width: 3em ;
@@ -92,88 +113,26 @@
 	
 }
 
-
 .cell .texxt-field {
     -fx-pref-width: 3em ;
     -fx-pref-height: 3em ;
 }
 
-
 .text-field:disabled, .text-field:disabled > * {
 	-fx-opacity: 1.0;
 }
-
-
-
-
-
-.popover > .border {
-    -fx-stroke: linear-gradient(to bottom, rgba(0,0,0, .3), rgba(0, 0, 0, .7));
-    -fx-stroke-width: 0.5;
-    -fx-fill: rgba(30 , 30, 30, .95);
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,.2), 10.0, 0.5, 2.0, 2.0);
-}
-
-
-
-
-
-
-.coloredSamuraiCell {
-	-fx-background-color:  #97c1a9;
-}
-
-.coloredSamuraiCell2 {
-	-fx-background-color: #556B2F;
-}
-
-.emptySamuraiCell {
-	-fx-pref-width: 2em;
-}
-
-.samuraiFont {
-	-fx-font-family:"Arial";
-	-fx-font-weight:bold;
-	-fx-font-size: 20px;
-}	
-
-
-
-
-
-.mainMenuLabelsSmall {
-	-fx-font-family: 'Georgia';
-	-fx-font-size: 12px;
-	-fx-text-fill: #A9A9A9;
-}
-
-
-
-.storageHeaderLabel {
-	-fx-font-family: 'Georgia';
-	-fx-font-size: 14px;
-}
-
-
-
 
 .hidden {
 	-fx-opacity: 0;
 }
 
-
-
-
 .hidden:right {
 	-fx-background-insets: 0, 0 1 0 0 ;
 }
 
-
 .sudokucell {
-   
 	-fx-background-color:  black, #D3D3D3;
     -fx-background-insets: 0, 0 ;
-
     -fx-padding: 2px;
 }
 
@@ -192,8 +151,6 @@
 .sudokucell:right:bottom {
     -fx-background-insets: 0, 0 1 1 0 ;
 }
-
-
 
 .hidden:right {
 	-fx-background-insets: 0, 0 1 0 0 ;
@@ -216,10 +173,27 @@
 }
 
 
+/**
+ * styles for the main menu
+ */
 
+.popover > .border {
+    -fx-stroke: linear-gradient(to bottom, rgba(0,0,0, .8), rgba(0, 0, 0, .7));
+    -fx-stroke-width: 0.5;
+    -fx-fill: rgba(30 , 30, 30, .95);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,.8), 10.0, 0.5, 2.0, 2.0);
+}
 
+.mainMenuLabelsSmall {
+	-fx-font-family: 'Georgia';
+	-fx-font-size: 12px;
+	-fx-text-fill: #A9A9A9;
+}
 
-
+.storageHeaderLabel {
+	-fx-font-family: 'Georgia';
+	-fx-font-size: 14px;
+}
 
 .welcomeLabel {
 	-fx-font-family:Georgia;
@@ -242,13 +216,11 @@
 	-fx-font-size: 20px;
 }
 
-
 .storageHeaderLabel {
 	-fx-font-family:Georgia;
 	-fx-font-size: 25px;
 	-fx-font-weight: bold;
 }
-
 
 .myButton2 {
 	-fx-background-color:transparent;
@@ -267,7 +239,6 @@
 	-fx-background-radius: 28;
 	-fx-background-color:grey;
 	 -fx-background-insets: 0 0 0 0, 0, 0, 0;
-	 
 }
 
 
@@ -280,17 +251,12 @@
 }
 
 .myButton2:disabled {
-	-fx-opacity: 0.8;
+	-fx-opacity: 0.4;
 }
-	
-
-	
 
 .menu-bar {
     -fx-background-color: #D3D3D3 ;
-  	
     -fx-border-width: 2.0;
-
 }
 
 .gameLabel {
@@ -298,18 +264,3 @@
     -fx-font-Size: 12px;
     -fx-font-weight: bold;
 }
-	
-
-	
-
-
-	
-	
-	
-	
-
-
-
-
-
-
