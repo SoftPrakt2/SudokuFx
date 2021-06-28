@@ -202,7 +202,7 @@ public class GameOverview {
 		gameStatsBox.getChildren().addAll(createAverageResultContainer(), gameScoreHeaderLabel,
 				createOverallResultContainers());
 		tableviewBox.getChildren().add(gameStatsBox);
-		BasicGameBuilder o;
+	
 		
 	}
 

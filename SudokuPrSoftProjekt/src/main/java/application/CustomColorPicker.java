@@ -22,8 +22,8 @@ public class CustomColorPicker {
 
 	/**
 	 * 
-	 * Initializes the UI Object ComboBox,which contains a list of predefined colors. and adds a list of predefined Colors to it this list
-	 * of Colors will be shown as list of rectangles inside the UI
+	 * Initializes the UI Object ComboBox,which contains a list of predefined colors.
+	 * of Colors will be shown as dropdown field of rectangles inside the UI
 	 * 
 	 * @return the created CombBox
 	 */

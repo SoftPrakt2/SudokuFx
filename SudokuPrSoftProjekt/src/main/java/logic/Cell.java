@@ -1,5 +1,10 @@
 package logic;
 
+/**
+ * This class describes the structure of a Cell object, these objects are used in the {@link logic.BasicGameLogic} classes to create a sudoku model playing field
+ * @author grube
+ *
+ */
 public class Cell {
 
 	// column 1 - 9
@@ -20,6 +25,7 @@ public class Cell {
 	// Cell color
 	String boxcolor;
 	
+	//declares if the number is a system provided hint
 	boolean isHint;
 
 	public Cell(int row, int col, int box, int value) {
@@ -35,7 +41,6 @@ public class Cell {
 	
 	/**
 	 * getter and setter
-	 * @return
 	 */
 	public boolean getFixedNumber() {
 		return this.isReal;

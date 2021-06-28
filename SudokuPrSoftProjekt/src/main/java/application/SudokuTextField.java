@@ -12,7 +12,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 
 /**
- * This class is an extension of the JavaFx TextField SudokuFields are enhanced
+ * This class is an extension of the JavaFx TextField SudokuTextFields are enhanced
  * with several listeners to be better suitable for the purpose of a sudokugame
  * 
  * @author grube
@@ -166,7 +166,7 @@ public class SudokuTextField extends TextField {
 	}
 
 	/**
-	 * Sets the background of a textfield
+	 * Sets the background color of a sudokutextfield
 	 * 
 	 * @param color of the background
 	 */

@@ -22,7 +22,7 @@ import logic.SudokuLogic;
  * This Class is the Controller of the {@link application.MainMenu} class. This
  * Controller handles the navigation through the program and ensures that the
  * correct game with the correct difficulty is created 
- * Furthermore this controller handles the navigation to the Programms Storage View
+ * Furthermore this controller handles the navigation to the Programms GameOverView
  */
 
 public class ModeController {
@@ -205,7 +205,9 @@ public class ModeController {
 	public void removeSelectedToggles() {
 		if (menu.getPlayModeToggle().getSelectedToggle() != null) {
 			menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
+			
 		}
+		
 
 		if (menu.getDifficultyToggle().getSelectedToggle() != null) {
 			menu.getDifficultyToggle().getSelectedToggle().setSelected(false);

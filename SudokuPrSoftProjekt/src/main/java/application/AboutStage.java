@@ -17,7 +17,7 @@ import javafx.stage.Stage;
  * This class is used to show a little PopUp in the UI displaying information
  * about the programm and its developers
  * 
- * @author grube
+ * @author gruber
  *
  */
 public class AboutStage {

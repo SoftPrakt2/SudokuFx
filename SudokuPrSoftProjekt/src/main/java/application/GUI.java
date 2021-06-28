@@ -58,8 +58,6 @@ public class GUI extends Application {
 		
 		window.setTitle("SudokuFx");
 		window.setOnCloseRequest(e -> {
-			// consume heißt führe den schließvorgang fort und es wird nicht immer
-			// geschlossen nur wenn yes gedrückt wird
 			e.consume();
 			closeProgram();
 			

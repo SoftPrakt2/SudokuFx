@@ -389,5 +389,3 @@ class SudokuLogicTest {
 //        assertEquals(null, returnArray);
 //    }
 }
-
-

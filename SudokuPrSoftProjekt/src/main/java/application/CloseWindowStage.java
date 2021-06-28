@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 /**
  *  CloseWindowStage is used to generate a PopUp which asks the user if he/she wants to close the program
- *  @author grube
+ *  @author gruber
  *
  */
 public class CloseWindowStage {

@@ -268,7 +268,7 @@ public class MainMenu {
 	}
 	
 	/**
-	 * Gets this class scene bbject 
+	 * Gets this class scene object 
 	 * @return mainScene
 	 */
 	public Scene getScene() {

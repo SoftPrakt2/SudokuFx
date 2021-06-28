@@ -38,7 +38,7 @@ import logic.BasicGameLogic;
  * The abstract BasicGameBuilder class is the basic class for the Game UI. In
  * this class several UI Components like Buttons or the menu are created
  * 
- * @author grube
+ * @author gruber
  *
  */
 public abstract class BasicGameBuilder {

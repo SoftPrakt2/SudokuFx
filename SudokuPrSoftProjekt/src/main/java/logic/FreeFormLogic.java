@@ -30,7 +30,7 @@ public class FreeFormLogic extends SudokuLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[9][9]);
 		setGametype("FreeForm");
-		setNumbersToBeSolvable(2);
+		setNumbersToBeSolvable(17);
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
 	

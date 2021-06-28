@@ -16,7 +16,8 @@ import javafx.scene.text.FontWeight;
 import logic.BasicGameLogic;
 
 /**
- * @author grube Defines the UI representation of a FreeForm Game
+ * @author gruber
+ *  Defines the UI representation of a FreeForm Game
  */
 public class FreeFormGameBuilder extends BasicGameBuilder {
 

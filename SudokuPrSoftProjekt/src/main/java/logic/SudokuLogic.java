@@ -19,7 +19,7 @@ public class SudokuLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[9][9]);
 		setGametype("Sudoku");
-		setNumbersToBeSolvable(2);
+		setNumbersToBeSolvable(21);
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
 	

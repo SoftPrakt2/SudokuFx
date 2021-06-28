@@ -65,6 +65,7 @@ public class StorageController {
 	private TableColumn<BasicGameLogic, Gamestate> gamestatecolumn;
 	private TableColumn<BasicGameLogic, Integer> gameidcolumn;
 
+	
 	public StorageController(GameOverview storage) {
 		this.storage = storage;
 		storageModel = new SudokuStorage();
@@ -163,9 +164,7 @@ public class StorageController {
 	 * directory is iterated through and each file in it will be converted to an
 	 * Object of the {@link logic.SaveModel} class Afterwards the informations of
 	 * the SaveModel object will be loaded into the {@link #gameModel} object which
-	 * is an Object of {@link application.BasicGameLogic} class This approach allows
-	 * the use of polymorphism when the {@link #gameModel} is filled with the
-	 * informations from the savedGame
+	 * is an Object of {@link application.BasicGameLogic} class
 	 */
 	public void fillTableVew() {
 		jsonObservableList = FXCollections.observableArrayList();
