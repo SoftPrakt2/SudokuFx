@@ -888,4 +888,8 @@ public class GameController {
 	public SudokuTextField[][] getsudokuField() {
 		return this.sudokuField;
 	}
+	
+	public BasicGameBuilder getScene() {
+		return this.scene;
+	}
 }
