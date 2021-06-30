@@ -8,6 +8,8 @@ package logic;
  */
 public class SamuraiLogic extends BasicGameLogic {
 
+	private int [][] helper;
+	private int [][] temporaryResult;
 	/**
 	 * constructor for creating a Samurai-Object
 	 * this constructor extends the BasicGameLogic constructor
@@ -18,9 +20,11 @@ public class SamuraiLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[21][21]);
 		setGametype("Samurai");
-		setNumbersToBeSolvable(140);
+		setNumbersToBeSolvable(1);
 	//	this.setNumbersNeededToSolve(15);
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
+		this.helper = new int[this.getCells().length][this.getCells().length];
+		this.temporaryResult = new int[this.getCells().length][this.getCells().length];
 	}
 
 
@@ -212,6 +216,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	 */
 	@Override
 	public void difficulty() {
+		counter = 0;
 		int counter = getNumberOfVisibleValues();
 
         if(counter == 369) {
@@ -238,10 +243,10 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public int getNumberOfVisibleValues() {
 		if(this.getDifficulty() == 3) {
-			return 210;
+			return 244;
 		}
 		else if(this.getDifficulty() == 5) {
-			return 190;
+			return 200;
 		}
 		else if(this.getDifficulty() == 7) {
 			return 170;
@@ -251,7 +256,114 @@ public class SamuraiLogic extends BasicGameLogic {
 		}
 	}
 
+	public void SolveCellsWithOnlyOnePossibleValue() {
+		helper = new int[this.getCells().length][this.getCells().length];
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				helper[row][col] = this.getCells()[row][col].getValue();
+			}
+		}
+		
+		int counter = 0;
+		int rightValue = 0;
+		
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				counter = 0;
+				if (this.getCells()[row][col].getValue() == 0) {
+					for (int y = 1; y <= 9; y++) {
+						if(this.valid(row, col, y)) {
+							counter++;
+							rightValue = y;
+						}
+					}
+					if(counter == 1) {
+						helper[row][col] = rightValue;
+					}
+				}
+			}
+		}
+		
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				this.getCells()[row][col].setValue(helper[row][col]);
+			}
+		}
+	}
+	static int counter = 0;
+	
+	public void CallSolveCellsWithOnlyOneValue() {
+		for (int row = 0; row < 10; row++) {
+			SolveCellsWithOnlyOnePossibleValue();
+		}
+	}
 
+	@Override
+	public boolean solveSudoku() {
+		int[] coordinates = new int[2];
+		if(counter == 0) {
+			CallSolveCellsWithOnlyOneValue();
+			counter++;
+		}
+		int [][] helper = new int [this.getCells().length][this.getCells().length];
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				helper[row][col] = this.getCells()[row][col].getValue();
+			}
+		}
+		int minPossibilities = 10;
+		int counter = 0;
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				counter = 0;
+				if (this.getCells()[row][col].getValue() == 0) {
+					for (int y = 1; y <= 9; y++) {
+						if(this.valid(row, col, y)) {
+							counter++;
+						}
+					}
+					if(counter < minPossibilities) {
+						minPossibilities = counter;
+						coordinates[0]= row;
+						coordinates[1]= col;
+					}
+				}
+			}
+		}
+		if(minPossibilities == 0) {
+			return false;
+		}
+		
+//		// iterates the array
+//		for (int row = coordinates[0]; row < this.getCells().length; row++) {
+//			for (int col = coordinates[1]; col < this.getCells()[row].length; col++) {
+				// checks if the cell has the value 0
+				if (this.getCells()[coordinates[0]][coordinates[1]].getValue() == 0) {
+					// checks witch of the numbers between 1 and 9 are valid inputs
+					for (int y = 1; y <= 9; y++) {
+						// checks if current number is valid
+						if (valid(coordinates[0], coordinates[1], y)) {
+							// sets value if the generated number is valid
+							this.getCells()[coordinates[0]][coordinates[1]].setValue(y);
+							CallSolveCellsWithOnlyOneValue();
+							if (solveSudoku()) {// recursive call the the method
+								return true;
+							} else {
+								this.getCells()[coordinates[0]][coordinates[1]].setValue(0);
+								for (int row2 = 0; row2 < this.getCells().length; row2++) {
+									for (int col2 = 0; col2 < this.getCells()[row2].length; col2++) {
+										this.getCells()[row2][col2].setValue(helper[row2][col2]);
+									}
+								}
+							}
+						}
+					}
+					return false;
+				}
+//			}
+//		}
+		return true;
+	}
 
 	@Override
 	public boolean isConnected() {
