@@ -61,7 +61,6 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 				ObjectProperty<Font> fontTracking = new SimpleObjectProperty<Font>(getTextField()[row][col].getFont());
 				getTextField()[row][col].fontProperty().bind(fontTracking);
 				gameRoot.widthProperty().addListener(new ChangeListener<Number>() {
-
 					@Override
 					public void changed(ObservableValue<? extends Number> observableValue, Number oldWidth,
 							Number newWidth) {
@@ -70,7 +69,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 				});
 
 				
-				
+			
 				cell.getChildren().add(getTextField()[row][col]);
 
 				playBoard.add(cell, row, col);

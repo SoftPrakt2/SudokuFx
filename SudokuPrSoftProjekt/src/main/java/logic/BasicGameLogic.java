@@ -4,12 +4,20 @@ package logic;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javafx.animation.AnimationTimer;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 
 /**
  * The abstract class BasicGameLogic is a basic class for all Sudoku-Subclasses
@@ -33,15 +41,13 @@ public abstract class BasicGameLogic {
 	/**
 	 * defines the gametype when a subclass is initialized
 	 */
-	private String gametype = "";
+	private String gametype;
 
-	private int gamePoints = 10;
-	private boolean manualGame;
-
+	private int gamePoints;
 	private long minutesPlayed;
 	private long secondsPlayed;
 	protected Random r;
-	private String gameText = "";
+	private String gameText;
 	private int gameID = 0;
 
 	
@@ -109,9 +115,14 @@ public abstract class BasicGameLogic {
 	 * while creating a manual game for the game to be solvable
 	 */
 	private int manualNumbersInserted;
-
+	
+	
+	/**
+	 * timer object which is responsible for updating {@link #getSecondsplayed()} and {@link #getMinutesplayed() in real time}
+	 */
 	private AnimationTimer timer;
 	private BooleanProperty timerIsRunning = new SimpleBooleanProperty();
+	
 
 	/**
 	 * constructor for creating a BasicGameLogic object
@@ -122,7 +133,6 @@ public abstract class BasicGameLogic {
 	 *                      current game
 	 * @param secondsPlayed : the number of seconds, that the player has played his
 	 *                      current game
-	 * @param isCorrect     : boolean to check if the sudoku was solved correctly
 	 */
 	protected BasicGameLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
 		super();
@@ -132,7 +142,6 @@ public abstract class BasicGameLogic {
 		liveTimePlayedString = new SimpleStringProperty();
 		shuffleCounter = 0;
 		this.r = new Random();
-		this.manualGame = true;
 	}
 
 	/**
@@ -161,11 +170,11 @@ public abstract class BasicGameLogic {
 	 * @return
 	 */
 	public boolean checkBox(int row, int col, int guess) {
-		int boxRow = row - row % 3;
-		int boxCol = col - col % 3;
+		int r = row - row % 3;
+		int c = col - col % 3;
 
-		for (int i = boxRow; i < boxRow + 3; i++) {
-			for (int j = boxCol; j < boxCol + 3; j++) {
+		for (int i = r; i < r + 3; i++) {
+			for (int j = c; j < c + 3; j++) {
 				if (this.cells[i][j].getValue() == guess) {
 					return false;
 				}
@@ -221,7 +230,12 @@ public abstract class BasicGameLogic {
 			}
 		}
 
-		connectToSavedResults();
+		this.savedResults = new int[this.cells.length][this.cells.length];
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
+			}
+		}
 		return true;
 	}
 
@@ -240,9 +254,9 @@ public abstract class BasicGameLogic {
 	 * This auxiliary method is used to store a games solution inside a help array
 	 * This is needed so user inputs can be checked if they are correct
 	 * 
-	 * @return
+	 * @return solved sudoku game in the form of a Cell [][]
 	 */
-	public int[][] alignWithHelper() {
+	public int[][] createBackgroundSolution() {
 		Cell[][] help = this.getCells();
 
 		for (int row = 0; row < this.getCells().length; row++) {
@@ -258,6 +272,7 @@ public abstract class BasicGameLogic {
 		for (int row = 0; row < this.getCells().length; row++) {
 			for (int col = 0; col < this.getCells()[row].length; col++) {
 				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
+				System.out.println(this.getSavedResults()[row][col]);
 			}
 		}
 		this.setCells(help);
@@ -301,7 +316,7 @@ public abstract class BasicGameLogic {
 	 * gives the user a valid hint sudoku is solved before hint is given so that an
 	 * situation does not occur, where the sudoku game becomes unsolvable
 	 * 
-	 * @return
+	 * @return the coordinates of a hint
 	 */
 	public int[] hint() {
 		boolean correctRandom = false;
@@ -319,7 +334,7 @@ public abstract class BasicGameLogic {
 		// current sudoku gets solved
 		this.solveSudoku();
 		if (!this.testIfSolved()) {
-			return coordinates;
+			return null;
 		}
 
 		// chooses random coordinates and a random number that will be shown as a hint
@@ -363,7 +378,7 @@ public abstract class BasicGameLogic {
 	 * tests if the sudoku game still contains the value 0 returns false if the
 	 * sudoku game still contains the value 0 returns true otherwise
 	 * 
-	 * @return
+	 * @return true if the game was solved
 	 */
 	public boolean testIfSolved() {
 		for (int row = 0; row < this.cells.length; row++) {
@@ -399,7 +414,8 @@ public abstract class BasicGameLogic {
 				long elapsedSeconds = Duration.between(startTime, LocalTime.now()).getSeconds();
 				minutesPlayed = ((helpmin * 60 + helpsec + elapsedSeconds) / 60);
 				secondsPlayed = (helpsec + helpmin * 60 + elapsedSeconds) % 60;
-
+				
+				
 				liveTimePlayedString.set(String.format("%02d:%02d", minutesPlayed, secondsPlayed));
 			}
 
@@ -408,11 +424,13 @@ public abstract class BasicGameLogic {
 				timerIsRunning.set(true);
 				startTime = LocalTime.now();
 				super.start();
+			
 			}
 
 			@Override
 			public void stop() {
 				timerIsRunning.set(false);
+			
 				super.stop();
 			}
 		};
@@ -466,7 +484,7 @@ public abstract class BasicGameLogic {
 	 * correctly
 	 */
 	public void setUpGameInformations() {
-		setGamePoints(10);
+		setGamePoints(50);
 		setGameState(Gamestate.OPEN);
 		setDifficultyString();
 		setMinutesPlayed(0);
@@ -486,7 +504,69 @@ public abstract class BasicGameLogic {
 		difficulty();
 	}
 
+	
 
+	/**
+	 * This method is used to set the gametext which will be displayed in the
+	 * {@link application.BasicGameBuilder#getGameInfoLabel()} label
+	 * 
+	 * @return the string depending on the current gamestate
+	 */
+	public String getGameText() {
+
+		if (this.getGamestate() == Gamestate.DONE) {
+			gameText = "Congratulations you won!";
+		}
+		if (this.getGamestate() == Gamestate.INCORRECT) {
+			gameText = "Sorry your Sudoku is not correct yet";
+		}
+		if (this.getGamestate() == Gamestate.AUTOSOLVED) {
+			gameText = "Autosolved";
+		}
+		if (this.getGamestate() == Gamestate.CONFLICT) {
+			gameText = "Please remove the conflicts";
+		}
+		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
+			gameText = "Unsolvable Sudoku state!";
+		}
+		if (this.getGamestate() == Gamestate.CREATING) {
+			gameText = "Create your own game!";
+		}
+		if (this.getGamestate() == Gamestate.OPEN) {
+			gameText = "Game ongoing!";
+		}
+		if (this.getGamestate() == Gamestate.DRAWING) {
+			gameText = "Draw your own forms!";
+		}
+
+		if (this.getGamestate() == Gamestate.NOTENOUGHNUMBERS) {
+			gameText = "Not enough numbers! Please insert " + (getNumbersToBeSolvable() - manualNumbersInserted)
+					+ " more numbers to enable game functions";
+		}
+		if (this.getGamestate() == Gamestate.NOFORMS) {
+			gameText = "Your forms are not properly connected!";
+		}
+		if (this.getGamestate() == Gamestate.MANUALCONFLICT) {
+			gameText = "Your game has conflicts!";
+		}
+
+		return gameText;
+	}
+	
+	public void setDifficultyString() {
+		if (difficulty == 3) {
+			difficultyString = "Hard";
+		}
+		if (difficulty == 5) {
+			difficultyString = "Medium";
+		}
+		if (difficulty == 7) {
+			difficultyString = "Easy";
+		}
+		if (difficulty == 0) {
+			difficultyString = "Manual";
+		}
+	}
 
 	/**
 	 * getter and setter
@@ -555,66 +635,6 @@ public abstract class BasicGameLogic {
 		return this.gamestate;
 	}
 
-	public int countValuesInsideCells() {
-		int helper = 0;
-
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				if (getCells()[row][col].getValue() > 0) {
-					helper++;
-				}
-			}
-		}
-		return helper;
-	}
-
-	/**
-	 * This method is used to set the gametext which will be displayed in the
-	 * {@link application.BasicGameBuilder#getGameInfoLabel()} label
-	 * 
-	 * @return the string depending on the current gamestate
-	 */
-	public String getGameText() {
-
-		if (this.getGamestate() == Gamestate.DONE) {
-			gameText = "Congratulations you won!";
-		}
-		if (this.getGamestate() == Gamestate.INCORRECT) {
-			gameText = "Sorry your Sudoku is not correct yet";
-		}
-		if (this.getGamestate() == Gamestate.AUTOSOLVED) {
-			gameText = "Autosolved";
-		}
-		if (this.getGamestate() == Gamestate.CONFLICT) {
-			gameText = "Please remove the conflicts";
-		}
-		if (this.getGamestate() == Gamestate.UNSOLVABLE) {
-			gameText = "Unsolvable Sudoku state!";
-		}
-		if (this.getGamestate() == Gamestate.CREATING) {
-			gameText = "Create your own game!";
-		}
-		if (this.getGamestate() == Gamestate.OPEN) {
-			gameText = "Game ongoing!";
-		}
-		if (this.getGamestate() == Gamestate.DRAWING) {
-			gameText = "Draw your own forms!";
-		}
-
-		if (this.getGamestate() == Gamestate.NOTENOUGHNUMBERS) {
-			gameText = "Not enough numbers! Please insert " + (getNumbersToBeSolvable() - manualNumbersInserted)
-					+ " more numbers to enable game functions";
-		}
-		if (this.getGamestate() == Gamestate.NOFORMS) {
-			gameText = "Your forms are not properly connected!";
-		}
-		if (this.getGamestate() == Gamestate.MANUALCONFLICT) {
-			gameText = "Your game has conflicts!";
-		}
-
-		return gameText;
-	}
-
 	public int getGameid() {
 		return gameID;
 	}
@@ -627,20 +647,7 @@ public abstract class BasicGameLogic {
 		this.gameID = gameID;
 	}
 
-	public void setDifficultyString() {
-		if (difficulty == 3) {
-			difficultyString = "Hard";
-		}
-		if (difficulty == 5) {
-			difficultyString = "Medium";
-		}
-		if (difficulty == 7) {
-			difficultyString = "Easy";
-		}
-		if (difficulty == 0) {
-			difficultyString = "Manual";
-		}
-	}
+
 
 	public AnimationTimer getLiveTimer() {
 		return timer;
@@ -654,7 +661,7 @@ public abstract class BasicGameLogic {
 		this.shuffleCounter = counter;
 	}
 
-	public StringProperty getStringProp() {
+	public StringProperty getTimeProperty() {
 		return liveTimePlayedString;
 	}
 
@@ -686,9 +693,7 @@ public abstract class BasicGameLogic {
 		this.savedResults = cells;
 	}
 
-	public boolean getManualGame() {
-		return this.manualGame;
-	}
+
 	
 	
 	

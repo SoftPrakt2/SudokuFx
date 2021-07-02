@@ -515,6 +515,8 @@
 //		controller.autoSolveHandler(action);
 //		controller.getModel().setGameState(Gamestate.OPEN);
 //
+//		
+//
 //		controller.checkHandler(action);
 //		assertEquals(Gamestate.DONE, controller.getModel().getGamestate());
 //	}

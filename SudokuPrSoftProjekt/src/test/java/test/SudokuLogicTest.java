@@ -1,9 +1,10 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -317,7 +318,7 @@ class SudokuLogicTest {
 	@Test
 	void testSetGamestate() {		
 		model.setGameState(Gamestate.DONE);
-		assertEquals(Gamestate.DONE, model.getGamestate());
+		assertEquals(model.getGamestate(), Gamestate.DONE);
 	}	
 	
 	
@@ -328,7 +329,7 @@ class SudokuLogicTest {
 	void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		model.getGamestate();
-		assertEquals(Gamestate.DONE, model.getGamestate());
+		assertEquals(model.getGamestate(), Gamestate.DONE);
 	}	
 	
 	
@@ -361,7 +362,7 @@ class SudokuLogicTest {
 	 */
 	@Test
     void testHint() {
-        int [] sollutionArray = new int[] {0, 0};
+       
         model.createSudoku();
         model.setDifficulty(3);
         model.difficulty();
@@ -371,7 +372,8 @@ class SudokuLogicTest {
         int [] returnArray = model.hint();
         System.out.println(returnArray[0] + " " + returnArray[1]);
 
-        assertNotEquals(null,returnArray);
+        assertNotNull(returnArray);
+        
     }
 	
 //	/**

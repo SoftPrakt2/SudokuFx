@@ -3,7 +3,7 @@ package logic;
 /**
  * This class defines the different gamestates a game can be in
  * 
- * @author gruber, bakaschev, fuchsluger
+ * @author bakaschev,
  *
  */
 

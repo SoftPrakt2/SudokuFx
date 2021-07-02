@@ -18,15 +18,13 @@ import javafx.stage.FileChooser;
 /**
  * 
  * @author grube 
- *         This class definies the saving and loading logic of the program
+ *       This class definies the saving and loading logic of the program
  *         To do so several methods regarding saving, loading, importing and exporting are implemented
  */
 
 public class SudokuStorage {
 	
-	/**
-	 * auxiliary Method to check if a file exists
-	 */
+	
 	private boolean fileExists = true;
 	
 	private boolean gameAlreadySaved = false;
@@ -37,6 +35,7 @@ public class SudokuStorage {
 	
 	File[] fileDirectory = new File("SaveFiles").listFiles();
 
+	
 	/**
 	 * Auxiliary method sets the fields of an {@link logic.SaveModel} objects with informations
 	 * from the paramamter explained down below
@@ -211,7 +210,6 @@ public class SudokuStorage {
 		return model;
 	}
 	
-
 	
 	
 	/**
@@ -252,30 +250,7 @@ public class SudokuStorage {
 	
 	
 	
-	public File readFromSaveFileTestHelper(BasicGameLogic gameToSave) {
-			SaveModel saveModel = setInformationsToStore(gameToSave);
-			Gson gson = new GsonBuilder().create();
-			JsonWriter writer;
-			FileWriter fw;
-			
-			String fileName = "ID_" + saveModel.getGameId() + "_" + saveModel.getGametype() + "_"
-					+ saveModel.getDifficultyString() + ".json";
-			
-			
-			File saveFile = new File("SaveFiles", fileName);
-		
-			try {
-				fw = new FileWriter(saveFile);
-				writer = new JsonWriter(fw);
-				gson.toJson(saveModel, SaveModel.class, writer);
-				fw.close();
-				writer.close();
-			} catch (IOException e) {
-				  System.err.print("The game could not be saved");
-			}
-		return saveFile;
-		}
-	}
+}
 	
 	
 	

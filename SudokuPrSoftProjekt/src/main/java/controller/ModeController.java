@@ -205,7 +205,6 @@ public class ModeController {
 	public void removeSelectedToggles() {
 		if (menu.getPlayModeToggle().getSelectedToggle() != null) {
 			menu.getPlayModeToggle().getSelectedToggle().setSelected(false);
-			
 		}
 		
 

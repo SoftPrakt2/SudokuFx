@@ -12,6 +12,9 @@ import application.GameOverview;
 import application.SamuraiGameBuilder;
 import application.SudokuGameBuilder;
 import application.SudokuTextField;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.StringBinding;
@@ -20,6 +23,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.util.Duration;
 import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
@@ -108,7 +112,8 @@ public class StorageController {
 			gameModel.getLiveTimer().start();
 			gameBuilder.getGameInfoLabel().setText(
 					"Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
-			gameBuilder.getLiveTimeLabel().textProperty().bind(Bindings.concat(gameModel.getStringProp()));
+			gameBuilder.getLiveTimeLabel().textProperty().bind(Bindings.concat(gameModel.getTimeProperty()));
+
 		}
 
 		if (gameModel.getGamestate().equals(Gamestate.CREATING)
@@ -130,7 +135,7 @@ public class StorageController {
 		gameBuilder.getGameNotificationLabel().setText(gameModel.getGameText());
 
 		alignArrays();
-
+		enablePointDecreasing();
 		alignWindowToGameSize();
 		}
 	}
@@ -155,7 +160,6 @@ public class StorageController {
 		playtimecolumn.setSortable(false);
 		gamestatecolumn.setSortable(false);
 		gameidcolumn.setSortable(false);
-
 	}
 
 	/**
@@ -256,9 +260,27 @@ public class StorageController {
 		if (!gameModel.getGamestate().equals(Gamestate.CREATING) && !gameModel.getGamestate().equals(Gamestate.DRAWING)
 				&& !gameModel.getGamestate().equals(Gamestate.NOFORMS)
 				&& !gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
-				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS))
-			gameModel.setSavedResults(gameModel.alignWithHelper());
+				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)
+				)
+			System.out.println("");
+			gameModel.setSavedResults(gameModel.createBackgroundSolution());
 	}
+	
+	
+	
+	public void enablePointDecreasing() {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+		if(gameModel.getSecondsplayed() != 0 && gameModel.getSecondsplayed() % 59 == 0 ) {
+			gameModel.setGamePoints(gameModel.getGamepoints()-1);
+			gameBuilder.getGameInfoLabel().setText("Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
+		}	
+		}));
+			timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
+	}
+	
+	
+	
 
 	/**
 	 * This method is used to align the programs window size to the size variables

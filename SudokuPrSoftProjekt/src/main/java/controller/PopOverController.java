@@ -43,7 +43,7 @@ public class PopOverController extends ModeController {
 		enableDifficultyButtons();
 	}
 
-	
+
 	
 	
 	@Override
