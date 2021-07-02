@@ -95,7 +95,6 @@ public class GameController {
 		if (scene.getConflictItem().isSelected()) {
 			scene.addConflictListeners();
 		}
-
 	}
 
 	/**
@@ -337,7 +336,6 @@ public class GameController {
 						}
 					}
 				}
-				model.printCells();
 				
 				model.setUpGameInformations();
 				scene.getGameNotificationLabel().setText(model.getGameText());
@@ -402,16 +400,8 @@ public class GameController {
 			model.setNumbersInsideTextField(0);
 
 		connectWithModel();
-		System.out.println(model.getNumbersInsideTextField());
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
-				/**
-				 * sets the current value to 0 is it is not a fixed number (auto generated
-				 * number)
-				 */
-//				if (!model.getCells()[row][col].getFixedNumber()) {
-//					model.getCells()[row][col].setValue(0);
-//				}
 				/**
 				 * a style class gets removes from the current text field
 				 */
@@ -422,7 +412,6 @@ public class GameController {
 				 */
 				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 					model.setNumbersInsideTextField(model.getNumbersInsideTextField() + 1);
-//					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 					/**
 					 * checks if the current number is a fixed number (auto generated number)
 					 */
@@ -444,9 +433,6 @@ public class GameController {
 							sudokuField[col][row].getStyleClass().add("textfieldWrong");
 							model.setGameState(Gamestate.INCORRECT);
 							result = false;
-						} else {
-							// sudokuField[col][row].getStyleClass().remove("textfieldWrong");
-							// s sudokuField[col][row].getStyleClass().add("textfieldBasic");
 						}
 					}
 				}
@@ -481,8 +467,7 @@ public class GameController {
 	 * application.BasicGameBuilder#removeConflictListeners()}.
 	 */
 	public void autoSolveHandler(ActionEvent e) {
-		
-				
+			
 		/**
 		 * Conflict listeners get removed so that no problems occur while the sudoku
 		 * gets solved.
@@ -515,13 +500,13 @@ public class GameController {
 			}
 			connectArrays();
 		} else {
-			for (int row = 0; row < sudokuField.length; row++) {
-				for (int col = 0; col < sudokuField[row].length; col++) {
-					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-					}
-				}
-			}
+//			for (int row = 0; row < sudokuField.length; row++) {
+//				for (int col = 0; col < sudokuField[row].length; col++) {
+//					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
+//						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+//					}
+//				}
+//			}
 			model.setGameState(Gamestate.CONFLICT);
 			scene.getGameNotificationLabel().setText(model.getGameText());
 		}
@@ -655,13 +640,13 @@ public class GameController {
 		} else {
 			if (model.getGamepoints() > 0)
 				model.setGamePoints(model.getGamepoints() - 1);
-			for (int row = 0; row < sudokuField.length; row++) {
-				for (int col = 0; col < sudokuField[row].length; col++) {
-					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-					}
-				}
-			}
+//			for (int row = 0; row < sudokuField.length; row++) {
+//				for (int col = 0; col < sudokuField[row].length; col++) {
+//					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
+//						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+//					}
+//				}
+//			}
 			model.setGameState(Gamestate.CONFLICT);
 			scene.getGameNotificationLabel().setText(model.getGameText());
 		}
@@ -777,8 +762,6 @@ public class GameController {
 			GUI.getStage().setHeight(scene.getHeight());
 			GUI.getStage().setWidth(scene.getWidth());
 			GUI.getStage().getScene().setRoot(scene.getGameUIRoot());
-
-			System.out.println(model.getGameid());
 		}
 	}
 
@@ -845,7 +828,6 @@ public class GameController {
 
 		SudokuStorage storageModel = new SudokuStorage();
 		storageModel.exportGame(model);
-		System.out.println(model.getGameid());
 	}
 
 	/**

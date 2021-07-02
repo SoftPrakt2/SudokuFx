@@ -161,11 +161,11 @@ public abstract class BasicGameLogic {
 	 * @return
 	 */
 	public boolean checkBox(int row, int col, int guess) {
-		int r = row - row % 3;
-		int c = col - col % 3;
+		int boxRow = row - row % 3;
+		int boxCol = col - col % 3;
 
-		for (int i = r; i < r + 3; i++) {
-			for (int j = c; j < c + 3; j++) {
+		for (int i = boxRow; i < boxRow + 3; i++) {
+			for (int j = boxCol; j < boxCol + 3; j++) {
 				if (this.cells[i][j].getValue() == guess) {
 					return false;
 				}
@@ -221,12 +221,7 @@ public abstract class BasicGameLogic {
 			}
 		}
 
-		this.savedResults = new int[this.cells.length][this.cells.length];
-		for (int row = 0; row < this.getCells().length; row++) {
-			for (int col = 0; col < this.getCells()[row].length; col++) {
-				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
-			}
-		}
+		connectToSavedResults();
 		return true;
 	}
 
@@ -263,7 +258,6 @@ public abstract class BasicGameLogic {
 		for (int row = 0; row < this.getCells().length; row++) {
 			for (int col = 0; col < this.getCells()[row].length; col++) {
 				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
-				System.out.println(this.getSavedResults()[row][col]);
 			}
 		}
 		this.setCells(help);
@@ -325,7 +319,7 @@ public abstract class BasicGameLogic {
 		// current sudoku gets solved
 		this.solveSudoku();
 		if (!this.testIfSolved()) {
-			return null;
+			return coordinates;
 		}
 
 		// chooses random coordinates and a random number that will be shown as a hint
@@ -423,21 +417,6 @@ public abstract class BasicGameLogic {
 			}
 		};
 
-	}
-
-	public void printCells() {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				System.out.print(this.cells[row][col].getValue() + " ");
-				if (col == 2 || col == 5) {
-					System.out.print("|");
-				}
-			}
-			System.out.println();
-			if (row == 2 || row == 5 || row == 8) {
-				System.out.println("-------------------");
-			}
-		}
 	}
 
 	/**

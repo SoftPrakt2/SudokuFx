@@ -455,7 +455,7 @@ class SamuraiLogicTest {
 	@Test
 	void testSetGamestate() {		
 		model.setGameState(Gamestate.DONE);
-		assertEquals(model.getGamestate(), Gamestate.DONE);
+		assertEquals(Gamestate.DONE, model.getGamestate());
 	}	
 	
 	/**
@@ -465,7 +465,7 @@ class SamuraiLogicTest {
 	void testGetGamestate() {		
 		model.setGameState(Gamestate.DONE);
 		model.getGamestate();
-		assertEquals(model.getGamestate(),Gamestate.DONE);
+		assertEquals(Gamestate.DONE, model.getGamestate());
 	}	
 	
 	/**

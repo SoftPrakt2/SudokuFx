@@ -16,9 +16,6 @@ import com.google.gson.GsonBuilder;
  *
  */
 public class FreeFormLogic extends SudokuLogic {
-
-	static int counter = 0;
-
 	/**
 	 *  constructor for creating a FreeFormLogic-Object
 	 * @param gamestate
@@ -90,7 +87,6 @@ public class FreeFormLogic extends SudokuLogic {
 					if (globalCounter > 2000000) {
 						globalCounter = 0;
 						setCells(loadPreMadeFreeForm());
-						System.out.println("loaded game");
 						connectToSavedResults();
 						return true;
 					}
