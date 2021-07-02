@@ -216,8 +216,8 @@ public class SamuraiLogic extends BasicGameLogic {
 		} else {
 
 			while (counter != 0) {
-				int randCol = r.nextInt(this.getCells().length);
-				int randRow = r.nextInt(this.getCells().length);
+				int randCol = numberGenerator.nextInt(this.getCells().length);
+				int randRow = numberGenerator.nextInt(this.getCells().length);
 				if (this.getCells()[randRow][randCol].getValue() != 0
 						&& this.getCells()[randRow][randCol].getFixedNumber()
 						&& this.getCells()[randRow][randCol].getValue() != -1) {
@@ -231,6 +231,9 @@ public class SamuraiLogic extends BasicGameLogic {
 
 	/**
 	 * auxiliary method for {@link #difficulty()}
+	 * 3 = Hard
+	 * 5 = Medium
+	 * 7 = Easy
 	 */
 	@Override
 	public int getNumberOfVisibleValues() {

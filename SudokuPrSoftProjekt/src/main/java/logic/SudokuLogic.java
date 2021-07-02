@@ -99,8 +99,8 @@ public class SudokuLogic extends BasicGameLogic {
         }
         else {
             while (counter != 0) {
-                    int randCol = r.nextInt(9);
-                    int randRow = r.nextInt(9);
+                    int randCol = numberGenerator.nextInt(9);
+                    int randRow = numberGenerator.nextInt(9);
                 if (this.getCells()[randRow][randCol].getValue() != 0 && this.getCells()[randRow][randCol].getFixedNumber()) {
                 	this.getCells()[randRow][randCol].setValue(0);
                 	this.getCells()[randRow][randCol].setFixedNumber(false);
@@ -112,6 +112,9 @@ public class SudokuLogic extends BasicGameLogic {
 	
 	/**
 	 * auxiliary method for {@link #difficulty()}
+	 * 3 = Hard
+	 * 5 = Medium
+	 * 7 = Easy
 	 */
 	@Override
 	public int getNumberOfVisibleValues() {

@@ -72,7 +72,7 @@ public class FreeFormLogic extends SudokuLogic {
 				while (!correctNumber) {
 					counter++;
 					globalCounter++;
-					int randomNumber = r.nextInt(9) + 1;
+					int randomNumber = numberGenerator.nextInt(9) + 1;
 					if (this.getCells()[i][j].getValue() == 0 && this.valid(i, j, randomNumber)) {
 						this.getCells()[i][j].setValue(randomNumber);
 						correctNumber = true;
@@ -111,7 +111,7 @@ public class FreeFormLogic extends SudokuLogic {
 
 		File[] freeFormDirectory = new File("FreeFormGames").listFiles();
 
-		int rand = r.nextInt(13) + 1;
+		int rand = numberGenerator.nextInt(13) + 1;
 
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(freeFormDirectory[rand].getAbsoluteFile()));
@@ -158,8 +158,8 @@ public class FreeFormLogic extends SudokuLogic {
 					rollbackCells[i][j].setBox(getCells()[i][j].getBox());
 				}
 			}
-			int rand1 = r.nextInt(9);
-			int rand2 = r.nextInt(9);
+			int rand1 = numberGenerator.nextInt(9);
+			int rand2 = numberGenerator.nextInt(9);
 			proofEdgesAndSetNewBox(rand1, rand2);
 			if (!proofNrCells()) {
 				for (int i = 0; i < this.getCells().length; i++) {
@@ -183,8 +183,8 @@ public class FreeFormLogic extends SudokuLogic {
 					rollbackCells[i][j].setBox(getCells()[i][j].getBox());
 				}
 			}
-			int rand1 = r.nextInt(9);
-			int rand2 = r.nextInt(9);
+			int rand1 = numberGenerator.nextInt(9);
+			int rand2 = numberGenerator.nextInt(9);
 			proofEdgesAndSetNewBox(rand1, rand2);
 			if (!proofNrCells()) {
 				for (int i = 0; i < this.getCells().length; i++) {
@@ -285,7 +285,7 @@ public class FreeFormLogic extends SudokuLogic {
 	 */
 	public int proofEdgesAndSetNewBox(int i, int j) {
 
-		int direction = r.nextInt(4);
+		int direction = numberGenerator.nextInt(4);
 
 		if (direction == 0 && i < 8 && getCells()[i][j].getBox() != getCells()[i + 1][j].getBox()) {
 				int newBoxVal = getCells()[i + 1][j].getBox();

@@ -49,16 +49,12 @@ public class GameController {
 	 */
 	private SudokuTextField[][] sudokuField;
 	
-	
-	
 	/**
 	 * This timeline object is used to decrease the amount of {@link logic.BasicGameLogic #getGamepoints()}
 	 * every minute
 	 */
 	private Timeline timeline;
 	
-	
-
 	/**
 	 * Constructor to create a GameController-Object
 	 * 
@@ -86,6 +82,10 @@ public class GameController {
 	 * The {@link #sudokuField}arrays values get aligned with the {@link logic.BasicGameLogic#getCells()} arrays values
 	 * 	 */
 	public void createGame() {
+		/**
+		 * ConflictListeners need to be removed, because the createSudoku-Method
+		 * {@link logic.BasicGameLogic#createSudoku()} does not work properly otherwise.
+		 */
 		gameBuilder.removeConflictListeners();
 		model.setUpGameField();
 		model.setUpGameInformations();
@@ -94,21 +94,16 @@ public class GameController {
 				.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
 		gameBuilder.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getTimeProperty()));
 		
-		
-
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
-
 				if (model instanceof FreeFormLogic) {
 					sudokuField[i][j].setColor(model.getCells()[j][i].getBoxcolor());
 				}
-
 				String number = Integer.toString(model.getCells()[j][i].getValue());
 				if ((!sudokuField[i][j].getText().equals("") || !sudokuField[i][j].getText().equals("-1"))
 						&& !number.equals("0")) {
 					sudokuField[i][j].setText(number);
 				}
-
 			}
 		}
 
@@ -119,25 +114,6 @@ public class GameController {
 		
 	}
 	
-	
-	/**
-	 * This method is used to decrease the amount of gamepoints of a game by one every minute 
-	 */
-	public void enablePointDecreasing() {
-		timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-		if(model.getSecondsplayed() != 0 && model.getSecondsplayed() % 59 == 0 ) {
-			model.setGamePoints(model.getGamepoints()-1);
-			gameBuilder.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
-		}	
-		}));
-			timeline.setCycleCount(Animation.INDEFINITE);
-		timeline.play();
-	}
-
-		
-		
-	
-
 	/**
 	 * Deletes all numbers from the text field and resets all the necessary
 	 * variables for a new game to their default state/values. Restarts Timer and
@@ -249,7 +225,7 @@ public class GameController {
 		enablePointDecreasing();
 		gameBuilder.getLiveTimeLabel().setText("");
 	}
-
+	
 	/**
 	 * deletes user inputs and hints, values fixed values that were created automatically do not get deleted
 	 */
@@ -275,42 +251,6 @@ public class GameController {
 			model.setGameState(Gamestate.OPEN);
 			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
 		}
-	}
-
-	/**
-	 * Method which is needed to set the form of the Sudokutextfields the user has
-	 * created during a manual freeform game to the model if the forms are created
-	 * correctly the
-	 * {@link application.SudokuTextField#addFreeFormColorListener(javafx.scene.control.ComboBox)}
-	 * are removed from the Sudokutextfields Afterwards the UI Control Components
-	 * are updated
-	 * 
-	 * @param e event which is fired through user actions in the UI
-	 */
-	public void customColorsDoneHandler(ActionEvent e) {
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
-			}
-		}
-
-		if (model.isConnected() && model.proofFilledOut()) {
-			for (SudokuTextField coloredArray[] : sudokuField) {
-				for (SudokuTextField coloredField : coloredArray) {
-					coloredField.removeFreeFormColorListener();
-				}
-			}
-			gameBuilder.getToolBar().getItems().remove(gameBuilder.getColorsDoneButton());
-			gameBuilder.getToolBar().getItems().remove(gameBuilder.getColorBox());
-			gameBuilder.getToolBar().getItems().add(3, gameBuilder.getCustomNumbersDone());
-			gameBuilder.getCustomNumbersDone().setVisible(true);
-			model.setGameState(Gamestate.CREATING);
-			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
-		} else {
-			model.setGameState(Gamestate.NOFORMS);
-			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
-		}
-
 	}
 
 	/**
@@ -400,6 +340,41 @@ public class GameController {
 			return true;
 		}
 	}
+	
+	/**
+	 * Method which is needed to set the form of the Sudokutextfields the user has
+	 * created during a manual freeform game to the model if the forms are created
+	 * correctly the
+	 * {@link application.SudokuTextField#addFreeFormColorListener(javafx.scene.control.ComboBox)}
+	 * are removed from the Sudokutextfields Afterwards the UI Control Components
+	 * are updated
+	 * 
+	 * @param e event which is fired through user actions in the UI
+	 */
+	public void customColorsDoneHandler(ActionEvent e) {
+		for (int i = 0; i < sudokuField.length; i++) {
+			for (int j = 0; j < sudokuField[i].length; j++) {
+				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
+			}
+		}
+
+		if (model.isConnected() && model.proofFilledOut()) {
+			for (SudokuTextField coloredArray[] : sudokuField) {
+				for (SudokuTextField coloredField : coloredArray) {
+					coloredField.removeFreeFormColorListener();
+				}
+			}
+			gameBuilder.getToolBar().getItems().remove(gameBuilder.getColorsDoneButton());
+			gameBuilder.getToolBar().getItems().remove(gameBuilder.getColorBox());
+			gameBuilder.getToolBar().getItems().add(3, gameBuilder.getCustomNumbersDone());
+			gameBuilder.getCustomNumbersDone().setVisible(true);
+			model.setGameState(Gamestate.CREATING);
+			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
+		} else {
+			model.setGameState(Gamestate.NOFORMS);
+			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
+		}
+	}
 
 	/**
 	 * checks for conflicts and colors them red if there are any returns true if
@@ -422,13 +397,6 @@ public class GameController {
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
 				/**
-				 * sets the current value to 0 is it is not a fixed number (auto generated
-				 * number)
-				 */
-//				if (!model.getCells()[row][col].getFixedNumber()) {
-//					model.getCells()[row][col].setValue(0);
-//				}
-				/**
 				 * a style class gets removes from the current text field
 				 */
 				sudokuField[col][row].getStyleClass().remove("textfieldWrong");
@@ -438,7 +406,6 @@ public class GameController {
 				 */
 				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
 					model.setNumbersInsideTextField(model.getNumbersInsideTextField() + 1);
-//					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
 					/**
 					 * checks if the current number is a fixed number (auto generated number)
 					 */
@@ -460,9 +427,6 @@ public class GameController {
 							sudokuField[col][row].getStyleClass().add("textfieldWrong");
 							model.setGameState(Gamestate.INCORRECT);
 							result = false;
-						} else {
-							// sudokuField[col][row].getStyleClass().remove("textfieldWrong");
-							// s sudokuField[col][row].getStyleClass().add("textfieldBasic");
 						}
 					}
 				}
@@ -476,19 +440,7 @@ public class GameController {
 		return result;
 	}
 
-	/**
-	 * Connects text field-array with model-array. Fills the text field-array with
-	 * the values of the model-array.
-	 */
-	public void connectArrays() {
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (model.getCells()[j][i].getValue() != 0) {
-					sudokuField[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
-				}
-			}
-		}
-	}
+
 
 	/**
 	 * The current sudoku game gets solved if there are no conflicts. Asks the user
@@ -498,9 +450,7 @@ public class GameController {
 	 * {@link #connectWithModel()}
 	 * {@link lapplication.BasicGameBuilder#removeConflictListeners()}
 	 */
-	public void autoSolveHandler(ActionEvent e) {
-		
-				
+	public void autoSolveHandler(ActionEvent e) {	
 		/**
 		 * Conflict listeners get removed so that no problems occur while the sudoku
 		 * gets solved.
@@ -539,19 +489,17 @@ public class GameController {
 			}
 			connectArrays();
 		} else {
-			for (int row = 0; row < sudokuField.length; row++) {
-				for (int col = 0; col < sudokuField[row].length; col++) {
-					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-					}
-				}
-			}
+//			for (int row = 0; row < sudokuField.length; row++) {
+//				for (int col = 0; col < sudokuField[row].length; col++) {
+//					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
+//						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+//					}
+//				}
+//			}
 			model.setGameState(Gamestate.CONFLICT);
 			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
 		}
 	}
-	
-
 
 	/**
 	 * checks if the sudoku is solved (without conflicts) {@link #compareResult()}
@@ -570,54 +518,6 @@ public class GameController {
 
 			model.setGameState(Gamestate.INCORRECT);
 			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
-		}
-	}
-
-	/**
-	 * Empty text fields get enabled so that the user can input his numbers inside
-	 * them.
-	 */
-	public void enableEdit() {
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (!model.getCells()[j][i].getFixedNumber()) {
-					sudokuField[i][j].setDisable(false);
-				} else {
-					sudokuField[i][j].setDisable(true);
-					sudokuField[i][j].getStyleClass().remove("textfieldBasic");
-					sudokuField[i][j].getStyleClass().add("textfieldLocked");
-				}
-			}
-		}
-	}
-
-	/**
-	 * This auxiliary method is used when creating a new game inside a GameUI Sets
-	 * back the colors of the numbers inside the playing field
-	 */
-	public void resetTextFills() {
-		for (int i = 0; i < sudokuField.length; i++) {
-			for (int j = 0; j < sudokuField[i].length; j++) {
-				if (sudokuField[i][j].isDisabled()) {
-					sudokuField[i][j].getStyleClass().remove("textfieldLocked");
-					sudokuField[i][j].getStyleClass().add("textfieldBasic");
-				}
-			}
-		}
-	}
-
-	/**
-	 * connect the text field-array with the model-array
-	 */
-	public void connectWithModel() {
-		for (int row = 0; row < sudokuField.length; row++) {
-			for (int col = 0; col < sudokuField[row].length; col++) {
-				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-				} else if (!sudokuField[col][row].getText().equals("-1") || sudokuField[col][row].getText().equals("")) {
-					model.getCells()[row][col].setValue(0);
-				}
-			}
 		}
 	}
 
@@ -681,32 +581,17 @@ public class GameController {
 		} else {
 			if (model.getGamepoints() > 0)
 				model.setGamePoints(model.getGamepoints() - 1);
-			for (int row = 0; row < sudokuField.length; row++) {
-				for (int col = 0; col < sudokuField[row].length; col++) {
-					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-					}
-				}
-			}
+//			for (int row = 0; row < sudokuField.length; row++) {
+//				for (int col = 0; col < sudokuField[row].length; col++) {
+//					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
+//						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+//					}
+//				}
+//			}
 			model.setGameState(Gamestate.CONFLICT);
 			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
 		}
 		}
-	
-
-	/**
-	 * adds or removes Listener to the text field the listeners call the
-	 * {@link #compareResult()} method and show conflicts
-	 * 
-	 * @param e event which is fired through user actions in the UI
-	 */
-	public void switchOffConflicts(ActionEvent e) {
-		if (gameBuilder.getConflictItem().isSelected()) {
-			gameBuilder.addConflictListeners();
-		} else {
-			gameBuilder.removeConflictListeners();
-		}
-	}
 
 	/**
 	 * this method is used when the game is saved in a Game UI Scene The GameModels
@@ -817,7 +702,6 @@ public class GameController {
 	 * shown in the textfield array
 	 */
 	public void connectImportedArray() {
-
 		for (int i = 0; i < sudokuField.length; i++) {
 			for (int j = 0; j < sudokuField[i].length; j++) {
 				if (model instanceof FreeFormLogic && !model.getCells()[j][i].getBoxcolor().equals("")) {
@@ -904,9 +788,100 @@ public class GameController {
 			}
 		}
 	}
+	
+	/**
+	 * Connects text field-array with model-array. Fills the text field-array with
+	 * the values of the model-array.
+	 */
+	public void connectArrays() {
+		for (int i = 0; i < sudokuField.length; i++) {
+			for (int j = 0; j < sudokuField[i].length; j++) {
+				if (model.getCells()[j][i].getValue() != 0) {
+					sudokuField[i][j].setText(Integer.toString(model.getCells()[j][i].getValue()));
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Empty text fields get enabled so that the user can input his numbers inside
+	 * them.
+	 */
+	public void enableEdit() {
+		for (int i = 0; i < sudokuField.length; i++) {
+			for (int j = 0; j < sudokuField[i].length; j++) {
+				if (!model.getCells()[j][i].getFixedNumber()) {
+					sudokuField[i][j].setDisable(false);
+				} else {
+					sudokuField[i][j].setDisable(true);
+					sudokuField[i][j].getStyleClass().remove("textfieldBasic");
+					sudokuField[i][j].getStyleClass().add("textfieldLocked");
+				}
+			}
+		}
+	}
+
+	/**
+	 * This auxiliary method is used when creating a new game inside a GameUI Sets
+	 * back the colors of the numbers inside the playing field
+	 */
+	public void resetTextFills() {
+		for (int i = 0; i < sudokuField.length; i++) {
+			for (int j = 0; j < sudokuField[i].length; j++) {
+				if (sudokuField[i][j].isDisabled()) {
+					sudokuField[i][j].getStyleClass().remove("textfieldLocked");
+					sudokuField[i][j].getStyleClass().add("textfieldBasic");
+				}
+			}
+		}
+	}
+
+	/**
+	 * connect the text field-array with the model-array
+	 */
+	public void connectWithModel() {
+		for (int row = 0; row < sudokuField.length; row++) {
+			for (int col = 0; col < sudokuField[row].length; col++) {
+				if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
+					model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
+				} else if (!sudokuField[col][row].getText().equals("-1") || sudokuField[col][row].getText().equals("")) {
+					model.getCells()[row][col].setValue(0);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * This method is used to decrease the amount of gamepoints of a game by one every minute 
+	 */
+	public void enablePointDecreasing() {
+		timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
+		if(model.getSecondsplayed() != 0 && model.getSecondsplayed() % 59 == 0 ) {
+			model.setGamePoints(model.getGamepoints()-1);
+			gameBuilder.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
+		}	
+		}));
+			timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
+	}
+	
+	/**
+	 * adds or removes Listener to the text field the listeners call the
+	 * {@link #compareResult()} method and show conflicts
+	 * 
+	 * @param e event which is fired through user actions in the UI
+	 */
+	public void switchOffConflicts(ActionEvent e) {
+		if (gameBuilder.getConflictItem().isSelected()) {
+			gameBuilder.addConflictListeners();
+		} else {
+			gameBuilder.removeConflictListeners();
+		}
+	}
 
 	/**
 	 * getter and setter
+	 * get used by JUnit-Tests
 	 */
 	public BasicGameLogic getModel() {
 		return this.model;
@@ -918,5 +893,4 @@ public class GameController {
 	public BasicGameBuilder getScene() {
 		return this.gameBuilder;
 	}
-	
 }

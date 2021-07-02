@@ -30,7 +30,6 @@ import javafx.beans.value.ObservableValue;
  * @author rafael
  */
 public abstract class BasicGameLogic {
-
 	/**
 	 * A Sudoku game can have different states, depending on what the user does For
 	 * Example: OPEN when the game is still ongoing AUTOSOLVED if the user chose to
@@ -42,15 +41,14 @@ public abstract class BasicGameLogic {
 	 * defines the gametype when a subclass is initialized
 	 */
 	private String gametype;
-
 	private int gamePoints;
 	private long minutesPlayed;
 	private long secondsPlayed;
-	protected Random r;
 	private String gameText;
 	private int gameID = 0;
-
 	
+	protected Random numberGenerator;
+
 	/**
 	 * this Cell-Array contains the values of a game every Cell also has information
 	 * regarding its current Row, Column and Box
@@ -141,7 +139,7 @@ public abstract class BasicGameLogic {
 		this.secondsPlayed = secondsPlayed;
 		liveTimePlayedString = new SimpleStringProperty();
 		shuffleCounter = 0;
-		this.r = new Random();
+		this.numberGenerator = new Random();
 	}
 
 	/**
@@ -167,7 +165,7 @@ public abstract class BasicGameLogic {
 	 * @param row   : row-coordinate of the new number
 	 * @param col   : row-coordinate of the new number
 	 * @param guess : new number
-	 * @return
+	 * @return: returns true if there is no duplicate value in the current box.
 	 */
 	public boolean checkBox(int row, int col, int guess) {
 		int r = row - row % 3;
@@ -189,7 +187,7 @@ public abstract class BasicGameLogic {
 	 * @param row   : row-coordinate of the new number
 	 * @param col   : row-coordinate of the new number
 	 * @param guess : new number
-	 * @return
+	 * @return: returns true if there is no duplicate value according to the sudoku rules.
 	 */
 	public boolean valid(int row, int col, int guess) {
 		if (checkRow(row, col, guess) && checkCol(row, col, guess) && checkBox(row, col, guess)) {
@@ -213,7 +211,7 @@ public abstract class BasicGameLogic {
 					// number of tries to find a valid number
 					for (int y = 0; y < 9; y++) {
 						// generates a random number between 1 and 9
-						int randomNum = r.nextInt(9) + 1;
+						int randomNum = numberGenerator.nextInt(9) + 1;
 						// checks if the generated number is valid
 						if (valid(row, col, randomNum)) {
 							// sets value if the generated number is valid
@@ -237,17 +235,6 @@ public abstract class BasicGameLogic {
 			}
 		}
 		return true;
-	}
-
-	/**
-	 * This method is used to save the values of a created game sudoku game
-	 */
-	public void connectToSavedResults() {
-		for (int row = 0; row < this.getCells().length; row++) {
-			for (int col = 0; col < this.getCells()[row].length; col++) {
-				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
-			}
-		}
 	}
 
 	/**
@@ -308,7 +295,6 @@ public abstract class BasicGameLogic {
 				}
 			}
 		}
-
 		return true;
 	}
 
@@ -340,9 +326,9 @@ public abstract class BasicGameLogic {
 		// chooses random coordinates and a random number that will be shown as a hint
 		while (!correctRandom) {
 			// generates random coordinates and a random number
-			int randomCol = r.nextInt(this.cells.length);
-			int randomRow = r.nextInt(this.cells.length);
-			int randomNumber = r.nextInt(9) + 1;
+			int randomCol = numberGenerator.nextInt(this.cells.length);
+			int randomRow = numberGenerator.nextInt(this.cells.length);
+			int randomNumber = numberGenerator.nextInt(9) + 1;
 			if (this.cells[randomRow][randomCol].getValue() == randomNumber
 					&& temporaryValues[randomRow][randomCol] == 0
 					&& this.cells[randomRow][randomCol].getValue() != -1) {
@@ -372,23 +358,6 @@ public abstract class BasicGameLogic {
 		}
 
 		return coordinates;
-	}
-
-	/**
-	 * tests if the sudoku game still contains the value 0 returns false if the
-	 * sudoku game still contains the value 0 returns true otherwise
-	 * 
-	 * @return true if the game was solved
-	 */
-	public boolean testIfSolved() {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				if (this.cells[row][col].getValue() == 0) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 	
 	/**
@@ -438,30 +407,6 @@ public abstract class BasicGameLogic {
 	}
 
 	/**
-	 * sets the value of the cell
-	 * 
-	 * @param row
-	 * @param col
-	 * @param box
-	 * @param value
-	 */
-	public void setCell(int row, int col, int box, int value) {
-		this.cells[row][col] = new Cell(row, col, box, value);
-	}
-
-	/**
-	 * removes all values of the Cell-Array
-	 */
-	public void removeValues() {
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				this.cells[row][col].setFixedNumber(false);
-				this.cells[row][col].setValue(0);
-			}
-		}
-	}
-
-	/**
 	 * this method is used to encapsulate all methods which are needed to setup a
 	 * new cell array for manually created games
 	 */
@@ -484,7 +429,6 @@ public abstract class BasicGameLogic {
 	 * correctly
 	 */
 	public void setUpGameInformations() {
-		setGamePoints(50);
 		setGameState(Gamestate.OPEN);
 		setDifficultyString();
 		setMinutesPlayed(0);
@@ -498,19 +442,58 @@ public abstract class BasicGameLogic {
 	 * new cell array
 	 */
 	public void setUpGameField() {
+		setGamePoints(50);
 		setUpLogicArray();
 		setShuffleCounter(0);
 		createSudoku();
 		difficulty();
 	}
-
 	
+	/**
+	 * This method is used to save the values of a created game sudoku game
+	 */
+	public void connectToSavedResults() {
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
+			}
+		}
+	}
+	
+	/**
+	 * tests if the sudoku game still contains the value 0 returns false if the
+	 * sudoku game still contains the value 0 returns true otherwise
+	 * 
+	 * @return true if the game was solved
+	 */
+	public boolean testIfSolved() {
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int col = 0; col < this.cells[row].length; col++) {
+				if (this.cells[row][col].getValue() == 0) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * removes all values of the Cell-Array
+	 */
+	public void removeValues() {
+		for (int row = 0; row < this.cells.length; row++) {
+			for (int col = 0; col < this.cells[row].length; col++) {
+				this.cells[row][col].setFixedNumber(false);
+				this.cells[row][col].setValue(0);
+			}
+		}
+	}
 
 	/**
-	 * This method is used to set the gametext which will be displayed in the
+	 * This method is used to set the game text which will be displayed in the
 	 * {@link application.BasicGameBuilder#getGameInfoLabel()} label
 	 * 
-	 * @return the string depending on the current gamestate
+	 * @return the string depending on the current game state
 	 */
 	public String getGameText() {
 
@@ -538,7 +521,6 @@ public abstract class BasicGameLogic {
 		if (this.getGamestate() == Gamestate.DRAWING) {
 			gameText = "Draw your own forms!";
 		}
-
 		if (this.getGamestate() == Gamestate.NOTENOUGHNUMBERS) {
 			gameText = "Not enough numbers! Please insert " + (getNumbersToBeSolvable() - manualNumbersInserted)
 					+ " more numbers to enable game functions";
@@ -549,7 +531,6 @@ public abstract class BasicGameLogic {
 		if (this.getGamestate() == Gamestate.MANUALCONFLICT) {
 			gameText = "Your game has conflicts!";
 		}
-
 		return gameText;
 	}
 	
@@ -566,6 +547,18 @@ public abstract class BasicGameLogic {
 		if (difficulty == 0) {
 			difficultyString = "Manual";
 		}
+	}
+	
+	/**
+	 * sets the value of the cell
+	 * 
+	 * @param row
+	 * @param col
+	 * @param box
+	 * @param value
+	 */
+	public void setCell(int row, int col, int box, int value) {
+		this.cells[row][col] = new Cell(row, col, box, value);
 	}
 
 	/**
@@ -647,8 +640,6 @@ public abstract class BasicGameLogic {
 		this.gameID = gameID;
 	}
 
-
-
 	public AnimationTimer getLiveTimer() {
 		return timer;
 	}
@@ -691,10 +682,5 @@ public abstract class BasicGameLogic {
 
 	public void setSavedResults(int[][] cells) {
 		this.savedResults = cells;
-	}
-
-
-	
-	
-	
+	}	
 }
