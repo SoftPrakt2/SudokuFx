@@ -12,8 +12,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 
 /**
- * This class is an extension of the JavaFx TextField SudokuTextFields are enhanced
- * with several listeners to be better suitable for the purpose of a sudokugame
+ * This class is an extension of the JavaFx TextField 
+ * SudokuTextFields are enhanced with several listeners to be better suitable for the purpose of a Sudoku game
  * 
  * @author grube
  *
@@ -21,7 +21,7 @@ import javafx.scene.input.KeyEvent;
 public class SudokuTextField extends TextField {
 
 	/**
-	 * color of a SudokuField
+	 * background color of a SudokuTextField
 	 */
 	private String color = "";
 
@@ -39,7 +39,7 @@ public class SudokuTextField extends TextField {
 	private ChangeListener<Boolean> freeFormColorListener;
 
 	/**
-	 * Constructor of a SudokuTextfield, all listener are injected to an object when its initialized
+	 * constructor of a SudokuTextfield, all listener are added to an object when its initialized
 	 * @param txt from the super TextField class
 	 */
 	public SudokuTextField(String txt) {
@@ -47,7 +47,6 @@ public class SudokuTextField extends TextField {
 		addOnlyNumbers();
 		onlyOneNumber();
 		updateColor();
-		
 		shortcutFriendlyTextField();
 		listeningToColors = false;
 	
@@ -55,8 +54,8 @@ public class SudokuTextField extends TextField {
 	}
 
 	/**
-	 * Adds a listener to the Sudokufields textproperty to ensure that only numbers
-	 * from 1-9 are insertable to a SudokuField
+	 * Adds a listener to the SudokuTextfields textproperty to ensure that only numbers
+	 * from 1-9 are insertable to a SudokuField.
 	 */
 	public final void addOnlyNumbers() {
 		this.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -72,7 +71,7 @@ public class SudokuTextField extends TextField {
 	}
 
 	/**
-	 * Adds a listener to ensure that only one digit is insertable in a SudokuField
+	 * adds a listener to ensure that only one digit is insertable in a SudokuTextField
 	 */
 	public final void onlyOneNumber() {
 		this.textProperty().addListener((observable, oldV, newV) -> {
@@ -82,7 +81,7 @@ public class SudokuTextField extends TextField {
 	}
 
 	/**
-	 * Adds a listener to ensure that the Value of the SudokuFields textproperty is
+	 * adds a listener to ensure that the value of the SudokuTextFields textproperty is
 	 * updated
 	 */
 	public final void updateText() {
@@ -90,7 +89,7 @@ public class SudokuTextField extends TextField {
 	}
 
 	/**
-	 * Adds a listener to ensure that the color of a SudokuFields textproperty is
+	 * adds a listener to ensure that the color of a SudokuTextFields textproperty is
 	 * black after inserting a new number
 	 */
 	public final void updateColor() {
@@ -102,12 +101,10 @@ public class SudokuTextField extends TextField {
 		});
 	}
 
-	/**
-	 * application.BasicGameBuilder#getColorBox() This method is needed to ensure
-	 * that the Shortcuts which are defined in
+	/**This method is needed to ensure that the shortcuts which are defined in
 	 * {@link application.BasicGameBuilder#defineShortCuts()} work when the user is
-	 * inside a SudokuField Without this method the SudokuField does not respond to
-	 * the Shortcuts
+	 * inside a SudokuTextField.
+	 * Without this method the SudokuTextField does not respond to the shortcuts.
 	 */
 	public final void shortcutFriendlyTextField() {
 
@@ -139,11 +136,11 @@ public class SudokuTextField extends TextField {
 	}
 
 	/**
-	 * This method ensures that SudokuFields have the ability to receive the
-	 * selected color of a {@link application.CustomColorPicker#cmb} and change the
+	 * This method ensures that SudokuTextFields have the ability to receive the
+	 * selected color of a {@link application.CustomColorPicker} and change the
 	 * background color of itself according to the selected color in the Colorpicker
 	 * 
-	 * @param cmb
+	 * @param cmb ComboxBox whose changes should be listened to 
 	 */
 	public final void addFreeFormColorListener(ComboBox<String> cmb) {
 		freeFormColorListener = (obs, wasFocused, isNowFocused) -> {
@@ -157,7 +154,7 @@ public class SudokuTextField extends TextField {
 	}
 
 	/**
-	 * Removes the listener added to a SudokuField from the method
+	 * Removes the listener added to a SudokuTextField from the method
 	 * {@link #addFreeFormColorListener(ComboBox)}
 	 */
 	public void removeFreeFormColorListener() {
@@ -166,7 +163,7 @@ public class SudokuTextField extends TextField {
 	}
 
 	/**
-	 * Sets the background color of a sudokutextfield
+	 * sets the background color of a SudokuTextfield
 	 * 
 	 * @param color of the background
 	 */

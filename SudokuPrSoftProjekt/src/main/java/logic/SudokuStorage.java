@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URL;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -39,7 +38,7 @@ public class SudokuStorage {
 	/**
 	 * Auxiliary method sets the fields of an {@link logic.SaveModel} objects with informations
 	 * from the paramamter explained down below
-	 * @param gameToSave specific game whose informations need to be stored inside an savemodel object
+	 * @param gameToSave specific game whose informations need to be stored inside a savemodel object
 	 *                  
 	 */
 	public SaveModel setInformationsToStore(BasicGameLogic gameToSave) {
@@ -68,12 +67,10 @@ public class SudokuStorage {
 		
 		} else {
 			saveModel.setGameId(gameToSave.getGameid());
-		//	storagePref.getStoragePrefs().putInt("GameID", saveModel.getGameId());
 		}
 		
 		
-	//	storagePref.getStoragePrefs().remove("GameID");
-	//	storagePref.getStoragePrefs().remove("GameID");
+	
 		return saveModel;
 	}
 	
@@ -129,10 +126,10 @@ public class SudokuStorage {
 
 	/**
 	* This method handles the actual export process, in an object of the {@link logic.SaveModel} class
-	 * the needed informations about the to be exported game are stored
-	 * The saveFile File object then is filled with the informations stored in the {@link logic.SaveModel} object
+	 * the needed informations about the to be exported game are stored.
+	 * The saveFile File object then is filled with the informations stored in the {@link logic.SaveModel} object.
 	 * To locate the path where the user wants to save the file an object of the FileChooser class is initialized 
-	 * and an object of the Jsonwriter class is used to write the game informations to the file
+	 * and an object of the Jsonwriter class is used to write the game informations to the file.
 	 * 
 	 * @param gameToExport specific game which should be exported
 	 */

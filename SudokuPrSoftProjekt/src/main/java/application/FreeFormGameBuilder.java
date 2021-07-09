@@ -17,7 +17,7 @@ import logic.BasicGameLogic;
 
 /**
  * @author gruber
- *  Defines the UI representation of a FreeForm Game
+ *  defines the UI representation of a FreeForm game
  */
 public class FreeFormGameBuilder extends BasicGameBuilder {
 
@@ -30,8 +30,8 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 
 	/**
 	 * Draws the FreeForm playboard, this playboard is filled with 9x9 Stackpanes
-	 * with SudokuFields inside them This container nesting is needed to ensure
-	 * correct scaling of the playboard
+	 * with SudokuTextFields inside them.
+	 * This container nesting is needed to ensure correct scaling of the playboard
 	 */
 	@Override
 	public GridPane createBoard() {
@@ -47,16 +47,16 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));
 
 				getTextField()[row][col] = new SudokuTextField("");
-				getTextField()[row][col].setMaxSize(200, 200);
+				getTextField()[row][col].setMaxSize(500, 500);
 				getTextField()[row][col].setAlignment(Pos.CENTER);
 				getTextField()[row][col].getStyleClass().add("textfieldBasic");
 
-				// adds a listener to the textfields to listen to changes regarding background
+				// adds a listener to the sudokuTextFields to listen to changes regarding background
 				// color
-				// this is needed when creating a custom freeform game
+				// this is needed when creating a manual freeform game
 				getTextField()[row][col].addFreeFormColorListener(comboColorBox);
 
-				// ensures scaling of the text inside the SudokuTextFields when the window
+				// ensures scaling of the text inside the sudokuTextFields when the window
 				// increases in size
 				ObjectProperty<Font> fontTracking = new SimpleObjectProperty<Font>(getTextField()[row][col].getFont());
 				getTextField()[row][col].fontProperty().bind(fontTracking);
@@ -68,8 +68,6 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 					}
 				});
 
-				
-			
 				cell.getChildren().add(getTextField()[row][col]);
 
 				playBoard.add(cell, row, col);
@@ -82,7 +80,7 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	}
 
 	/**
-	 * Creates the UI components which are needed for a manual FreeForm Game
+	 * creates the UI components which are needed for a manual FreeForm game
 	 */
 	@Override
 	public void createManualControls() {

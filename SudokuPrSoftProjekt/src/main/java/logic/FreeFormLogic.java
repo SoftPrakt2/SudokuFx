@@ -84,10 +84,11 @@ public class FreeFormLogic extends SudokuLogic {
 						j = 0;
 					}
 
-					if (globalCounter > 2000000) {
+					if (globalCounter > 20000) {
 						globalCounter = 0;
 						setCells(loadPreMadeFreeForm());
 						connectToSavedResults();
+						System.out.println("loaded");
 						return true;
 					}
 				}

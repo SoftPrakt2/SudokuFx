@@ -1,7 +1,6 @@
 package controller;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.nio.file.Files;
 
@@ -12,9 +11,6 @@ import application.GameOverview;
 import application.SamuraiGameBuilder;
 import application.SudokuGameBuilder;
 import application.SudokuTextField;
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.IntegerBinding;
 import javafx.beans.binding.StringBinding;
@@ -23,7 +19,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Duration;
 import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
@@ -50,8 +45,8 @@ public class StorageController {
 	/**
 	 * The ObservableList associated with the
 	 * {@link application.GameOverview#getTableView()} this list contains
-	 * {@link application.BasicGameLogic} objects BasicGameLogic Objects are stored
-	 * in this list to allow the use of polymorphism later on when determing the
+	 * {@link application.BasicGameLogic} objects
+	 * BasicGameLogic objects are stored in this list to allow the use of polymorphism later on when determing the
 	 * exact gametype
 	 */
 	private ObservableList<BasicGameLogic> jsonObservableList;
@@ -76,10 +71,10 @@ public class StorageController {
 	}
 
 	/**
-	 * This method is used to load a saved sudoku game into a GameUI Depending on
-	 * the exakt type of the {@link #gameModel} Object the corresponding GameBuilder
-	 * will be initialized Depending on the Gamestate of {@link #gameModel}
-	 * different UI objects have to be enabled or disabled
+	 * This method is used to load a saved Sudoku game into a GameUI 
+	 * Depending on the exact type of the {@link #gameModel} object the corresponding GameBuilder
+	 * will be initialized 
+	 * Depending on the gamestate of {@link #gameModel} different UI objects have to be enabled or disabled
 	 * 
 	 * @param e action of the user in the UI
 	 */
@@ -107,13 +102,16 @@ public class StorageController {
 				&& !gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
 				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)
 				&& !gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
-
+				
+			if(gameModel.getGamestate().equals(Gamestate.AUTOSOLVED) || gameModel.getGamestate().equals(Gamestate.DONE)) {
+				gameBuilder.getLiveTimeLabel().setText(String.format("%02d:%02d", gameModel.getMinutesplayed(),gameModel.getSecondsplayed()));
+			} else {
+			
 			gameModel.initializeTimer();
 			gameModel.getLiveTimer().start();
-			gameBuilder.getGameInfoLabel().setText(
-					"Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
 			gameBuilder.getLiveTimeLabel().textProperty().bind(Bindings.concat(gameModel.getTimeProperty()));
-
+			}
+			gameBuilder.getGameInfoLabel().setText("Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
 		}
 
 		if (gameModel.getGamestate().equals(Gamestate.CREATING)
@@ -135,7 +133,6 @@ public class StorageController {
 		gameBuilder.getGameNotificationLabel().setText(gameModel.getGameText());
 
 		alignArrays();
-		enablePointDecreasing();
 		alignWindowToGameSize();
 		}
 	}
@@ -164,11 +161,11 @@ public class StorageController {
 
 	/**
 	 * This method fills the {@link application.GameOverview#getTableView()} with
-	 * informations from the saved Files in the specified directory To do so the
-	 * directory is iterated through and each file in it will be converted to an
-	 * Object of the {@link logic.SaveModel} class Afterwards the informations of
-	 * the SaveModel object will be loaded into the {@link #gameModel} object which
-	 * is an Object of {@link application.BasicGameLogic} class
+	 * informations from the saved Files in the specified directory 
+	 * To do so the directory is iterated through and each file in it will be converted to an
+	 * object of the {@link logic.SaveModel} class 
+	 * Afterwards the informations of the SaveModel object will be loaded into the {@link #gameModel} object which
+	 * is an object of {@link application.BasicGameLogic} class
 	 */
 	public void fillTableVew() {
 		jsonObservableList = FXCollections.observableArrayList();
@@ -196,8 +193,8 @@ public class StorageController {
 	}
 
 	/**
-	 * This method is used to delete an Object from the {@link #jsonObservableList}
-	 * and the File directory
+	 * This method is used to delete an object from the {@link #jsonObservableList}
+	 * and the file directory
 	 * 
 	 * @param action of the user in the UI
 	 */
@@ -262,24 +259,11 @@ public class StorageController {
 				&& !gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
 				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)
 				)
-			System.out.println("");
 			gameModel.setSavedResults(gameModel.createBackgroundSolution());
 	}
 	
 	
-	
-	public void enablePointDecreasing() {
-		Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), ev -> {
-		if(gameModel.getSecondsplayed() != 0 && gameModel.getSecondsplayed() % 59 == 0 ) {
-			gameModel.setGamePoints(gameModel.getGamepoints()-1);
-			gameBuilder.getGameInfoLabel().setText("Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
-		}	
-		}));
-			timeline.setCycleCount(Animation.INDEFINITE);
-		timeline.play();
-	}
-	
-	
+
 	
 
 	/**
@@ -295,11 +279,10 @@ public class StorageController {
 
 	/**
 	 * This method is used to calculate the different game results shown in the
-	 * {@link application.GameOverview} Screen The results are dependend on the
-	 * content in the {@link application.GameOverview#getTableView()} thus for each
-	 * result a binding is created which contains the specific result of the
-	 * calculation Lastly each binding is then bound to the
-	 * {@link application.GameOverview} specific lable for the result
+	 * {@link application.GameOverview} window 
+	 * The results are depended on the content in the {@link application.GameOverview#getTableView()} thus for each
+	 * result a binding is created which contains the specific result of the calculation 
+	 * Lastly each binding is then bound to the {@link application.GameOverview} specific label for the result
 	 */
 	public void calculateGameStats() {
 

@@ -3,7 +3,7 @@ package application;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
-import controller.GameController;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
@@ -19,6 +19,12 @@ import logic.BasicGameLogic;
  */
 public class SamuraiGameBuilder extends BasicGameBuilder {
 
+	
+	
+	/**
+	 * Constructor of the class
+	 * @param model the corresponding GameLogic model of this GameBuilder
+	 */
 	public SamuraiGameBuilder(BasicGameLogic model) {
 		super(model);
 		setTextField(new SudokuTextField[21][21]);
@@ -28,11 +34,11 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 
 		
 	/**
-	 * Draws the SamuraiGame playboard, this playboard is filled with 21x21 Stackpanes with SudokuFields inside them
-	 * This container nesting is needed to ensure correct scaling of the playboard 
+	 * Draws the SamuraiGame playboard, this playboard is filled with 21x21 Stackpanes with SudokuTextFields inside them.
+	 * This container nesting is needed to ensure correct scaling of the playboard.
 	 * To achieve the desired look of the playboard, 
-	 * empty StackPane cells are put into the GridPane on positions where the player should not be able to insert numbers
-	 * These StackPane cells are then filled with SudokuField with "-1" as Text to ensure that these Fields are not recognized by game logic methods
+	 * empty StackPane cells are put into the GridPane on positions where the player should not be able to insert numbers.
+	 * These empty StackPane cells are then filled with SudokuTextFields with "-1" as text to ensure that these fields are not recognized by game logic methods
 	 * 
 	 */
 	@Override
@@ -46,7 +52,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		for (int row = 0; row < getTextField().length; row++) {
 			for (int col = 0; col < getTextField()[row].length; col++) {
 				StackPane cell = new StackPane();
-				//Styles the cell with the assoziated CSS styleclass in the sudoku css files
+				//styles the cell with the associated CSS styleclass in the sudoku css files
 				cell.getStyleClass().add("samuraicell");
 				//aligns the size of the cells to the current size of the playboard
 				cell.prefHeightProperty().bind(playBoard.heightProperty().divide(22));
@@ -69,16 +75,16 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 				} else {
 			
 					getTextField()[row][col] = new SudokuTextField("");
-					//align the size of the Text inside a SudokuField to the window size
+					//align the size of the Text inside a SudokuTextField to the window size
 					getTextField()[row][col].styleProperty().bind(Bindings.concat("-fx-font-size: ", textSize.asString()));
 					textSize.bind(gameRoot.widthProperty().add(gameRoot.heightProperty()).divide(100));
 					
-					//style the textfield with the values defined in the styleclass
+					//style the SudokuTextField with the values defined in the styleclass
 					getTextField()[row][col].getStyleClass().add("textfieldBasic");
-					getTextField()[row][col].setMaxSize(100, 100);
+					getTextField()[row][col].setMaxSize(500, 500);
 					getTextField()[row][col].setAlignment(Pos.CENTER);
 					
-					//add the textfield to the cell
+					//add the SudokuTextField to the cell
 					cell.getChildren().add(getTextField()[row][col]);
 					playBoard.add(cell, row, col);
 					
@@ -93,17 +99,17 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	}
 
 	/**
-	 * This method styles the PlayBoard
-	 * Due to the irregularity of the SudokuFields which should be styled, it was needed to manually determine which specific cells should be styled
-	 * It is recommended to improve this method in further Versions of the program to ensure better reusability
-	 * The styling of the SudokuFields by adding a Styleclass from the projects CSS File
+	 * This method styles the play board
+	 * Due to the irregularity of the SudokuTextFields which should be styled, it was needed to manually determine which specific cells should be styled.
+	 * It is recommended to improve this method in further versions of the program to ensure better reusability.
+	 * The styling of the SudokuTextFields is done by adding a styleclass from the projects CSS File
 	 */
 	public void drawColors() {
 		for(int i = 0; i < getTextField().length; i++) {
 			for(int j = 0; j < getTextField()[i].length; j++) {
 				if((j < 3 ||(j> 5 && j <9) || (j>11 && j<15) || j>17 && j<21) &&(i != 3&& i!=4 && i !=5 && i!=15 && i!=16 && i!=17)) {
 					if(((j > 5 && j<9) || (j >11 && j < 18))  && (i > 8 && i <12)) {
-						//These fields should get no background color
+						//These fields should get no custom background color
 					} else {
 						getTextField()[i][j].getStyleClass().add("coloredSamuraiCell");
 					}
@@ -126,7 +132,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	}
 
 	/**
-	 * Creates the UI components which are needed for a manual FreeForm Game
+	 * Creates the UI components which are needed for a manual Samuari game
 	 */
 	@Override
 	public void createManualControls() {

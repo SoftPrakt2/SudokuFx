@@ -9,8 +9,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
- * This class is used to create a PopUP which gives the User the ability to change the gamemode while he/she is in an other game, the popup is shown when the user
- * presses the {@link application.BasicGameBuilder} newGameItem
+ * This class is used to create a pop up which gives the user the ability to change the game mode while he/she is in an other game, the pop up is shown when the user
+ * presses the {@link application.BasicGameBuilder} newGameItem.
  * Due to the similarity of the components and stucture this class inherits from the {@link application.MainMenu} class
  * @author grube
  *
@@ -21,17 +21,17 @@ public class NewGamePopUp extends MainMenu {
 	private PopOver popOver;
 	
 	/**
-	 * Container for the game mode buttons
+	 * container for the game mode buttons
 	 */
 	private HBox gameModeButtons;
 	
 	/**
-	 * Container for the difficulty buttons
+	 * container for the difficulty buttons
 	 */
 	private HBox difficultyButtons;
 	
 	/**
-	 * Label which is used as Header of the popup
+	 * label which is used as header of the pop up
 	 */
 	private Label newGameModeLabel;
 	
@@ -39,12 +39,13 @@ public class NewGamePopUp extends MainMenu {
 	 * root container of the popover
 	 */
 	private VBox popOverBox;
+	
 	private PopOverController popcontrol;
 
 	
 	/**
-	 * Creates a PopOver Object and fills it with the UI Components needed
-	 * Furtermore the Objects controller is initialized
+	 * Creates a PopOver object and fills it with the needed UI components 
+	 * Furthermore the class' controller is initialized
 	 * @return created PopOver
 	 */
 	public PopOver createPopUp() {
@@ -71,7 +72,7 @@ public class NewGamePopUp extends MainMenu {
 	
 
 	/**
-	 * This method creates the togglebuttons which are responsible for selecting a gamemode by calling the method from the super class {@link  application.ModeController#createGameModeButtons()}
+	 * This method creates the ToggleButtons which are responsible for selecting a game mode by calling the method from the super class {@link  application.ModeController#createGameModeButtons()}
 	 */
 	@Override
 	public void createGameModeButtons() {
@@ -84,7 +85,7 @@ public class NewGamePopUp extends MainMenu {
 	
 	
 	/**
-	 * This method creates the togglebuttons which are responsible for selecting a difficulty by calling the method from the super class {@link  application.ModeController#createDifficultyButtons()}
+	 * This method creates the ToggleButtons which are responsible for selecting a difficulty by calling the method from the super class {@link  application.ModeController#createDifficultyButtons()}
 	 */
 	@Override
 	public void createDifficultyButtons() {
@@ -97,7 +98,7 @@ public class NewGamePopUp extends MainMenu {
 
 	
 	/**
-	 * This method is used to connect the buttons of the popup with methods which are defined in the @see SudokuFx.SudokuFx.application.PopOverController class
+	 * This method is used to connect the buttons of the PopOver with methods which are defined in the {@link controller.PopOverController} class
 	 */
 	@Override
 	public void setButtonActions() {

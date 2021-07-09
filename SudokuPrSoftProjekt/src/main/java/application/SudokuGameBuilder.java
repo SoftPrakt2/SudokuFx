@@ -15,16 +15,14 @@ import logic.BasicGameLogic;
 
 /**
  * @author grube
- * Defines the UI representation of a Sudoku Game
+ * defines the UI representation of a 9x9 Sudoku Game
  */
 public class SudokuGameBuilder extends BasicGameBuilder {
 
 	
 	/**
-	 * constructor for this GameBuilder
-	 * sets the SudokuTextField array with the correct size 
-	 * sets the size of the UI when loading a game of this type
-	 * @param model
+	 * constructor of the class
+	 * @param model the corresponding GameLogic model of this GameBuilder
 	 */
 	public SudokuGameBuilder(BasicGameLogic model) {
 		super(model);
@@ -34,7 +32,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	}
 		
 	/**
-	 * Draws the Sudoku playboard, this playboard is filled with 9x9 Stackpanes with SudokuFields inside them
+	 * Draws the Sudoku playboard, this playboard is filled with 9x9 Stackpanes with SudokuTextFields inside them
 	 * This container nesting is needed to ensure correct scaling of the playboard 
 	 */
 	@Override
@@ -58,7 +56,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 				cell.prefWidthProperty().bind(playBoard.widthProperty().divide(10));
 
 				getTextField()[row][col] = new SudokuTextField("");
-				getTextField()[row][col].setMaxSize(200, 200);
+				getTextField()[row][col].setMaxSize(500, 500);
 				getTextField()[row][col].getStyleClass().add("textfieldBasic");
 				getTextField()[row][col].setAlignment(Pos.CENTER);
 				
@@ -84,7 +82,7 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	}
 	
 	/**
-	 * Creates the UI components which are needed for a manual FreeForm Game
+	 * Creates the UI components which are needed for a manual Sudoku game.
 	 */
 	@Override
 	public void createManualControls() {

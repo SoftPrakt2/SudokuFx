@@ -35,8 +35,8 @@ import logic.BasicGameLogic;
 
 /**
  * 
- * The abstract BasicGameBuilder class is the basic class for the Game UI. In
- * this class several UI Components like Buttons or the menu are created
+ * The abstract BasicGameBuilder class is the basic class for the game UI. In
+ * this class several UI components like buttons or the menu are created
  * 
  * @author gruber
  *
@@ -44,7 +44,7 @@ import logic.BasicGameLogic;
 public abstract class BasicGameBuilder {
 
 	/**
-	 * The Main UI Container of a GameBuilder
+	 * The main UI container of a GameBuilder
 	 */
 	protected final BorderPane gameRoot;
 	private BasicGameLogic model;
@@ -52,20 +52,20 @@ public abstract class BasicGameBuilder {
 	/**
 	 * 
 	 * The toolbar is the container for {@link #autosolve} {@link #check}
-	 * {@link #hintButton} and the {@link #liveTimeLabel} which displays the current
+	 * {@link #hintButton} and the {@link #liveTimeLabel}, this label displays the current
 	 * gametime
 	 */
 	protected ToolBar toolBar;
 
 	/**
 	 * The VBox toolbox works as the container for {@link #toolBar} and
-	 * {@link #menuBar} this VBox is needed, to position the {@link #toolBar} under
-	 * the {@link #menuBar}
+	 * {@link #menuBar} 
+	 * This VBox is needed to position the {@link #toolBar} under the {@link #menuBar}
 	 */
 	private VBox toolbox;
 
 	/**
-	 * Button components for the Game UI
+	 * Button components for the game UI
 	 */
 	private Button checkButton;
 	private Button autosolve;
@@ -75,10 +75,10 @@ public abstract class BasicGameBuilder {
 	protected ComboBox<String> comboColorBox;
 
 	/**
-	 * Labels for the game {@link #gameNotificationLabel} displays text
-	 * corresponding to the games state {@link #gameInfoLabel} displays information
-	 * about the game like current Points and selected Difficulty
-	 * {@link #liveTimeLabel} displays the current gametime
+	 * Labels for the game 
+	 * {@link #gameNotificationLabel} displays text corresponding to the games state 
+	 * {@link #gameInfoLabel} displays information about the game like current points and selected difficulty
+	 * {@link #liveTimeLabel} displays the current playtime
 	 */
 	private Label gameNotificationLabel;
 	private Label gameInfoLabel;
@@ -86,32 +86,34 @@ public abstract class BasicGameBuilder {
 	
 
 	/**
-	 * {@link #fontAwesome} is used to style different button components of the Game
-	 * UI
+	 * {@link #fontAwesome} is used to style different Button components of the game UI
 	 */
 	protected FontAwesome fontAwesome;
 
 	private List<ChangeListener<String>> conflictListener;
 
 	/**
-	 * variables which define the size of the Game Window
+	 * variables which define the size of the games window in the UI
 	 */
 	private int sceneWidth;
 	private int sceneHeight;
 
 	/**
-	 * gamePopUp is an Object of the class {@link application.NewGamePopUp} popover
-	 * will later be initialized with the
+	 * gamePopUp is an object of the class {@link application.NewGamePopUp} 
+	 * a popover will later be initialized with the
 	 * {@link application.NewGamePopUp#createPopUp()} method
 	 */
 	private NewGamePopUp gamePopUp;
 	private PopOver popover;
-
+	
+	/**
+	 * SudokuTextField array of the UI to display numbers inside the playboard
+	 */
 	private SudokuTextField[][] textField;
 	private GameController controller;
 
 	/**
-	 * Constructor of the class
+	 * constructor of the class
 	 * @param model the corresponding GameLogic model of this GameBuilder
 	 */
 	protected BasicGameBuilder(BasicGameLogic model) {
@@ -120,8 +122,8 @@ public abstract class BasicGameBuilder {
 	}
 
 	/**
-	 * In this method the Game UI is initialized with all necessary UI components
-	 * Furthermore the Game's controller is initialized with the GameBuilder and a
+	 * In this method the game UI is initialized with all necessary UI components
+	 * Furthermore the game's controller is initialized with the GameBuilder and a
 	 * corresponding GameLogic
 	 */
 	public void initializeGame() {
@@ -147,8 +149,10 @@ public abstract class BasicGameBuilder {
 	public abstract GridPane createBoard();
 
 	/**
-	 * Initializes the {@link #toolBar}, the Game Buttons and the
-	 * {@link #liveTimeLabel} The rightSpacer is used to ensure appropiate distance
+	 * Initializes the {@link #toolBar}, 
+	 * the game buttons {@link #autosolve} {@link #hintButton} {@link #checkButton}
+	 * and the{@link #liveTimeLabel} 
+	 * The rightSpacer is used to ensure approbate distance
 	 * between the buttons and the {@link #liveTimeLabel}
 	 */
 	public void initializeToolBar() {
@@ -156,6 +160,7 @@ public abstract class BasicGameBuilder {
 
 		
 		fontAwesome = new FontAwesome();
+		//graphics for the buttons
 		Glyph checkGraphic = fontAwesome.create(FontAwesome.Glyph.CHECK);
 		Glyph hintGraphic = fontAwesome.create(FontAwesome.Glyph.SUPPORT);
 		Glyph autosolveGraphic = fontAwesome.create(FontAwesome.Glyph.CALCULATOR);
@@ -177,13 +182,13 @@ public abstract class BasicGameBuilder {
 	}
 
 	/**
-	 * Abstract method which is used to create the games specific manual game
-	 * components
+	 * abstract method which is used to create the games specific manual game
+	 * UI components
 	 */
 	public abstract void createManualControls();
 
 	/**
-	 * Adds listener to the SudokuFields, these listener are used to allow automatic
+	 * adds listener to the SudokuTextFields, these listener are used to allow automatic
 	 * conflict registration
 	 */
 	public void addConflictListeners() {
@@ -198,7 +203,6 @@ public abstract class BasicGameBuilder {
 
 					}
 				};
-
 				getTextField()[col][row].textProperty().addListener(changeListener);
 				conflictListener.add(changeListener);
 
@@ -209,7 +213,7 @@ public abstract class BasicGameBuilder {
 
 
 	/**
-	 * Removes the listeners from the SudokuTextFields added with the
+	 * removes the listeners from the SudokuTextFields added with the
 	 * {@link #addConflictListeners()} method
 	 */
 	public void removeConflictListeners() {
@@ -225,7 +229,7 @@ public abstract class BasicGameBuilder {
 
 	//menubar for the GameUI
 	protected MenuBar menuBar;
-	// MenüObjekte für File Menü
+	// Menu Objects for the fileMenu
 	private Menu fileMenu;
 	private MenuItem newGameMenuItem;
 	private MenuItem saveMenuItem;
@@ -234,29 +238,29 @@ public abstract class BasicGameBuilder {
 	private SeparatorMenuItem seperatorItem;
 	private MenuItem exitMenuItem;
 
-	// MenüObjekte für Edit Menü
+	// Menu Objects for the editMenu
 	private Menu editMenu;
 	private MenuItem resetMenuItem;
 	private MenuItem newRoundMenuItem;
 	private Menu propertyMenu;
 	private RadioMenuItem conflictMenuItem;
 
-	// MenüObjekte für Edit Menü
+	// Menu Objects for the sourceMenu
 	private Menu sourceMenu;
 	private MenuItem hintMenuItem;
 	private MenuItem autoSolveMenuItem;
 	private MenuItem checkMenuItem;
 
-	// MenüObjekte für SudokuFx Menü
+	// Menu Objects for the sudokufxmenu
 	private Menu sudokufxMenu;
 	private MenuItem mainMenuItem;
 
-	// MenüObjekte für Help Menü
+	//Menu Objects for the helpMenu
 	private Menu helpMenu;
 	private MenuItem aboutMenuItem;
 
 	/**
-	 * Initializes the Menu UI Components
+	 * Initializes the components needed for the menubar 
 	 */
 	public void createMenuBar() {
 		// menuBar for the scene
@@ -315,7 +319,7 @@ public abstract class BasicGameBuilder {
 	}
 
 	/**
-	 * Adds shortcut functionality to the UI Objects inside the Menu
+	 * adds shortcut functionality to the UI objects inside the menu
 	 */
 	public void defineShortCuts() {
 
@@ -344,7 +348,7 @@ public abstract class BasicGameBuilder {
 
 	/**
 	 * 
-	 * Defines which Action is fired when a specific button is pressed
+	 * defines which action is fired when a specific button is pressed
 	 */
 	public void setButtonActions() {
 		newRoundMenuItem.setOnAction(controller::newGameHandler);
@@ -359,7 +363,7 @@ public abstract class BasicGameBuilder {
 	}
 
 	/**
-	 * Defines which Action is fired when a specific menuitem is pressed
+	 * defines which action is fired when a specific menuitem is pressed
 	 */
 	public void setMenuActions() {
 		checkMenuItem.setOnAction(controller::checkHandler);
@@ -381,7 +385,7 @@ public abstract class BasicGameBuilder {
 	
 
 	/**
-	 * Creates a statusbar which is positioned on the bottom of the Game UI
+	 * creates a statusbar which is positioned on the bottom of the Game UI
 	 */
 	public void createStatusBar() {
 		gameNotificationLabel = new Label();
@@ -401,33 +405,34 @@ public abstract class BasicGameBuilder {
 	}
 
 	/**
-	 * Calls the {@link application.GameController#createGame()} method
-	 * this call is needed to ensure that numbers are shown in the textfield when selecting a game from the main menu
+	 * calls the {@link application.GameController#createGame()} method
+	 * this call is needed to ensure that numbers are shown in the SudokuTextField when selecting a game from the main menu
 	 */
 	public void createNumbers() {
 		controller.createGame();
 	}
 
 	/**
-	 *  auxiliary method which disables the game buttons and corrseponding menuitem functionality if needed 
+	 *  auxiliary method which disables the game buttons and corresponding menuitem functionality if needed 
 	 */
 	public void disablePlayButtons() {
 		Stream.of(checkButton, autosolve, hintButton).forEach(button -> button.setDisable(true));
-		Stream.of(autoSolveMenuItem,hintMenuItem,checkMenuItem).forEach(menuItem -> menuItem.setDisable(true));	
+		Stream.of(autoSolveMenuItem,hintMenuItem,checkMenuItem,conflictMenuItem).forEach(menuItem -> menuItem.setDisable(true));	
+		
 	}
 
-	public BorderPane getGameUIRoot() {
-		return gameRoot;
-	}
 
-	
 	/**
-	 * 
-	 * Getter and setter for variables of this class
+	 * getter and setter for variables of this class
 	 */
 	public SudokuTextField[][] getTextField() {
 		return this.textField;
 	}
+	
+	public BorderPane getGameUIRoot() {
+		return gameRoot;
+	}
+
 
 	public Button getCheckButton() {
 		return this.checkButton;

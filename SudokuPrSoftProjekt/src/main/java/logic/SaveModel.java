@@ -3,12 +3,10 @@ package logic;
 
 /**
  * This class defines the content which is in a saved File
- * Due to the complexitiy of de - and serializing abstract classes like the {@link application.BasicGameLogic} class
+ * Due to the complexitiy of de- and serializing abstract classes like the {@link application.BasicGameLogic} class
  * the developers decided to implement this auxiliary class.
  * An object of this class contains all informations which are needed to save and load a game.
- * Another solution would have been to implement a custom deserializer specific for the {@link application.BasicGameLogic} class.
- * However the approach with this auxiliary method seems to be the more easy to understand and easy to follow one
- * In further versions of this program it is recommended to reevaluate this solution 
+ * These objects are put into a File during the save/export procedure
  * @author grube
  *
  */

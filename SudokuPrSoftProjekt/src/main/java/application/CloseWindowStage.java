@@ -12,14 +12,14 @@ import javafx.stage.Stage;
 
 
 /**
- *  CloseWindowStage is used to generate a PopUp which asks the user if he/she wants to close the program
+ *  CloseWindowStage is used to generate a pop up which asks the user if he/she wants to close the program
  *  @author gruber
  *
  */
 public class CloseWindowStage {
 	
 	/**
-	 * Answer of the user if he wants to close the program
+	 * answer of the user if he/she wants to close the program
 	 */
 	private boolean closingAnswer;
 	
@@ -30,7 +30,7 @@ public class CloseWindowStage {
 	
 	
 	/**
-	 * Creates a Stage which displays the closing request
+	 * creates a stage which displays the closing question
 	 */
 	 public void showPopUp() {
 			window = new Stage();
@@ -63,15 +63,17 @@ public class CloseWindowStage {
 		}
 	
 	 /**
-	  * Defines the actions for the {@link #yesButton} and {@link #noButton}
+	  * defines the actions for the {@link #yesButton} and {@link #noButton}
 	  */
 	 public void setClosingAnswer() {
 		 yesButton.setOnAction(e -> {
 			 closingAnswer = true;
+			 	//close the popup
 				window.close();
 			});
 			
 			noButton.setOnAction(e -> {
+				//close the popup
 				closingAnswer = false;
 				window.close();	
 			});

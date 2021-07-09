@@ -238,7 +238,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public int getNumberOfVisibleValues() {
 		if (this.getDifficulty() == 3) {
-			return 244;
+			return 249;
 		} else if (this.getDifficulty() == 5) {
 			return 200;
 		} else if (this.getDifficulty() == 7) {
@@ -249,6 +249,8 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	public void SolveCellsWithOnlyOnePossibleValue() {
+	
+		
 		int[][] helper = new int[this.getCells().length][this.getCells().length];
 		for (int row = 0; row < this.getCells().length; row++) {
 			for (int col = 0; col < this.getCells()[row].length; col++) {
@@ -267,10 +269,12 @@ public class SamuraiLogic extends BasicGameLogic {
 						if (this.valid(row, col, y)) {
 							numberOfPossibleValues++;
 							rightValue = y;
+							
 						}
 					}
 					if (numberOfPossibleValues == 1) {
 						helper[row][col] = rightValue;
+						this.getCells()[row][col].setValue(rightValue);
 					}
 				}
 			}
@@ -352,6 +356,12 @@ public class SamuraiLogic extends BasicGameLogic {
 		return true;
 	}
 
+	
+	
+	
+	
+	
+	
 	@Override
 	public boolean isConnected() {
 		return false;

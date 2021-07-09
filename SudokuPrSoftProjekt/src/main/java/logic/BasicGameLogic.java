@@ -4,20 +4,12 @@ package logic;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javafx.animation.AnimationTimer;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.binding.IntegerBinding;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableValue;
 
 /**
  * The abstract class BasicGameLogic is a basic class for all Sudoku-Subclasses
@@ -429,6 +421,7 @@ public abstract class BasicGameLogic {
 	 * correctly
 	 */
 	public void setUpGameInformations() {
+		setGamePoints(50);
 		setGameState(Gamestate.OPEN);
 		setDifficultyString();
 		setMinutesPlayed(0);
@@ -442,7 +435,6 @@ public abstract class BasicGameLogic {
 	 * new cell array
 	 */
 	public void setUpGameField() {
-		setGamePoints(50);
 		setUpLogicArray();
 		setShuffleCounter(0);
 		createSudoku();
@@ -682,5 +674,12 @@ public abstract class BasicGameLogic {
 
 	public void setSavedResults(int[][] cells) {
 		this.savedResults = cells;
-	}	
+	}
+	
+	
+
+	
+	
+	
+	
 }

@@ -19,7 +19,7 @@ public class SudokuLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[9][9]);
 		setGametype("Sudoku");
-		setNumbersToBeSolvable(21);
+		setNumbersToBeSolvable(1);
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
 	
@@ -119,7 +119,7 @@ public class SudokuLogic extends BasicGameLogic {
 	@Override
 	public int getNumberOfVisibleValues() {
 		if(this.getDifficulty() == 3) {
-			return 56;
+			return 57;
 		}
 		else if(this.getDifficulty() == 5) {
 			return 46;

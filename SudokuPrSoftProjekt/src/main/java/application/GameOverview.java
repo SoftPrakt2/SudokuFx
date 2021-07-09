@@ -24,50 +24,50 @@ import logic.BasicGameLogic;
 
 
 /**
- * This class defines the appearance of the programs game overview 
- * To do so different UI Components like a table view, a context menu for this table view and different 
- * labels are created
+ * This class defines the appearance of the programs game overview.
+ * To do so different UI components like a table view, a context menu for this table view and different 
+ * labels are created.
  * @author grube
  *
  */
 public class GameOverview {
 
 	/**
-	 * Controller of this View class which will be initialized when opening this
+	 * controller of this View class which will be initialized when opening this
 	 * class in the program
 	 */
 	private StorageController controller;
 
 	/**
-	 * Stage object of this class
+	 * stage object of this class
 	 */
 	private Stage stage;
 
 	/**
-	 * Scene object of this class
+	 * scene object of this class
 	 */
 	private Scene storageScene;
 
 	/**
-	 * The tableview of this scene
+	 * the tableview of this scene
 	 */
 	private TableView<BasicGameLogic> tableView;
 
 	/**
-	 * UI Objects which will be used for the contextmenu of the {@link #tableView}
+	 * UI objects which will be used for the contextmenu of the {@link #tableView}
 	 */
 	private ContextMenu contextMenu;
 	private MenuItem deleteMenuItem;
 	private MenuItem loadMenuItem;
 
 	/**
-	 * Main Container for UI Objects in this Class
+	 * main container for UI objects in this class
 	 */
 	private BorderPane storageContainerBox;
 
 
 	/**
-	 * Labels for different headlines in the UI window
+	 * labels for different headlines in the UI window
 	 */
 	private Label storageHeaderLabel;
 	private Label gameScoreHeaderLabel;
@@ -77,7 +77,7 @@ public class GameOverview {
 	private Label overallTimeHeaderLabel;
 
 	/**
-	 * Labels which will be later filled with Information about the users played
+	 * labels which will display information about the users played
 	 * games
 	 */
 	private Label averagePointsResultLabel;
@@ -91,9 +91,9 @@ public class GameOverview {
 	private VBox tableviewBox;
 
 	/**
-	 * This method is used to set up the Stage Object of this class
+	 * This method is used to set up the stage object of this class
 	 * and show it in the UI 
-	 * @return stage object which is shown in the UI in 
+	 * @return stage object which is shown in the UI 
 	 */
 	public Stage createStage() {
 		storageScene = initializeStorageScene();
@@ -113,11 +113,11 @@ public class GameOverview {
 	}
 
 	/**
-	 * This method is used to set up this classes Scene object {@link #storageScene}
-	 * Indoing this the main UI container {@link #storageContainerBox} of this class is initialized
-	 * filled with the needed UI objects
-	 * and appropriately styled as well as positioned in the scene
-	 * Furthermore the controller of this View is initialized
+	 * This method is used to set up this classes scene object {@link #storageScene}.
+	 * Doing this the main UI container {@link #storageContainerBox} of this class is initialized
+	 * and filled with the needed UI objects.
+	 * These UI objects are then appropriately styled as well as positioned in the scene
+	 * Furthermore the controller of this view is initialized
 	 * @return the created scene
 	 */
 	public Scene initializeStorageScene() {
@@ -152,8 +152,8 @@ public class GameOverview {
 	}
 
 	/**
-	 * This method is used to initialize the {@link #contextMenu} Into this
-	 * contextMenu the menuitems {@link #deleteMenuItem} and {@link #loadMenuItem}
+	 * This method is used to initialize the {@link #contextMenu} .
+	 * Into this contextMenu the menuitems {@link #deleteMenuItem} and {@link #loadMenuItem}
 	 * are inserted
 	 */
 	public void setUpContextMenu() {
@@ -169,8 +169,8 @@ public class GameOverview {
 
 	/**
 	 * This method is used to add the functionality that a right mouse click inside
-	 * the {@link #tableView} opens the contextmenu defined in the
-	 * {@link #setUpContextMenu()} method
+	 * the {@link #tableView} opens the contextMenu defined in the
+	 * {@link #setUpContextMenu()} method.
 	 */
 	public void addContextMenuFunctionality() {
 		tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
@@ -186,12 +186,12 @@ public class GameOverview {
 
 	/**
 	 * This method is used to initialize and position the
-	 * {@link #gameScoreHeaderLabel} and the UI components regarding displaying game informations to allow better positioning of the components
-	 * these are put into a own HBox the gameStatsBox
-	 * The HBox gameStatsBox is the main container for the UI Objects which are created in the
+	 * {@link #gameScoreHeaderLabel} and the UI components regarding displaying game informations.
+	 * To allow better positioning of the components these are put into a own HBox the gameStatsBox
+	 * The HBox gameStatsBox is the main container for the UI objects which are created in the
 	 * {@link #createAverageResultContainer()} and
-	 * {@link #createOverallResultContainers()} The usage of the gameStatsBox allows
-	 * better positioning of the containers as a whole inside the window
+	 * {@link #createOverallResultContainers()} 
+	 * The usage of the gameStatsBox allows better positioning of the containers as a whole inside the window
 	 */
 	public void createGameStatBox() {
 		HBox gameStatsBox = new HBox();
@@ -208,16 +208,16 @@ public class GameOverview {
 
 	/**
 	 * This method initializes the UI elements which are needed to show the user the
-	 * average time and points achieved in his games To ensure better alignment and
-	 * positioning the result Labels are put into its own HBox This allows better
-	 * positioning and keeps the distance between the UI objects when the size of
+	 * average time and points achieved in his games. 
+	 * To ensure better alignment and positioning the result Labels are put into its own HBox 
+	 * This allows better positioning and keeps the distance between the UI objects when the size of
 	 * the window changes
 	 * 
-	 * @return the VBOX UI Container which contains all the needed UI Objects to
-	 *         display average Information for the user
+	 * @return the VBOX UI Container which contains all the needed UI objects to
+	 *         display average information for the user
 	 */
 	public VBox createAverageResultContainer() {
-		// the averageResultsBox is the main Container of this method in which all UI
+		// the averageResultsBox is the main container of this method in which all UI
 		// components of the method are inserted into
 		VBox averageResultsBox = new VBox();
 		averageResultsBox.setPadding(new Insets(30, 0, 0, 0));
@@ -244,9 +244,9 @@ public class GameOverview {
 
 	/**
 	 * This method initializes the UI elements which are needed to show the user the
-	 * overall time and points achieved in his games To ensure better alignment and
-	 * positioning the result Labels are put into its own HBox This allows better
-	 * positioning and keeps the distance between the UI objects when the size of
+	 * overall time and points achieved in his games. 
+	 * To ensure better alignment and positioning the result Labels are put into its own HBox. 
+	 * This allows better positioning and keeps the distance between the UI objects when the size of
 	 * the window changes
 	 * 
 	 * @return the VBOX UI Container which contains all the needed UI Objects to
@@ -278,7 +278,7 @@ public class GameOverview {
 
 	/**
 	 * This method is used to style the label objects of this class with the
-	 * corresponding CSS styleclass in the Sudoku CSS file
+	 * corresponding CSS styleclass in the Sudoku CSS file.
 	 */
 	public void styleLabels() {
 		Stream.of(averageTimeHeaderLabel, overallTimeHeaderLabel, overallPointsHeaderLabel, averagePointsHeaderLabel)
@@ -292,10 +292,10 @@ public class GameOverview {
 	}
 
 	/**
-	 * This method is used to ensure that the different UI Objects are scaled
-	 * correctly with the size of the window To ensure this behaviour a
-	 * DoubleProperty Object is bind to the windows width and height informations
-	 * After that the labels font size are bind to the value of the DoubleProperty
+	 * This method is used to ensure that the different UI objects are scaled
+	 * correctly with the size of the window.
+	 * To ensure this behavior a DoubleProperty object is bind to the windows width and height informations.
+	 * After that the labels font size are bind to the value of the DoubleProperty.
 	 */
 	public void alignLabelWithWindowSize() {
 		final SimpleDoubleProperty fontSizeBinding = new SimpleDoubleProperty(10);
@@ -313,6 +313,9 @@ public class GameOverview {
 
 	}
 
+	
+	//getter and setter of this class
+	
 	public TableView<BasicGameLogic> getTableView() {
 		return tableView;
 	}

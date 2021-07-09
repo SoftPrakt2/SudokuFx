@@ -33,7 +33,7 @@ public class GUI extends Application {
 	
 	/**
 	 * This method is called when starting the program
-	 * The MainScene of the program is set to the window scene created in the {@link application.MainMenu} class
+	 * The main scene of the program is set to the window scene created in the {@link application.MainMenu} class
 	 */
 	@Override
 	public void start(Stage scene) {
@@ -41,8 +41,6 @@ public class GUI extends Application {
 		MainMenu mainmenu = new MainMenu();
 		
 		window = scene;
-		scene.setMaxWidth(1500);
-		scene.setMaxHeight(1500);
 		mainmenu.setUpMainMenu();
 		mainScene = mainmenu.getScene();
 

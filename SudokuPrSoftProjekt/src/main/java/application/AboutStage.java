@@ -14,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
- * This class is used to show a little PopUp in the UI displaying information
+ * This class is used to show a little pop up in the UI displaying information
  * about the programm and its developers
  * 
  * @author gruber
@@ -26,7 +26,7 @@ public class AboutStage {
 	
 
 	/**
-	 * Labels of this scene
+	 * Labels for text output in this scene
 	 */
 	private Label rulesHeader;
 	private Label uiDesignDeveloperLabel;
@@ -38,7 +38,7 @@ public class AboutStage {
 	protected FontAwesome fontAwesome;
 	
 	/**
-	 * This method is used to instantiate a Stage object 
+	 * This method is used to instantiate a stage object 
 	 * and show it in the UI
 	 */
 	public void showRulePopUp() {
@@ -57,7 +57,7 @@ public class AboutStage {
 	}
 	
 	/**
-	 * This method initializes a scene which is filled with UI Objects generated in the
+	 * This method initializes a scene which is filled with UI objects generated in the
 	 * {@link #createGameModeExplanationBox()} method
 	 * @return the created scene 
 	 */
@@ -122,15 +122,13 @@ public class AboutStage {
 	
 	/**
 	 * This method is used to style the different labels with a css styleclass
-	 * Furthermore the size of the label will be bound to the scenes width and heightproperties
+	 * Furthermore the size of the label will be bound to the scenes width and height properties
 	 */
 	public void styleLabels() {
-		Stream.of(versionLabel, usedSoftwareLabel, uiDesignDeveloperLabel, sudokuDeveloperLabel, freeFormDeveloperLabel)
-				.forEach(label -> label.getStyleClass().add("standardLabel"));
 
+		//scaling of the UI objects
 		final SimpleDoubleProperty fontSizeLabelSmall = new SimpleDoubleProperty(10);
 		final SimpleDoubleProperty fontSizeLabelHeader = new SimpleDoubleProperty(10);
-
 		fontSizeLabelSmall.bind(rulesScene.widthProperty().add(rulesScene.heightProperty()).divide(50));
 		fontSizeLabelHeader.bind(rulesScene.widthProperty().add(rulesScene.heightProperty()).divide(30));
 
@@ -140,6 +138,9 @@ public class AboutStage {
 
 		Stream.of(rulesHeader).forEach(label -> label.styleProperty()
 				.bind(Bindings.concat("-fx-font-size: ", fontSizeLabelHeader.asString())));
+		
+		Stream.of(versionLabel, usedSoftwareLabel, uiDesignDeveloperLabel, sudokuDeveloperLabel, freeFormDeveloperLabel)
+		.forEach(label -> label.getStyleClass().add("standardLabel"));
 	}
 	
 

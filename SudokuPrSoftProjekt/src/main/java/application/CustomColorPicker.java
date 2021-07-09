@@ -11,8 +11,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 
 /**
- * CustomColorPicker is responsible for the creation of a UI object which allows
- * the User to fill a FreeForm GameField with colors when the appropriate
+ * The CustomColorPicker class is responsible for the creation of a UI object which allows
+ * the user to fill a FreeForm playboard with colors when the appropriate
  * gamemode is selected
  * 
  * @author grube
@@ -22,10 +22,10 @@ public class CustomColorPicker {
 
 	/**
 	 * 
-	 * Initializes the UI Object ComboBox,which contains a list of predefined colors.
-	 * of Colors will be shown as dropdown field of rectangles inside the UI
+	 * Initializes the UI object ComboBox,which contains a list of predefined colors.
+	 * The colors will be shown as dropdown field of rectangles inside the UI
 	 * 
-	 * @return the created CombBox
+	 * @return the created ComboBox
 	 */
 	public ComboBox<String> createColorPicker() {
 		ComboBox<String> cmb = new ComboBox<>();
@@ -66,15 +66,15 @@ public class CustomColorPicker {
 	}
 
 	/**
-	 * Changes the ColorCode Strings to rectangles with the corresponding color to ensure a better
-	 * usabilty in the Game UI
+	 * Changes the color code strings to rectangles with the corresponding color to ensure a better
+	 * usabilty in the game UI.
 	 * @author grube
 	 *
 	 */
 	static class ColorRectCell extends ListCell<String> {
 		@Override
 		/**
-		 * Colors the rectangles with the corresponding colorcode 
+		 * colors the rectangles with the corresponding colorcode 
 		 */
 		public void updateItem(String item, boolean empty) {
 			super.updateItem(item, empty);

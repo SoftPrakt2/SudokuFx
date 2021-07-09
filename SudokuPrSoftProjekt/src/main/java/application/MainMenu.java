@@ -19,15 +19,15 @@ import javafx.scene.layout.VBox;
 
 
 /**
- * This class is used for creating the main menu of our programm, several UI Objects like Buttons or Labels are generated and aligned within several JavaFx containers
+ * This class is used for creating the main menu of our programm, several UI objects like buttons or Labels are generated and aligned within several JavaFx containers
  * @author gruber 
  */
 public class MainMenu {
 
 	/**
-	 * UI Components for the Game Mode Buttons in the MainMenu
-	 * The Buttons are created as ToggleButtons to ensure that only one selection per time is registered
-	 * {@link #gameModeBox} Container for the Game Mode Buttons and the  {@link #selectModeLabel}
+	 * UI Components for the gamemode buttons in the main menu
+	 * The Buttons are created as ToggleButtons within a ToggleGroup to ensure that only one selection per time is registered
+	 * {@link #gameModeBox} container for the gamemode buttons and the  {@link #selectModeLabel}
 	 */
 	private VBox gameModeBox;
 	protected ToggleButton sudoku;
@@ -38,9 +38,9 @@ public class MainMenu {
 	
 	
 	/**
-	 * UI Components for the Difficulty Buttons in the MainMenu
-	 * The Buttons are created as ToggleButtons to ensure that only one selection per time is registered
-	 * {@link #gameDifficultyBox} Container for the Difficulty Buttons and the  {@link #selectDifficultyLabel}
+	 * UI Components for the difficulty buttons in the main menu
+	 * The buttons are created as ToggleButtons to ensure that only one selection per time is registered
+	 * {@link #gameDifficultyBox} container for the difficulty buttons and the  {@link #selectDifficultyLabel}
 	 */
 	private VBox gameDifficultyBox;
 	private ToggleGroup toggleGroupDifficulty;
@@ -61,7 +61,7 @@ public class MainMenu {
 	
 	
 	/**
-	 * These Properties are used to align the UI Objects font Size, and the components size itself 
+	 * These properties are used to align the UI objects font size, and the components size itself 
 	 * to the windows size
 	 */
 	private final SimpleDoubleProperty fontSizeButtons = new SimpleDoubleProperty(10);
@@ -71,18 +71,18 @@ public class MainMenu {
 	private ModeController controllerMainMenu;
 
 	/**
-	 * Scene of the MainMenu Class
+	 * scene of the MainMenu Class
 	 */
 	private Scene mainScene;
 
 	/**
-	 * root container of the Classes scene
+	 * root container of the classes scene
 	 */
 	private BorderPane mainMenuRoot;
 
 	
 	/**
-	 * This method is used to initialize a Main Menu Object with all needed Informations
+	 * This method is used to initialize a MainMenu object with all needed informations
 	 */
 	public void setUpMainMenu() {
 
@@ -112,9 +112,9 @@ public class MainMenu {
 
 	
 	/**
-	 * This method creates the togglebuttons which are responsible for selecting a gamemode and a information label describing the use of the specific togglebuttons in the mainmenu 
-	 * for better alignment the buttons are put into a HBox 
-	 * To ensure that only one button is pressed at a time the togglebuttons in this method are put into a ToggleGroup
+	 * This method initializes the Togglebuttons which are responsible for selecting a game mode and a information label describing the use of the specific ToggleButtons in the main menu 
+	 * For better alignment the buttons are put into a HBox.
+	 * To ensure that only one button is pressed at a time the ToggleButtons in this method are put into a ToggleGroup.
 	 */
 	public void createGameModeButtons() {
 		
@@ -144,9 +144,9 @@ public class MainMenu {
 	}
 
 	/**
-	 * This method creates the buttons which are responsible for selecting the difficulty of a game and a information label describing the use of the specific buttons in the mainmenu 
+	 * This method creates the buttons which are responsible for selecting the difficulty of a game and a information label describing the use of the specific buttons in the main menu 
 	 * For better alignment the buttons are put into a HBox 
-	 * To ensure that only one button is pressed at a time the togglebuttons in this method are put into a ToggleGroup
+	 * To ensure that only one button is pressed at a time the ToggleButtons in this method are put into a ToggleGroup
 	 */
 	public void createDifficultyButtons() {
 		gameDifficultyBox = new VBox();
@@ -208,9 +208,9 @@ public class MainMenu {
 	}
 	
 	/**
-	 * This method is responsible for defining the look of the UI objects of this class
+	 * This method is responsible for defining the look of the UI objects of this class.
 	 * The definition of the UI objects look is handled in the projects css style class 
-	 * To ensure all UI objects scale with the windows size the UI objects size properties are bind to the size and height of the mainscene
+	 * To ensure all UI objects scale with the windows size the UI objects size properties are bind to the size and height of the main scene.
 	 */
 	public void styleGUIObjects() {
 		
@@ -235,50 +235,33 @@ public class MainMenu {
 		welcomeLabel.styleProperty().bind(Bindings.concat("-fx-font-size: ", fontSizeLabel.asString()));
 		
 		
-		// größe der Buttons
+	
 		Stream.of(selectModeLabel, selectDifficultyLabel, createLabel)
 				.forEach(label -> label.getStyleClass().add("mainMenuLabelsSmall"));
 	}
 	
 	
 
-	
-	/**
-	 * Gets the ToggleGroup of the playMode (Sudoku, Samurai, Freeform) buttons
-	 * @return toggleGroupGameMode
-	 */
+
 	public ToggleGroup getPlayModeToggle() {
 		return toggleGroupGameMode;
 	}
 
-	/**
-	 * Gets the ToggleGroup of the difficulty (Easy,Medium,Hard, Manual) buttons
-	 * @return toggleGroupGameMode
-	 */
 	public ToggleGroup getDifficultyToggle() {
 		return toggleGroupDifficulty;
 	}
 	
-	/**
-	 * Gets this class main UI container 
-	 * @return pane
-	 */
+
 	public Pane getPane() {
 		return mainMenuRoot;
 	}
 	
-	/**
-	 * Gets this class scene object 
-	 * @return mainScene
-	 */
+
 	public Scene getScene() {
 		return mainScene;
 	}
 	
-	/**
-	 * Gets the createButton
-	 * @return createButton
-	 */
+
 	public Button getPlayButton() {
 		return createButton;
 	}
