@@ -2,8 +2,10 @@ package application;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
@@ -43,6 +45,12 @@ public class GUI extends Application {
 		window = scene;
 		mainmenu.setUpMainMenu();
 		mainScene = mainmenu.getScene();
+		
+		 Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+
+		 window.setMaxWidth(bounds.getWidth() * 2);
+		 window.setMaxHeight(bounds.getHeight() * 2);
+		 
 
 		mainPane = mainmenu.getPane();
 		window.setScene(mainScene);

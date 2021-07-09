@@ -27,8 +27,8 @@ public class SudokuGameBuilder extends BasicGameBuilder {
 	public SudokuGameBuilder(BasicGameLogic model) {
 		super(model);
 		setTextField(new SudokuTextField[9][9]);
-		setSceneWidth(700);
-		setSceneHeight(700);
+		setSceneWidth(bounds.getWidth() * 0.3);
+		setSceneHeight(bounds.getHeight() * 0.55);
 	}
 		
 	/**

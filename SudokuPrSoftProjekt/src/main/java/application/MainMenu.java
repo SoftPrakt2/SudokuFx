@@ -6,6 +6,7 @@ import controller.ModeController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 
 
 /**
@@ -85,10 +87,12 @@ public class MainMenu {
 	 * This method is used to initialize a MainMenu object with all needed informations
 	 */
 	public void setUpMainMenu() {
+		
+		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 
 		controllerMainMenu = new ModeController(this);
 		mainMenuRoot = new BorderPane();
-		mainScene = new Scene(mainMenuRoot, 670, 670);
+		mainScene = new Scene(mainMenuRoot, bounds.getWidth() * 0.3, bounds.getHeight()*0.55);
 
 		welcomeLabel = new Label("SudokuFx");
 		createGameModeButtons();

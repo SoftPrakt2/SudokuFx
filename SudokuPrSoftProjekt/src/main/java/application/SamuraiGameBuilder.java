@@ -8,9 +8,11 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import logic.BasicGameLogic;
 
 /**
@@ -18,6 +20,8 @@ import logic.BasicGameLogic;
  * Defines the UI representation of a Samurai Game
  */
 public class SamuraiGameBuilder extends BasicGameBuilder {
+
+	 Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 
 	
 	
@@ -28,8 +32,9 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 	public SamuraiGameBuilder(BasicGameLogic model) {
 		super(model);
 		setTextField(new SudokuTextField[21][21]);
-		setSceneWidth(1050);
-		setSceneHeight(1050);
+		
+		setSceneWidth((int) (bounds.getWidth() * 0.5));
+		setSceneHeight((int) (bounds.getHeight() * 0.87));
 		}
 
 		

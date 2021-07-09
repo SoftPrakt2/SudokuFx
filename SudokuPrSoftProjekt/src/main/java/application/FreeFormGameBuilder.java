@@ -24,8 +24,8 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	public FreeFormGameBuilder(BasicGameLogic model) {
 		super(model);
 		setTextField(new SudokuTextField[9][9]);
-		setSceneWidth(670);
-		setSceneHeight(670);
+		setSceneWidth(bounds.getWidth() * 0.3);
+		setSceneHeight(bounds.getHeight() * 0.55);
 	}
 
 	/**

@@ -13,6 +13,7 @@ import controller.GameController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -31,6 +32,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import logic.BasicGameLogic;
 
 /**
@@ -43,6 +45,8 @@ import logic.BasicGameLogic;
  */
 public abstract class BasicGameBuilder {
 
+	protected Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+	
 	/**
 	 * The main UI container of a GameBuilder
 	 */
@@ -95,8 +99,8 @@ public abstract class BasicGameBuilder {
 	/**
 	 * variables which define the size of the games window in the UI
 	 */
-	private int sceneWidth;
-	private int sceneHeight;
+	private double sceneWidth;
+	private double sceneHeight;
 
 	/**
 	 * gamePopUp is an object of the class {@link application.NewGamePopUp} 
@@ -315,6 +319,9 @@ public abstract class BasicGameBuilder {
 		
 		fileMenu.getStyleClass().add("menu-item");
 		
+		menuBar.prefHeightProperty().bind(gameRoot.heightProperty().divide(100));
+		menuBar.prefWidthProperty().bind(gameRoot.widthProperty().divide(100));
+		
 		defineShortCuts();
 	}
 
@@ -462,11 +469,11 @@ public abstract class BasicGameBuilder {
 		return conflictMenuItem;
 	}
 
-	public int getWidth() {
+	public double getWidth() {
 		return getSceneWidth();
 	}
 
-	public int getHeight() {
+	public double getHeight() {
 		return getSceneHeight();
 	}
 
@@ -504,19 +511,19 @@ public abstract class BasicGameBuilder {
 		this.customNumbersDone = customNumbersDone;
 	}
 
-	public int getSceneWidth() {
+	public double getSceneWidth() {
 		return sceneWidth;
 	}
 
-	public void setSceneWidth(int sceneWidth) {
+	public void setSceneWidth(double sceneWidth) {
 		this.sceneWidth = sceneWidth;
 	}
 
-	public int getSceneHeight() {
+	public double getSceneHeight() {
 		return sceneHeight;
 	}
 
-	public void setSceneHeight(int sceneHeight) {
+	public void setSceneHeight(double sceneHeight) {
 		this.sceneHeight = sceneHeight;
 	}
 

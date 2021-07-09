@@ -104,8 +104,7 @@ public class GameOverview {
 		
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setScene(storageScene);
-		stage.setX(currentStage.getX() + currentStage.getWidth() + windowGap);
-		stage.setY(currentStage.getY());
+		stage.setTitle("Your saved games");
 
 		stage.showAndWait();
 
