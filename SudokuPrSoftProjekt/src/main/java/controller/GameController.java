@@ -561,13 +561,7 @@ public class GameController {
 		} else {
 			if (model.getGamepoints() > 0)
 				model.setGamePoints(model.getGamepoints() - 1);
-//			for (int row = 0; row < sudokuField.length; row++) {
-//				for (int col = 0; col < sudokuField[row].length; col++) {
-//					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-//						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-//					}
-//				}
-//			}
+
 			model.setGameState(Gamestate.CONFLICT);
 			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
 		}
@@ -632,12 +626,16 @@ public class GameController {
 			}
 
 			gameBuilder.initializeGame();
-
+			
+			//depending on the gamestate UI components have to be configured differentely 
 			if (!model.getGamestate().equals(Gamestate.CREATING) && !model.getGamestate().equals(Gamestate.DRAWING)
 					&& !model.getGamestate().equals(Gamestate.MANUALCONFLICT)
 					&& !model.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)
 					&& !model.getGamestate().equals(Gamestate.NOFORMS)) {
 				
+				gameBuilder.getGameInfoLabel().setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
+				
+				//when the game has already been solved then just set the text of the play time and dont initialize a timer
 				if(model.getGamestate().equals(Gamestate.AUTOSOLVED) || model.getGamestate().equals(Gamestate.DONE)) {
 					gameBuilder.getLiveTimeLabel().setText(String.format("%02d:%02d", model.getMinutesplayed(),model.getSecondsplayed()));
 				} else {
@@ -645,21 +643,20 @@ public class GameController {
 				model.initializeTimer();
 				model.getLiveTimer().start();
 				gameBuilder.getLiveTimeLabel().textProperty().bind(Bindings.concat(model.getTimeProperty()));
-				
-				gameBuilder.getGameInfoLabel()
-						.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
+
 				}
 			}
 
+			//needed configurations for a manual sudokur or samurai game whose numbers have not been fixed yet
 			if (model.getGamestate().equals(Gamestate.CREATING) || model.getGamestate().equals(Gamestate.MANUALCONFLICT)
 					|| model.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
 				gameBuilder.getToolBar().getItems().remove(gameBuilder.getCustomNumbersDone());
 				gameBuilder.getToolBar().getItems().add(3, gameBuilder.getCustomNumbersDone());
 				gameBuilder.getCustomNumbersDone().setVisible(true);
 				gameBuilder.disablePlayButtons();
-
 			}
-
+			
+			//needed configurations for a manual freeform game whose forms have not been fixed yet
 			if (model.getGamestate().equals(Gamestate.DRAWING) || model.getGamestate().equals(Gamestate.NOFORMS)) {
 				gameBuilder.getColorBox().setVisible(true);
 				gameBuilder.getColorsDoneButton().setVisible(true);
@@ -676,8 +673,6 @@ public class GameController {
 			GUI.getStage().setHeight(gameBuilder.getHeight());
 			GUI.getStage().setWidth(gameBuilder.getWidth());
 			GUI.getStage().getScene().setRoot(gameBuilder.getGameUIRoot());
-
-			System.out.println(model.getGameid());
 		}
 	}
 
@@ -751,16 +746,16 @@ public class GameController {
 	 * 
 	 * @param e ActionEvent which is fired when the user performs an Action in the UI
 	 */
-	public void switchToMainMenu(ActionEvent e) {
-		emptyArrays();
-		MainMenu mainmenu = new MainMenu();
-		mainmenu.setUpMainMenu();
-		
-		
-		GUI.getStage().setHeight(670);
-		GUI.getStage().setWidth(670);
-		GUI.getStage().getScene().setRoot(GUI.getMainMenu());
-	}
+	  public void switchToMainMenu(ActionEvent e) {
+	        emptyArrays();
+	        MainMenu mainmenu = new MainMenu();
+	        mainmenu.setUpMainMenu();
+
+
+	        GUI.getStage().setHeight(mainmenu.getScreenHeight());
+	        GUI.getStage().setWidth(mainmenu.getScreenWidth());
+	        GUI.getStage().getScene().setRoot(GUI.getMainMenu());
+	    }
 
 	/**
 	 * deletes all inputs from the text fields-array and enables all text fields

@@ -98,9 +98,13 @@ public class GameOverview {
 	public Stage createStage() {
 		storageScene = initializeStorageScene();
 		Stage currentStage = GUI.getStage();
-		double windowGap = 5;
+	
 
 		stage = new Stage();
+		
+		//postioning of the new stage
+		stage.setX(currentStage.getX()+70);
+		stage.setY(currentStage.getY()+50);
 		
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setScene(storageScene);

@@ -17,8 +17,10 @@ import javafx.beans.binding.StringBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Screen;
 import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
@@ -267,15 +269,20 @@ public class StorageController {
 	
 
 	/**
-	 * This method is used to align the programs window size to the size variables
-	 * defined in the {@link #gameBuilder} object
-	 */
-	public void alignWindowToGameSize() {
-		GUI.getStage().setHeight(gameBuilder.getHeight());
-		GUI.getStage().setWidth(gameBuilder.getWidth());
-		GUI.getStage().getScene().setRoot(gameBuilder.getGameUIRoot());
-		storage.getStage().close();
-	}
+     * This method is used to align the programs window size to the size variables
+     * defined in the {@link #gameBuilder} object
+     */
+    public void alignWindowToGameSize() {
+         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+            GUI.getStage().setHeight(gameBuilder.getHeight());
+            GUI.getStage().setWidth(gameBuilder.getWidth());
+            GUI.getStage().getScene().setRoot(gameBuilder.getGameUIRoot());
+
+             GUI.getStage().setX((screenBounds.getWidth() - gameBuilder.getSceneWidth()) / 2);
+             GUI.getStage().setY((screenBounds.getHeight() - gameBuilder.getSceneHeight()) / 2);
+        storage.getStage().close();
+    }
 
 	/**
 	 * This method is used to calculate the different game results shown in the

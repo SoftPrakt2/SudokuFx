@@ -8,11 +8,9 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.stage.Screen;
 import logic.BasicGameLogic;
 
 /**
@@ -21,8 +19,7 @@ import logic.BasicGameLogic;
  */
 public class SamuraiGameBuilder extends BasicGameBuilder {
 
-	 Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-
+	
 	
 	
 	/**
@@ -33,8 +30,8 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		super(model);
 		setTextField(new SudokuTextField[21][21]);
 		
-		setSceneWidth((int) (bounds.getWidth() * 0.5));
-		setSceneHeight((int) (bounds.getHeight() * 0.87));
+		setSceneWidth((bounds.getWidth() * 0.53));
+		setSceneHeight(bounds.getHeight() * 0.96);
 		}
 
 		
@@ -82,11 +79,13 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 					getTextField()[row][col] = new SudokuTextField("");
 					//align the size of the Text inside a SudokuTextField to the window size
 					getTextField()[row][col].styleProperty().bind(Bindings.concat("-fx-font-size: ", textSize.asString()));
-					textSize.bind(gameRoot.widthProperty().add(gameRoot.heightProperty()).divide(100));
+					textSize.bind(gameRoot.widthProperty().add(gameRoot.widthProperty()).divide(100));
+					textSize.bind(gameRoot.heightProperty().add(gameRoot.heightProperty()).divide(100));
 					
-					//style the SudokuTextField with the values defined in the styleclass
+					//style and position the SudokuTextField 
 					getTextField()[row][col].getStyleClass().add("textfieldBasic");
 					getTextField()[row][col].setMaxSize(500, 500);
+					getTextField()[row][col].setMinSize(1, 1);
 					getTextField()[row][col].setAlignment(Pos.CENTER);
 					
 					//add the SudokuTextField to the cell

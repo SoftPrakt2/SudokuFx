@@ -1,5 +1,7 @@
 package application;
 
+
+
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.Glyph;
 
@@ -24,8 +26,12 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 	public FreeFormGameBuilder(BasicGameLogic model) {
 		super(model);
 		setTextField(new SudokuTextField[9][9]);
-		setSceneWidth(bounds.getWidth() * 0.3);
-		setSceneHeight(bounds.getHeight() * 0.55);
+		
+		
+	
+
+		setSceneWidth(gd.getDisplayMode().getWidth() * 0.33);
+		setSceneHeight(gd.getDisplayMode().getHeight() * 0.58);
 	}
 
 	/**

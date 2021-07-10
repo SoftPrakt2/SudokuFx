@@ -81,6 +81,12 @@ public class MainMenu {
 	 * root container of the classes scene
 	 */
 	private BorderPane mainMenuRoot;
+	
+	/**
+	 * variables which define the size of a main menu UI representation
+	 */
+	private double screenWidth;
+	private double screenHeight;
 
 	
 	/**
@@ -88,11 +94,14 @@ public class MainMenu {
 	 */
 	public void setUpMainMenu() {
 		
-		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+		
 
 		controllerMainMenu = new ModeController(this);
 		mainMenuRoot = new BorderPane();
-		mainScene = new Scene(mainMenuRoot, bounds.getWidth() * 0.3, bounds.getHeight()*0.55);
+		
+		determineSizeToShow();
+		
+		mainScene = new Scene(mainMenuRoot, screenWidth, screenHeight);
 
 		welcomeLabel = new Label("SudokuFx");
 		createGameModeButtons();
@@ -113,6 +122,27 @@ public class MainMenu {
 		container.setAlignment(Pos.CENTER);
 		mainMenuRoot.setCenter(container);
 	}
+	
+	
+	/**
+	 * This method is used to determine the size of the Main Menu UI depending on the users monitor size
+	 */
+	public void determineSizeToShow() {
+		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+		
+		if(bounds.getWidth() * 0.5 < 670) {
+			screenWidth = bounds.getWidth() * 0.3;
+		} else {
+			screenWidth = 670;
+		}
+	
+		if(bounds.getHeight() * 0.83 < 670) {
+			screenHeight = bounds.getHeight() * 0.83;
+		} else {
+			screenHeight = 670;
+		}
+	}
+	
 
 	
 	/**
@@ -280,4 +310,14 @@ public class MainMenu {
 	public ToggleButton getFreeFormToggle() {
 		return freeform;
 	}
+	
+	public double getScreenWidth() {
+		return screenWidth;
+	}
+	
+	public double getScreenHeight() {
+		return screenHeight;
+	}
+	
+	
 }

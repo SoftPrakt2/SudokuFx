@@ -1,5 +1,7 @@
 package application;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -44,8 +46,13 @@ import logic.BasicGameLogic;
  *
  */
 public abstract class BasicGameBuilder {
-
+	
+	/**
+	 * These two variables are needed to determine the size of the users monitor. 
+	 * Will be used to determine the size of a game UI (height and width)
+	 */
 	protected Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+	protected GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
 	
 	/**
 	 * The main UI container of a GameBuilder

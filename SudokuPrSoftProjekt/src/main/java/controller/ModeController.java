@@ -10,7 +10,9 @@ import application.SamuraiGameBuilder;
 import application.GameOverview;
 import application.SudokuGameBuilder;
 import javafx.event.ActionEvent;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.stage.Screen;
 import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
@@ -301,9 +303,14 @@ public class ModeController {
 	 * @param game which will be displayed in the UI
 	 */
 	public void alignGameWithWindow(BasicGameBuilder game) {
-		GUI.getStage().setHeight(game.getHeight());
-		GUI.getStage().setWidth(game.getWidth());
-		GUI.getStage().getScene().setRoot(game.getGameUIRoot());
+		Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+        GUI.getStage().setHeight(game.getHeight());
+        GUI.getStage().setWidth(game.getWidth());
+        GUI.getStage().getScene().setRoot(game.getGameUIRoot());
+
+         GUI.getStage().setX((screenBounds.getWidth() - game.getSceneWidth()) / 2);
+         GUI.getStage().setY((screenBounds.getHeight() - game.getSceneHeight()) / 2);
 	}
 
 	

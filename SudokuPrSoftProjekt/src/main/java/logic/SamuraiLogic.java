@@ -236,7 +236,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public int getNumberOfVisibleValues() {
 		if (this.getDifficulty() == 3) {
-			return 249;
+			return 244;
 		} else if (this.getDifficulty() == 5) {
 			return 200;
 		} else if (this.getDifficulty() == 7) {

@@ -52,10 +52,11 @@ public class GUI extends Application {
 		 window.setMaxHeight(bounds.getHeight() * 2);
 		 
 
+		 
 		mainPane = mainmenu.getPane();
 		window.setScene(mainScene);
 	
-	
+
 		mainScene.getStylesheets().add(getClass().getResource("/CSS/sudoku.css").toExternalForm());
 	
 	

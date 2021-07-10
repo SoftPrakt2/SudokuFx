@@ -35,7 +35,7 @@ public class CloseWindowStage {
 	 public void showPopUp() {
 			window = new Stage();
 			
-			window.setX(GUI.getStage().getX() + GUI.getStage().getWidth() + 5);
+			window.setX(GUI.getStage().getX()  + GUI.getStage().getWidth()-260);
 			window.setY(GUI.getStage().getY());
 			
 			window.setTitle("Closing");
