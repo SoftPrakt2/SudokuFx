@@ -20,11 +20,11 @@ import logic.SudokuStorage;
 
 /**
  * The GameController class is a connection between the View-Components (GUI)
- * and the Model (sudoku game logic)
+ * and the Model (sudoku game logic).
  * 
  * User Inputs in the View-Component get passed on to the Model. The same is
  * also true the other way round. The generated sudoku game and other variables
- * or inputs also get passed on to the View-Component
+ * or inputs also get passed on to the View-Component.
  */
 public class GameController {
 
@@ -37,8 +37,8 @@ public class GameController {
 	 */
 	private BasicGameLogic model;
 	/**
-	 * This text field has all the auto generated values the user can also input his
-	 * own values in these text fields
+	 * This text field has all the auto generated values.
+	 * the user can also input his own values into these text fields.
 	 */
 	private SudokuTextField[][] sudokuField;
 
@@ -46,8 +46,8 @@ public class GameController {
 	/**
 	 * Constructor to create a GameController-Object
 	 * 
-	 * @param scene : the Game UI currently visible to the user
-	 * @param model : is the logic for creating a game and handling game mechanics
+	 * @param scene : the Game UI currently visible to the user.
+	 * @param model : is the logic for creating a game and handling game mechanics.
 	 */
 	public GameController(BasicGameBuilder gameBuilder, BasicGameLogic model) {
 		this.gameBuilder = gameBuilder;
@@ -56,8 +56,8 @@ public class GameController {
 	}
 
 	/**
-	 * Creates, depending on the difficulty that the user chose, a sudoku game uses
-	 * the method {@link #createGame()}
+	 * Creates, depending on the difficulty that the user chooses, a sudoku game.
+	 * Calls the method {@link #createGame()}.
 	 */
 	public void createGameHandler(ActionEvent event) {
 		createGame();
@@ -66,12 +66,11 @@ public class GameController {
 	/**
 	 * Creates a Sudoku-Game. Type and difficulty of the game get decided by the
 	 * user inputs (button-clicks). {@link #enableEdit()} enables the text fields,
-	 * so that the user can play. Timer gets started The {@link #sudokuField}arrays
-	 * values get aligned with the {@link logic.BasicGameLogic#getCells()} arrays
+	 * so that the user can play. Timer gets started. The {@link #sudokuField}-array
+	 * values get aligned with the {@link logic.BasicGameLogic#getCells()}-array
 	 * values
 	 */
 	public void createGame() {
-	
 		gameBuilder.removeConflictListeners();
 		model.setUpGameField();
 		model.setUpGameInformations();
@@ -97,7 +96,6 @@ public class GameController {
 		if (gameBuilder.getConflictItem().isSelected()) {
 			gameBuilder.addConflictListeners();
 		}
-
 	}
 
 	/**
@@ -107,7 +105,7 @@ public class GameController {
 	 * 
 	 * Depending on the selected game in the main menu either {@link #createGame()}
 	 * {@link #resetManualSudokuOrSamurai()} or {@link #newManualFreeFormGame()} are
-	 * called and responisble for creating a new game
+	 * called and responsible for creating a new game.
 	 */
 	public void newGameHandler(ActionEvent event) {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -144,10 +142,11 @@ public class GameController {
 
 	/**
 	 * This method is used to start a new manual freeform game while inside this
-	 * type of game configuration to do so the the colorlisteners defined in the
+	 * type of game configuration. To do so the the colorlisteners defined in the
 	 * {@link application.SudokuTextField} class will be added again to the
-	 * textfields Depending on the gamestate when starting a new round different
-	 * buttons have to be disabled or enabled again
+	 * text fields.
+	 * Depending on the game state when starting a new round different
+	 * buttons have to be disabled or enabled again.
 	 */
 	public void newManualFreeFormGame() {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -185,13 +184,12 @@ public class GameController {
 		gameBuilder.getLiveTimeLabel().setText("");
 		gameBuilder.getGameInfoLabel().setText("");
 		enableEdit();
-	
 	}
 
 	/**
 	 * This method is used to start a new manual sudoku or samurai game while inside
-	 * this type of game configuration to do so the
-	 * {@link application.BasicGameBuilder #getCustomNumbersDone()} will be enabled
+	 * this type of game configuration.
+	 * To do so the {@link application.BasicGameBuilder #getCustomNumbersDone()} will be enabled
 	 * and visible again and the play buttons will be disabled
 	 */
 	public void newManualSudokuOrSamurai() {
@@ -213,8 +211,8 @@ public class GameController {
 	}
 
 	/**
-	 * deletes user inputs and hints,
-	 *  fixed values that were created automatically do not get deleted
+	 * Deletes user inputs and hints.
+	 * Fixed values that were created automatically do not get deleted.
 	 */
 	public void resetHandler(ActionEvent e) {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -230,7 +228,7 @@ public class GameController {
 
 			}
 		}
-		// only sets the gamestate to open again if a game is successfully created or was not autosolved before
+		// only sets the game state to OPEN again if a game is successfully created or was not automatically solved before
 		if (!model.getGamestate().equals(Gamestate.CREATING) && !model.getGamestate().equals(Gamestate.DRAWING)
 				&& !model.getGamestate().equals(Gamestate.MANUALCONFLICT)
 				&& !model.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)
@@ -241,13 +239,11 @@ public class GameController {
 	}
 
 	/**
-	 * fixes the numbers that the user wants to create a sudoku with checks for
-	 * conflicts and asks the user to remove them if any occur checks if the
-	 * manually created sudoku is solvable - if it is not solvable the user needs to
-	 * create a new sudoku {@link #compareResult()} test for conflicts
-	 * {@link #enoughManualNumbers()} test if there are enough numbers to create a
-	 * sudoku
-	 * 
+	 * Fixes the numbers that the user wants to create a sudoku with.
+	 * Checks for conflicts and asks the user to remove them if any occur.
+	 * Checks if the manually created sudoku is solvable - if it is not solvable the user needs to
+	 * create a new sudoku. The method {@link #compareResult()} test if there are any conflicts.
+	 * {@link #enoughManualNumbers()} tests if there are enough numbers to create a sudoku.
 	 */
 	public void manuelDoneHandler(ActionEvent e) {
 		/**
@@ -255,9 +251,9 @@ public class GameController {
 		 * Checks if there are enough numbers in the sudoku that the user wants to
 		 * create.
 		 * 
-		 * the If gets entered if both these conditions are met, else the user gets
+		 * The If statement gets entered if both these conditions are met, or else the user gets
 		 * asked to either remove the conflicts ore input more numbers to create his
-		 * sudoku game
+		 * sudoku game.
 		 */
 
 		if (compareResult() && enoughManualNumbers()) {
@@ -297,9 +293,6 @@ public class GameController {
 					.forEach(button -> button.setDisable(false));
 			Stream.of(gameBuilder.getAutoSolveMenuItem(), gameBuilder.getHintMenuItem(), gameBuilder.getCheckMenuItem(),gameBuilder.getConflictItem())
 					.forEach(menuItem -> menuItem.setDisable(false));
-
-			
-
 		} else if (!compareResult()) {
 			model.removeValues();
 			model.setGameState(Gamestate.MANUALCONFLICT);
@@ -308,10 +301,10 @@ public class GameController {
 	}
 
 	/**
-	 * test if there are enough numbers inserted by the user to create a sudoku
+	 * Tests if there are enough numbers inserted by the user to create a manual sudoku.
 	 * 
 	 * @return returns false if there are not enough numbers and returns true
-	 *         otherwise
+	 *         otherwise.
 	 */
 	public boolean enoughManualNumbers() {
 		int count = 0;
@@ -333,12 +326,12 @@ public class GameController {
 	}
 
 	/**
-	 * Method which is needed to set the form of the Sudokutextfields the user has
-	 * created during a manual freeform game to the model if the forms are created
-	 * correctly the
+	 * This method is needed to connect the form of the sudoku text fields the user has
+	 * created during a manual freeform game to the model.
+	 * If the forms are created correctly the
 	 * {@link application.SudokuTextField#addFreeFormColorListener(javafx.scene.control.ComboBox)}
-	 * are removed from the Sudokutextfields Afterwards the UI Control Components
-	 * are updated
+	 * get removed from the sudoku text fields. Afterwards the UI Control Components
+	 * get updated
 	 * 
 	 * @param e event which is fired through user actions in the UI
 	 */
@@ -368,9 +361,9 @@ public class GameController {
 	}
 
 	/**
-	 * checks for conflicts and colors them red if there are any returns true if
-	 * there are no conflicts returns false if there are conflicts
-	 * {@link #connectWithModel()} connects model-array with text field-array
+	 * Checks for conflicts and colors them red if there are any. Returns true if
+	 * there are no conflicts and returns false otherwise.
+	 * {@link #connectWithModel()} connects the model-array with the text field-array.
 	 */
 	public boolean compareResult() {
 		/**
@@ -407,9 +400,8 @@ public class GameController {
 						 */
 						model.getCells()[row][col].setValue(0);
 						if (!model.valid(row, col, Integer.parseInt(sudokuField[col][row].getText()))) {
-
 							/**
-							 * if the number with in the current text field with the row and column
+							 * if the number within the current text field with the row and column
 							 * coordinates is wrong, a new style class is added (number gets shown in red),
 							 * so that the user knows that there is a conflict with this number
 							 */
@@ -444,7 +436,7 @@ public class GameController {
 		 */
 		gameBuilder.removeConflictListeners();
 		/**
-		 * Checks if the are any conflict in the current game.
+		 * Checks if there are any conflict in the current game.
 		 */
 		if (compareResult()) {
 			connectWithModel();
@@ -458,19 +450,18 @@ public class GameController {
 			 * Checks if the current sudoku is solved after the solve method gets called. If
 			 * it is not solved, all user inputs get deleted and a completely new solution
 			 * gets generated.
+			 * If the current game is a manually created game, and the sudoku was unsolvable
+			 * since the beginning, the sudoku does not get solved, because it can not delete
+			 * fixed numbers after they get set while creating a game.
 			 */
 			if (!model.testIfSolved()) {
 				resetHandler(e);
 				model.setGameState(Gamestate.UNSOLVABLE);
 				gameBuilder.getGameNotificationLabel().setText(model.getGameText() + " New solution was generated.");
-				model.solveSudoku();
-
-				
+				model.solveSudoku();				
 			} else {
 				model.setGameState(Gamestate.AUTOSOLVED);
 				gameBuilder.getGameNotificationLabel().setText(model.getGameText());
-
-			
 			}
 			connectArrays();
 		} else {
@@ -501,7 +492,6 @@ public class GameController {
 			
 			}
 		} else if (!gameState || model.getNumbersInsideTextField() != sudokuField.length * sudokuField.length) {
-
 			model.setGameState(Gamestate.INCORRECT);
 			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
 		}
@@ -514,13 +504,11 @@ public class GameController {
 	 * @param e event which is fired through user actions in the UI
 	 */
 	public void hintHandeler(ActionEvent e) {
-
 		/**
 		 * Checks if the current sudoku has any conflicts. The User needs to remove the
 		 * conflicts if there are any.
 		 */
 		if (compareResult()) {
-			
 			if (model.getGamepoints() < 0) model.setGamePoints(0);
 			/**
 			 * Checks if points need to be deducted after the user presses the hint button.
@@ -541,8 +529,9 @@ public class GameController {
 			 */
 			if (coordinates != null) {
 				/**
-				 * checks if there is already a user input in this text field with these
-				 * coordinates this check exists so that user inputs do not get overwritten
+				 * Checks if there is already a user input in this text field with these
+				 * coordinates.
+				 * This check exists so that user inputs do not get overwritten
 				 */
 				if (sudokuField[coordinates[1]][coordinates[0]].getText().equals("")) {
 					String number = Integer.toString(model.getCells()[coordinates[0]][coordinates[1]].getValue());
@@ -585,10 +574,10 @@ public class GameController {
 	}
 
 	/**
-	 * this method is used when the game is saved in a Game UI Scene The GameModels
-	 * Cell Array is aligned with the numbers inside the UI SudokuTextFieldArray The
+	 * this method is used when the game is saved in a Game UI Scene. The GameModels
+	 * Cell-Array is aligned with the numbers inside the UI SudokuTextFieldArray. The
 	 * timer of the UI will be stopped and afterwards the game will be saved with
-	 * the {@link logic.SudokuStorage#saveGame(BasicGameLogic)} method
+	 * the {@link logic.SudokuStorage#saveGame(BasicGameLogic)} method.
 	 * 
 	 * @param e event which is fired through user actions in the UI
 	 */
@@ -618,9 +607,9 @@ public class GameController {
 	}
 
 	/**
-	 * Imports a game This import must be a JSON file a new scene is created
-	 * depending on the import Depending on the saved games gamestate different UI
-	 * objects have to be enabled or disabled
+	 * Imports a game. This import must be a JSON file. A new scene is created
+	 * depending on the import. Depending on the saved games game state different UI
+	 * objects have to be enabled or disabled.
 	 * 
 	 * @param e
 	 */
@@ -693,10 +682,10 @@ public class GameController {
 	}
 
 	/**
-	 * This auxiliary method is used during the import process, its use is to align
-	 * the imported array of numbers with the UI textfield array Furthermore
+	 * This auxiliary method is used during the import process. Its use is to align
+	 * the imported array of numbers with the UI text field array. Furthermore
 	 * depending on the state of a field in the model array different colors are
-	 * shown in the textfield array
+	 * shown in the text field array
 	 */
 	public void connectImportedArray() {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -774,7 +763,7 @@ public class GameController {
 	}
 
 	/**
-	 * deletes all inputs from the text fields-array enables all text fields
+	 * deletes all inputs from the text fields-array and enables all text fields
 	 */
 	public void emptyArrays() {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -788,7 +777,7 @@ public class GameController {
 	}
 
 	/**
-	 * Connects text field-array with model-array. Fills the text field-array with
+	 * Connects the text field-array with the model-array. Fills the text field-array with
 	 * the values of the model-array.
 	 */
 	public void connectArrays() {
@@ -802,8 +791,7 @@ public class GameController {
 	}
 
 	/**
-	 * Empty text fields get enabled so that the user can input his numbers inside
-	 * them.
+	 * Empty text fields get enabled so that the user can input his numbers into them.
 	 */
 	public void enableEdit() {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -820,8 +808,8 @@ public class GameController {
 	}
 
 	/**
-	 * This auxiliary method is used when creating a new game inside a GameUI Sets
-	 * back the colors of the numbers inside the playing field
+	 * This auxiliary method is used when creating a new game inside a GameUI. Sets
+	 * back the colors of the numbers inside the playing field.
 	 */
 	public void resetTextFills() {
 		for (int i = 0; i < sudokuField.length; i++) {
@@ -835,7 +823,7 @@ public class GameController {
 	}
 
 	/**
-	 * connect the text field-array with the model-array
+	 * Connect the text field-array with the model-array.
 	 */
 	public void connectWithModel() {
 		for (int row = 0; row < sudokuField.length; row++) {
@@ -853,8 +841,8 @@ public class GameController {
 
 
 	/**
-	 * adds or removes Listener to the text field the listeners call the
-	 * {@link #compareResult()} method and show conflicts
+	 * Adds or removes Listener to the text field. The listeners call the
+	 * {@link #compareResult()} method and show conflicts.
 	 * 
 	 * @param e event which is fired through user actions in the UI
 	 */

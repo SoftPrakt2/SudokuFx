@@ -1,7 +1,7 @@
 package logic;
 
 /**
- * This class defines the different gamestates a game can be in
+ * This class defines the different game states a game can be in during a sudoku game.
  * 
  * @author bakaschev,
  *

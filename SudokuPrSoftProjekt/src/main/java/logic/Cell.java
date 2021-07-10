@@ -1,22 +1,22 @@
 package logic;
 
 /**
- * This class describes the structure of a Cell object, these objects are used in the {@link logic.BasicGameLogic} classes to create a sudoku model playing field
+ * This class describes the structure of a Cell object. These objects are used in the {@link logic.BasicGameLogic} classes to create a sudoku model playing field
  * @author grube
  *
  */
 public class Cell {
 
-	// column 1 - 9
+	// column 0 - 8 or 0 - 21 depending on the sudoku game type.
 	int col;
 
-	// row 1 - 9
+	// column 0 - 8 or 0 - 21 depending on the sudoku game type.
 	int row;
 
-	// box 1 - 9
+	// is the box id of every cell
 	int box;
 
-	// value 1 - 9
+	// values 1 - 9
 	int value;
 
 	// fixed Number that can not be changed by a user
@@ -25,7 +25,7 @@ public class Cell {
 	// Cell color
 	String boxcolor;
 	
-	//declares if the number is a system provided hint
+	// declares if the number is a system provided hint
 	boolean isHint;
 
 	public Cell(int row, int col, int box, int value) {

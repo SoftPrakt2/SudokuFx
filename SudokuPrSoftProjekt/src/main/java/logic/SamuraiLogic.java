@@ -1,17 +1,17 @@
 package logic;
 
 /**
- * extends BasicGameLogic implements all abstract methods of BasicGameLogic
+ * extends BasicGameLogic and implements all abstract methods of BasicGameLogic.
  * 
  * @author rafael
  */
 public class SamuraiLogic extends BasicGameLogic {
 
 	/**
-	 * constructor for creating a Samurai-Object this constructor extends the
-	 * BasicGameLogic constructor the size of the needed Cells-Array gets set with
-	 * {@link #setCells(Cell[][])} the game type of the current game gets set with
-	 * {@link #setGametype(String)}
+	 * constructor for creating a Samurai-Object. This constructor extends the
+	 * BasicGameLogic constructor. The size of the needed Cell-Array gets set with
+	 * {@link #setCells(Cell[][])}. The game type of the current game gets set with
+	 * {@link #setGametype(String)}.
 	 */
 	public SamuraiLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
 		super(gamestate, minutesPlayed, secondsPlayed);
@@ -22,7 +22,7 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * checks if the value already exists in a row gets called in
+	 * Checks if the value already exists in a row. Gets called in
 	 * {@link #valid(int, int, int)}
 	 */
 	@Override
@@ -98,13 +98,12 @@ public class SamuraiLogic extends BasicGameLogic {
 				}
 			}
 		}
-
 		return true;
 	}
 
 	/**
-	 * checks if the value already exists in a column gets called in
-	 * {@link #valid(int, int, int)}
+	 * Checks if the value already exists in a column. Gets called in
+	 * {@link #valid(int, int, int)}.
 	 */
 	@Override
 	public boolean checkCol(int row, int col, int guess) {
@@ -183,8 +182,8 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * fills the cells-array with values and informations about coordinates so that
-	 * the cells-array is not null
+	 * Fills the cells-array with values and informations about coordinates so that
+	 * the cells-array is not null.
 	 */
 	@Override
 	public void setUpLogicArray() {
@@ -202,9 +201,8 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * removes a certain amount of numbers from the array the amount depends on the
-	 * difficulty chosen by the user
-	 * 
+	 * Removes a certain amount of numbers from the array. The amount depends on the
+	 * difficulty chosen by the user.
 	 */
 	@Override
 	public void difficulty() {
@@ -230,10 +228,10 @@ public class SamuraiLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * auxiliary method for {@link #difficulty()}
-	 * 3 = Hard
-	 * 5 = Medium
-	 * 7 = Easy
+	 * Auxiliary method for {@link #difficulty()}.
+	 * 3 = Hard;
+	 * 5 = Medium;
+	 * 7 = Easy;
 	 */
 	@Override
 	public int getNumberOfVisibleValues() {
@@ -248,9 +246,15 @@ public class SamuraiLogic extends BasicGameLogic {
 		}
 	}
 
+	/**
+	 * Solves all cells of the cell-array where there is only one possible solution.
+	 * This method gets used before the actual {@link #solveSudoku()} method gets used,
+	 * so that the time need for creating a solution gets shortened.
+	 */
 	public void SolveCellsWithOnlyOnePossibleValue() {
-	
-		
+		/**
+		 * a temporary integer-array is created and gets all the values of the current cell-array / current game.
+		 */
 		int[][] helper = new int[this.getCells().length][this.getCells().length];
 		for (int row = 0; row < this.getCells().length; row++) {
 			for (int col = 0; col < this.getCells()[row].length; col++) {
@@ -261,6 +265,9 @@ public class SamuraiLogic extends BasicGameLogic {
 		int numberOfPossibleValues = 0;
 		int rightValue = 0;
 
+		/**
+		 * Searches for cells with only one possible solution. Cells with only one solution get solved.
+		 */
 		for (int row = 0; row < this.getCells().length; row++) {
 			for (int col = 0; col < this.getCells()[row].length; col++) {
 				numberOfPossibleValues = 0;
@@ -269,7 +276,6 @@ public class SamuraiLogic extends BasicGameLogic {
 						if (this.valid(row, col, y)) {
 							numberOfPossibleValues++;
 							rightValue = y;
-							
 						}
 					}
 					if (numberOfPossibleValues == 1) {
@@ -280,6 +286,9 @@ public class SamuraiLogic extends BasicGameLogic {
 			}
 		}
 
+		/**
+		 * the current values of the helper-array get inserted into the cell-array.
+		 */
 		for (int row = 0; row < this.getCells().length; row++) {
 			for (int col = 0; col < this.getCells()[row].length; col++) {
 				if (this.valid(row, col, helper[row][col]))
@@ -356,12 +365,6 @@ public class SamuraiLogic extends BasicGameLogic {
 		return true;
 	}
 
-	
-	
-	
-	
-	
-	
 	@Override
 	public boolean isConnected() {
 		return false;

@@ -1,19 +1,19 @@
 package logic;
 
 /**
- * extends BasicGameLogic
- * implements all abstract methods of BasicGameLogic
- * is a superclass of FreeFormLogic
+ * Extends BasicGameLogic.
+ * Implements all abstract methods of BasicGameLogic.
+ * Is a superclass of FreeFormLogic.
  * 
  * @author rafael
  */
 public class SudokuLogic extends BasicGameLogic {
 
 	/**
-	 * constructor for creating a SudokuLogic-Object
-	 * this constructor extends the BasicGameLogic constructor
-	 * the size of the needed Cells-Array gets set with {@link #setCells(Cell[][])}
-	 * the game type of the current game gets set with {@link #setGametype(String)}
+	 * Constructor for creating a SudokuLogic-Object.
+	 * This constructor extends the BasicGameLogic constructor.
+	 * The size of the needed Cells-Array gets set with {@link #setCells(Cell[][])}.
+	 * The game type of the current game gets set with {@link #setGametype(String)}.
 	 */
 	public SudokuLogic(Gamestate gamestate, long minutesPlayed, long secondsPlayed) {
 		super(gamestate, minutesPlayed, secondsPlayed);
@@ -24,8 +24,8 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 	
 	/**
-	 * checks if the value already exists in a row
-	 * gets called in {@link #valid(int, int, int)}
+	 * Checks if the value already exists in a row.
+	 * Gets called in {@link #valid(int, int, int)}.
 	 */
 	@Override
 	public boolean checkRow(int row, int col, int guess) {
@@ -38,8 +38,8 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * checks if the value already exists in a column
-	 * gets called in {@link #valid(int, int, int)}
+	 * Checks if the value already exists in a column.
+	 * Gets called in {@link #valid(int, int, int)}.
 	 */
 	@Override
 	public boolean checkCol(int row, int col, int guess) {
@@ -52,8 +52,8 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * fills the cells-array with values and informations about coordinates
-	 * the box-id is the most important past of this method, because it is needed 
+	 * Fills the cell-array with values and informations about coordinates.
+	 * The box-id is the most important point of this method, because it is needed 
 	 * for the checkBox method in FreeFormLogic, which is a subclass.
 	 */
 	@Override
@@ -87,9 +87,8 @@ public class SudokuLogic extends BasicGameLogic {
 	}
 
 	/**
-	 * removes a certain amount of numbers from the array
-	 * the amount depends on the difficulty chosen by the user
-	 * 
+	 * Removes a certain amount of numbers from the array.
+	 * The amount depends on the difficulty chosen by the user.
 	 */
 	public void difficulty() {
         int counter = getNumberOfVisibleValues();
@@ -111,10 +110,10 @@ public class SudokuLogic extends BasicGameLogic {
     }
 	
 	/**
-	 * auxiliary method for {@link #difficulty()}
-	 * 3 = Hard
-	 * 5 = Medium
-	 * 7 = Easy
+	 * auxiliary method for {@link #difficulty()}.
+	 * 3 = Hard;
+	 * 5 = Medium;
+	 * 7 = Easy;
 	 */
 	@Override
 	public int getNumberOfVisibleValues() {
