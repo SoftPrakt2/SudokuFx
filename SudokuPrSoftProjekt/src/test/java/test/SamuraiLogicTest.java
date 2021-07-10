@@ -389,7 +389,7 @@ class SamuraiLogicTest {
 				}
 			}
 		}
-		assertEquals(120,count );
+		assertEquals(125,count );
 	}
 
 

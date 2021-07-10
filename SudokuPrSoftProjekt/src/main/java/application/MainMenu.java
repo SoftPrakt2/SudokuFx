@@ -131,7 +131,7 @@ public class MainMenu {
 		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 		
 		if(bounds.getWidth() * 0.5 < 670) {
-			screenWidth = bounds.getWidth() * 0.3;
+			screenWidth = bounds.getWidth() * 0.5;
 		} else {
 			screenWidth = 670;
 		}
