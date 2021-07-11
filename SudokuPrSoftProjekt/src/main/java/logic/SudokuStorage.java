@@ -95,6 +95,7 @@ public class SudokuStorage {
 		File saveFile = new File("SaveFiles", fileName);
 		//if game id already exists overwritte the corresponding file
 		for(File file : fileDirectory) {
+			
 			SaveModel help = this.convertFileToSaveModel(file);
 			if(help.getGameId() == gameToSave.getGameid()) {
 				gameAlreadySaved = true;
@@ -109,6 +110,7 @@ public class SudokuStorage {
 				}
 			}
 		}
+		
 		
 	//if game was never saved before create new file
 	if(!gameAlreadySaved) {

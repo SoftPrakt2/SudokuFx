@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
@@ -19,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import logic.BasicGameLogic;
 
@@ -90,6 +92,16 @@ public class GameOverview {
 	 */
 	private VBox tableviewBox;
 
+	
+	
+	/**
+	 * variables which define the size of a main menu UI representation
+	 */
+	private double screenWidth;
+	private double screenHeight;
+
+	
+	
 	/**
 	 * This method is used to set up the stage object of this class
 	 * and show it in the UI 
@@ -97,14 +109,20 @@ public class GameOverview {
 	 */
 	public Stage createStage() {
 		storageScene = initializeStorageScene();
-		Stage currentStage = GUI.getStage();
-	
-
+		Stage mainStage = GUI.getStage();
+		
+		
 		stage = new Stage();
 		
 		//postioning of the new stage
-		stage.setX(currentStage.getX()+70);
-		stage.setY(currentStage.getY()+50);
+		stage.setX(mainStage.getX());
+		stage.setY(mainStage.getY());
+		
+		determineSizeToShow();
+	
+		stage.setWidth(screenWidth);
+		stage.setHeight(screenHeight);
+		
 		
 		stage.initModality(Modality.APPLICATION_MODAL);
 		stage.setScene(storageScene);
@@ -125,16 +143,17 @@ public class GameOverview {
 	 */
 	public Scene initializeStorageScene() {
 		
-		
 		storageContainerBox = new BorderPane();
 		storageContainerBox.getStyleClass().add("customBackgroundColor");
 		storageContainerBox.setPadding(new Insets(15, 15, 15, 15));
 		
 		
-		storageScene = new Scene(storageContainerBox, 510, 600);
+		
+		storageScene = new Scene(storageContainerBox);
 		storageScene.getStylesheets().add(getClass().getResource("/CSS/sudoku.css").toExternalForm());
 		controller = new StorageController(this);
-	
+		
+		
 		storageHeaderLabel = new Label("Game Overview");
 		storageContainerBox.setTop(storageHeaderLabel);
 
@@ -153,6 +172,33 @@ public class GameOverview {
 
 		return storageScene;
 	}
+	
+	/**
+	 * This method is used to determine the size of the Main Menu UI depending on the users monitor size
+	 */
+	public void determineSizeToShow() {
+		
+		
+			Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
+			
+			if(bounds.getWidth() * 0.35 < 505) {
+				
+				screenWidth = bounds.getWidth() * 0.35;
+			} else {
+				screenWidth = 505;
+				System.out.println("H");
+			}
+		
+			if(bounds.getHeight() * 0.85 < 620) {
+				System.out.println("y");
+				screenHeight = bounds.getHeight() * 0.85;
+			} else {
+				screenHeight = 620;
+			}
+		}
+	
+	
+	
 
 	/**
 	 * This method is used to initialize the {@link #contextMenu} .
@@ -199,8 +245,9 @@ public class GameOverview {
 	public void createGameStatBox() {
 		HBox gameStatsBox = new HBox();
 		gameScoreHeaderLabel = new Label("Game Scores");
-		gameStatsBox.setPadding(new Insets(10, 10, 10, 10));
-		gameStatsBox.setSpacing(70);
+		gameStatsBox.setPadding(new Insets(10, 0, 0, 0));
+		
+		gameStatsBox.setAlignment(Pos.TOP_CENTER);
 
 		gameStatsBox.getChildren().addAll(createAverageResultContainer(), gameScoreHeaderLabel,
 				createOverallResultContainers());
@@ -303,7 +350,7 @@ public class GameOverview {
 	public void alignLabelWithWindowSize() {
 		final SimpleDoubleProperty fontSizeBinding = new SimpleDoubleProperty(10);
 
-		fontSizeBinding.bind(storageScene.widthProperty().add(storageScene.heightProperty()).divide(65));
+		fontSizeBinding.bind(storageScene.widthProperty().add(storageScene.heightProperty()).divide(70));
 
 		Stream.of(averagePointsHeaderLabel, averageTimeHeaderLabel, overallPointsHeaderLabel, overallTimeHeaderLabel,
 				storageHeaderLabel, gameScoreHeaderLabel)

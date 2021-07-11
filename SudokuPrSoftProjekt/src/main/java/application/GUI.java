@@ -9,71 +9,69 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class GUI extends Application {
-	
+
 	static Stage window;
 
 	/**
 	 * starting scene of the program
 	 */
 	private Scene mainScene;
-	
-	
+
 	/**
 	 * main UI container for the starting scene
 	 */
 	static Pane mainPane;
 
-	
 	/**
-	 * responsible for launching the application 
+	 * responsible for launching the application
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
 		launch(args);
 	}
 
-	
 	/**
-	 * This method is called when starting the program
-	 * The main scene of the program is set to the window scene created in the {@link application.MainMenu} class
+	 * This method is called when starting the program The main scene of the program
+	 * is set to the window scene created in the {@link application.MainMenu} class
 	 */
 	@Override
 	public void start(Stage scene) {
-		
+
+		Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 		MainMenu mainmenu = new MainMenu();
 		
+
 		window = scene;
 		mainmenu.setUpMainMenu();
 		mainScene = mainmenu.getScene();
-		
-		 Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-
-		 window.setMaxWidth(bounds.getWidth() * 2);
-		 window.setMaxHeight(bounds.getHeight() * 2);
-		 
-
-		 
 		mainPane = mainmenu.getPane();
-		window.setScene(mainScene);
-	
-
 		mainScene.getStylesheets().add(getClass().getResource("/CSS/sudoku.css").toExternalForm());
-	
-	
-		window.show();
 		
+		window.setMaxWidth(bounds.getWidth() * 2);
+		window.setMaxHeight(bounds.getHeight() * 2);
+
+		window.setX((bounds.getWidth() - mainmenu.getScreenWidth()) / 2);
+		window.setY((bounds.getHeight() - mainmenu.getScreenHeight()) / 2);
+		window.setScene(mainScene);
+
 		window.setTitle("SudokuFx");
 		window.setOnCloseRequest(e -> {
 			e.consume();
 			closeProgram();
-			
+
 		});
+		
+
+		window.show();
+
+		
 
 	}
-	
-	
+
 	/**
-	 * auxiliary method which is responsible for adding the CloseWindow PopUp when starting the program 
+	 * auxiliary method which is responsible for adding the CloseWindow PopUp when
+	 * starting the program
 	 */
 	public static void closeProgram() {
 		CloseWindowStage closingStage = new CloseWindowStage();

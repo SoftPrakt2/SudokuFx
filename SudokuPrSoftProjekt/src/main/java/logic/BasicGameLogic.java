@@ -172,6 +172,7 @@ public abstract class BasicGameLogic {
 		return true;
 	}
 
+	
 	/**
 	 * checks if checkRow, checkCol and checkBox return true.
 	 * 

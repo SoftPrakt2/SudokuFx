@@ -281,7 +281,7 @@ public class StorageController {
 
              GUI.getStage().setX((screenBounds.getWidth() - gameBuilder.getSceneWidth()) / 2);
              GUI.getStage().setY((screenBounds.getHeight() - gameBuilder.getSceneHeight()) / 2);
-        storage.getStage().close();
+             storage.getStage().close();
     }
 
 	/**

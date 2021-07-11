@@ -31,7 +31,7 @@ public class SamuraiGameBuilder extends BasicGameBuilder {
 		setTextField(new SudokuTextField[21][21]);
 		
 		setSceneWidth((bounds.getWidth() * 0.53));
-		setSceneHeight(bounds.getHeight() * 0.96);
+		setSceneHeight(bounds.getHeight() * 0.9);
 		}
 
 		

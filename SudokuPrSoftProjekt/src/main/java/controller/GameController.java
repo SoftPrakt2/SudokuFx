@@ -11,6 +11,8 @@ import application.SudokuGameBuilder;
 import application.SudokuTextField;
 import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import logic.BasicGameLogic;
 import logic.FreeFormLogic;
 import logic.Gamestate;
@@ -647,7 +649,7 @@ public class GameController {
 				}
 			}
 
-			//needed configurations for a manual sudokur or samurai game whose numbers have not been fixed yet
+			//needed configurations for a manual sudoku or samurai game whose numbers have not been fixed yet
 			if (model.getGamestate().equals(Gamestate.CREATING) || model.getGamestate().equals(Gamestate.MANUALCONFLICT)
 					|| model.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
 				gameBuilder.getToolBar().getItems().remove(gameBuilder.getCustomNumbersDone());
@@ -670,11 +672,28 @@ public class GameController {
 
 			connectImportedArray();
 
-			GUI.getStage().setHeight(gameBuilder.getHeight());
-			GUI.getStage().setWidth(gameBuilder.getWidth());
-			GUI.getStage().getScene().setRoot(gameBuilder.getGameUIRoot());
+		
+			alignWindowToGameSize();
 		}
 	}
+	
+	/**
+     * This method is used to align the programs window size to the size variables
+     * defined in the {@link #gameBuilder} object
+     */
+    public void alignWindowToGameSize() {
+         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+
+            GUI.getStage().setHeight(gameBuilder.getHeight());
+            GUI.getStage().setWidth(gameBuilder.getWidth());
+            GUI.getStage().getScene().setRoot(gameBuilder.getGameUIRoot());
+
+             GUI.getStage().setX((screenBounds.getWidth() - gameBuilder.getSceneWidth()) / 2);
+             GUI.getStage().setY((screenBounds.getHeight() - gameBuilder.getSceneHeight()) / 2);
+            
+    }
+
+	
 
 	/**
 	 * This auxiliary method is used during the import process. Its use is to align
@@ -749,12 +768,19 @@ public class GameController {
 	  public void switchToMainMenu(ActionEvent e) {
 	        emptyArrays();
 	        MainMenu mainmenu = new MainMenu();
+	        Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 	        mainmenu.setUpMainMenu();
 
 
 	        GUI.getStage().setHeight(mainmenu.getScreenHeight());
 	        GUI.getStage().setWidth(mainmenu.getScreenWidth());
+	        GUI.getStage().setX((bounds.getWidth() - mainmenu.getScreenWidth()) / 2);
+	        GUI.getStage().setY((bounds.getHeight() - mainmenu.getScreenHeight()) / 2);
+	        
+	        
 	        GUI.getStage().getScene().setRoot(GUI.getMainMenu());
+	        
+	        
 	    }
 
 	/**
