@@ -16,6 +16,7 @@ import com.google.gson.GsonBuilder;
  *
  */
 public class FreeFormLogic extends SudokuLogic {
+	
 	/**
 	 *  constructor for creating a FreeFormLogic-Object
 	 * @param gamestate
@@ -27,10 +28,9 @@ public class FreeFormLogic extends SudokuLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[9][9]);
 		setGametype("FreeForm");
-		setNumbersToBeSolvable(17);
+		setNumbersToBeSolvable(21);
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
-	
 
 	/**
 	 * Checks if the number already exists in the box depending on shape of the box
@@ -55,8 +55,8 @@ public class FreeFormLogic extends SudokuLogic {
 	private int globalCounter = 0;
 	
 	/**
-	 *autogenerates new sudoku 
-	 *fills in numbers recursive
+	 * creates new sudoku.
+	 * fills in numbers recursive.
 	 */
 	@Override
 	public boolean createSudoku() {
@@ -84,11 +84,10 @@ public class FreeFormLogic extends SudokuLogic {
 						j = 0;
 					}
 
-					if (globalCounter > 20000) {
+					if (globalCounter > 2000000) {
 						globalCounter = 0;
 						setCells(loadPreMadeFreeForm());
 						connectToSavedResults();
-						System.out.println("loaded");
 						return true;
 					}
 				}
@@ -338,13 +337,11 @@ public class FreeFormLogic extends SudokuLogic {
 	 * proofs if all cells of all shapes/boxes are connected and no fragments ('cell islands') occur
 	 * @return true is connected / false - is not connected
 	 */
-	@Override
 	public boolean isConnected() {
-		int[][] cellsmr = new int[9][9];
-		for (int m = 0; m < cellsmr.length; m++) {
-			for (int n = 0; n < cellsmr[m].length; n++) {
-				cellsmr[m][n] = 0;
-
+		int[][] cellsProof = new int[9][9];
+		for (int m = 0; m < cellsProof.length; m++) {
+			for (int n = 0; n < cellsProof[m].length; n++) {
+				cellsProof[m][n] = 0;
 			}
 		}
 
@@ -352,10 +349,10 @@ public class FreeFormLogic extends SudokuLogic {
 		for (int i = 0; i < this.getCells().length; i++) {
 			for (int j = 0; j < this.getCells()[i].length; j++) {
 
-				if (cellsmr[i][j] == 0) {
+				if (cellsProof[i][j] == 0) {
 					toNine++;
-					cellsmr[i][j] = 1;
-					toNine = isInternalConnected(i, j, 1, cellsmr);
+					cellsProof[i][j] = 1;
+					toNine = isInternalConnected(i, j, 1, cellsProof);
 					if (toNine < 7) {
 						return false;
 					}
@@ -393,7 +390,6 @@ public class FreeFormLogic extends SudokuLogic {
 		return toNine;
 	}
 	
-	@Override
 	public boolean proofFilledOut() {
 		int[] cells1to9 = { 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 		String boxcolor;

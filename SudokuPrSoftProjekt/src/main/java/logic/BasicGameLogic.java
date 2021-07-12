@@ -54,11 +54,6 @@ public abstract class BasicGameLogic {
 	 * {@link controller.GameController.#hintHandeler(javafx.event.ActionEvent)}
 	 */
 	private int[][] savedResults;
-	/**
-	 * This integer-Array is used in the {@link #hint()} method to save the current
-	 * values from the Cell-Array before the {@link #solveSudoku()} method gets used.
-	 */
-	private int[][] temporaryValues;
 
 	/**
 	 * this variable is used to display the selected difficulty in letters.
@@ -140,15 +135,11 @@ public abstract class BasicGameLogic {
 
 	public abstract void difficulty();
 
-	public abstract int getNumberOfVisibleValues();
-
-	public abstract boolean isConnected();
+	public abstract int getNumberOfValuesToDelete();
 
 	public abstract boolean checkRow(int row, int col, int guess);
 
 	public abstract boolean checkCol(int row, int col, int guess);
-	
-	public abstract boolean proofFilledOut();
 
 	/**
 	 * Checks if the number already exists in a box.
@@ -251,7 +242,6 @@ public abstract class BasicGameLogic {
 		for (int row = 0; row < this.getCells().length; row++) {
 			for (int col = 0; col < this.getCells()[row].length; col++) {
 				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
-				System.out.println(this.getSavedResults()[row][col]);
 			}
 		}
 		this.setCells(help);
@@ -301,6 +291,12 @@ public abstract class BasicGameLogic {
 		boolean correctRandom = false;
 		int[] coordinates = new int[2];
 		int counter = 0;
+		
+		/**
+		 * This integer-Array is used in the {@link #hint()} method to save the current
+		 * values from the Cell-Array before the {@link #solveSudoku()} method gets used.
+		 */
+		int[][] temporaryValues = new int[this.cells.length][this.cells.length];;
 
 		// current values of the sudoku game get saved
 		temporaryValues = new int[this.cells.length][this.cells.length];
@@ -475,8 +471,10 @@ public abstract class BasicGameLogic {
 	public void removeValues() {
 		for (int row = 0; row < this.cells.length; row++) {
 			for (int col = 0; col < this.cells[row].length; col++) {
-				this.cells[row][col].setFixedNumber(false);
-				this.cells[row][col].setValue(0);
+				if(this.cells[row][col].getValue() != -1) {
+					this.cells[row][col].setFixedNumber(false);
+					this.cells[row][col].setValue(0);
+				}
 			}
 		}
 	}

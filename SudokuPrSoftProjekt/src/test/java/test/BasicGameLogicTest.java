@@ -25,6 +25,17 @@ class BasicGameLogicTest {
 		model.setUpLogicArray();
 	}
 	
+	@Test
+	void testBackgroundSolution() {
+		model.getCells()[1][1].setFixedNumber(false);
+		model.createBackgroundSolution();
+		for(int i = 0; i < model.getCells().length; i++) {
+			for(int j = 0; j < model.getCells()[i].length; j++) {
+				assertEquals(model.getCells()[i][j].getValue(), model.getSavedResults()[i][j]);
+			}
+		}		
+	}
+	
 	/**
 	 * getters and setters
 	 */
@@ -36,7 +47,6 @@ class BasicGameLogicTest {
 		 model.setCells(model2.getCells());
 		 assertEquals(model2.getCells()[1][1],model.getCells()[1][1]);
 	}
-	
 	
 	@Test
 	void testGetCells() {
@@ -56,29 +66,6 @@ class BasicGameLogicTest {
     	model.setDifficulty(7);
         assertEquals(7,model.getDifficulty());
     }
-    
-//    @Test
-//    public void testGetLoadedMinutes() {
-//        model.setLoadedMinutes(30);
-//        assertEquals(model.getLoadedMinutes(), 30);
-//    }
-//    @Test
-//    public void testSetLoadedMinutes() {
-//        model.setLoadedMinutes(30);
-//        assertEquals(model.getLoadedMinutes(), 30);
-//    }
-//
-//
-//    @Test
-//    public void testGetLoadedSeconds() {
-//        model.setLoadedSeconds(30);
-//        assertEquals(model.getLoadedSeconds(), 30);
-//    }
-//    @Test
-//    public void testSetLoadedSeconds() {
-//        model.setLoadedSeconds(30);
-//        assertEquals(model.getLoadedSeconds(), 30);
-//    }
 
     @Test
     void testGetSecondsPlayed() {
@@ -101,15 +88,13 @@ class BasicGameLogicTest {
         model.setMinutesPlayed(3);
         assertEquals(3,model.getMinutesplayed());
     }
-    
  
     @Test
     void testSetGamePoints() {
         model.setGamePoints(11);
         assertEquals(11,model.getGamepoints());
     }
-    
-    
+
     @Test
     void testSetDifficultyString7() {
     	model.setDifficulty(7);
@@ -145,13 +130,9 @@ class BasicGameLogicTest {
         model.setGameID(1);
         assertEquals(1,model.getGameid());
     }
-    
 
-    
     @Test
     void testGetGameText() {
-        model.setGameState(Gamestate.OPEN);
-      //  assertEquals(model.getGameText(), "Game ongoing!");
         model.setGameState(Gamestate.DONE);
         assertEquals( "Congratulations you won!",model.getGameText());
         model.setGameState(Gamestate.INCORRECT);
@@ -159,9 +140,6 @@ class BasicGameLogicTest {
         model.setGameState(Gamestate.AUTOSOLVED);
         assertEquals("Autosolved",model.getGameText());
         model.setGameState(Gamestate.CONFLICT);
-//        assertEquals(model.getGameText(), "Please remove the conflicts before autosolving");
-//        model.setGameState(Gamestate.UNSOLVABLE);
- //       assertEquals(model.getGameText(), "Unsolvable Sudoku! New Solution generated");  
     }
     
     @Test
@@ -169,13 +147,9 @@ class BasicGameLogicTest {
         model.setGameState(Gamestate.OPEN);
         assertEquals(Gamestate.OPEN,model.getGamestate());
     }
+    
     @Test
     void testGetGameTyp() {
     	 assertEquals("Samurai",model.getGametype());
     }
-    
-
-    
-
-
 }

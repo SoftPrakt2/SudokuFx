@@ -18,7 +18,7 @@
 //class FreeFormLogicTest {
 //
 //
-//	BasicGameLogic model;
+//	FreeFormLogic model;
 //	
 //	@BeforeEach
 //	public void setUp(){
@@ -246,7 +246,7 @@
 //				}
 //			}
 //		}
-//		assertEquals(25,count );
+//		assertEquals(21,count );
 //	}
 //
 //	/**
@@ -266,7 +266,7 @@
 //				}
 //			}
 //		}
-//		assertEquals(35,count);
+//		assertEquals(31,count);
 //	}
 //	
 //	/**
@@ -286,7 +286,7 @@
 //				}
 //			}
 //		}
-//		assertEquals(45, count);
+//		assertEquals(41, count);
 //	}
 //	
 //	/**
@@ -356,11 +356,8 @@
 //        model.createSudoku();
 //        model.setDifficulty(3);
 //        model.difficulty();
-////        model.solveSudoku();
-////        model.setCell(0, 5, 0);
 //        model.getCells()[0][5].setValue(0);
 //        int [] returnArray = model.hint();
-//        System.out.println(returnArray[0] + " " + returnArray[1]);
 //        assertNotEquals(null, returnArray);
 //    }
 //    

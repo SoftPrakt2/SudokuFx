@@ -19,7 +19,7 @@ public class SudokuLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[9][9]);
 		setGametype("Sudoku");
-		setNumbersToBeSolvable(1);
+		setNumbersToBeSolvable(2);
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
 	
@@ -85,13 +85,45 @@ public class SudokuLogic extends BasicGameLogic {
 			}
 		}
 	}
+	
+	/**
+	 * Solves a sudoku game. A recursive method for solving a new game.
+	 * 
+	 * @return true if sudoku was solved.
+	 */	
+	@Override
+	public boolean solveSudoku() {
+		// iterates the array
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				// checks if the cell has the value 0
+				if (this.getCells()[row][col].getValue() == 0) {
+					// checks witch of the numbers between 1 and 9 are valid inputs
+					for (int y = 1; y <= 9; y++) {
+						// checks if current number is valid
+						if (valid(row, col, y)) {
+							// sets value if the generated number is valid
+							this.getCells()[row][col].setValue(y);
+							if (solveSudoku()) {// recursive call of the the method
+								return true;
+							} else {//sets value to 0 if recursive call returns false
+								this.getCells()[row][col].setValue(0);
+							}
+						}
+					}
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Removes a certain amount of numbers from the array.
 	 * The amount depends on the difficulty chosen by the user.
 	 */
 	public void difficulty() {
-        int counter = getNumberOfVisibleValues();
+        int counter = getNumberOfValuesToDelete();
 
         if(counter == 81) {
             removeValues();
@@ -116,29 +148,18 @@ public class SudokuLogic extends BasicGameLogic {
 	 * 7 = Easy;
 	 */
 	@Override
-	public int getNumberOfVisibleValues() {
+	public int getNumberOfValuesToDelete() {
 		if(this.getDifficulty() == 3) {
-			return 57;
+			return 60;
 		}
 		else if(this.getDifficulty() == 5) {
-			return 46;
+			return 50;
 		}
 		else if(this.getDifficulty() == 7) {
-			return 36;
+			return 40;
 		}
 		else {
 			return 81;
 		}
-	}
-
-	@Override
-	public boolean isConnected() {
-		return false;
-	}
-
-	@Override
-	public boolean proofFilledOut() {
-		return false;
-	}
-	
+	}	
 }

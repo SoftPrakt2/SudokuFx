@@ -267,8 +267,8 @@
 //				}
 //			}
 //		}
-//		assertEquals(25, counterDisabled);
-//		assertEquals(56, counterNotDisabled);
+//		assertEquals(21, counterDisabled);
+//		assertEquals(60, counterNotDisabled);
 //	}
 //
 //	/**
@@ -381,8 +381,8 @@
 //	 */
 //	@Test
 //	void testManualDoneHandlerWithoutConflictSolvable() {
-//		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN, 0, 0);
-//		SamuraiGameBuilder scene = new SamuraiGameBuilder(model);
+//		SudokuLogic model = new SudokuLogic(Gamestate.OPEN, 0, 0);
+//		SudokuGameBuilder scene = new SudokuGameBuilder(model);
 //		scene.initializeGame();
 //		controller = new GameController(scene, model);
 //		controller.getModel().setDifficulty(0);
@@ -407,54 +407,14 @@
 //		controller.getsudokuField()[1][6].setText("1");
 //		controller.getsudokuField()[1][7].setText("2");
 //		controller.getsudokuField()[1][8].setText("3");
-//		controller.manuelDoneHandler(action);
-////		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
-//	}
+//		
+//		controller.getsudokuField()[2][0].setText("7");
+//		controller.getsudokuField()[2][1].setText("8");
+//		controller.getsudokuField()[2][2].setText("9");
 //
-////	/**
-////	 * Tests if the game state gets set to MANUALCONFLICT if the game
-////	 * that the user wants to create is unsolvable.
-////	 * 
-////	 * User gets asked to create a new game that is solvable.
-////	 */
-////	@Test
-////	void testManualDoneHandlerWithoutConflictUnsolvable() {
-////		SudokuLogic model = new SudokuLogic(Gamestate.OPEN,0,0);
-////		SudokuGameBuilder scene = new SudokuGameBuilder(model);
-////		scene.initializeGame();
-////		controller = new GameController(scene, model);
-////		controller.getModel().setDifficulty(0);
-////		controller.createGame();
-////		
-////		controller.getsudokuField()[0][0].setText("1");
-////		controller.getsudokuField()[0][1].setText("2");
-////		controller.getsudokuField()[0][2].setText("3");
-////		controller.getsudokuField()[0][3].setText("4");
-////		controller.getsudokuField()[0][4].setText("5");
-////		controller.getsudokuField()[0][5].setText("6");
-////		controller.getsudokuField()[0][6].setText("7");
-////		controller.getsudokuField()[0][7].setText("8");
-////		controller.getsudokuField()[0][8].setText("9");
-////		
-////		controller.getsudokuField()[1][0].setText("4");
-////		controller.getsudokuField()[1][1].setText("5");
-////		controller.getsudokuField()[1][2].setText("6");
-////		controller.getsudokuField()[1][3].setText("7");
-////		controller.getsudokuField()[1][4].setText("8");
-////		controller.getsudokuField()[1][5].setText("9");
-////		controller.getsudokuField()[1][6].setText("1");
-////		controller.getsudokuField()[1][7].setText("2");
-////		controller.getsudokuField()[1][8].setText("3");
-////		
-////		controller.getsudokuField()[2][0].setText("7");
-////		controller.getsudokuField()[2][1].setText("8");
-////		/**
-////		 * makes the game unsolvable
-////		 */
-////		controller.getsudokuField()[3][2].setText("9");
-////		controller.manuelDoneHandler(action);
-////		assertEquals(Gamestate.MANUALCONFLICT, controller.getModel().getGamestate());
-////	}
+//		controller.manuelDoneHandler(action);
+//		assertEquals(Gamestate.OPEN, controller.getModel().getGamestate());
+//	}
 //
 //	/**
 //	 * Tests if the game state gets set to INCORRECT if the sudoku game has
@@ -645,7 +605,6 @@
 //	void testConnectWithModel() {
 //		controller.createGame();
 //		controller.getsudokuField()[1][1].setText("1");
-//		System.out.println(controller.getModel().getCells()[1][1].getValue());
 //		controller.connectWithModel();
 //		assertEquals(1, controller.getModel().getCells()[1][1].getValue());
 //	}

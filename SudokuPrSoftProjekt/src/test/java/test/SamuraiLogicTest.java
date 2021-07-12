@@ -56,14 +56,6 @@ class SamuraiLogicTest {
 		 model.setCells(model2.getCells());
 		 assertEquals(model2.getCells()[1][1], model.getCells()[1][1]);
 	}
-	
-	
-////	@Test
-//	public void testSetCell() {
-//		model.setCell(1, 1, 1);
-//		assertEquals(1,model.getCells()[1][1].getValue());
-//		assertTrue(model.getCells()[1][1].getIsReal());
-//	}
 
 	/**
 	 * part of valid method
@@ -374,6 +366,26 @@ class SamuraiLogicTest {
 	
 	/**
 	 * tests if the the correct number of cell values are displayed 
+	 * difficulty manual -> 0 displayed
+	 */
+	@Test
+	void testDifficulty0() {
+		model.createSudoku();
+		model.setDifficulty(0);
+		model.difficulty();
+		int count = 0;
+		for (int i = 0; i < model.getCells().length; i++) {
+			for (int j = 0; j < model.getCells()[i].length; j++) {
+				if(model.getCells()[i][j].getValue() == 0) {
+					count++;
+				}
+			}
+		}
+		assertEquals(369, count);
+	}
+	
+	/**
+	 * tests if the the correct number of cell values are displayed 
 	 * difficulty easy -> 210 displayed, 159 not
 	 */
 	@Test
@@ -384,12 +396,13 @@ class SamuraiLogicTest {
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
 			for (int j = 0; j < model.getCells()[i].length; j++) {
-				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getFixedNumber() && model.getCells()[i][j].getValue() != -1) {
+				if(model.getCells()[i][j].getValue() != 0
+						&& model.getCells()[i][j].getValue() != -1) {
 					count++;
 				}
 			}
 		}
-		assertEquals(125,count );
+		assertEquals(130, count);
 	}
 
 
@@ -405,7 +418,8 @@ class SamuraiLogicTest {
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
 			for (int j = 0; j < model.getCells()[i].length; j++) {
-				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getFixedNumber() && model.getCells()[i][j].getValue() != -1) {
+				if(model.getCells()[i][j].getValue() != 0
+						&& model.getCells()[i][j].getValue() != -1) {
 					count++;
 				}
 			}
@@ -425,7 +439,8 @@ class SamuraiLogicTest {
 		int count = 0;
 		for (int i = 0; i < model.getCells().length; i++) {
 			for (int j = 0; j < model.getCells()[i].length; j++) {
-				if(model.getCells()[i][j].getValue() != 0 && model.getCells()[i][j].getFixedNumber() && model.getCells()[i][j].getValue() != -1) {
+				if(model.getCells()[i][j].getValue() != 0
+						&& model.getCells()[i][j].getValue() != -1) {
 					count++;
 				}
 			}
@@ -443,11 +458,6 @@ class SamuraiLogicTest {
 	model.difficulty();
 		assertTrue(model.solveSudoku());
 	}
-	
-//	@Test
-//	public void testPrintCells() {		
-//	model.printCells();
-//	}
 	
 	/**
 	 * tests setting Gamestate
@@ -484,9 +494,9 @@ class SamuraiLogicTest {
 	 * tests if false->'samurai sudoku not solved'  is returned when the sudoku was not solved by method
 	 */
 	@Test
-	void testIfSolvedFalse() {		
-		model.createSudoku();
+	void testIfSolvedFalse() {
 		model.setDifficulty(3);
+		model.createSudoku();
 		model.difficulty();
 		assertFalse(model.testIfSolved());
 	}	
@@ -500,16 +510,11 @@ class SamuraiLogicTest {
         model.createSudoku();
         model.setDifficulty(3);
         model.difficulty();
-//        model.solveSudoku();
-//        model.setCell(0, 5, 0);
         model.getCells()[0][5].setValue(0);
         int [] returnArray = model.hint();
-        System.out.println(returnArray[0] + " " + returnArray[1]);
 
         assertNotEquals(null, returnArray);
     }
-
-	
 }
 
 

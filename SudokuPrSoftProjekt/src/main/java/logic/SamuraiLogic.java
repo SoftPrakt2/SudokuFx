@@ -1,5 +1,8 @@
 package logic;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * extends BasicGameLogic and implements all abstract methods of BasicGameLogic.
  * 
@@ -7,6 +10,11 @@ package logic;
  */
 public class SamuraiLogic extends BasicGameLogic {
 
+	private Map<Integer, int [][]> temporaryValues;
+	private int counter;
+	private int countRecursive;
+
+	
 	/**
 	 * constructor for creating a Samurai-Object. This constructor extends the
 	 * BasicGameLogic constructor. The size of the needed Cell-Array gets set with
@@ -17,8 +25,11 @@ public class SamuraiLogic extends BasicGameLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[21][21]);
 		setGametype("Samurai");
-		setNumbersToBeSolvable(1);
+		setNumbersToBeSolvable(130);
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
+		this.temporaryValues = new HashMap<>();
+		this.counter = 0;
+		this.countRecursive = 0;
 	}
 
 	/**
@@ -207,13 +218,13 @@ public class SamuraiLogic extends BasicGameLogic {
 	@Override
 	public void difficulty() {
 		counter = 0;
-		int counter = getNumberOfVisibleValues();
+		countRecursive = 0;
+		int amountOfNumbers = getNumberOfValuesToDelete();
 
-		if (counter == 369) {
+		if (amountOfNumbers == 369) {
 			removeValues();
 		} else {
-
-			while (counter != 0) {
+			while (amountOfNumbers != 0) {
 				int randCol = numberGenerator.nextInt(this.getCells().length);
 				int randRow = numberGenerator.nextInt(this.getCells().length);
 				if (this.getCells()[randRow][randCol].getValue() != 0
@@ -221,7 +232,7 @@ public class SamuraiLogic extends BasicGameLogic {
 						&& this.getCells()[randRow][randCol].getValue() != -1) {
 					this.getCells()[randRow][randCol].setValue(0);
 					this.getCells()[randRow][randCol].setFixedNumber(false);
-					counter--;
+					amountOfNumbers--;
 				}
 			}
 		}
@@ -234,16 +245,17 @@ public class SamuraiLogic extends BasicGameLogic {
 	 * 7 = Easy;
 	 */
 	@Override
-	public int getNumberOfVisibleValues() {
+	public int getNumberOfValuesToDelete() {
 		if (this.getDifficulty() == 3) {
-			return 244;
+			return 239;
 		} else if (this.getDifficulty() == 5) {
 			return 200;
 		} else if (this.getDifficulty() == 7) {
 			return 170;
-		} else {
+		} else if (this.getDifficulty() == 0){
 			return 369;
 		}
+		return 0;
 	}
 
 	/**
@@ -297,8 +309,6 @@ public class SamuraiLogic extends BasicGameLogic {
 		}
 	}
 
-	static int counter = 0;
-
 	@Override
 	public boolean solveSudoku() {
 		int[] coordinates = new int[2];
@@ -328,10 +338,12 @@ public class SamuraiLogic extends BasicGameLogic {
 				}
 			}
 		}
-		if (minPossibilities == 0) {
-			return false;
-		}
 
+		for (int row = 0; row < this.getCells().length; row++) {
+			for (int col = 0; col < this.getCells()[row].length; col++) {
+				helper[row][col] = this.getCells()[row][col].getValue();
+			}
+		}
 		// checks if the cell has the value 0
 		if (this.getCells()[coordinates[0]][coordinates[1]].getValue() == 0) {
 			// checks witch of the numbers between 1 and 9 are valid inputs
@@ -339,22 +351,22 @@ public class SamuraiLogic extends BasicGameLogic {
 				// checks if current number is valid
 				if (valid(coordinates[0], coordinates[1], y)) {
 					// sets value if the generated number is valid
-					for (int row = 0; row < this.getCells().length; row++) {
-						for (int col = 0; col < this.getCells()[row].length; col++) {
-							helper[row][col] = this.getCells()[row][col].getValue();
-						}
-					}
+					this.temporaryValues.put(countRecursive, helper);
+					
 					this.getCells()[coordinates[0]][coordinates[1]].setValue(y);
-					for (int row = 0; row < 10; row++) {
+					for (int row = 0; row < 3; row++) {
 						SolveCellsWithOnlyOnePossibleValue();
 					}
+					this.countRecursive++;
 					if (solveSudoku()) {// recursive call the the method
 						return true;
-					} else {
+					}
+					else {
 						this.getCells()[coordinates[0]][coordinates[1]].setValue(0);
+						this.countRecursive--;
 						for (int row2 = 0; row2 < this.getCells().length; row2++) {
 							for (int col2 = 0; col2 < this.getCells()[row2].length; col2++) {
-								this.getCells()[row2][col2].setValue(helper[row2][col2]);
+								this.getCells()[row2][col2].setValue(this.temporaryValues.get(countRecursive)[row2][col2]);
 							}
 						}
 					}
@@ -363,15 +375,5 @@ public class SamuraiLogic extends BasicGameLogic {
 			return false;
 		}
 		return true;
-	}
-
-	@Override
-	public boolean isConnected() {
-		return false;
-	}
-
-	@Override
-	public boolean proofFilledOut() {
-		return false;
 	}
 }

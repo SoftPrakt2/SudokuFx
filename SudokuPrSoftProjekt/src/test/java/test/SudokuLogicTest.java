@@ -253,7 +253,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(24,count);
+		assertEquals(21,count);
 	}
 	
 	/**
@@ -273,7 +273,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(35,count);
+		assertEquals(31,count);
 	}
 	
 	/**
@@ -293,7 +293,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(45,count);
+		assertEquals(41,count);
 	}
 	
 	/**
@@ -366,28 +366,10 @@ class SudokuLogicTest {
         model.createSudoku();
         model.setDifficulty(3);
         model.difficulty();
-//        model.solveSudoku();
-//        model.setCell(0, 5, 0);
         model.getCells()[0][5].setValue(0);
         int [] returnArray = model.hint();
-        System.out.println(returnArray[0] + " " + returnArray[1]);
 
         assertNotNull(returnArray);
         
     }
-	
-//	/**
-//	 * 
-//	 */
-//    @Test
-//    void testHint2() {
-//        int [] sollutionArray = new int[] {0, 0};
-//        model.createSudoku();
-//        model.setDifficulty(3);
-//        model.difficulty();
-//        model.solveSudoku();
-//        int [] returnArray = model.hint();
-//
-//        assertEquals(null, returnArray);
-//    }
 }

@@ -344,21 +344,23 @@ public class GameController {
 			}
 		}
 
-		if (model.isConnected() && model.proofFilledOut()) {
-			for (SudokuTextField coloredArray[] : sudokuField) {
-				for (SudokuTextField coloredField : coloredArray) {
-					coloredField.removeFreeFormColorListener();
+		if(model instanceof FreeFormLogic) {
+			if (((FreeFormLogic)model).isConnected() && ((FreeFormLogic)model).proofFilledOut()) {
+				for (SudokuTextField coloredArray[] : sudokuField) {
+					for (SudokuTextField coloredField : coloredArray) {
+						coloredField.removeFreeFormColorListener();
+					}
 				}
+				gameBuilder.getToolBar().getItems().remove(gameBuilder.getColorsDoneButton());
+				gameBuilder.getToolBar().getItems().remove(gameBuilder.getColorBox());
+				gameBuilder.getToolBar().getItems().add(3, gameBuilder.getCustomNumbersDone());
+				gameBuilder.getCustomNumbersDone().setVisible(true);
+				model.setGameState(Gamestate.CREATING);
+				gameBuilder.getGameNotificationLabel().setText(model.getGameText());
+			} else {
+				model.setGameState(Gamestate.NOFORMS);
+				gameBuilder.getGameNotificationLabel().setText(model.getGameText());
 			}
-			gameBuilder.getToolBar().getItems().remove(gameBuilder.getColorsDoneButton());
-			gameBuilder.getToolBar().getItems().remove(gameBuilder.getColorBox());
-			gameBuilder.getToolBar().getItems().add(3, gameBuilder.getCustomNumbersDone());
-			gameBuilder.getCustomNumbersDone().setVisible(true);
-			model.setGameState(Gamestate.CREATING);
-			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
-		} else {
-			model.setGameState(Gamestate.NOFORMS);
-			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
 		}
 	}
 
@@ -379,7 +381,6 @@ public class GameController {
 			model.setNumbersInsideTextField(0);
 
 		connectWithModel();
-		System.out.println(model.getNumbersInsideTextField());
 		for (int row = 0; row < sudokuField.length; row++) {
 			for (int col = 0; col < sudokuField[row].length; col++) {
 				/**
@@ -757,7 +758,6 @@ public class GameController {
 
 		SudokuStorage storageModel = new SudokuStorage();
 		storageModel.exportGame(model);
-		System.out.println(model.getGameid());
 	}
 
 	/**
