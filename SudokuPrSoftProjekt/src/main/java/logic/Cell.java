@@ -27,6 +27,7 @@ public class Cell {
 	
 	// declares if the number is a system provided hint
 	boolean isHint;
+	
 
 	public Cell(int row, int col, int box, int value) {
 		super();
@@ -49,6 +50,7 @@ public class Cell {
 	public void setIsHint(boolean isHint) {
 		this.isHint = isHint;
 	}
+	
 	
 	public boolean isHint() {
 		return isHint;

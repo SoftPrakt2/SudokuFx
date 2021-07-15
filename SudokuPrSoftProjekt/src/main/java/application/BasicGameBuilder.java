@@ -1,7 +1,6 @@
 package application;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -48,16 +47,17 @@ import logic.BasicGameLogic;
 public abstract class BasicGameBuilder {
 	
 	/**
-	 * These two variables are needed to determine the size of the users monitor. 
+	 * This  variables is needed to determine the size of the users monitor. 
 	 * Will be used to determine the size of a game UI (height and width)
 	 */
 	protected Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
-	protected GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	
 	
 	/**
 	 * The main UI container of a GameBuilder
 	 */
 	protected final BorderPane gameRoot;
+	
 	private BasicGameLogic model;
 
 	/**
@@ -337,7 +337,8 @@ public abstract class BasicGameBuilder {
 	 */
 	public void defineShortCuts() {
 
-		KeyCombination hintKc = new KeyCodeCombination(KeyCode.H, KeyCombination.SHORTCUT_DOWN);
+	
+		KeyCombination hintKc = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_ANY);
 		KeyCombination autoSolveKc = new KeyCodeCombination(KeyCode.A, KeyCombination.SHORTCUT_DOWN);
 		KeyCombination checkKc = new KeyCodeCombination(KeyCode.ENTER, KeyCombination.CONTROL_DOWN);
 		KeyCombination resetKc = new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN);
@@ -358,6 +359,9 @@ public abstract class BasicGameBuilder {
 		exportMenuItem.setAccelerator(exportKc);
 		saveMenuItem.setAccelerator(saveKc);
 		mainMenuItem.setAccelerator(mainMenuKc);
+		
+	
+		
 	}
 
 	/**

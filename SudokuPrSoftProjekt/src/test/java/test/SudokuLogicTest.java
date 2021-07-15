@@ -253,7 +253,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(21,count);
+		assertEquals(25,count);
 	}
 	
 	/**
@@ -273,7 +273,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(31,count);
+		assertEquals(35,count);
 	}
 	
 	/**
@@ -293,7 +293,7 @@ class SudokuLogicTest {
 				}
 			}
 		}
-		assertEquals(41,count);
+		assertEquals(45,count);
 	}
 	
 	/**

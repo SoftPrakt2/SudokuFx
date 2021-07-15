@@ -12,7 +12,7 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 
 /**
- * This class is an extension of the JavaFx TextField 
+ * This class is an extension of the JavaFx TextField class
  * SudokuTextFields are enhanced with several listeners to be better suitable for the purpose of a Sudoku game
  * 
  * @author grube

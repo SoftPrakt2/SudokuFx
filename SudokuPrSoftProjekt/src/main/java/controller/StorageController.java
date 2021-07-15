@@ -153,6 +153,7 @@ public class StorageController {
 		gameidcolumn = new TableColumn<>("GameID");
 		storage.getTableView().getColumns().addAll(gameidcolumn, gameTypecolumn, difficultycolumn, pointscolumn,
 				playtimecolumn, gamestatecolumn);
+		
 		gameTypecolumn.setSortable(false);
 		difficultycolumn.setSortable(false);
 		pointscolumn.setSortable(false);
@@ -251,6 +252,7 @@ public class StorageController {
 					sudokuField[i][j].getStyleClass().add("textfieldHint");
 					sudokuField[i][j].setDisable(true);
 				}
+				
 
 			}
 		}

@@ -83,6 +83,7 @@ public class SudokuStorage {
 	 * @param gameToSave specific game which should be saved
 	 */
 	public void saveGame(BasicGameLogic gameToSave) {
+	
 		SaveModel saveModel = setInformationsToStore(gameToSave);
 		Gson gson = new GsonBuilder().create();
 		JsonWriter writer;
@@ -95,7 +96,7 @@ public class SudokuStorage {
 		File saveFile = new File("SaveFiles", fileName);
 		//if game id already exists overwritte the corresponding file
 		for(File file : fileDirectory) {
-			
+			if (file.getName().endsWith(".json")) {	
 			SaveModel help = this.convertFileToSaveModel(file);
 			if(help.getGameId() == gameToSave.getGameid()) {
 				gameAlreadySaved = true;
@@ -110,7 +111,7 @@ public class SudokuStorage {
 				}
 			}
 		}
-		
+		}
 		
 	//if game was never saved before create new file
 	if(!gameAlreadySaved) {

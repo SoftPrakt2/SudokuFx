@@ -243,8 +243,7 @@ public class GameController {
 	/**
 	 * Fixes the numbers that the user wants to create a sudoku with.
 	 * Checks for conflicts and asks the user to remove them if any occur.
-	 * Checks if the manually created sudoku is solvable - if it is not solvable the user needs to
-	 * create a new sudoku. The method {@link #compareResult()} test if there are any conflicts.
+	 * The method {@link #compareResult()} test if there are any conflicts.
 	 * {@link #enoughManualNumbers()} tests if there are enough numbers to create a sudoku.
 	 */
 	public void manuelDoneHandler(ActionEvent e) {
@@ -343,6 +342,7 @@ public class GameController {
 				model.getCells()[j][i].setBoxcolor(sudokuField[i][j].getColor());
 			}
 		}
+		
 
 		if(model instanceof FreeFormLogic) {
 			if (((FreeFormLogic)model).isConnected() && ((FreeFormLogic)model).proofFilledOut()) {
@@ -363,6 +363,7 @@ public class GameController {
 			}
 		}
 	}
+	
 
 	/**
 	 * Checks for conflicts and colors them red if there are any. Returns true if
@@ -447,8 +448,9 @@ public class GameController {
 			model.setGamePoints(0);
 			gameBuilder.getGameInfoLabel()
 					.setText("Points: " + model.getGamepoints() + " Difficulty: " + model.getDifficultystring());
+			if(model.timerIsRunning()) {
 			model.getLiveTimer().stop();
-
+			}
 			/**
 			 * Checks if the current sudoku is solved after the solve method gets called. If
 			 * it is not solved, all user inputs get deleted and a completely new solution
@@ -468,13 +470,6 @@ public class GameController {
 			}
 			connectArrays();
 		} else {
-//			for (int row = 0; row < sudokuField.length; row++) {
-//				for (int col = 0; col < sudokuField[row].length; col++) {
-//					if (!sudokuField[col][row].getText().equals("") && !sudokuField[col][row].getText().equals("-1")) {
-//						model.getCells()[row][col].setValue(Integer.parseInt(sudokuField[col][row].getText()));
-//					}
-//				}
-//			}
 			model.setGameState(Gamestate.CONFLICT);
 			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
 		}
@@ -542,9 +537,11 @@ public class GameController {
 					sudokuField[coordinates[1]][coordinates[0]].setText(number);
 					sudokuField[coordinates[1]][coordinates[0]].getStyleClass().add("textfieldHint");
 					sudokuField[coordinates[1]][coordinates[0]].setDisable(true);
-
+					
+					if(model.getGamestate()!= Gamestate.AUTOSOLVED) {
 					model.setGameState(Gamestate.OPEN);
 					gameBuilder.getGameNotificationLabel().setText(model.getGameText());
+					}
 				}
 			} else if (!model.testIfSolved()) {
 				for (int row = 0; row < sudokuField.length; row++) {
@@ -562,8 +559,6 @@ public class GameController {
 						.setText(model.getGameText() + " Please remove the red numbers to continue.");
 			}
 		} else {
-			if (model.getGamepoints() > 0)
-				model.setGamePoints(model.getGamepoints() - 1);
 
 			model.setGameState(Gamestate.CONFLICT);
 			gameBuilder.getGameNotificationLabel().setText(model.getGameText());
@@ -719,7 +714,6 @@ public class GameController {
 				}
 
 				else if (model.getCells()[j][i].isHint() && model.getCells()[j][i].getValue() != 0) {
-
 					sudokuField[i][j].getStyleClass().add("textfieldHint");
 					sudokuField[i][j].setDisable(true);
 				}
@@ -854,6 +848,7 @@ public class GameController {
 				} else if (!sudokuField[col][row].getText().equals("-1")
 						|| sudokuField[col][row].getText().equals("")) {
 					model.getCells()[row][col].setValue(0);
+					
 				}
 			}
 		}

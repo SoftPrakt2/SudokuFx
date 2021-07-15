@@ -181,12 +181,12 @@ public class GameOverview {
 		
 			Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
 			
-			if(bounds.getWidth() * 0.35 < 505) {
+			if(bounds.getWidth() * 0.35 < 435) {
 				
 				screenWidth = bounds.getWidth() * 0.35;
 			} else {
-				screenWidth = 505;
-				System.out.println("H");
+				screenWidth = 435;
+				System.out.println("nicht geändert");
 			}
 		
 			if(bounds.getHeight() * 0.85 < 620) {
@@ -236,7 +236,7 @@ public class GameOverview {
 	/**
 	 * This method is used to initialize and position the
 	 * {@link #gameScoreHeaderLabel} and the UI components regarding displaying game informations.
-	 * To allow better positioning of the components these are put into a own HBox the gameStatsBox
+	 * To allow better positioning of the components these are put into a own HBox 
 	 * The HBox gameStatsBox is the main container for the UI objects which are created in the
 	 * {@link #createAverageResultContainer()} and
 	 * {@link #createOverallResultContainers()} 

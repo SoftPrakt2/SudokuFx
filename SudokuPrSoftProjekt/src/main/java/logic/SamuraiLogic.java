@@ -252,10 +252,9 @@ public class SamuraiLogic extends BasicGameLogic {
 			return 200;
 		} else if (this.getDifficulty() == 7) {
 			return 170;
-		} else if (this.getDifficulty() == 0){
+		} else {
 			return 369;
 		}
-		return 0;
 	}
 
 	/**

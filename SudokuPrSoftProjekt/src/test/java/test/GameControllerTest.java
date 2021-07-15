@@ -267,8 +267,8 @@
 //				}
 //			}
 //		}
-//		assertEquals(21, counterDisabled);
-//		assertEquals(60, counterNotDisabled);
+//		assertEquals(25, counterDisabled);
+//		assertEquals(56, counterNotDisabled);
 //	}
 //
 //	/**
@@ -280,7 +280,6 @@
 //		controller.getModel().getCells()[1][1].setValue(1);
 //		controller.getsudokuField()[1][1].setText("1");
 //		controller.connectWithModel();
-//		controller.getModel().getCells()[1][1].setIsHint(true);
 //		assertEquals(1, controller.getModel().getCells()[1][1].getValue());
 //		assertTrue(controller.getsudokuField()[1][1].getText().equals("1"));
 //		controller.resetHandler(action);

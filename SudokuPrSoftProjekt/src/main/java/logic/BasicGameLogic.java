@@ -131,6 +131,9 @@ public abstract class BasicGameLogic {
 	/**
 	 * abstract methods that need to be implemented by the subclasses.
 	 */
+	
+	public abstract boolean solveSudoku();
+	
 	public abstract void setUpLogicArray();
 
 	public abstract void difficulty();
@@ -212,11 +215,8 @@ public abstract class BasicGameLogic {
 		}
 
 		this.savedResults = new int[this.cells.length][this.cells.length];
-		for (int row = 0; row < this.getCells().length; row++) {
-			for (int col = 0; col < this.getCells()[row].length; col++) {
-				this.getSavedResults()[row][col] = this.getCells()[row][col].getValue();
-			}
-		}
+		connectToSavedResults();
+		
 		return true;
 	}
 
@@ -249,36 +249,9 @@ public abstract class BasicGameLogic {
 		return this.getSavedResults();
 	}
 
-	/**
-	 * Solves a sudoku game. A recursive method for solving a new game.
-	 * 
-	 * @return true if sudoku was solved.
-	 */
-	public boolean solveSudoku() {
-		// iterates the array
-		for (int row = 0; row < this.cells.length; row++) {
-			for (int col = 0; col < this.cells[row].length; col++) {
-				// checks if the cell has the value 0
-				if (this.cells[row][col].getValue() == 0) {
-					// checks witch of the numbers between 1 and 9 are valid inputs
-					for (int y = 1; y <= 9; y++) {
-						// checks if current number is valid
-						if (valid(row, col, y)) {
-							// sets value if the generated number is valid
-							this.cells[row][col].setValue(y);
-							if (solveSudoku()) {// recursive call of the the method
-								return true;
-							} else {//sets value to 0 if recursive call returns false
-								this.cells[row][col].setValue(0);
-							}
-						}
-					}
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+	
+	
+
 
 	/**
 	 * Gives the user a valid hint. Sudoku is solved before a hint is given so that an
@@ -417,7 +390,7 @@ public abstract class BasicGameLogic {
 	 * correctly.
 	 */
 	public void setUpGameInformations() {
-		setGamePoints(50);
+		setGamePoints(60);
 		setGameState(Gamestate.OPEN);
 		setDifficultyString();
 		setMinutesPlayed(0);

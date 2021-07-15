@@ -1,5 +1,7 @@
 package application;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -62,11 +64,11 @@ public class GUI extends Application {
 
 		});
 		
+		createSaveDirectory();
 
 		window.show();
 
 		
-
 	}
 
 	/**
@@ -81,6 +83,21 @@ public class GUI extends Application {
 			Platform.exit();
 		}
 	}
+	
+	
+	/**
+	 * creates the save directory "SaveFiles" of the program if it does not already exist
+	 */
+	public void createSaveDirectory() {
+		File file = new File("SaveFiles");
+		 if (file.mkdirs()) {
+	            System.out.println("Directory is created!");
+	        } else {
+	            System.out.println("Directory already exists");
+	        }
+	}
+	
+	
 
 	public static Stage getStage() {
 		return window;

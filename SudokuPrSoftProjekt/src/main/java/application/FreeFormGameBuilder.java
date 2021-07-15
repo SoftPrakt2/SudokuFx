@@ -28,11 +28,19 @@ public class FreeFormGameBuilder extends BasicGameBuilder {
 		setTextField(new SudokuTextField[9][9]);
 		
 		
-	
+		if(bounds.getWidth() * 0.45 < 700) {
+            setSceneWidth(bounds.getWidth() * 0.45);
+        } else {
+            setSceneWidth(700);
+        }
 
-		setSceneWidth(gd.getDisplayMode().getWidth() * 0.33);
-		setSceneHeight(gd.getDisplayMode().getHeight() * 0.58);
+        if(bounds.getHeight() * 0.85 < 700) {
+            setSceneHeight(bounds.getHeight() * 0.85);
+        } else {
+            setSceneHeight(700);
+        }
 	}
+	
 
 	/**
 	 * Draws the FreeForm playboard, this playboard is filled with 9x9 Stackpanes
