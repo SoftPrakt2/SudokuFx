@@ -28,7 +28,7 @@ public class FreeFormLogic extends SudokuLogic {
 		super(gamestate, minutesPlayed, secondsPlayed);
 		setCells(new Cell[9][9]);
 		setGametype("FreeForm");
-		setNumbersToBeSolvable(24);
+		setNumbersToBeSolvable(25);
 		this.setSavedResults(new int[this.getCells().length][this.getCells().length]);
 	}
 
@@ -85,7 +85,7 @@ public class FreeFormLogic extends SudokuLogic {
 						j = 0;
 					}
 
-					if (globalCounter > 1500000) {
+					if (globalCounter > 900000) {
 						globalCounter = 0;
 						setCells(loadPreMadeFreeForm());
 						connectToSavedResults();

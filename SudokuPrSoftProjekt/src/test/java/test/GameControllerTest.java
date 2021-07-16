@@ -40,22 +40,6 @@
 //	}
 //
 //	/**
-//	 * Tests if a GameController-Object can be created with different Game-Types.
-//	 */
-//	@Test
-//	void testConstructorWithDifferentGameTypes() {
-//		SamuraiLogic model = new SamuraiLogic(Gamestate.OPEN, 0, 0);
-//		SamuraiGameBuilder scene = new SamuraiGameBuilder(model);
-//		scene.initializeGame();
-//		controller = new GameController(scene, model);
-//
-//		SudokuLogic modelSudoku = new SudokuLogic(Gamestate.OPEN, 0, 0);
-//		SudokuGameBuilder sceneSudoku = new SudokuGameBuilder(modelSudoku);
-//		sceneSudoku.initializeGame();
-//		controller = new GameController(sceneSudoku, modelSudoku);
-//	}
-//
-//	/**
 //	 * Tests if all the necessary steps for creating a Game get carried out and if a
 //	 * sudoku gets created.
 //	 */
