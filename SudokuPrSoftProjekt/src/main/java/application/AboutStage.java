@@ -2,8 +2,6 @@ package application;
 
 import java.util.stream.Stream;
 
-import org.controlsfx.glyphfont.FontAwesome;
-
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Insets;
@@ -21,7 +19,8 @@ import javafx.stage.Stage;
  *
  */
 public class AboutStage {
-
+	
+	//scene object of this class 
 	private Scene rulesScene;
 	
 
@@ -35,8 +34,6 @@ public class AboutStage {
 	private Label versionLabel;
 	private Label usedSoftwareLabel;
 
-	protected FontAwesome fontAwesome;
-	
 	/**
 	 * This method is used to instantiate a stage object 
 	 * and show it in the UI
@@ -62,7 +59,7 @@ public class AboutStage {
 	 * @return the created scene 
 	 */
 	public Scene createRulesScene() {
-		fontAwesome = new FontAwesome();
+		
 
 		VBox rulesContainer = new VBox();
 		rulesScene = new Scene(rulesContainer, 480, 200);

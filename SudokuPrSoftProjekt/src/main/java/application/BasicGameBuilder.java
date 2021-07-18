@@ -47,7 +47,7 @@ import logic.BasicGameLogic;
 public abstract class BasicGameBuilder {
 	
 	/**
-	 * This  variables is needed to determine the size of the users monitor. 
+	 * This variable is needed to determine the size of the users monitor. 
 	 * Will be used to determine the size of a game UI (height and width)
 	 */
 	protected Rectangle2D bounds = Screen.getPrimary().getVisualBounds();

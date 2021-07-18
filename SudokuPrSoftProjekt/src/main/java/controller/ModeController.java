@@ -68,6 +68,7 @@ public class ModeController {
 	 * instantiates the {@link #model} as SamuraiLogic 
 	 * instantiates the {@link #gameSceme} as SamuraiGameBuilder 
 	 * the difficulty ToggleButtons of {@link application.MainMenu#getPlayModeToggle()} will be enabled
+	 * @param e action event triggered through actions in the UI from the User
 	 */
 	public void handleToSamurai(ActionEvent e) {
 		model = new SamuraiLogic(Gamestate.OPEN, 0, 0);
@@ -81,6 +82,7 @@ public class ModeController {
 	 * instantiates the {@link #model} as FreeFormLogic 
 	 * instantiates the {@link #gameSceme} as FreeFormGameBuilder 
 	 * the difficulty ToggleButtons of{@link application.MainMenu#getPlayModeToggle()} will be enabled
+	 *  @param e action event triggered through actions in the UI from the User
 	 */
 	public void handleToFreeForm(ActionEvent e) {
 		model = new FreeFormLogic(Gamestate.OPEN, 0, 0);
@@ -92,6 +94,7 @@ public class ModeController {
 
 	/**
 	 * instantiates a {@link application.GameOverview} object and opens its stage 
+	 * @param e action event triggered through actions in the UI from the User
 	 */
 	public void handleToLoad(ActionEvent e) {
 		GameOverview overview = new GameOverview();
@@ -104,6 +107,7 @@ public class ModeController {
 	/**
 	 * 
 	 * closes the program
+	 * @param e action event triggered through actions in the UI from the User
 	 */
 	public void handleExit(ActionEvent e) {
 		GUI.getStage().close();
@@ -111,6 +115,7 @@ public class ModeController {
 
 	/**
 	 * sets the {@link #difficulty} variable
+	 * @param e action event triggered through actions in the UI from the User
 	 */
 	public void handleHard(ActionEvent e) {
 		difficulty = 3;
@@ -120,6 +125,7 @@ public class ModeController {
 
 	/**
 	 * sets the {@link #difficulty} variable
+	 * @param e action event triggered through actions in the UI from the User
 	 */
 	public void handleEasy(ActionEvent e) {
 		difficulty = 7;
@@ -129,6 +135,7 @@ public class ModeController {
 
 	/**
 	 * sets the {@link #difficulty} variable
+	 * @param e action event triggered through actions in the UI from the User
 	 */
 	public void handleMedium(ActionEvent e) {
 		difficulty = 5;
@@ -146,6 +153,8 @@ public class ModeController {
 	 * otherwise {@link application.BasicGameBuilder#getDoneButton()} will be made
 	 * visible
 	 * uses {@link #lockGameActionButtons()} to lock the games playaction buttons
+	 * 
+	 * @param e action event triggered through actions in the UI from the User
 	 */
 	public void handleManual(ActionEvent e) {
 		difficulty = 0;
@@ -171,6 +180,7 @@ public class ModeController {
 
 			
 			model.setDifficulty(difficulty);
+			//insert numbers into the UI sudokutextfield if the selected difficulty is not manual
 			if (model.getDifficulty() > 0) {
 				gameScene.createNumbers();
 			}

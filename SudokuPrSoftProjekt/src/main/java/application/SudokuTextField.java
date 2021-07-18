@@ -35,7 +35,8 @@ public class SudokuTextField extends TextField {
 	 * defines if a SudokuTextField is currently colored
 	 */
 	private boolean isColored;
-
+	
+	// listener used to react to changes in background color
 	private ChangeListener<Boolean> freeFormColorListener;
 
 	/**
@@ -140,7 +141,7 @@ public class SudokuTextField extends TextField {
 	 * selected color of a {@link application.CustomColorPicker} and change the
 	 * background color of itself according to the selected color in the Colorpicker
 	 * 
-	 * @param cmb ComboxBox whose changes should be listened to 
+	 * @param cmb ComboxBox whose changes regarding selected color values should be listened to 
 	 */
 	public final void addFreeFormColorListener(ComboBox<String> cmb) {
 		freeFormColorListener = (obs, wasFocused, isNowFocused) -> {

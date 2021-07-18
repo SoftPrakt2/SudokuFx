@@ -17,29 +17,31 @@ import javafx.stage.FileChooser;
 /**
  * 
  * @author grube 
- *       This class definies the saving and loading logic of the program
- *         To do so several methods regarding saving, loading, importing and exporting are implemented
+ * This class definies the saving and loading logic of the program
+ * To do so several methods regarding saving, loading, importing and exporting are implemented
  */
 
 public class SudokuStorage {
 	
-	
+	//checks if a imported file exists
 	private boolean fileExists = true;
 	
+	//checks if a game has already been saved
 	private boolean gameAlreadySaved = false;
 	
 	private FileChooser chooser;
 
 	SharedStoragePreferences storagePref = new SharedStoragePreferences();
 	
+	//save directory of the program
 	File[] fileDirectory = new File("SaveFiles").listFiles();
 
 	
 	/**
 	 * Auxiliary method sets the fields of an {@link logic.SaveModel} objects with informations
-	 * from the paramamter explained down below
+	 * from the parameter explained down below
 	 * @param gameToSave specific game whose informations need to be stored inside a savemodel object
-	 *                  
+	 * @return SaveModel object configured with informations from the @param gameToSave                
 	 */
 	public SaveModel setInformationsToStore(BasicGameLogic gameToSave) {
 		SaveModel saveModel = new SaveModel();
@@ -94,7 +96,7 @@ public class SudokuStorage {
 		
 		
 		File saveFile = new File("SaveFiles", fileName);
-		//if game id already exists overwritte the corresponding file
+		//if game id already exists overwrite the corresponding file
 		for(File file : fileDirectory) {
 			if (file.getName().endsWith(".json")) {	
 			SaveModel help = this.convertFileToSaveModel(file);

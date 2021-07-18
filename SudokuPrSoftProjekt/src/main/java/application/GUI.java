@@ -36,6 +36,7 @@ public class GUI extends Application {
 	/**
 	 * This method is called when starting the program The main scene of the program
 	 * is set to the window scene created in the {@link application.MainMenu} class
+	 * @param scene stage object of the program 
 	 */
 	@Override
 	public void start(Stage scene) {

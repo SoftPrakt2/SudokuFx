@@ -51,7 +51,7 @@ public class GameOverview {
 	private Scene storageScene;
 
 	/**
-	 * the tableview of this scene
+	 * the tableview of this scene shows saved games and contains basicgamelogic objects
 	 */
 	private TableView<BasicGameLogic> tableView;
 
@@ -186,11 +186,9 @@ public class GameOverview {
 				screenWidth = bounds.getWidth() * 0.35;
 			} else {
 				screenWidth = 435;
-				System.out.println("nicht geändert");
 			}
 		
 			if(bounds.getHeight() * 0.85 < 620) {
-				System.out.println("y");
 				screenHeight = bounds.getHeight() * 0.85;
 			} else {
 				screenHeight = 620;

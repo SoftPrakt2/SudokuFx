@@ -37,11 +37,22 @@ import logic.SudokuStorage;
  *
  */
 public class StorageController {
-
+	
+	//gameUI which will be initialized depending on the selection in the observable list
 	private BasicGameBuilder gameBuilder;
+	
+	//game logic object which will be initialized depending on the selection in the observable list
 	private BasicGameLogic gameModel;
+	
+	/**
+	 * save logic whose methods are needed to fill the {@link application.GameOverview#getTableView()}
+	 */
 	private SudokuStorage storageModel;
+	
+	//UI representation of the game overview 
 	private GameOverview storage;
+	
+	//save directory of the program
 	private File[] fileDirectory = new File("SaveFiles").listFiles();
 
 	/**
@@ -57,7 +68,6 @@ public class StorageController {
 	 * The different table columns of the
 	 * {@link application.GameOverview#getTableView()} which will later be filled
 	 * with informations from saved games
-	 * 
 	 */
 	private TableColumn<BasicGameLogic, String> gameTypecolumn;
 	private TableColumn<BasicGameLogic, String> difficultycolumn;
@@ -67,6 +77,9 @@ public class StorageController {
 	private TableColumn<BasicGameLogic, Integer> gameidcolumn;
 
 	
+	/**
+	 * @param storage the corresponding GameOverview object
+	 */
 	public StorageController(GameOverview storage) {
 		this.storage = storage;
 		storageModel = new SudokuStorage();
@@ -85,7 +98,8 @@ public class StorageController {
 		if(storage.getTableView().getSelectionModel().getSelectedItem() != null) {
 		
 		gameModel = storage.getTableView().getSelectionModel().getSelectedItem();
-
+		
+		
 		if (gameModel.getGametype().equals("Sudoku")) {
 			gameBuilder = new SudokuGameBuilder(gameModel);
 		}
@@ -99,12 +113,14 @@ public class StorageController {
 			
 		
 		gameBuilder.initializeGame();
-
+		
+		//depending on the gamestate UI components have to be configured differently 
 		if (!gameModel.getGamestate().equals(Gamestate.CREATING) && !gameModel.getGamestate().equals(Gamestate.DRAWING)
 				&& !gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
 				&& !gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)
 				&& !gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
-				
+			
+			//when the game has already been solved then just set the text of the time played and dont initialize a timer
 			if(gameModel.getGamestate().equals(Gamestate.AUTOSOLVED) || gameModel.getGamestate().equals(Gamestate.DONE)) {
 				gameBuilder.getLiveTimeLabel().setText(String.format("%02d:%02d", gameModel.getMinutesplayed(),gameModel.getSecondsplayed()));
 			} else {
@@ -115,7 +131,8 @@ public class StorageController {
 			}
 			gameBuilder.getGameInfoLabel().setText("Points: " + gameModel.getGamepoints() + " Difficulty: " + gameModel.getDifficultystring());
 		}
-
+		
+		//needed UI configurations for a manual sudoku, samurai or freeform game whose numbers have not been fixed yet
 		if (gameModel.getGamestate().equals(Gamestate.CREATING)
 				|| gameModel.getGamestate().equals(Gamestate.MANUALCONFLICT)
 				|| gameModel.getGamestate().equals(Gamestate.NOTENOUGHNUMBERS)) {
@@ -125,7 +142,8 @@ public class StorageController {
 			gameBuilder.disablePlayButtons();
 
 		}
-
+		
+		//needed UI configurations for a manual freeform game whose forms have not been fixed yet
 		if (gameModel.getGamestate().equals(Gamestate.DRAWING) || gameModel.getGamestate().equals(Gamestate.NOFORMS)) {
 			gameBuilder.getColorBox().setVisible(true);
 			gameBuilder.getColorsDoneButton().setVisible(true);
@@ -224,6 +242,9 @@ public class StorageController {
 	 * This method is used to align the values which are shown in the
 	 * {@link application.BasicGameBuilder#getTextField()} with the values inside
 	 * the {@link #gameModel} {@link application.BasicGameLogic#getCells()} array
+	 * 
+	 * Furthermore depending on the state of a cell in the model array different colors are
+	 * shown in the text field array
 	 */
 	public void alignArrays() {
 		SudokuTextField[][] sudokuField = gameBuilder.getTextField();
